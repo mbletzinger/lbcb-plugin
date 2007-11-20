@@ -1,6 +1,5 @@
 function handles = Plugin_Initialize(handles, config)
 
-
 if config == 1		% default
 	% 10-25-2007 
 	questResult = questdlg('Please backup previous simulation results if necessary. All previous files will be deleted.', 'New Simulation For CABER Pier','Okay','Cancel','Okay');
@@ -12,11 +11,20 @@ if config == 1		% default
 	end 
 	
 	%
-	handles.MDL = MDL_LBCB;
+	handles.MDL = MDL_LBCB;    
+	
 
 elseif config == 2	% use current.
 	
 end
+
+handles.Fun_banner = imread('Funbanner.bmp'); % Read the image file banner.bmp
+
+axes(handles.Fun_Banner_axes);
+image(handles.Fun_banner)
+%set(handles.axes_banner, 'Visible', 'off', 'Units', 'pixels');
+set(handles.Fun_Banner_axes, 'Visible', 'off');
+
 
 %______________________________________________________________
 %
@@ -66,12 +74,15 @@ end
 
 set(handles.RB_Disp_Ctrl,	'enable',	'on');
 set(handles.RB_Forc_Ctrl,	'enable',	'on');
+set(handles.MixedControl_Static,	'enable',	'on');
 
 switch handles.MDL.CtrlMode
 	case 1	% displacement
 		set(handles.RB_Disp_Ctrl,	'value',	1);
 		
 		set(handles.RB_Forc_Ctrl,	'value',	0);
+		set(handles.MixedControl_Static,		'value',	0);
+		
 		set(handles.PM_Frc_Ctrl_DOF,	'enable',	'off');
 		set(handles.Edit_K_low,		'enable',	'off');
 		set(handles.Edit_Iteration_Ksec,'enable',	'off');
@@ -82,12 +93,26 @@ switch handles.MDL.CtrlMode
 		set(handles.RB_Disp_Ctrl,	'value',	0);
 		
 		set(handles.RB_Forc_Ctrl,	'value',	1);
+		set(handles.MixedControl_Static,		'value',	0);
+		
 		set(handles.PM_Frc_Ctrl_DOF,	'enable',	'on');
 		set(handles.Edit_K_low,		'enable',	'on');
 		set(handles.Edit_Iteration_Ksec,'enable',	'on');
 		set(handles.Edit_K_factor,	'enable',	'on');
 		set(handles.Edit_Max_Itr,	'enable',	'on');
+		
+	case 3 % Mixed Mode Static
+		set(handles.RB_Disp_Ctrl,		'value',	0);
+		set(handles.RB_Forc_Ctrl,		'value',	0);
+		set(handles.MixedControl_Static,		'value',	1);
+		
+		set(handles.PM_Frc_Ctrl_DOF,		'enable',	'on');
+		set(handles.Edit_K_low,			'enable',	'off');
+		set(handles.Edit_Iteration_Ksec,	'enable',	'off');
+		set(handles.Edit_K_factor,		'enable',	'off');
+		set(handles.Edit_Max_Itr,		'enable',	'on');
 end
+
 
 %______________________________________________________________
 %
@@ -146,71 +171,6 @@ set(handles.CB_Disp_Limit,	'enable',	'on');
 set(handles.CB_Disp_Inc,	'enable',	'on');
 set(handles.CB_Forc_Limit,	'enable',	'on');
 set(handles.CB_MovingWindow,	'enable',	'on');
-
-
-%%% if handles.MDL.CheckLimit_DispTot == 0
-%%% 	set(handles.Edit_DL_DOF1,	'enable',	'off');
-%%% 	set(handles.Edit_DL_DOF2,	'enable',	'off');
-%%% 	set(handles.Edit_DL_DOF3,	'enable',	'off');
-%%% 	set(handles.Edit_DL_DOF4,	'enable',	'off');
-%%% 	set(handles.Edit_DL_DOF5,	'enable',	'off');
-%%% 	set(handles.Edit_DL_DOF6,	'enable',	'off');
-%%% else
-%%% 	set(handles.Edit_DL_DOF1,	'enable',	'on');
-%%% 	set(handles.Edit_DL_DOF2,	'enable',	'on');
-%%% 	set(handles.Edit_DL_DOF3,	'enable',	'on');
-%%% 	set(handles.Edit_DL_DOF4,	'enable',	'on');
-%%% 	set(handles.Edit_DL_DOF5,	'enable',	'on');
-%%% 	set(handles.Edit_DL_DOF6,	'enable',	'on');
-%%% end
-%%% 
-%%% if handles.MDL.CheckLimit_ForcTot == 0
-%%% 	set(handles.Edit_FL_DOF1,	'enable',	'off');
-%%% 	set(handles.Edit_FL_DOF2,	'enable',	'off');
-%%% 	set(handles.Edit_FL_DOF3,	'enable',	'off');
-%%% 	set(handles.Edit_FL_DOF4,	'enable',	'off');
-%%% 	set(handles.Edit_FL_DOF5,	'enable',	'off');
-%%% 	set(handles.Edit_FL_DOF6,	'enable',	'off');
-%%% else
-%%% 	set(handles.Edit_FL_DOF1,	'enable',	'on');
-%%% 	set(handles.Edit_FL_DOF2,	'enable',	'on');
-%%% 	set(handles.Edit_FL_DOF3,	'enable',	'on');
-%%% 	set(handles.Edit_FL_DOF4,	'enable',	'on');
-%%% 	set(handles.Edit_FL_DOF5,	'enable',	'on');
-%%% 	set(handles.Edit_FL_DOF6,	'enable',	'on');
-%%% end
-%%% 
-%%% if handles.MDL.CheckLimit_DispInc == 0
-%%% 	set(handles.Edit_DI_DOF1,	'enable',	'off');
-%%% 	set(handles.Edit_DI_DOF2,	'enable',	'off');
-%%% 	set(handles.Edit_DI_DOF3,	'enable',	'off');
-%%% 	set(handles.Edit_DI_DOF4,	'enable',	'off');
-%%% 	set(handles.Edit_DI_DOF5,	'enable',	'off');
-%%% 	set(handles.Edit_DI_DOF6,	'enable',	'off');
-%%% else
-%%% 	set(handles.Edit_DI_DOF1,	'enable',	'on');
-%%% 	set(handles.Edit_DI_DOF2,	'enable',	'on');
-%%% 	set(handles.Edit_DI_DOF3,	'enable',	'on');
-%%% 	set(handles.Edit_DI_DOF4,	'enable',	'on');
-%%% 	set(handles.Edit_DI_DOF5,	'enable',	'on');
-%%% 	set(handles.Edit_DI_DOF6,	'enable',	'on');
-%%% end
-%%% 
-%%% if handles.MDL.CheckLimit_ForcInc == 0
-%%% 	set(handles.Edit_FI_DOF1,	'enable',	'off');
-%%% 	set(handles.Edit_FI_DOF2,	'enable',	'off');
-%%% 	set(handles.Edit_FI_DOF3,	'enable',	'off');
-%%% 	set(handles.Edit_FI_DOF4,	'enable',	'off');
-%%% 	set(handles.Edit_FI_DOF5,	'enable',	'off');
-%%% 	set(handles.Edit_FI_DOF6,	'enable',	'off');
-%%% else
-%%% 	set(handles.Edit_FI_DOF1,	'enable',	'on');
-%%% 	set(handles.Edit_FI_DOF2,	'enable',	'on');
-%%% 	set(handles.Edit_FI_DOF3,	'enable',	'on');
-%%% 	set(handles.Edit_FI_DOF4,	'enable',	'on');
-%%% 	set(handles.Edit_FI_DOF5,	'enable',	'on');
-%%% 	set(handles.Edit_FI_DOF6,	'enable',	'on');
-%%% end
 
 %______________________________________________________________
 %
@@ -283,10 +243,8 @@ set(handles.Edit_Dsub_DOF4,		'string',	num2str(handles.MDL.DispIncMax(4)));
 set(handles.Edit_Dsub_DOF5,		'string',	num2str(handles.MDL.DispIncMax(5)));
 set(handles.Edit_Dsub_DOF6,		'string',	num2str(handles.MDL.DispIncMax(6)));
 
-
 set(handles.Edit_Window_Size,		'string',	num2str(handles.MDL.MovingWinWidth));
 set(handles.Edit_Sample_Size,		'string',	num2str(handles.MDL.NumSample));
-
 
 %______________________________________________________________
 %
@@ -449,8 +407,11 @@ handles.MDL.curState      	= 0;                        % Current state of simula
 
 StatusIndicator(handles,0);
 
-
+%______________________________________________________________
+%
 % Read external measurement configuration
+%______________________________________________________________
+
 Ext_Measure_Config;
 handles.MDL.Aux_Config.T            =  Aux_Config.T;
 handles.MDL.Aux_Config.sensitivity  =  Aux_Config.sensitivity;
@@ -467,3 +428,34 @@ handles.MDL.Aux_Config.Off_MCTR     =  Aux_Config.Off_MCTR;
 
 % SJKIM OCT01-2007
 handles.MDL.Aux_Config.InitialLength =  Aux_Config.InitialLength;
+
+%______________________________________________________________
+%
+% Read AUXModule;
+%______________________________________________________________
+
+
+handles.AUX = MDL_AUX;
+
+AUX_Config;
+
+if Num_Aux==0
+	set(handles.AUX_Module_Select,	'enable',	'off');	% this will automatically set OFF to 0
+	set(handles.AUX_Connect,	'enable',	'off');
+	set(handles.AUX_Disconnect,	'enable',	'off');
+else
+	for i=1:length(AUX)
+		handles.AUX(i)          = MDL_AUX ;    % Create objects of MDL_RF
+		handles.AUX(i).URL      = AUX(i).URL;      
+		handles.AUX(i).protocol = AUX(i).protocol; 
+		handles.AUX(i).name     = AUX(i).name     ;
+		handles.AUX(i).Command  = AUX(i).Command  ;
+	end
+
+	% Initialize the AUX Modules 
+	handles.AUX= initialize(handles.AUX);
+	
+	% AUX module
+	set(handles.AUX_Module_Select,	'value',	1);	% this will automatically set OFF to 0
+	set(handles.AUX_Disconnect,	'enable',	'off');
+end

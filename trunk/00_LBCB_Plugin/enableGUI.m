@@ -5,6 +5,8 @@ if handles.MDL.CtrlMode==2
 	set(handles.Edit_Iteration_Ksec,'enable',	'on');
 	set(handles.Edit_K_factor,	'enable',	'on');
 	set(handles.Edit_Max_Itr,	'enable',	'on');
+elseif handles.MDL.CtrlMode==3
+	set(handles.Edit_Max_Itr,	'enable',	'on');
 end
 
 set(handles.CB_UpdateMonitor, 'enable', 'on');
@@ -84,3 +86,15 @@ set(handles.RB_Disp_Refine_ON,			'enable',	'on');
 set(handles.RB_Disp_Refine_OFF,			'enable',	'on');
 set(handles.RB_Disp_Mesurement_LBCB,		'enable',	'on');
 set(handles.RB_Disp_Mesurement_External,	'enable',	'on');
+
+
+% AUX moduel
+
+set(handles.AUX_Module_Select,	'enable',	'on');	% this will automatically set OFF to 0
+%set(handles.AUX_Connect,	'enable',	'off');
+
+switch get(handles.AUX_Connect,'enable')
+	case 'off'
+		set(handles.AUX_Disconnect,	'enable',	'on');
+	case 'on'	
+end

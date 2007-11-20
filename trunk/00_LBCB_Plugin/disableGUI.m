@@ -2,6 +2,8 @@ function disableGUI(handles)
 
 set(handles.RB_Disp_Ctrl,			'enable',	'off');
 set(handles.RB_Forc_Ctrl,			'enable',	'off');
+set(handles.MixedControl_Static,		'enable',	'off');
+
 set(handles.RB_Source_Network,			'enable',	'off');
 set(handles.RB_Source_File,			'enable',	'off');
 set(handles.RB_Elastic_Deformation_ON,		'enable',	'off');
@@ -84,3 +86,10 @@ set(handles.PB_Save_Config ,	'enable',	'off');
 set(handles.PB_LBCB_Disconnect,	'enable',	'off');
 
 set(handles.CB_UpdateMonitor, 'enable', 'off');
+
+% AUX moduel
+
+set(handles.AUX_Module_Select,	'enable',	'off');	% this will automatically set OFF to 0
+%set(handles.AUX_Connect,	'enable',	'off');
+set(handles.AUX_Disconnect,	'enable',	'off');
+
