@@ -21,7 +21,7 @@ Aux_Config.S4p = [0,-4,59.6875]';                 % platform coordinate
 Aux_Config.InitialLength=[9.8264; 4.1463; 4.1622; 6.0553; 1.0374];
 
 %Offset for specimen: LBCB coordinate system, inches. Offset from motion center. X, Y, Z, Rx, Ry, Rz
-Aux_Config.Off_SPCM = [-1.1558644e-002	+0.0000000e+000	+1.9590840e-003	+1.5522604e-004	+5.5259420e-005	+0.0000000e+000	]';
+Aux_Config.Off_SPCM = [+1.5030992e+000	+0.0000000e+000	-2.1304457e-001	+4.5968458e-004	+1.7289259e-003	+0.0000000e+000]';
 
 %Offset for motion center: LBCB coordinate system, X, Y, Z '
 Aux_Config.Off_MCTR = [0, 0, 0]';

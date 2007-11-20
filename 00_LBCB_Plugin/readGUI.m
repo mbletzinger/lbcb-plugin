@@ -79,10 +79,14 @@ elseif get(handles.RB_Source_Network, 'value') ==0 & get(handles.RB_Source_File,
 	handles.MDL.InputSource = 1;
 end
 
-if     get(handles.RB_Disp_Ctrl, 'value') ==1 & get(handles.RB_Forc_Ctrl, 'value') ==0 
+% Control Mode
+
+if     get(handles.RB_Disp_Ctrl, 'value') ==1 & get(handles.RB_Forc_Ctrl, 'value') ==0 & get(handles.MixedControl_Static, 'value') ==0
 	handles.MDL.CtrlMode = 1;
-elseif get(handles.RB_Disp_Ctrl, 'value') ==0 & get(handles.RB_Forc_Ctrl, 'value') ==1 
+elseif get(handles.RB_Disp_Ctrl, 'value') ==0 & get(handles.RB_Forc_Ctrl, 'value') ==1 & get(handles.MixedControl_Static, 'value') ==0
 	handles.MDL.CtrlMode = 2;
+elseif get(handles.RB_Disp_Ctrl, 'value') ==0 & get(handles.RB_Forc_Ctrl, 'value') ==0 & get(handles.MixedControl_Static, 'value') ==1
+	handles.MDL.CtrlMode = 3;	
 end
 
 handles.MDL.FrcCtrlDOF 		= get(handles.PM_Frc_Ctrl_DOF,		'Value');
