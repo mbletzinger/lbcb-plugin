@@ -1,4 +1,5 @@
 function obj = open(obj)
+
 LPLogger('Connecting remote sites',3,1);
 %if obj.Initialized
 	LPLogger(sprintf('Connecting %s',obj.name),3,2);
