@@ -1,0 +1,39 @@
+function StatusIndicator(handles,status)
+
+disabled = [.8 .8 .8];
+enabled1 = [.6 .5 1];
+enabled2 = [1  1 .7];
+
+switch status
+	case 0	% disable all
+		set(handles.Wait_TGT,		'backgroundcolor', disabled); 
+		set(handles.Wait_OM,              'backgroundcolor', disabled);
+		set(handles.Process,        'backgroundcolor', disabled);
+		set(handles.StopBtn,             'backgroundcolor', disabled);
+	case 1	% Processing
+		set(handles.Wait_TGT,		'backgroundcolor', disabled); 
+		set(handles.Wait_OM,              'backgroundcolor', disabled);
+		set(handles.Process,        'backgroundcolor', enabled1);
+		set(handles.StopBtn,             'backgroundcolor', disabled);
+	case 2	% Waiting for OM
+		set(handles.Wait_TGT,		'backgroundcolor', disabled); 
+		set(handles.Wait_OM,              'backgroundcolor', enabled1);
+		set(handles.Process,        'backgroundcolor', disabled);
+		set(handles.StopBtn,             'backgroundcolor', disabled);
+	case 3	% Getting Targets
+		set(handles.Wait_TGT,		'backgroundcolor', enabled1); 
+		set(handles.Wait_OM,              'backgroundcolor', disabled);
+		set(handles.Process,        'backgroundcolor', disabled);
+		set(handles.StopBtn,             'backgroundcolor', disabled);
+	case 4 % Disp. Iteration, Execute
+		set(handles.Wait_TGT,		'backgroundcolor', disabled); 
+		set(handles.Wait_OM,              'backgroundcolor', disabled);
+		set(handles.Process,        'backgroundcolor', disabled);
+		set(handles.StopBtn,             'backgroundcolor', disabled);
+	case 5	% Disp. Iteration, Query
+		set(handles.Wait_TGT,		'backgroundcolor', disabled); 
+		set(handles.Wait_OM,              'backgroundcolor', disabled);
+		set(handles.Process,        'backgroundcolor', disabled);
+		set(handles.StopBtn,             'backgroundcolor', disabled);
+end
+guidata(hObject, handles);

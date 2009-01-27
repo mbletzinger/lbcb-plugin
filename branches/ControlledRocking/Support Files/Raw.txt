@@ -1,0 +1,1 @@
+%Step ME_LC_1X ME_LC_1Y ME_LC_2X ME_LC_2Y ME_Lt_SP ME_Rt_SP Model_Fx(kip)	Model_Fy(kip)	Model_Fz(kip)	Model_Mx(kip-in)	Model_My(kip-in)	Model_Mz(kip-in)	Model_Dx(in)	Model_Dy(in)	Model_Dz(in)	Model_Rx(rad)	Model_Ry(rad)	Model_Rz(rad)	LBCB_Dx(in) 	LBCB_Dy(in) 	LBCB_Dz(in) 	LBCB_Rx(rad)	LBCB_Ry(rad)	LBCB_Rz(rad)	
