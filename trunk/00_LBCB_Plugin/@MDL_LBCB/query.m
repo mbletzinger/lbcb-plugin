@@ -26,7 +26,9 @@ for k=1:12
         MDLVals{1}{k,2}=recv{(k-1)*3+1+4};
         MDLVals{1}{k,3}=str2num(recv{(k-1)*3+3+4});
 end
+
 %SJKIM Oct24-2007
+% For Test
 for k=1:5
 	AUXVals{1}{k,1}=recv{(k-1)*3+41};
 	AUXVals{1}{k,2}=recv{(k-1)*3+42};
@@ -74,7 +76,9 @@ for k=1:12
             end
     end
 end
+
 %SJKIM Oct24-2007
+% For Test
 for k=1:5   
     switch AUXVals{1}{k,1}
         case 'SP_Horizontal_Top'
@@ -89,5 +93,8 @@ for k=1:5
 		obj.M_AuxDisp_Raw(5) =AUXVals{1}{k,3};
     end
 end 
+
+
 % For GUI update. This indicate measured data
 obj.curState = 3;
+

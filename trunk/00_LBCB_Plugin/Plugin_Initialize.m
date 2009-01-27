@@ -1,35 +1,54 @@
 function handles = Plugin_Initialize(handles, config)
 
+
 if config == 1		% default
 	% 10-25-2007 
-	questResult = questdlg('Please backup previous simulation results if necessary. All previous files will be deleted.', 'New Simulation For CABER Pier','Okay','Cancel','Okay');
+	questResult = questdlg('Please backup previous simulation results if necessary. All previous files will be deleted.', 'New Simulation','Okay','Cancel','Okay');
+	
+	DateStr=clock;
+	TestDate_Str=sprintf('%04d%02d%02d%02d%02d',DateStr(1:5));
 	
 	if strcmp(questResult,'Okay')
-		Plugin_Initialize_CreateFile;
+		Plugin_Initialize_CreateFile (TestDate_Str);
 	else
 	  return;
 	end 
 	
 	%
-	handles.MDL = MDL_LBCB;    
-	
+	handles.MDL = MDL_LBCB;
+	% To save data file with date string
+	handles.DataSave_TestDate_Str=TestDate_Str;
+	%handles.MDL.TestDate_Str=TestDate_Str;
 
 elseif config == 2	% use current.
 	
 end
+%
+% image file
+Fun_banner = imread('CABER_Banner.bmp'); % Read the image file banner.bmp
+axes(handles.CABER_Banner);
+image(Fun_banner);
+set(handles.CABER_Banner, 'Visible', 'off');
 
-handles.Fun_banner = imread('Funbanner.bmp'); % Read the image file banner.bmp
+StatusTextOut = {...
+  ' LBCB Plugin v 2.0',...
+  ' -------------------------------------------',...
+  ' Interface between UI-SimCor and LBCB Operation Manager',...
+  ' This version is customized for CABER project',...
+  ' by Sung Jig Kim, Curtis Holub, and Oh-Sung Kwon',...
+  ' University of Illinois at Urbana-Champaign'};
 
-axes(handles.Fun_Banner_axes);
-image(handles.Fun_banner)
-%set(handles.axes_banner, 'Visible', 'off', 'Units', 'pixels');
-set(handles.Fun_Banner_axes, 'Visible', 'off');
-
-
+set(handles.ET_GUI_Process_Text,'String',StatusTextOut);
 %______________________________________________________________
 %
 % Radio buttonS 
 %______________________________________________________________
+
+set(handles.RB_Monitor_Coord_Model, 'value' ,1);
+set(handles.RB_Monitor_Coord_LBCB,  'value' ,0);
+set(handles.RB_PlotData_ModelStep,     'value' ,0);
+set(handles.RB_PlotData_LBCBStep,      'value' ,1);
+
 switch handles.MDL.ItrElasticDeform
 	case 0
 		set(handles.RB_Elastic_Deformation_OFF,	'value',	1);	% this will automatically set ON to 0
@@ -63,6 +82,12 @@ switch handles.MDL.InputSource
 		set(handles.RB_Source_File,	'value',	1);
 		set(handles.Edit_File_Path,	'enable',	'on');
 		set(handles.PB_Load_File,	'enable',	'on');
+		
+		set(handles.PM_FileInput_Select,    'enable', 'on');
+		set(handles.Edit_FileInput_Add_Num, 'enable', 'on');
+		set(handles.PB_FileInput_Add,       'enable', 'on');
+		set(handles.PB_Input_Plot,          'enable', 'on');
+		
 	case 2	% network
 		set(handles.RB_Source_Network,	'value',	1);
 		set(handles.Edit_PortNo,	'enable',	'on');
@@ -70,49 +95,120 @@ switch handles.MDL.InputSource
 		set(handles.RB_Source_File,	'value',	0);
 		set(handles.Edit_File_Path,	'enable',	'off');
 		set(handles.PB_Load_File,	'enable',	'off');
+		
+		set(handles.PM_FileInput_Select,    'enable', 'off');
+		set(handles.Edit_FileInput_Add_Num, 'enable', 'off');
+		set(handles.PB_FileInput_Add,       'enable', 'off');
+		set(handles.PB_Input_Plot,          'enable', 'off');
 end
 
 set(handles.RB_Disp_Ctrl,	'enable',	'on');
-set(handles.RB_Forc_Ctrl,	'enable',	'on');
-set(handles.MixedControl_Static,	'enable',	'on');
+set(handles.RB_Forc_Ctrl,	'enable',	'on');  
+set(handles.RB_MixedControl_Static,	'enable',	'on');
+
+%handles.MDL.LBCB_FrcCtrlDOF=zeros (6,1);  % 0 for displacement control, 1 for force control;
 
 switch handles.MDL.CtrlMode
 	case 1	% displacement
-		set(handles.RB_Disp_Ctrl,	'value',	1);
-		
-		set(handles.RB_Forc_Ctrl,	'value',	0);
-		set(handles.MixedControl_Static,		'value',	0);
-		
+		set(handles.RB_Disp_Ctrl,	        'value',	1);
+		set(handles.RB_Forc_Ctrl,	        'value',	0);
+		set(handles.RB_MixedControl_Static,	'value',	0);
+
 		set(handles.PM_Frc_Ctrl_DOF,	'enable',	'off');
 		set(handles.Edit_K_low,		'enable',	'off');
 		set(handles.Edit_Iteration_Ksec,'enable',	'off');
 		set(handles.Edit_K_factor,	'enable',	'off');
-		set(handles.Edit_Max_Itr,	'enable',	'off');
 		
 	case 2	% force
-		set(handles.RB_Disp_Ctrl,	'value',	0);
-		
-		set(handles.RB_Forc_Ctrl,	'value',	1);
-		set(handles.MixedControl_Static,		'value',	0);
-		
+		set(handles.RB_Disp_Ctrl,	        'value',	0);
+		set(handles.RB_Forc_Ctrl,	        'value',	1);
+		set(handles.RB_MixedControl_Static,	'value',	0);
+
 		set(handles.PM_Frc_Ctrl_DOF,	'enable',	'on');
 		set(handles.Edit_K_low,		'enable',	'on');
 		set(handles.Edit_Iteration_Ksec,'enable',	'on');
-		set(handles.Edit_K_factor,	'enable',	'on');
-		set(handles.Edit_Max_Itr,	'enable',	'on');
+		set(handles.Edit_K_factor,	'enable',	'on');   
+		handles.MDL.LBCB_FrcCtrlDOF=zeros (6,1);
+		handles.MDL.LBCB_FrcCtrlDOF(handles.MDL.FrcCtrlDOF) = 1;
 		
-	case 3 % Mixed Mode Static
-		set(handles.RB_Disp_Ctrl,		'value',	0);
-		set(handles.RB_Forc_Ctrl,		'value',	0);
-		set(handles.MixedControl_Static,		'value',	1);
-		
-		set(handles.PM_Frc_Ctrl_DOF,		'enable',	'on');
-		set(handles.Edit_K_low,			'enable',	'off');
-		set(handles.Edit_Iteration_Ksec,	'enable',	'off');
-		set(handles.Edit_K_factor,		'enable',	'off');
-		set(handles.Edit_Max_Itr,		'enable',	'on');
-end
+	case 3	% Static module
+		set(handles.RB_Disp_Ctrl,	        'value',	0);
+		set(handles.RB_Forc_Ctrl,	        'value',	0);
+		set(handles.RB_MixedControl_Static,	'value',	1);
 
+		set(handles.PM_Frc_Ctrl_DOF,	'enable',	'off');
+		set(handles.Edit_K_low,		'enable',	'off');
+		set(handles.Edit_Iteration_Ksec,'enable',	'off');
+		set(handles.Edit_K_factor,	'enable',	'off');
+		
+end
+set(handles.Edit_Max_Itr,	'enable',	'on');
+
+UpdateGUI_FontColor (handles, 1);
+
+
+% User Input Option
+set(handles.UserInputOption_On,  'value', 0);
+set(handles.UserInputOption_Off, 'value', 1);
+set(handles.User_Cmd_Txt_Dx, 'enable', 'off');              
+set(handles.User_Cmd_Txt_Dy, 'enable', 'off');              
+set(handles.User_Cmd_Txt_Dz, 'enable', 'off');              
+set(handles.User_Cmd_Txt_Rx, 'enable', 'off');              
+set(handles.User_Cmd_Txt_Ry, 'enable', 'off');              
+set(handles.User_Cmd_Txt_Rz, 'enable', 'off');              
+set(handles.User_Cmd_Txt_Fx, 'enable', 'off');              
+set(handles.User_Cmd_Txt_Fy, 'enable', 'off');              
+set(handles.User_Cmd_Txt_Fz, 'enable', 'off');              
+set(handles.User_Cmd_Txt_Mx, 'enable', 'off');              
+set(handles.User_Cmd_Txt_My, 'enable', 'off');              
+set(handles.User_Cmd_Txt_Mz, 'enable', 'off');              
+                                                            
+set(handles.STR_UserInput_PreviousTarget,             'enable', 'off');
+set(handles.UserInputOption_M_AdjustedCMD, 'value', 0);     
+set(handles.UserInputOption_M_AdjustedCMD, 'enable', 'off');   
+set(handles.STXT_AdjustedCMD, 'enable', 'off');
+
+set(handles.PB_UserCMD_Pre_DOF1,  'string',	sprintf('%+12.3f',0));
+set(handles.PB_UserCMD_Pre_DOF2,  'string',	sprintf('%+12.3f',0));
+set(handles.PB_UserCMD_Pre_DOF3,  'string',	sprintf('%+12.3f',0));
+set(handles.PB_UserCMD_Pre_DOF4,  'string',	sprintf('%+12.3f',0));
+set(handles.PB_UserCMD_Pre_DOF5,  'string',	sprintf('%+12.3f',0));
+set(handles.PB_UserCMD_Pre_DOF6,  'string',	sprintf('%+12.3f',0));
+
+set(handles.PB_UserCMD_Pre_DOF1,        'enable', 'off');
+set(handles.PB_UserCMD_Pre_DOF2,        'enable', 'off');
+set(handles.PB_UserCMD_Pre_DOF3,        'enable', 'off');
+set(handles.PB_UserCMD_Pre_DOF4,        'enable', 'off');
+set(handles.PB_UserCMD_Pre_DOF5,        'enable', 'off');
+set(handles.PB_UserCMD_Pre_DOF6,        'enable', 'off');
+
+set(handles.PB_UserCMD_Decrease_DOF1,   'enable', 'off');
+set(handles.PB_UserCMD_Decrease_DOF2,   'enable', 'off');
+set(handles.PB_UserCMD_Decrease_DOF3,   'enable', 'off');
+set(handles.PB_UserCMD_Decrease_DOF4,   'enable', 'off');
+set(handles.PB_UserCMD_Decrease_DOF5,   'enable', 'off');
+set(handles.PB_UserCMD_Decrease_DOF6,   'enable', 'off');
+
+set(handles.PB_UserCMD_Increase_DOF1,   'enable', 'off');
+set(handles.PB_UserCMD_Increase_DOF2,   'enable', 'off');
+set(handles.PB_UserCMD_Increase_DOF3,   'enable', 'off');
+set(handles.PB_UserCMD_Increase_DOF4,   'enable', 'off');
+set(handles.PB_UserCMD_Increase_DOF5,   'enable', 'off');
+set(handles.PB_UserCMD_Increase_DOF6,   'enable', 'off');
+
+set(handles.ED_UserCMD_Increment_DOF1,  'string',	num2str(handles.MDL.DispTolerance(1)));
+set(handles.ED_UserCMD_Increment_DOF2,  'string',	num2str(handles.MDL.DispTolerance(2)));
+set(handles.ED_UserCMD_Increment_DOF3,  'string',	num2str(handles.MDL.DispTolerance(3)));
+set(handles.ED_UserCMD_Increment_DOF4,  'string',	num2str(handles.MDL.DispTolerance(4)));
+set(handles.ED_UserCMD_Increment_DOF5,  'string',	num2str(handles.MDL.DispTolerance(5)));
+set(handles.ED_UserCMD_Increment_DOF6,  'string',	num2str(handles.MDL.DispTolerance(6)));
+
+set(handles.ED_UserCMD_Increment_DOF1,  'enable', 'off');
+set(handles.ED_UserCMD_Increment_DOF2,  'enable', 'off');
+set(handles.ED_UserCMD_Increment_DOF3,  'enable', 'off');
+set(handles.ED_UserCMD_Increment_DOF4,  'enable', 'off');
+set(handles.ED_UserCMD_Increment_DOF5,  'enable', 'off');
+set(handles.ED_UserCMD_Increment_DOF6,  'enable', 'off');
 
 %______________________________________________________________
 %
@@ -143,34 +239,38 @@ set(handles.CB_Disp_Limit,	'value',	handles.MDL.CheckLimit_Disp);
 set(handles.CB_Disp_Inc,	'value',	handles.MDL.CheckLimit_DispInc);
 set(handles.CB_Forc_Limit,	'value',	handles.MDL.CheckLimit_Forc);
 set(handles.CB_MovingWindow,	'value',	handles.MDL.EnableMovingWin);
-set(handles.CB_UpdateMonitor, 	'value', 	handles.MDL.UpdateMonitor);
 
-if handles.MDL.UpdateMonitor
-	set(handles.PM_Axis_X1,		'enable',	'on');
-	set(handles.PM_Axis_Y1,		'enable',	'on');
-	set(handles.PM_Axis_X2,		'enable',	'on');
-	set(handles.PM_Axis_Y2,		'enable',	'on');
-	set(handles.PM_Axis_X3,		'enable',	'on');
-	set(handles.PM_Axis_Y3,		'enable',	'on');
+set(handles.PM_Axis_X1,		'enable',	'on');
+set(handles.PM_Axis_Y1,		'enable',	'on');
+set(handles.PM_Axis_X2,		'enable',	'on');
+set(handles.PM_Axis_Y2,		'enable',	'on');
+set(handles.PM_Axis_X3,		'enable',	'on');
+set(handles.PM_Axis_Y3,		'enable',	'on');
 
-	set(handles.CB_MovingWindow,	'enable',	'on');
-	set(handles.Edit_Window_Size,	'enable',	'on');
-else
-	set(handles.PM_Axis_X1,		'enable',	'off');
-	set(handles.PM_Axis_Y1,		'enable',	'off');
-	set(handles.PM_Axis_X2,		'enable',	'off');
-	set(handles.PM_Axis_Y2,		'enable',	'off');
-	set(handles.PM_Axis_X3,		'enable',	'off');
-	set(handles.PM_Axis_Y3,		'enable',	'off');
-
-	set(handles.CB_MovingWindow,	'enable',	'off');
-	set(handles.Edit_Window_Size,	'enable',	'off');
-end
+set(handles.CB_MovingWindow,	'enable',	'on');
+set(handles.Edit_Window_Size,	'enable',	'on');
 
 set(handles.CB_Disp_Limit,	'enable',	'on');
 set(handles.CB_Disp_Inc,	'enable',	'on');
 set(handles.CB_Forc_Limit,	'enable',	'on');
 set(handles.CB_MovingWindow,	'enable',	'on');
+
+% Static Modlue
+if get(handles.RB_MixedControl_Static,	'value')
+	set(handles.CB_MixedCtrl_Fx,	'enable',	'on');
+	set(handles.CB_MixedCtrl_Fy,	'enable',	'on');
+	set(handles.CB_MixedCtrl_Fz,	'enable',	'on');
+	set(handles.CB_MixedCtrl_Mx,	'enable',	'on');
+	set(handles.CB_MixedCtrl_My,	'enable',	'on');
+	set(handles.CB_MixedCtrl_Mz,	'enable',	'on');
+else
+	set(handles.CB_MixedCtrl_Fx,	'enable',	'off');
+	set(handles.CB_MixedCtrl_Fy,	'enable',	'off');
+	set(handles.CB_MixedCtrl_Fz,	'enable',	'off');
+	set(handles.CB_MixedCtrl_Mx,	'enable',	'off');
+	set(handles.CB_MixedCtrl_My,	'enable',	'off');
+	set(handles.CB_MixedCtrl_Mz,	'enable',	'off');
+end
 
 %______________________________________________________________
 %
@@ -178,7 +278,8 @@ set(handles.CB_MovingWindow,	'enable',	'on');
 %______________________________________________________________
 
 set(handles.Edit_PortNo,		'string',	num2str(handles.MDL.InputPort));		
-set(handles.Edit_File_Path,		'string',	handles.MDL.InputFile);
+set(handles.Edit_File_Path,		'string',	handles.MDL.InputFile); 
+
 set(handles.Edit_LBCB_IP,		'string',	num2str(handles.MDL.IP));
 set(handles.Edit_LBCB_Port,		'string',	num2str(handles.MDL.Port));
 set(handles.Edit_LBCB_IP,       	'enable',	'on');
@@ -194,6 +295,12 @@ set(handles.Edit_Rotation_SF,		'string',	num2str(handles.MDL.ScaleF(2)));
 set(handles.Edit_Forc_SF,		'string',	num2str(handles.MDL.ScaleF(3)));
 set(handles.Edit_Moment_SF,		'string',	num2str(handles.MDL.ScaleF(4)));
 
+%
+handles.MDL.DispScale(1:3)=handles.MDL.ScaleF(1);
+handles.MDL.DispScale(4:6)=handles.MDL.ScaleF(2);
+handles.MDL.ForcScale(1:3)=handles.MDL.ScaleF(3);
+handles.MDL.ForcScale(4:6)=handles.MDL.ScaleF(4);
+	
 set(handles.Edit_DLmin_DOF1,		'string',	num2str(handles.MDL.CAP_D_min(1)));
 set(handles.Edit_DLmin_DOF2,		'string',	num2str(handles.MDL.CAP_D_min(2)));
 set(handles.Edit_DLmin_DOF3,		'string',	num2str(handles.MDL.CAP_D_min(3)));
@@ -243,38 +350,114 @@ set(handles.Edit_Dsub_DOF4,		'string',	num2str(handles.MDL.DispIncMax(4)));
 set(handles.Edit_Dsub_DOF5,		'string',	num2str(handles.MDL.DispIncMax(5)));
 set(handles.Edit_Dsub_DOF6,		'string',	num2str(handles.MDL.DispIncMax(6)));
 
+
 set(handles.Edit_Window_Size,		'string',	num2str(handles.MDL.MovingWinWidth));
 set(handles.Edit_Sample_Size,		'string',	num2str(handles.MDL.NumSample));
 
+
+set(handles.User_Cmd_DOF1,  'string' , sprintf('%+12.3f',0));
+set(handles.User_Cmd_DOF2,  'string' , sprintf('%+12.3f',0));
+set(handles.User_Cmd_DOF3,  'string' , sprintf('%+12.3f',0));
+set(handles.User_Cmd_DOF4,  'string' , sprintf('%+12.3f',0));
+set(handles.User_Cmd_DOF5,  'string' , sprintf('%+12.3f',0));
+set(handles.User_Cmd_DOF6,  'string' , sprintf('%+12.3f',0));
+	                           
+if get(handles.UserInputOption_On,  'value');
+	set(handles.User_Cmd_DOF1,  'enable' , 'on');
+	set(handles.User_Cmd_DOF2,  'enable' , 'on');
+	set(handles.User_Cmd_DOF3,  'enable' , 'on');
+	set(handles.User_Cmd_DOF4,  'enable' , 'on');
+	set(handles.User_Cmd_DOF5,  'enable' , 'on');
+	set(handles.User_Cmd_DOF6,  'enable' , 'on');
+else
+	set(handles.User_Cmd_DOF1,  'enable' , 'off');
+	set(handles.User_Cmd_DOF2,  'enable' , 'off');
+	set(handles.User_Cmd_DOF3,  'enable' , 'off');
+	set(handles.User_Cmd_DOF4,  'enable' , 'off');
+	set(handles.User_Cmd_DOF5,  'enable' , 'off');
+	set(handles.User_Cmd_DOF6,  'enable' , 'off');
+end                                          
+
+for i=1:length(handles.MDL.InputFilePath)
+	if isempty(handles.MDL.InputFilePath{i})~=1
+		if strcmp(handles.MDL.InputFilePath{i},handles.MDL.InputFile)
+			set(handles.Edit_FileInput_Add_Num, 'string',sprintf('%02d',i));
+			break;
+		end
+	end
+end
+
+% Pop up menu
+Input_Num=length(handles.MDL.InputFilePath);
+InputFile_List=get (handles.PM_FileInput_Select, 'string');
+ModifiedList=cell(Input_Num+1,1);
+for i=1:length(InputFile_List)
+	ModifiedList{i}=InputFile_List{i};
+end
+for i=2:Input_Num+1
+	if isempty(ModifiedList{i})
+		ModifiedList{i}=sprintf('Input %02d: Empty',i-1);
+	else
+		ModifiedList{i}=sprintf('Input %02d: %s', i-1, handles.MDL.InputFilePath{i-1});
+	end
+end
+set (handles.PM_FileInput_Select, 'string',ModifiedList);
+set (handles.PM_FileInput_Select, 'UserData', handles.MDL.InputFilePath);
+%                                       [SimulationIndex, CurrentStep];
+set(handles.PB_Input_Plot, 'UserData', [0 0]);
 %______________________________________________________________
 %
 % Static Text 
 %______________________________________________________________
 
-set(handles.TXT_Model_Tgt_Step, 	'string',	sprintf('Step #: %03d',0));
-set(handles.TXT_Model_Mes_Step, 	'string',	sprintf('Step #: %03d',0));
-set(handles.TXT_LBCB_Tgt_Itr, 		'string',	sprintf('Iteration #: %03d',0));
-set(handles.TXT_LBCB_Mes_Itr, 		'string',	sprintf('Iteration #: %03d',0));
+%set(handles.TXT_Model_Tgt_Step, 	'string',	sprintf('Step #: %03d',0));
+%set(handles.TXT_Model_Mes_Step, 	'string',	sprintf('Step #: %03d',0));
+%set(handles.TXT_LBCB_Tgt_Itr, 		'string',	sprintf('Iteration #: %03d',0));
+%set(handles.TXT_LBCB_Mes_Itr, 		'string',	sprintf('Iteration #: %03d',0));
 
-tmp_a = sprintf('%+12.5f',0);
+tmp_a = sprintf('%+12.7f',0);
 tmp1 = {tmp_a,tmp_a,tmp_a,tmp_a,tmp_a,tmp_a};
-tmp_b = sprintf('        -     ');
+tmp_b = sprintf('     -     ');
 tmp2 = {tmp_b,tmp_b,tmp_b,tmp_b,tmp_b,tmp_b};
+tmp_c = sprintf('%+12.9f',0);
+tmp3 = {tmp_c,tmp_c,tmp_c,tmp_c,tmp_c,tmp_c};
+tmp_d = sprintf('%+12.3f',0);
+tmp4 = {tmp_d,tmp_d,tmp_d,tmp_d,tmp_d,tmp_d};
+tmp_e = sprintf('%+12.6f',0);
+tmp5 = {tmp_e,tmp_e,tmp_e,tmp_e,tmp_e,tmp_e};
 
 set(handles.TXT_Disp_T_Model,		'string',	tmp1);
+set(handles.TXT_Forc_T_Model,		'string',	tmp2);
 set(handles.TXT_Disp_M_Model,		'string',	tmp1);
-set(handles.TXT_Forc_M_Model,		'string',	tmp1);
+set(handles.TXT_Forc_M_Model,		'string',	tmp4);
+set(handles.TXT_Disp_Model_Error_Dx, 'string', tmp_c);
+set(handles.TXT_Disp_Model_Error_Dy, 'string', tmp_c);
+set(handles.TXT_Disp_Model_Error_Dz, 'string', tmp_c);
+set(handles.TXT_Disp_Model_Error_Rx, 'string', tmp_c);
+set(handles.TXT_Disp_Model_Error_Ry, 'string', tmp_c);
+set(handles.TXT_Disp_Model_Error_Rz, 'string', tmp_c);
+set(handles.TXT_Force_Model_Error,   'string', tmp5 );
+
+
 set(handles.TXT_Disp_M_LBCB,		'string',	tmp1);
-set(handles.TXT_Forc_M_LBCB,		'string',	tmp1);
+set(handles.TXT_Forc_M_LBCB,		'string',	tmp4);
+
+set(handles.TXT_Disp_M_LBCB_Error,	'string',	tmp3);
+set(handles.TXT_Forc_M_LBCB_Error,	'string',	tmp5);
+
 switch handles.MDL.CtrlMode
-	case 1	% displacement control
+	case 1	% displacement control 
 		set(handles.TXT_Disp_T_LBCB,		'string',	tmp1);
 		set(handles.TXT_Forc_T_LBCB,		'string',	tmp2);
+		%set(handles.TXT_Disp_Next_T_LBCB,	'string',	tmp1);
+		%set(handles.TXT_Forc_Next_T_LBCB,	'string',	tmp2);
 	case 2	% force control
 		tmp1(handles.MDL.FrcCtrlDOF) = {tmp_b};
 		tmp2(handles.MDL.FrcCtrlDOF) = {tmp_a};
 		set(handles.TXT_Disp_T_LBCB,		'string',	tmp1);
 		set(handles.TXT_Forc_T_LBCB,		'string',	tmp2);
+		%set(handles.TXT_Disp_Next_T_LBCB,	'string',	tmp1);
+		%set(handles.TXT_Forc_Next_T_LBCB,	'string',	tmp2);
 end
 
 %______________________________________________________________
@@ -400,19 +583,33 @@ handles.MDL.mForc_history     = zeros(10000,6);                   % History of m
 handles.MDL.tDisp_history_SC  = zeros(10000,6);
 handles.MDL.T_Disp_SC_his     = zeros(6,1);
 
+% For Model Step Plot
+handles.MDL.Model_tDisp_history     = zeros(10000,6); 
+handles.MDL.Model_tForc_history     = zeros(10000,6); 
+handles.MDL.Model_mDisp_history     = zeros(10000,6); 
+handles.MDL.Model_mForc_history     = zeros(10000,6); 
+handles.MDL.Model_tDisp_history_SC  = zeros(10000,6); 
+
+
 handles.MDL.TransID           = '';                  % Transaction ID
 handles.MDL.curStep       	= 0;                        % Current step number for this module
 handles.MDL.totStep       	= 0;                        % Total number of steps to be tested
 handles.MDL.curState      	= 0;                        % Current state of simulation
 
 StatusIndicator(handles,0);
-
+% For Transformation Matrix
+handles = SetTransMCoord(handles); 
+handles.MDL.Model_FrcCtrlDOF=abs(inv(handles.MDL.TransM)*handles.MDL.LBCB_FrcCtrlDOF);
+% For error check at readGUI
+handles.error_check=0;
 %______________________________________________________________
 %
-% Read external measurement configuration
+% Load LBCBPlugin_Config
 %______________________________________________________________
 
-Ext_Measure_Config;
+LBCBPlugin_Config;
+
+% Read external measurement configuration
 handles.MDL.Aux_Config.T            =  Aux_Config.T;
 handles.MDL.Aux_Config.sensitivity  =  Aux_Config.sensitivity;
 handles.MDL.Aux_Config.S1b          =  Aux_Config.S1b;
@@ -429,21 +626,16 @@ handles.MDL.Aux_Config.Off_MCTR     =  Aux_Config.Off_MCTR;
 % SJKIM OCT01-2007
 handles.MDL.Aux_Config.InitialLength =  Aux_Config.InitialLength;
 
-%______________________________________________________________
-%
-% Read AUXModule;
-%______________________________________________________________
-
+% Read AUXModule
 
 handles.AUX = MDL_AUX;
+handles.Num_AuxModule=Num_Aux;
 
-AUX_Config;
-
-if Num_Aux==0
-	set(handles.AUX_Module_Select,	'enable',	'off');	% this will automatically set OFF to 0
-	set(handles.AUX_Connect,	'enable',	'off');
-	set(handles.AUX_Disconnect,	'enable',	'off');
-else
+if handles.Num_AuxModule==0
+	set(handles.AUXModule_Connect,	    'enable',	'off');
+	%set(handles.PB_LBCB_Connect,	'enable',	'on');
+else  
+	
 	for i=1:length(AUX)
 		handles.AUX(i)          = MDL_AUX ;    % Create objects of MDL_RF
 		handles.AUX(i).URL      = AUX(i).URL;      
@@ -455,7 +647,18 @@ else
 	% Initialize the AUX Modules 
 	handles.AUX= initialize(handles.AUX);
 	
+	AUX_Initialized=zeros(length(AUX),1);
+	for i=1:length(AUX)
+		AUX_Initialized(i)=handles.AUX(i).Initialized;
+	end
+	
+	set(handles.AUXModule_Connect, 'UserData',AUX_Initialized); 
+	
 	% AUX module
-	set(handles.AUX_Module_Select,	'value',	1);	% this will automatically set OFF to 0
-	set(handles.AUX_Disconnect,	'enable',	'off');
+	set(handles.AUXModule_Connect,	     'enable',	'on');	% this will automatically set OFF to 0
+	% Disable LBCB connection button
+	%set(handles.PB_LBCB_Connect,	'enable',	'on');
 end
+set(handles.AUXModule_Disconnect,	'enable',	'off');
+
+
