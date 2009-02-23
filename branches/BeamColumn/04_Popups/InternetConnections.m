@@ -98,8 +98,6 @@ varargout{1} = handles.output;
 % The GUI is no longer waiting, just close it
 delete(handles.InternetConnections);
 
-
-
 function LbcbOmHost_Callback(hObject, eventdata, handles)
 % hObject    handle to LbcbOmHost (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
