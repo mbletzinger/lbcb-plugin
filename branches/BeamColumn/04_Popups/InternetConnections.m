@@ -77,7 +77,7 @@ set(handles.CameraPorts,'String', inputData.CameraPorts,'Value',1);
 Update(hObject, handles,inputData);
 
 % Make the GUI modal
-set(handles.InternetConnections,'WindowStyle','modal')
+set(handles.InternetConnections,'WindowStyle','modal');
 
 % Update handles structure
 guidata(hObject, handles);
@@ -328,7 +328,6 @@ function Update(hObject, handles,connectionData)
 handles.connectionData = connectionData;
 % Update handles structure
 guidata(hObject, handles);
-
 
 % --- Executes on button press in editCamera.
 function editCamera_Callback(hObject, eventdata, handles)
