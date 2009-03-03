@@ -3,8 +3,18 @@ function p = MDL_LBCB(vargin)
 % _____________________________________________________________________________________________________________________
 %
 % Public variables 
-% _____________________________________________________________________________________________________________________
-p.TestDate_Str      ='02082008';                 % Date string to save data file with this date
+% _________________________________________________________________________
+% ____________________________________________
+p.Gui = configGuiDefaults();
+p.Limits = configLimitDefaults();
+p.Lbcb1 = initLbcbData();
+p.Lbcb2 = initLbcbData();
+p.ExtTrans.Config = configExternalTransducers();
+p.ExtTrans.State = initExternalTransducers(p.ExtTrans.Config.Lbcb1.NumSensors,...
+    p.ExtTrans.Config.Lbcb1.NumSensors);
+
+
+
 
 p.name          	= 'LBCB';           		% Name of the stiffness module
 %p.protocol      	= 'LabView1';               	% Protocol for communication with LBCB
@@ -52,46 +62,15 @@ p.TransM        	= eye(6);                   	% A matrix used for coordinate tra
                                             		% where d1 is input to this stiffnes module, d2 is output to remote site
                                             		% The dimension of this matrix should be Num_DOF x Num_DOF
                                             
-% ------------------------------------------
-p.CheckLimit_Disp = 1;                   % 1 for check, 0 for ignore     
-p.CheckLimit_DispInc = 1;                   % 1 for check, 0 for ignore     
-p.CheckLimit_Forc = 0;                   % 1 for check, 0 for ignore     
-
-% ------------------------------------------
-% The dimension of the following matrices should be same as that of p.EFF_DOF
-
-p.CAP_D_min      = [-3 -3  -2  -0.2 -0.2 -0.2 ]';   % Displacement limit
-p.CAP_D_max      = [ 3  3   2   0.2  0.2  0.2 ]';   % Displacement limit
-p.TGT_D_inc      = [ 1  1   1   0.05 0.05 0.05]';   % Displacement increment limit
-p.CAP_F_min      = [-1000 -1000 -1500 -2000 -2000 -2000]'; % Force limit
-p.CAP_F_max      = [ 1000  1000  1500  2000  2000  2000]'; % Force limit '
-
-p.M_Disp        = zeros(6,1);                       % Measured displacement at each step, Num_DOFx1
 %SJKIM Oct01-2007
-p.M_AuxDisp_Raw	= zeros(5,1);			    % Measured axusiliary displacement at each step
-p.M_AuxDisp	    = zeros(3,1);			    % Measured axusiliary displacement at each step
-p.M_Forc        = zeros(6,1);                       % Measured force at each step, Num_DOFx1
-p.T_Disp_0      = zeros(6,1);                       % Previous step's target displacement, Num_DOFx1
-p.T_Disp        = zeros(6,1);                       % Target displacement, Num_DOFx1
-p.T_Forc_0      = zeros(6,1);                       % Previous step's target displacement, Num_DOFx1
-p.T_Forc        = zeros(6,1);                       % Target displacement, Num_DOFx1
-p.T_Data_0      = zeros(6,1);                       % Previous Target Data to LBCB
-p.T_Data_1      = zeros(6,1);                       % Current Target Data to LBCB
 
-p.T_Forc        = zeros(6,1);                       % Target displacement, Num_DOFx1
-%p.T_ForcRS      = [];                       % Target displacement sent to remote site
+
+
+% Averaged Measurements
+
+
+
 p.T_Disp_SC_his  = zeros(6,1);                       % Input target displacement (ex, from simcor)
-
-
-p.Axis_X1	 = 1;			    % Default monitoring chart
-p.Axis_X2	 = 1;			    % Default monitoring chart
-p.Axis_X3	 = 1;			    % Default monitoring chart
-p.Axis_Y1	 = 20;			    % Default monitoring chart
-p.Axis_Y2	 = 2;			    % Default monitoring chart
-p.Axis_Y3	 = 8;			    % Default monitoring chart
-
-p.EnableMovingWin = 1;			    % Moving window display? 1 for yes, 0 for no
-p.MovingWinWidth  = 50;			    % Moving window step with, 50
 
 % _____________________________________________________________________________________________________________________
 %
@@ -100,17 +79,23 @@ p.MovingWinWidth  = 50;			    % Moving window step with, 50
 p.Comm_obj      = {};                       % communication object
 
 % LBCB Step, Following six variables are only used GUI mode to plot history of data
-p.tDisp_history     = zeros(10000,6);                   % History of target   displacement in global system, total step numbet x Num_DOF, in HSF space
-p.tForc_history     = zeros(10000,6);                   % History of target   displacement in global system, total step numbet x Num_DOF, in HSF space
-p.mDisp_history     = zeros(10000,6);                   % History of measured displacement in global system, total step numbet x Num_DOF, in HSF space
-p.mForc_history     = zeros(10000,6);                   % History of measured force in global system, total step numbet x Num_DOF, in HSF space
+p.Lbcb1.tDisp_history     = zeros(10000,6);                   % History of target   displacement in global system, total step numbet x Num_DOF, in HSF space
+p.Lbcb1.tForc_history     = zeros(10000,6);                   % History of target   displacement in global system, total step numbet x Num_DOF, in HSF space
+p.Lbcb1.mDisp_history     = zeros(10000,6);                   % History of measured displacement in global system, total step numbet x Num_DOF, in HSF space
+p.Lbcb1.mForc_history     = zeros(10000,6);                   % History of measured force in global system, total step numbet x Num_DOF, in HSF space
+p.Lbcb2.tDisp_history     = zeros(10000,6);                   % History of target   displacement in global system, total step numbet x Num_DOF, in HSF space
+p.Lbcb2.tForc_history     = zeros(10000,6);                   % History of target   displacement in global system, total step numbet x Num_DOF, in HSF space
+p.Lbcb2.mDisp_history     = zeros(10000,6);                   % History of measured displacement in global system, total step numbet x Num_DOF, in HSF space
+p.Lbcb2.mForc_history     = zeros(10000,6);                   % History of measured force in global system, total step numbet x Num_DOF, in HSF space
 p.tDisp_history_SC  = zeros(10000,6);                   % History of target   displacement in SimCor Space
 
 % Model Step
 p.Model_tDisp_history     = zeros(10000,6);                   % History of target   displacement in global system, total step numbet x Num_DOF, in HSF space
 p.Model_tForc_history     = zeros(10000,6);                   % History of target   displacement in global system, total step numbet x Num_DOF, in HSF space
-p.Model_mDisp_history     = zeros(10000,6);                   % History of measured displacement in global system, total step numbet x Num_DOF, in HSF space
-p.Model_mForc_history     = zeros(10000,6);                   % History of measured force in global system, total step numbet x Num_DOF, in HSF space
+p.Lbcb1.Model_mDisp_history     = zeros(10000,6);                   % History of measured displacement in global system, total step numbet x Num_DOF, in HSF space
+p.Lbcb1.Model_mForc_history     = zeros(10000,6);                   % History of measured force in global system, total step numbet x Num_DOF, in HSF space
+p.Lbcb2.Model_mDisp_history     = zeros(10000,6);                   % History of measured displacement in global system, total step numbet x Num_DOF, in HSF space
+p.Lbcb2.Model_mForc_history     = zeros(10000,6);                   % History of measured force in global system, total step numbet x Num_DOF, in HSF space
 p.Model_tDisp_history_SC  = zeros(10000,6);                   % History of target   displacement in SimCor Space
 
 
@@ -142,71 +127,8 @@ p.curState      	= 0;                        % Current state of simulation
                       %   4   test complete
 
 %p.UpdateMonitor	   = 1;
-p.ItrElasticDeform = 1;		% 0 for no iteration, 1 for iteration
-p.StepReduction = 1;		% 0 for no step reduction, 1 for step reduction when displacement increment is large
-p.DispMesurementSource = 1;	% 0 for LBCb, 1 for external mesurement
-p.NoiseCompensation = 1;	% 0 for single reading, 1 for multiple reading and use average value
-
-% ------------------------------------------
-% Parameters for stringpot control
-% ------------------------------------------
-p.NumSample	   = 10;					% number of samples to use to estimate average force and displacement 
-p.DispTolerance    = [0.001 0.001 0.001 0.0005 0.0005 0.0005]';	% Displacement tolerance for displacement iteration stage. LBCB coordinate system.
-p.DispIncMax       = [0.01  0.01  0.01  0.005  0.005  0.005 ]';	% Maximum displacement increment. 
-p.Aux_Config.T     = eye(4);
-
-%Sensitivity of string pot reading(sort of calibration factor)
-p.Aux_Config.sensitivity = [1 1 1 1]';
-
-%SJKIM OCT01-2007  '
-% Initial length of String pot
-p.Aux_Config.InitialLength = zeros(5,1);
-	
-%Pin locations: Model coordinate system, inches. Origin of coordinate system should be platform center
-p.Aux_Config.S1b = [-496.085,  3.349,  -6.998]'/25.4;           % base coordinate
-p.Aux_Config.S1p = [-228.064, -2.602,   0.674]'/25.4;           % platform coordinate
-                                                                
-p.Aux_Config.S2b = [-193.208, -423.583,-4.428]'/25.4;           % base coordinate    
-p.Aux_Config.S2p = [-191.633, -0.103,  -6.959]'/25.4;           % platform coordinate
-                                                                
-p.Aux_Config.S3b = [ 187.711, -449.115,-5.257]'/25.4;           % base coordinate    
-p.Aux_Config.S3p = [ 189.679, -6.127,  -0.217]'/25.4;           % platform coordinate
-                                                                
-p.Aux_Config.S4b = [ 187.711, -449.115,-5.257]'/25.4;           % base coordinate    
-p.Aux_Config.S4p = [ 189.679, -6.127,  -0.217]'/25.4;           % platform coordinate
-
-%Offset for specimen: LBCB coordinate system, inches. Offset from motion center. X, Y, Z, Rx, Ry, Rz
-p.Aux_Config.Off_SPCM = [0 0 0 0 0 0]';
-
-%Offset for motion center: LBCB coordinate system, X, Y, Z
-p.Aux_Config.Off_MCTR = [0 0 0]';
-
-% Allowable tolerance for jacobian updates
-p.Aux_Config.TOL = [0.0001 0.0001 0.00005 0.00005]';
-
-% Perturbation for jacobian estimation '
-p.Aux_Config.dx  = 0.001;
-p.Aux_Config.dy  = 0.001;
-p.Aux_Config.drz = 0.001;
-p.Aux_Config.drx = 0.001;
 
 % ===================================================================================
-p.Aux_State.StepNo         = 1;
-p.Aux_State.S1b_off        = zeros(3,1);
-p.Aux_State.S2b_off        = zeros(3,1);
-p.Aux_State.S3b_off        = zeros(3,1);
-p.Aux_State.S4b_off        = zeros(3,1);
-p.Aux_State.S1p_off        = zeros(3,1);
-p.Aux_State.S2p_off        = zeros(3,1);
-p.Aux_State.S3p_off        = zeros(3,1);
-p.Aux_State.S4p_off        = zeros(3,1);
-p.Aux_State.S              = zeros(4,1);
-p.Aux_State.So             = zeros(4,1);
-p.Aux_State.Platform_Ctr   = zeros(4,1);
-p.Aux_State.Strn_Inc       = zeros(4,1);
-p.Aux_State.J              = zeros(4,4);
-p.Aux_State.Strn_Inc       = zeros(4,1);
-p.Aux_State.Platform_XYZ   = zeros(4,1);
 % _____________________________________________________________________________________________________________________
 %
 % To monitor data

@@ -29,7 +29,8 @@ TGT_Dlast	= zeros(6,1);			% for elastic deformation
 Adjusted_Commandlast	=zeros(6,1);			% for elastic deformation
 
 handles = Query_Main(handles, 1);	
-offset = handles.MDL.M_Disp;
+offset.Lbcb1 = handles.MDL.Lbcb1.MeasDisp;
+offset.Lbcb2 = handles.MDL.Lbcb2.MeasDisp;
 % BY sjkim
 save LBCBPlugin_IntialOffset.txt offset -ascii;
 %handles.Initial_Offset=offset;
@@ -101,6 +102,13 @@ handles.Starting_time=clock;
 
 % Model Force control DOF
 handles.MDL.Model_FrcCtrlDOF=abs(inv(handles.MDL.TransM)*handles.MDL.LBCB_FrcCtrlDOF);
+
+% Initialize Elastic Deformation Calculations
+handles.MDL.ExtTrans.Lbcb1.State = ResetExtTransState(handles.MDL.ExtTrans.Lbcb1.State,...
+    handles.MDL.ExtTrans.Lbcb1.Config.NumSensors);
+handles.MDL.ExtTrans.Lbcb2.State = ResetExtTransState(handles.MDL.ExtTrans.Lbcb2.State,...
+    handles.MDL.ExtTrans.Lbcb2.Config.NumSensors);
+
 
 while End_of_Command == 0				% until end of command is reached, 
 	StepNo = StepNo + 1;							% count current step number
@@ -223,13 +231,17 @@ while End_of_Command == 0				% until end of command is reached,
 			%
 			StatusIndicator(handles,20);	
 			
-			handles.MDL.M_Disp = handles.MDL.M_Disp - offset;	%Remove offset
+			NormDisp.Lbcb1 = handles.MDL.Lbcb1.MeasDisp - offset.Lbcb1;	%Remove offset
+			NormDisp.Lbcb2 = handles.MDL.Lbcb2.MeasDisp - offset.Lbcb2;	%Remove offset
 			
 			updatePLOT(handles);
 			% For Model Coordinate
 			UpdateMonitorPanel (handles, 3);
 			
-			delta_disp = handles.MDL.TransM*(handles.MDL.DispScale.*TGT_D) - handles.MDL.M_Disp;		% in LBCB space
+			delta_disp.Lbcb1 = handles.MDL.TransM*(handles.MDL.DispScale.*TGT_D) ...
+                - NormDisp.Lbcb1;		% in LBCB space
+			delta_disp.Lbcb2 = handles.MDL.TransM*(handles.MDL.DispScale.*TGT_D) ...
+                - NormDisp.Lbcb2;		% in LBCB space
 			
 			if handles.MDL.CtrlMode == 3
 				delta_disp(handles.MDL.LBCB_FrcCtrlDOF==1) = 0;    % Neglect error for Force control DOF
@@ -271,7 +283,6 @@ while End_of_Command == 0				% until end of command is reached,
 		handles = Query_Main(handles, 2);
 		%
 		StatusIndicator(handles,20);	
-		handles.MDL.M_Disp = handles.MDL.M_Disp - offset;	%Remove offset
 
 		updatePLOT(handles);
 		% For Model Coordinate
