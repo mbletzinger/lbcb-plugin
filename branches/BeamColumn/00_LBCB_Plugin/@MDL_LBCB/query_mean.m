@@ -18,7 +18,7 @@ LBCBDisp.L2  = zeros(NumSample,6);
 Aux_Disp  = zeros(NumSample,p.ExtTrans.Config.AllNumSensors);
 
 for i=1:NumSample
-	obj = query(obj);
+	obj = query(obj); % Get control point from operations manager
     LBCBForc.L1(i,:) = obj.Lbcb1.MeasForc';
     LBCBDisp.L1(i,:) = obj.Lbcb1.LbcbDispReadings';
     LBCBForc.L2(i,:) = obj.Lbcb2.MeasForc';
@@ -49,17 +49,17 @@ obj.ExtTrans.State.AvgMeas = mean(Aux_Disp,1)'- obj.ExtTrans.Config.InitialLengt
 %                obj.Lbcb1.ExternalTransducers(5,1)];                               % Front
 
 % Split External Transducer Measurements
-idxBounds = obj.ExtTrans.Lbcb1.IdxBounds;
-obj.ExtTrans.Lbcb1.Readings = obj.ExtTrans.State.AvgMeas(idxBounds(1),idxBounds(2));
-idxBounds = obj.ExtTrans.Lbcb2.IdxBounds;
-obj.ExtTrans.Lbcb2.Readings = obj.ExtTrans.State.AvgMeas(idxBounds(1),idxBounds(2));
+idxBounds = obj.ExtTrans.Config.Lbcb1.IdxBounds;
+obj.ExtTrans.State.Lbcb1.Readings = obj.ExtTrans.State.AvgMeas(idxBounds(1),idxBounds(2));
+idxBounds = obj.ExtTrans.Config.Lbcb2.IdxBounds;
+obj.ExtTrans.State.Lbcb2.Readings = obj.ExtTrans.State.AvgMeas(idxBounds(1),idxBounds(2));
 
 if obj.Gui.DispMeasurementSource == 0		    % do nothing
 elseif obj.Gui.DispMeasurementSource == 1		% convert stringpot readings to model coordinate system
-	[obj.Lbcb1.MeasDisp obj.ExtTrans.Lbcb1.State] = Extmesu2Cartesian(obj.ExtTrans.Lbcb1.Config,...
-        obj.ExtTrans.Lbcb1.State,obj.ExtTrans.Params);
-	[obj.Lbcb2.MeasDisp obj.ExtTrans.Lbcb2.State] = Extmesu2Cartesian(obj.ExtTrans.Lbcb2.Config,...
-        obj.ExtTrans.Lbcb2.State,obj.ExtTrans.Params);
+	[obj.Lbcb1.MeasDisp obj.ExtTrans.Lbcb1.State] = ExtTrans2Cartesian(obj.ExtTrans.Lbcb1.Config,...
+        obj.ExtTrans.Lbcb1.State,obj.ExtTrans.Config.Params);
+	[obj.Lbcb2.MeasDisp obj.ExtTrans.Lbcb2.State] = ExtTrans2Cartesian(obj.ExtTrans.Lbcb2.Config,...
+        obj.ExtTrans.Lbcb2.State,obj.ExtTrans.Config.Params);
 end
 
 if (obj.curStep > 0)                       
