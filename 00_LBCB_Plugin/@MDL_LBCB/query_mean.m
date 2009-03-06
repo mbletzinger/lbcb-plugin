@@ -48,6 +48,11 @@ obj.ExtTrans.State.AvgMeas = mean(Aux_Disp,1)'- obj.ExtTrans.Config.InitialLengt
 %                obj.Lbcb1.ExternalTransducers(3,1)                                 % Right
 %                obj.Lbcb1.ExternalTransducers(5,1)];                               % Front
 
+% Split External Transducer Measurements
+idxBounds = obj.ExtTrans.Lbcb1.IdxBounds;
+obj.ExtTrans.Lbcb1.Readings = obj.ExtTrans.State.AvgMeas(idxBounds(1),idxBounds(2));
+idxBounds = obj.ExtTrans.Lbcb2.IdxBounds;
+obj.ExtTrans.Lbcb2.Readings = obj.ExtTrans.State.AvgMeas(idxBounds(1),idxBounds(2));
 
 if obj.Gui.DispMeasurementSource == 0		    % do nothing
 elseif obj.Gui.DispMeasurementSource == 1		% convert stringpot readings to model coordinate system
@@ -56,8 +61,6 @@ elseif obj.Gui.DispMeasurementSource == 1		% convert stringpot readings to model
 	[obj.Lbcb2.MeasDisp obj.ExtTrans.Lbcb2.State] = Extmesu2Cartesian(obj.ExtTrans.Lbcb2.Config,...
         obj.ExtTrans.Lbcb2.State,obj.ExtTrans.Params);
 end
-
-
 
 if (obj.curStep > 0)                       
 	obj.Lbcb1.mDisp_history(obj.curStep,:) = obj.Lbcb1.MeasDisp';
