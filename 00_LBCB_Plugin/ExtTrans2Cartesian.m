@@ -1,8 +1,7 @@
-function [LbcbDisp State] = ExtTrans2Cartesian(Config,State,Params);
-
+function [LbcbDisp State] = ExtTrans2Cartesian(Config,State,Params)
 
 %Global increment at each iteration. Assume large values to go into while loop.
-Meas2CalcDiff = [1 1 1 1]';
+Meas2CalcDiff = [1 1 1]';
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 while any(abs(Meas2CalcDiff) > Params.TOL)
 	%Evaluate jacobain ================================================
@@ -10,38 +9,42 @@ while any(abs(Meas2CalcDiff) > Params.TOL)
     PlatTmp = zeros(Config.NumSensors,3);
     LengthDiff = zeros(Config.NumSensors,1);
     for s=1:Config.NumSensors
-        PlatTmp(s,:) = State.Plat(s,:) + [Config.Dx 0 0]';
+        PlatTmp(s,:) = State.Plat(s,:) + [Params.Dx 0 0];
         LengthDiff(s) = sqrt(sum((State.Base(s,:) - PlatTmp(s,:)).^2));
     end;
     
-	State.J(:,1) = (-State.S + LengthDiffs)/Config.Dx;	
-	
-	%Apply Y perturbation and evaluate jacobian of 2nd column
+	State.Jacob(:,1) = (-State.Lengths + LengthDiff)/Params.Dx;
+    %State.Jacob
+    
+	%Apply Z perturbation and evaluate jacobian of 2nd column
     for s=1:Config.NumSensors
-        PlatTmp(s,:) = State.Plat(s,:) + [Config.Dy 0 0]';
+        PlatTmp(s,:) = State.Plat(s,:) + [0 Params.Dz 0];
         LengthDiff(s) = sqrt(sum((State.Base(s,:) - PlatTmp(s,:)).^2));
     end;
     
-	State.J(:,2) = (-State.S + LengthDiffs)/Config.Dy;	
+	State.Jacob(:,2) = (-State.Lengths + LengthDiff)/Params.Dz;
+    %State.Jacob
 	
-	%Apply Rz perturbation and evaluate jacobian of 3rd column
+	%Apply Ry perturbation and evaluate jacobian of 3rd column
     %State.S1p_offs
     %State.Platform_XYZ
     for s=1:Config.NumSensors
-        PlatTmp(s,:) = rotateZ(State.Plat(s,:),State.Platform_XYZ,Config.Drz);
+        PlatTmp(s,:) = rotateY(State.Plat(s,:)',State.Platform_XYZ,Params.Ry); %DB- Need to create rotateY function
         LengthDiff(s) = sqrt(sum((State.Base(s,:) - PlatTmp(s,:)).^2));
     end;
-	State.J(:,3) = (-State.S + LengthDiffs)/Config.Drz;	
+	State.Jacob(:,3) = (-State.Lengths + LengthDiff)/Params.Ry;
+    %State.Jacob
                             
     %Apply Rx perturbation and evaluate jacobian of 3rd column
-    for s=1:Config.NumSensors
-        PlatTmp(s,:) = rotateZ(State.Plat(s,:),State.Platform_XYZ,Config.Drx);
-        LengthDiff(s) = sqrt(sum((State.Base(s,:) - PlatTmp(s,:)).^2));
-    end;
-	State.J(:,3) = (-State.S + LengthDiffs)/Config.Drx;	
+    %for s=1:Config.NumSensors
+    %    PlatTmp(s,:) = rotateZ(State.Plat(s,:),State.Platform_XYZ,Config.Drx);
+    %    LengthDiff(s) = sqrt(sum((State.Base(s,:) - PlatTmp(s,:)).^2));
+    %end;
+	%State.Jacob(:,3) = (-State.Lengths + LengthDiffs)/Config.Drx;	
 
-    %Difference between measured increment and increments from analytical iteration
-	Meas2CalcDiff = inv(State.J)*(State.Readings*Config.Sensitivity - State.LengthInc);
+    %Difference between measured increment and increments from analytical
+    %iteration
+	Meas2CalcDiff = inv(State.Jacob)*(State.Readings.*Config.Sensitivities - State.LengthInc)
 
 	%Establish new coordinates
 	State.Platform_Ctr = State.Platform_Ctr + Meas2CalcDiff;
@@ -50,31 +53,32 @@ while any(abs(Meas2CalcDiff) > Params.TOL)
 	
 	%Apply X and Y displacement
     for s=1:Config.NumSensors
-        State.Plat(s,:) = State.Plat(s,:) + [Meas2CalcDiff(1) Meas2CalcDiff(2) 0]';
+        State.Plat(s,:) = State.Plat(s,:) + [Meas2CalcDiff(1) Meas2CalcDiff(2) 0];
     end;
 	
-	%Apply rz rotation
+	%Apply ry rotation
     for s=1:Config.NumSensors
-        State.Plat(s,:) = rotateZ(State.Plat(s,:),State.Platform_XYZ,Meas2CalcDiff(3));
+        State.Plat(s,:) = rotateY(State.Plat(s,:)',State.Platform_XYZ,Meas2CalcDiff(3));
     end;
     
     %Apply rx
-    for s=1:Config.NumSensors
-        State.Plat(s,:) = rotateZ(State.Plat(s,:),State.Platform_XYZ,Meas2CalcDiff(4));
-    end;
+    %for s=1:Config.NumSensors
+    %    State.Plat(s,:) = rotateZ(State.Plat(s,:),State.Platform_XYZ,Meas2CalcDiff(4));
+    %end;
 	
 	%Establish new string lengths
     for s=1:Config.NumSensors
-        State.Lengths(s) = sqrt(sum((State.Base(s,:) - PlatTmp(s,:)).^2));
+        State.Lengths(s,1) = sqrt(sum((State.Base(s,:) - State.Plat(s,:)).^2));
     end;
-
+State.Lengths
 	State.LengthInc = State.Lengths - State.StartLengths;
 
 
 end
-External = State.Platform_Ctr - [Config.Off_SPCM(1) -Config.Off_SPCM(3) Config.Off_SPCM(5) Config.Off_SPCM(4)]';
+External = State.Platform_Ctr; %- [Config.Off_SPCM(1) -Config.Off_SPCM(3) Config.Off_SPCM(5)]'; % DB - Need to adjust to our problem
 
 % in LBCB coordinate system, 
-External = [1 0 0 0; 0 -1 0 0; 0 0 1 0;0 0 0 1]*External;
+External = eye(3)*External; % DB - Need to adjust to our problem
 External = Config.McTransform*External;
-External = [External(1) 0 External(2) External(4) External(3) 0]';
+External = [External(1) External(2) 0 0 External(3) 0]';
+LbcbDisp = External;
