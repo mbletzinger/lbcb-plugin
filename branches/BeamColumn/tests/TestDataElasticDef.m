@@ -17,37 +17,26 @@ clear clc
 %   Paramters:
 %       N                   Number of steps from di to df
 
-N = 5;
+N = 10;
 
 % Initialization numbers:
 % LBCB1:
-li = [200.7640 200.7339 200.7339]';
-phi = [0.087266 1.48353 1.48353]';
-%li = [214.3220 260.0933 260.1234]'
-%phi = [0.367648 1.503478 1.503478]'
-%li = [333.3465 295.7293 295.7214]'
-%phi = [0.233194 ]'
-%li = [346.2258 323.2157 263.4344]'
-%phi = [0.317205 
+%li = [186.3891 137.8031 88.4985]';
+%phi = [0.080890 1.3557 1.371767]';
 x1 = -100;
 x2 = -25;
 x3 = 100;
 di = [0 0 0]';
 df = [30.5835 12.7970 0.174533]';
+Plat = [185.7796 159.6276 0
+        185.7796 134.6276 0
+        385.7796 134.6276 0];
+Base = [0 144.5045 0
+        156.3667 0 0
+        368.2819 47.8761 0];
 
-
-% Storage vectors:
-String_Lengths_LBCB1 = [1 li'];
-Centroid = [1 di'];
-n = 1;
-
-% FOR LBCB 1:
-
-% Initial position vectors from fixed pins to LBCB pins
-    r1i = li(1)*[cos(phi(1)) sin(phi(1))]';
-    r2i = li(2)*[cos(phi(2)) sin(phi(2))]';
-    r3i = li(3)*[cos(phi(3)) sin(phi(3))]';
-
+% FOR LBCB 1:  
+    
 % Initial postition vectors from center of LBCB to LBCB pins
     R1i = x1*[cos(di(3)) sin(di(3))]';
     T = [cos(di(3)) sin(di(3))
@@ -55,6 +44,16 @@ n = 1;
     R2i = T*[x1 x2]';
     R3i = T*[x3, x2]';
 
+% Initial position vectors from fixed pins to LBCB pins
+    r1i = Plat(1,1:2)' - Base(1,1:2)';    %li(1)*[cos(phi(1)) sin(phi(1))]';
+    r2i = Plat(2,1:2)' - Base(2,1:2)';    %li(2)*[cos(phi(2)) sin(phi(2))]';
+    r3i = Plat(3,1:2)' - Base(3,1:2)';    %li(3)*[cos(phi(3)) sin(phi(3))]';
+
+% Storage vectors:
+    String_Lengths_LBCB1 = [1 sqrt(dot(r1i,r1i)) sqrt(dot(r2i,r2i)) sqrt(dot(r3i,r3i))];
+    Centroid = [1 di'];
+    n = 1;  
+    
 % Increment    
 dd = (df-di)/N;    
     
@@ -68,9 +67,9 @@ for i = 1:N
     R3f = dT'*R3i;
 
 % Final position vector after imposing displacement vector d
-    r1f = r1i + dd(1:2) + (R1f - R1i);
-    r2f = r2i + dd(1:2) + (R2f - R2i);
-    r3f = r3i + dd(1:2) + (R3f - R3i);
+    r1f = r1i(1:2) + dd(1:2) + (R1f - R1i);
+    r2f = r2i(1:2) + dd(1:2) + (R2f - R2i);
+    r3f = r3i(1:2) + dd(1:2) + (R3f - R3i);
 
 % Final transducer wire lengths and rotations
     lf = [sqrt(dot(r1f,r1f)) sqrt(dot(r2f,r2f)) sqrt(dot(r3f,r3f))];
