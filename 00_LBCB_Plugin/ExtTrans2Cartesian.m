@@ -44,7 +44,7 @@ while any(abs(Meas2CalcDiff) > Params.TOL)
 
     %Difference between measured increment and increments from analytical
     %iteration
-	Meas2CalcDiff = inv(State.Jacob)*(State.Readings.*Config.Sensitivities - State.LengthInc)
+	Meas2CalcDiff = inv(State.Jacob)*(State.Readings.*Config.Sensitivities - State.LengthInc);
 
 	%Establish new coordinates
 	State.Platform_Ctr = State.Platform_Ctr + Meas2CalcDiff;
@@ -70,7 +70,6 @@ while any(abs(Meas2CalcDiff) > Params.TOL)
     for s=1:Config.NumSensors
         State.Lengths(s,1) = sqrt(sum((State.Base(s,:) - State.Plat(s,:)).^2));
     end;
-State.Lengths
 	State.LengthInc = State.Lengths - State.StartLengths;
 
 
