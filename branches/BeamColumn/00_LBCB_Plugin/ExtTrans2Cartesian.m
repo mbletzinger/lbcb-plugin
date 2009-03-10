@@ -44,6 +44,7 @@ while any(abs(Meas2CalcDiff) > Params.TOL)
 
     %Difference between measured increment and increments from analytical
     %iteration
+    State.LengthInc
 	Meas2CalcDiff = inv(State.Jacob)*(State.Readings.*Config.Sensitivities - State.LengthInc);
 
 	%Establish new coordinates
@@ -74,7 +75,7 @@ while any(abs(Meas2CalcDiff) > Params.TOL)
 
 
 end
-External = State.Platform_Ctr; %- [Config.Off_SPCM(1) -Config.Off_SPCM(3) Config.Off_SPCM(5)]'; % DB - Need to adjust to our problem
+External = State.Platform_Ctr - [Config.Off_SPCM(1) -Config.Off_SPCM(3) Config.Off_SPCM(5)]'; % DB - Need to adjust to our problem
 
 % in LBCB coordinate system, 
 External = eye(3)*External; % DB - Need to adjust to our problem
