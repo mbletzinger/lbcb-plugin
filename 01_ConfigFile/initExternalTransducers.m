@@ -10,7 +10,7 @@ init.Lbcb1.StartLengths   = zeros(NumSensors1,1); % Calculated start lengths bas
 init.Lbcb1.Platform_Ctr   = zeros(NumSensors1,1); % Platform coordinates returned as measured displacement.
 init.Lbcb1.Jacob          = zeros(NumSensors1,NumSensors1);
 init.Lbcb1.LengthInc      = zeros(NumSensors1,1); % Differences from calculated start lengths
-init.Lbcb1.Platform_XYZ   = [285.7796 159.6276 0]'; % Current calculated platform coordinates.
+init.Lbcb1.Platform_XYZ   = zeros(NumSensors1,1); % Current calculated platform coordinates.
 init.Lbcb1.Readings       = zeros(NumSensors1,1);
 
 init.Lbcb2.Base           = zeros(NumSensors2,3);
