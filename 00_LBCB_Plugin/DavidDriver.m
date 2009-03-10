@@ -10,7 +10,9 @@ init = initExternalTransducers(config.Lbcb1.NumSensors,config.Lbcb2.NumSensors);
 State = InitExtTrans2Cartesian(config.Lbcb1,init.State);
 
 %Input measurments:
-State.Readings = [186.3891  137.8032   88.4985]';
+B = [186.3891  137.8032   88.4985]';
+A = [218.1349 146.1219 127.8625]';
+State.Readings = A - B;
 %State.LengthInc = State.Readings - State.Lengths;
 
 %Run the program to get motion:
