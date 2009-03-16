@@ -32,13 +32,13 @@ config.Lbcb1.Base = zeros(config.Lbcb1.NumSensors,3);
 config.Lbcb1.Plat = zeros(config.Lbcb1.NumSensors,3);
 
 %Pin locations: Model coordinate system, inches. Origin of coordinate system should be Platform center
-config.Lbcb1.Base(1,:) = [-285.7796  -15.0606  0]';%/25.4;           % Base coordinate: LBCB1 Long. Transducer
+config.Lbcb1.Base(1,:) = [-300  -17.4977  0]';%/25.4;           % Base coordinate: LBCB1 Long. Transducer
 config.Lbcb1.Plat(1,:) = [-100       0         0]';%/25.4;           % Plat coordinate
                                                                 
-config.Lbcb1.Base(2,:) = [-129.4129  -159.6276 0]';%/25.4;           % Base coordinate: LBCB1 Lat. Left Transducer    
+config.Lbcb1.Base(2,:) = [-117.4977  -254.4502 0]';%/25.4;           % Base coordinate: LBCB1 Lat. Left Transducer    
 config.Lbcb1.Plat(2,:) = [-100       -25       0]';%/25.4;           % Plat coordinate
                                                                 
-config.Lbcb1.Base(3,:) = [82.5023    -111.7515 0]';%/25.4;           % Base coordinate: LBCB1 Lat. Right Transducer
+config.Lbcb1.Base(3,:) = [21.4786    -169.6975 0]';%/25.4;           % Base coordinate: LBCB1 Lat. Right Transducer
 config.Lbcb1.Plat(3,:) = [100        -25       0]';%/25.4;           % Plat coordinate
                                                                 
 config.Lbcb2.Base(1,:) = [-496.085,  3.349,  -6.998]';%/25.4;           % Base coordinate
@@ -63,7 +63,7 @@ config.Lbcb1.Off_MCTR = [0 0 0]';
 config.Lbcb2.Off_MCTR = [0 0 0]';
 
 % Allowable tolerance for jacobian updates vector size is AllNumSensors
-config.Params.TOL = [0.0001 0.0001 0.00005]';
+config.Params.TOL = [0.00001 0.00001 0.00005]';
 
 % Perturbation for jacobian estimation '
 config.Params.Dx  = 0.001;
