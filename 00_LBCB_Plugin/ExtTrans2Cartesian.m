@@ -44,14 +44,12 @@ while any(abs(Meas2CalcDiff) > Params.TOL)
 
     %Difference between measured increment and increments from analytical
     %iteration
-    State.LengthInc
 	Meas2CalcDiff = inv(State.Jacob)*(State.Readings.*Config.Sensitivities - State.LengthInc);
 
 	%Establish new coordinates
 	State.Platform_Ctr = State.Platform_Ctr + Meas2CalcDiff;
     State.Platform_XYZ(1) = State.Platform_XYZ(1)+Meas2CalcDiff(1);
     State.Platform_XYZ(2) = State.Platform_XYZ(2)+Meas2CalcDiff(2);
-	
 	%Apply X and Y displacement
     for s=1:Config.NumSensors
         State.Plat(s,:) = State.Plat(s,:) + [Meas2CalcDiff(1) Meas2CalcDiff(2) 0];
@@ -72,7 +70,6 @@ while any(abs(Meas2CalcDiff) > Params.TOL)
         State.Lengths(s,1) = sqrt(sum((State.Base(s,:) - State.Plat(s,:)).^2));
     end;
 	State.LengthInc = State.Lengths - State.StartLengths;
-
 
 end
 External = State.Platform_Ctr - [Config.Off_SPCM(1) -Config.Off_SPCM(3) Config.Off_SPCM(5)]'; % DB - Need to adjust to our problem
