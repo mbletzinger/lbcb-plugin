@@ -3,12 +3,14 @@ clc
 
 %Run configuration function:
 
-config = configExternalTransducers();
+mdl = MDL_LBCB();
 
 %Run initialization function for LBCB 1:
-init = initExternalTransducers(config.Lbcb1.NumSensors,config.Lbcb1.NumSensors);
-State = InitExtTrans2Cartesian(config.Lbcb1,init.State);
-    
+mdl.ElastDef.Lbcb1 = ResetElastDefState(mdl.ElastDef.Lbcb1,...
+    mdl.ExtTrans.Config.Lbcb1.NumSensors)
+config = mdl.ExtTrans.Config.Lbcb1;
+state = mdl.ElastDef.Lbcb1;
+params = mdl.ExtTrans.Config.Params;
 %Upload test data:
 StringsLBCB1 = (load('xonly_strings.txt'))*100;
 CentroidLBCB1 = load('xonly_centroid.txt');
@@ -18,9 +20,9 @@ CentroidLocation = zeros(1,8);
 index = size(LBCB1Readings);
 index = index(1);
 for i = 1:index
-    State.Readings = LBCB1Readings(i,3:5)';
+    mdl.Avg = ;
 %Run the program to get motion:
-    [LbcbDisp State] = ExtTrans2Cartesian(config.Lbcb1,State,config.Params);
+    [LbcbDisp state] = ExtTrans2Cartesian(config,state,params,LBCB1Readings(i,3:5)');
     CentroidLocation = [CentroidLocation; LBCB1Readings(i,1:2), LbcbDisp'];
 end
 CentroidLocation(1,:) = [];

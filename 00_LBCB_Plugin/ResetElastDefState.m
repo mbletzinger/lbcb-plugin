@@ -1,4 +1,4 @@
-function State = ResetExtTransState(State,NumSensors)
+function State = ResetElastDefState(State,NumSensors)
 
 State.StartLengths   = State.Lengths;
 State.Platform_Ctr   = zeros(NumSensors,1);
