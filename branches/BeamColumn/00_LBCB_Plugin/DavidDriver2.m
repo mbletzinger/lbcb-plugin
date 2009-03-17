@@ -22,7 +22,14 @@ N = 10; % Number of steps to take
 LBCB1Readings = DeltaString(StringsLBCB1);
 
 % Configure the external transducers:
-config = configExternalTransducers();
+mdl = MDL_LBCB();
+
+%Run initialization function for LBCB 1:
+mdl.ElastDef.Lbcb1 = ResetElastDefState(mdl.ElastDef.Lbcb1,...
+    mdl.ExtTrans.Config.Lbcb1.NumSensors)
+config = mdl.ExtTrans.Config.Lbcb1;
+state = mdl.ElastDef.Lbcb1;
+params = mdl.ExtTrans.Config.Params;
 % Need to update config.Lbcb1.Base (apply translation of Lbcb)
 %                config.Lbcb1.Plat (apply rotation of Lbcb)
 
@@ -32,20 +39,17 @@ index = index(1);
 for i = 1:index
 
     % Run initialization function for LBCB 1:
-    init = initExternalTransducers(config.Lbcb1.NumSensors,config.Lbcb1.NumSensors);
-    State = InitExtTrans2Cartesian(config.Lbcb1,init.State);
-    
-    % Input the step:
-    State.Readings = LBCB1Readings(i,3:5)';
-    
+    state = initElastDef(config.NumSensors);
+    state = InitExtTrans2Cartesian(config,state);
+        
     %Run the program to get motion:
-    [LbcbDisp State] = ExtTrans2Cartesian(config.Lbcb1,State,config.Params);
+    [LbcbDisp state] = ExtTrans2Cartesian(config,state,params,LBCB1Readings(i,3:5)');
     CentroidLocation = [CentroidLocation; LBCB1Readings(i,1:2), LbcbDisp'];
     
     % Update pin locations:
-    config.Lbcb1.Base = config.Lbcb1.Base - [1; 1; 1]*[CentroidLocation(i+1,3:5)];
+    config.Base = config.Base - [1; 1; 1]*[CentroidLocation(i+1,3:5)];
     rot = CentroidLocation(i+1,7);
-    config.Lbcb1.Plat = config.Lbcb1.Plat*[cos(rot) sin(rot) 0; -sin(rot) cos(rot) 0; 0 0 1];
+    config.Plat = config.Plat*[cos(rot) sin(rot) 0; -sin(rot) cos(rot) 0; 0 0 1];
     
 end
 CentroidLocation(1,:) = [];

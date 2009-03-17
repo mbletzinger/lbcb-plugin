@@ -11,4 +11,4 @@ for s=1:Config.NumSensors
     %String lengths
     State.Lengths(s,1) = sqrt(sum((State.Base(s,:) - State.Plat(s,:)).^2));
 end
-State = ResetExtTransState(State, Config.NumSensors);
+State = ResetElastDefState(State, Config.NumSensors);
