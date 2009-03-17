@@ -1,4 +1,4 @@
-function [LbcbDisp State] = ExtTrans2Cartesian(Config,State,Params)
+function [LbcbDisp State] = ExtTrans2Cartesian(Config,State,Params,Readings)
 
 %Global increment at each iteration. Assume large values to go into while loop.
 Meas2CalcDiff = [1 1 1]';
@@ -44,7 +44,7 @@ while any(abs(Meas2CalcDiff) > Params.TOL)
 
     %Difference between measured increment and increments from analytical
     %iteration
-	Meas2CalcDiff = inv(State.Jacob)*(State.Readings.*Config.Sensitivities - State.LengthInc);
+	Meas2CalcDiff = inv(State.Jacob)*(Readings*Config.Sensitivities - State.LengthInc);
 
 	%Establish new coordinates
 	State.Platform_Ctr = State.Platform_Ctr + Meas2CalcDiff;

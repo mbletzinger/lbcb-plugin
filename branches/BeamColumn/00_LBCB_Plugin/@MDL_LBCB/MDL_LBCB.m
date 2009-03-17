@@ -7,11 +7,19 @@ function p = MDL_LBCB(vargin)
 % ____________________________________________
 p.Gui = configGuiDefaults();
 p.Limits = configLimitDefaults();
-p.Lbcb1 = initLbcbData();
-p.Lbcb2 = initLbcbData();
+p.Raw.Lbcb1 = initDofData(); % Single force and displacement reading from LBCB
+p.Raw.Lbcb2 = initDofData();
+p.Avg.Lbcb1 = initDofData(); % Average of several readings see query_mean.m
+p.Avg.Lbcb2 = initDofData();
+
+p.Meas.Lbcb1 = initDofData(); % LBCB measurements after elastic deformation
+p.Meas.Lbcb2 = initDofData(); % calculations
+
 p.ExtTrans.Config = configExternalTransducers();
-p.ExtTrans.State = initExternalTransducers(p.ExtTrans.Config.Lbcb1.NumSensors,...
-    p.ExtTrans.Config.Lbcb1.NumSensors);
+p.Raw.ExtTrans = zeros(p.ExtTrans.Config.AllNumSensors);
+p.Avg.ExtTrans = zeros(p.ExtTrans.Config.AllNumSensors);
+p.ElastDef.Lbcb1 = initElastDef(p.ExtTrans.Config.Lbcb1.NumSensors);
+p.ElastDef.Lbcb2 = initElastDef(p.ExtTrans.Config.Lbcb2.NumSensors);
 
 
 
@@ -23,7 +31,8 @@ p.name          	= 'LBCB';           		% Name of the stiffness module
 
 p.IP            	= '127.0.0.1';              	% IP address
 p.Port          	= 11998;                    	% Port number
-                	                            	
+
+p.NumSamples        = 1;            % Number of get-control point msgs sent for average measurement. 
 p.InputSource		= 2;			    	% 1 for file, 2 for network
 p.InputFile 		= 'Input.txt';  %'DispHistory.txt';	    	% 6 column displacement data. Model space.
 p.InputFilePath     = cell(1,1);
