@@ -23,10 +23,9 @@ config.Lbcb2.TransformLbcb2Model     = eye(3);
 config.Lbcb1.Sensitivities = ones(1,config.Lbcb1.NumSensors)';
 config.Lbcb2.Sensitivities = ones(1,config.Lbcb2.NumSensors)';
 
-%SJKIM OCT01-2007  '
+%SJKIM OCT01-2007
 % Initial length of String pot
-config.Lbcb1.InitialLength = zeros(config.Lbcb1.NumSensors,1);
-config.Lbcb2.InitialLength = zeros(config.Lbcb2.NumSensors,1);
+config.InitialLength = zeros(config.AllNumSensors,1);
 
 config.Lbcb1.Base = zeros(config.Lbcb1.NumSensors,3);
 config.Lbcb1.Plat = zeros(config.Lbcb1.NumSensors,3);

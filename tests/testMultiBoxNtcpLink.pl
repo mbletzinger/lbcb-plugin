@@ -53,7 +53,7 @@ while ($running) {
     }
     next;
   }
-  if ($keyword eq 'propose') {
+  if ($keyword eq 'close-session') {
     sendResponse("OK\t0\t$trans\tClose accepted");
     $running = 0;
     next;
@@ -65,7 +65,7 @@ close $lsocket;
 
 sub sendResponse {
 	my ($cmd) = @_;
-	print "Sending [$cmd]";
+	print "Sending [$cmd]\n";
 	print $socket $cmd, "\n";
 
 }

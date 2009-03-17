@@ -837,8 +837,8 @@ void get_sigpipe_on(void)
 /* Turn handler off */
 void get_sigpipe_off(void)
 {
-//    void *rethand;
 #ifndef WIN32
+    void *rethand;
   rethand=(void *)signal(SIGPIPE,matlab_signal_handler);
   if(rethand!=get_sigpipe_handler)
       mexErrMsgTxt("Something (in matlab/operating system ??) has replaced tcpipmex signal handler.\n"
