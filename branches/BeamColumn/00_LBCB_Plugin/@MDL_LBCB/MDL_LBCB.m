@@ -15,6 +15,10 @@ p.Avg.Lbcb2 = initDofData();
 p.Meas.Lbcb1 = initDofData(); % LBCB measurements after elastic deformation
 p.Meas.Lbcb2 = initDofData(); % calculations
 
+p.SubTgt.Lbcb1 = initTgtData(); % LBCB Substep Commands
+p.SubTgt.Lbcb2 = initTgtData(); 
+
+
 p.ExtTrans.Config = configExternalTransducers();
 p.Raw.ExtTrans = zeros(p.ExtTrans.Config.AllNumSensors);
 p.Avg.ExtTrans = zeros(p.ExtTrans.Config.AllNumSensors);
