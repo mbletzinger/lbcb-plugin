@@ -4,7 +4,7 @@ AUXVals  = cell(1);
 
 % Deliminate received data and save in variables ------------------------------------------------------------------
 ind_i = 0;
-numChannels = length(me.ExtTrans.Config.AllNumSensors);
+numChannels = me.ExtTrans.Config.AllNumSensors;
 recv = cell(numChannels * 3,1);
 values = zeros(numChannels,1);
 delimiter = sprintf(' \t');
