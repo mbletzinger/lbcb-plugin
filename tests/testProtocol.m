@@ -35,4 +35,16 @@ lbcb1MeasForc = mdl.Meas.Lbcb1.Forc
 lbcb2MeasDisp = mdl.Meas.Lbcb2.Disp
 lbcb2MeasForc = mdl.Meas.Lbcb2.Forc
 
+mdl.SubTgt.Lbcb1 = initTgtData();
+mdl.SubTgt.Lbcb1.Disp(1) = .003;
+mdl.SubTgt.Lbcb1.Cmd(1) = 1;
+mdl.SubTgt.Lbcb1.Forc(2) = 35;
+mdl.SubTgt.Lbcb1.Cmd(2) = 2;
+mdl.SubTgt.Lbcb2 = initTgtData();
+mdl.SubTgt.Lbcb2.Disp(4) = .003;
+mdl.SubTgt.Lbcb2.Cmd(4) = 1;
+mdl.SubTgt.Lbcb2.Forc(6) = 2000;
+mdl.SubTgt.Lbcb2.Cmd(6) = 2;
+[mdl transId]= propose(mdl);
+mdl = execute(mdl,transId);
 close(mdl);
