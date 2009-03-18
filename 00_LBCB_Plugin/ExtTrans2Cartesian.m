@@ -44,7 +44,7 @@ while any(abs(Meas2CalcDiff) > Params.TOL)
 
     %Difference between measured increment and increments from analytical
     %iteration
-	Meas2CalcDiff = inv(State.Jacob)*(Readings*Config.Sensitivities - State.LengthInc);
+	Meas2CalcDiff = inv(State.Jacob)*(Readings'*Config.Sensitivities - State.LengthInc);
 
 	%Establish new coordinates
 	State.Platform_Ctr = State.Platform_Ctr + Meas2CalcDiff;
