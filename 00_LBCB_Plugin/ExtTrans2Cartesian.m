@@ -14,7 +14,7 @@ while any(abs(Meas2CalcDiff) > Params.TOL)
     end;
     
 	State.Jacob(:,1) = (-State.Lengths + LengthDiff)/Params.Dx;
-    %State.Jacob
+    
     
 	%Apply Z perturbation and evaluate jacobian of 2nd column
     for s=1:Config.NumSensors
@@ -23,47 +23,36 @@ while any(abs(Meas2CalcDiff) > Params.TOL)
     end;
     
 	State.Jacob(:,2) = (-State.Lengths + LengthDiff)/Params.Dz;
-    %State.Jacob
 	
 	%Apply Ry perturbation and evaluate jacobian of 3rd column
-    %State.S1p_offs
-    %State.Platform_XYZ
     for s=1:Config.NumSensors
-        PlatTmp(s,:) = rotateY(State.Plat(s,:)',State.Platform_XYZ,Params.Ry); %DB- Need to create rotateY function
+        PlatTmp(s,:) = rotateY(State.Plat(s,:)',State.Platform_XYZ,Params.Ry);
         LengthDiff(s) = sqrt(sum((State.Base(s,:) - PlatTmp(s,:)).^2));
     end;
+    
 	State.Jacob(:,3) = (-State.Lengths + LengthDiff)/Params.Ry;
-    %State.Jacob
-                            
-    %Apply Rx perturbation and evaluate jacobian of 3rd column
-    %for s=1:Config.NumSensors
-    %    PlatTmp(s,:) = rotateZ(State.Plat(s,:),State.Platform_XYZ,Config.Drx);
-    %    LengthDiff(s) = sqrt(sum((State.Base(s,:) - PlatTmp(s,:)).^2));
-    %end;
-	%State.Jacob(:,3) = (-State.Lengths + LengthDiffs)/Config.Drx;	
 
     %Difference between measured increment and increments from analytical
-    %iteration
-	Meas2CalcDiff = inv(State.Jacob)*(Readings'*Config.Sensitivities - State.LengthInc);
-
+    %iteration    
+    
+	Meas2CalcDiff = inv(State.Jacob)*(Readings.*Config.Sensitivities - State.LengthInc);
+    
+    
 	%Establish new coordinates
 	State.Platform_Ctr = State.Platform_Ctr + Meas2CalcDiff;
     State.Platform_XYZ(1) = State.Platform_XYZ(1)+Meas2CalcDiff(1);
     State.Platform_XYZ(2) = State.Platform_XYZ(2)+Meas2CalcDiff(2);
 	%Apply X and Y displacement
+
     for s=1:Config.NumSensors
         State.Plat(s,:) = State.Plat(s,:) + [Meas2CalcDiff(1) Meas2CalcDiff(2) 0];
     end;
-	
+
 	%Apply ry rotation
     for s=1:Config.NumSensors
         State.Plat(s,:) = rotateY(State.Plat(s,:)',State.Platform_XYZ,Meas2CalcDiff(3));
     end;
-    
-    %Apply rx
-    %for s=1:Config.NumSensors
-    %    State.Plat(s,:) = rotateZ(State.Plat(s,:),State.Platform_XYZ,Meas2CalcDiff(4));
-    %end;
+
 	
 	%Establish new string lengths
     for s=1:Config.NumSensors
