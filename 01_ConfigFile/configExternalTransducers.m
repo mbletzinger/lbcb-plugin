@@ -62,7 +62,7 @@ config.Lbcb1.Off_MCTR = [0 0 0]';
 config.Lbcb2.Off_MCTR = [0 0 0]';
 
 % Allowable tolerance for jacobian updates vector size is AllNumSensors
-config.Params.TOL = [0.00001 0.00001 0.00005]';
+config.Params.TOL = [0.000001 0.000001 0.000005]';
 
 % Perturbation for jacobian estimation '
 config.Params.Dx  = 0.001;
