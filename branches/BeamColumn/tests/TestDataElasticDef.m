@@ -1,7 +1,9 @@
+function [Strings Centroid] = TestDataElasticDef(df, N)
+
 % Generator for external control test data.
 %
-clear all
-clear clc
+%clear all
+%clear clc
 
 %   Programmer: David J. Bennier
 %
@@ -17,23 +19,21 @@ clear clc
 %   Paramters:
 %       N                   Number of steps from di to df
 
-N = 10;
+%N = 10;
 
 % Initialization numbers:
 % LBCB1:
-%li = [186.3891 137.8031 88.4985]';
-%phi = [0.080890 1.3557 1.371767]';
 x1 = -100;
 x2 = -25;
 x3 = 100;
 di = [0 0 0]';
-df = [30.5835 12.7970 0.174533]';
-Plat = [185.7796 159.6276 0
-        185.7796 134.6276 0
-        385.7796 134.6276 0];
-Base = [0 144.5045 0
-        156.3667 0 0
-        368.2819 47.8761 0];
+%df = [0 0 1]';
+Plat = [268.1681 308.7920 0
+        268.1681 283.7920 0
+        468.1681 283.7920 0];
+Base = [68.1681 291.2942 0
+        250.6703 54.3418 0
+        389.6467 139.0945 0];
 
 % FOR LBCB 1:  
     
@@ -91,3 +91,5 @@ for i = 1:N
 % Clear variables
     clear dT R1f R2f R3f r1f r2f r3f
 end
+
+Strings = String_Lengths_LBCB1;
