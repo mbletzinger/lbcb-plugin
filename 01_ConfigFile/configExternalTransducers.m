@@ -1,12 +1,12 @@
 function config = configExternalTransducers()
 
 config.AllNames = {...
-    'Ext.Long.LBCB2',...
-    'Ext.Tranv.TopLBCB2',...
-    'Ext.Tranv.Bot.LBCB2',...
-    'Ext.Long.LBCB1',...
-    'Ext.Tranv.LeftLBCB1',...
-    'Ext.Tranv.RightLBCB1'
+    '1_LBCB2_y',...
+    '2_LBCB2_x_bot',...
+    '3_LBCB2_x_top',...
+    '4_LBCB1_y_left',...
+    '5_LBCB1_y_right',...
+    '6_LBCB1_x'
     };
 config.Lbcb1.IdxBounds = [4,6];
 config.Lbcb1.NumSensors = config.Lbcb1.IdxBounds(2)...
@@ -30,24 +30,27 @@ config.InitialLength = zeros(config.AllNumSensors,1);
 config.Lbcb1.Base = zeros(config.Lbcb1.NumSensors,3);
 config.Lbcb1.Plat = zeros(config.Lbcb1.NumSensors,3);
 
+config.Lbcb2.Base = zeros(config.Lbcb2.NumSensors,3);
+config.Lbcb2.Plat = zeros(config.Lbcb2.NumSensors,3);
+
 %Pin locations: Model coordinate system, inches. Origin of coordinate system should be Platform center
-config.Lbcb1.Base(1,:) = [-300  -17.4977  0]';%/25.4;           % Base coordinate: LBCB1 Long. Transducer
-config.Lbcb1.Plat(1,:) = [-100       0         0]';%/25.4;           % Plat coordinate
+config.Lbcb1.Base(1,:) = [-19.15  -23.65    0]'/2.54;           % Base coordinate: LBCB1 Long. Transducer
+config.Lbcb1.Plat(1,:) = [-18.85  0.95      0]'/2.54;           % Plat coordinate
                                                                 
-config.Lbcb1.Base(2,:) = [-117.4977  -254.4502 0]';%/25.4;           % Base coordinate: LBCB1 Lat. Left Transducer    
-config.Lbcb1.Plat(2,:) = [-100       -25       0]';%/25.4;           % Plat coordinate
+config.Lbcb1.Base(2,:) = [17.65   -25.55    0]'/2.54;           % Base coordinate: LBCB1 Lat. Left Transducer    
+config.Lbcb1.Plat(2,:) = [17.85   -0.95     0]'/2.54;           % Plat coordinate
                                                                 
-config.Lbcb1.Base(3,:) = [21.4786    -169.6975 0]';%/25.4;           % Base coordinate: LBCB1 Lat. Right Transducer
-config.Lbcb1.Plat(3,:) = [100        -25       0]';%/25.4;           % Plat coordinate
+config.Lbcb1.Base(3,:) = [42.55   1.05      0]'/2.54;           % Base coordinate: LBCB1 Lat. Right Transducer
+config.Lbcb1.Plat(3,:) = [19.85   -0.95     0]'/2.54;           % Plat coordinate
                                                                 
-config.Lbcb2.Base(1,:) = [-496.085,  3.349,  -6.998]';%/25.4;           % Base coordinate
-config.Lbcb2.Plat(1,:) = [-228.064, -2.602,   0.674]';%/25.4;           % Plat coordinate
+config.Lbcb2.Base(1,:) = [.75     -53.475   0]'/2.54;           % Base coordinate
+config.Lbcb2.Plat(1,:) = [.25     -20.1750  0]'/2.54;           % Plat coordinate
                                                                 
-config.Lbcb2.Base(2,:) = [-193.208, -423.583,-4.428]';%/25.4;           % Base coordinate    
-config.Lbcb2.Plat(2,:) = [-191.633, -0.103,  -6.959]';%/25.4;           % Plat coordinate
+config.Lbcb2.Base(2,:) = [26.05   -16.975   0]'/2.54;           % Base coordinate    
+config.Lbcb2.Plat(2,:) = [.25     -17.8750  0]'/2.54;           % Plat coordinate
                                                                 
-config.Lbcb2.Base(3,:) = [ 187.711, -449.115,-5.257]';%/25.4;           % Base coordinate    
-config.Lbcb2.Plat(3,:) = [ 189.679, -6.127,  -0.217]';%/25.4;           % Plat coordinate
+config.Lbcb2.Base(3,:) = [25.45   18.325    0]'/2.54;           % Base coordinate    
+config.Lbcb2.Plat(3,:) = [-.25    19.025    0]'/2.54;           % Plat coordinate
                                                                 
 
 
