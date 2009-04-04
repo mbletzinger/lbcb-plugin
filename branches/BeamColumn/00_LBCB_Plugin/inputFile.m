@@ -1,0 +1,2 @@
+classdef  inputFile < handle
+end
