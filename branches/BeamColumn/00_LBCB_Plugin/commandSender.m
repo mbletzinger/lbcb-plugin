@@ -7,6 +7,8 @@ classdef commandSender < handle
             'TIMEOUT',...
             'UNKNOWN_REMOTE_HOST'});
         dto = {};
+        command = {};
+        response = {};
     end
     methods
         function me = commandSender(remoteHost, remotePort)
@@ -17,17 +19,23 @@ classdef commandSender < handle
                 me.sender.setParams(me.params);
                 me.dto = sender.getDto;
             end
-            
+
         end
         function status = open(me)
             me.sender.openConnection();
             me.status.setState(me.dto.getError());
             status = me.status;
         end
-        function status = send(me,msg)
-            me.sender.openConnection();
+        function status = send(me,jmsg)
+            me.command = jmsg;
+            me.sender.sendCommand(jmsg);
             me.status.setState(me.dto.getError());
             status = me.status;
+            if(status.isState('NONE'))
+                me.response = me.sender.getResponse();
+                me.status.setState(me.dto.getError());
+                status = me.status;
+            end
         end
     end
 end

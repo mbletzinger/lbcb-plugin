@@ -5,17 +5,13 @@ classdef commandMsg < handle
         simState = {};
     end
     methods
-        function me = commandMsg(simState, command,content)
+        function me = commandMsg(simState, msg)
             if nargin > 0
                 if(isobject(simState))
                     me.simState = simState;
                 end
-
-                if(strcmp(command,'') ~= 0)
-                    me.msg.setCommand(command);
-                end
-                if(strcmp(content,'') ~= 0)
-                    me.msg.setContent(content);
+                if(isobject(msg))
+                    me.msg = msg;
                 end
             end
         end
@@ -25,10 +21,9 @@ classdef commandMsg < handle
         function generateTransId(me)
             me.msg.createTransId();
         end
-        function msg = getMsg(me)
+        function setSteps(me)
             me.msg.setStep(simState.step);
             me.msg.setSubStep(simState.subStep);
-            msg = me.msg;
         end
     end
 end
