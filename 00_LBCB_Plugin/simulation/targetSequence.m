@@ -1,4 +1,4 @@
-classdef  inputFile < handle
+classdef  targetSequence < handle
     properties
     targets = zeroes(100,6);
     step = 0;
@@ -25,13 +25,9 @@ classdef  inputFile < handle
         function tgt = getTarget(me)
             tgt = me.targets(me.step,:);
         end
-        function load(me,path)
-            me.targets= load(path);	% 6 column data
-            tmp = size(me.targets);
-            if tmp(2) ~= 6
-                errordlg('Input file should have six columns of data.');
-                return
-            end
+        function setTargets(me,targets)
+            me.targets= targets;	% 6 column data
+            tmp = size(targets);
             me.total = tmp(1);
             me.status.setState('STOPPED');
         end
