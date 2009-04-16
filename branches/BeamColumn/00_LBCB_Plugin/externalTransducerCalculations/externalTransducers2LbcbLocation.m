@@ -28,18 +28,20 @@ classdef externalTransducers2LbcbLocation < handle
             cfg = me.geometry;
             for s=1:cfg.numSensors
                 %Base pins with offset considered
-                me.base(s,:) = cfg.base(s,:) - (cfg.lbcb2SpecimanXfrm * cfg.motionCenter2SpecimanOffset)';
-
+                me.base(s,:) = cfg.base(s,:) - (cfg.lbcb2SpecimanXfrm * cfg.motionCenter2LbcbOffset)';
                 %Platform pins with offset considered
-                me.plat(s,:) = cfg.plat(s,:) - (cfg.lbcb2SpecimanXfrm * cfg.motionCenter2SpecimanOffset)';
-
+                me.plat(s,:) = cfg.plat(s,:) - (cfg.lbcb2SpecimanXfrm * cfg.motionCenter2LbcbOffset)';
                 %String lengths
                 me.lengths(s,1) = sqrt(sum((me.base(s,:) - me.plat(s,:)).^2));
             end
+            me.reset();
+        end
+        function reset(me)
             me.startLengths   = me.lengths;
-            me.platformCtrMeas   = zeros(me.numSensors,1);
-            me.jacob          = zeros(me.numSensors,me.numSensors);
-            me.lengthDiff      = zeros(me.numSensors,1);
+            numSensors = me.geometry.numSensors;
+            me.platformCtrMeas   = zeros(numSensors,1);
+            me.jacob          = zeros(numSensors,numSensors);
+            me.lengthDiff      = zeros(numSensors,1);
         end
     end
 end
