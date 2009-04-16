@@ -1,4 +1,4 @@
-classdef allExternalTransducers
+classdef allExternalTransducers < handle
     properties
         names = {}; %config
         numSensors = 0;
@@ -13,7 +13,6 @@ classdef allExternalTransducers
             n = length(names);
             me.numSensors = n;
             me.raw = zeros(n,1);
-            me.average = zeros(n,1);
             me.initialLengths = zeros(n,1);
         end
         function update(me, raw)

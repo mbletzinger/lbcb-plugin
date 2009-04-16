@@ -18,18 +18,15 @@ N = 10; % Number of steps to take
 LBCB1Readings = DeltaString(StringsLBCB1);
 
 % Configure the external transducers:
-mdl = MDL_LBCB();
+[allExtTrans,lbcbGeos,params] = createExternalTransducerObjects();
 
 %Run initialization function for LBCB 1:
-mdl.ElastDef.Lbcb1 = ResetElastDefState(mdl.ElastDef.Lbcb1,...
-    mdl.ExtTrans.Config.Lbcb1.NumSensors);
-config = mdl.ExtTrans.Config.Lbcb1;
-state = mdl.ElastDef.Lbcb1;
-params = mdl.ExtTrans.Config.Params;
+state = externalTransducers2LbcbLocation(lbcbGeos{1});
+state.init();
 % Need to update config.Lbcb1.Base (apply translation of Lbcb)
 %                config.Lbcb1.Plat (apply rotation of Lbcb)
-state = initElastDef(config.NumSensors);
-state = InitExtTrans2Cartesian(config,state);
+%state = initElastDef(config.NumSensors);
+%state = InitExtTrans2Cartesian(config,state);
 
 
 CentroidLocation = zeros(1,8);
@@ -38,11 +35,12 @@ index = index(1);
 for i = 1:index
         
     %Run the program to get motion:
-    [LbcbDisp state] = ExtTrans2Cartesian(config,state,params,LBCB1Readings(i,3:5)');
+    allExtTrans.update([LBCB1Readings(i,3:5) 0 0 0]);
+    LbcbDisp = ExtTrans2Cartesian(state,params,allExtTrans.currentLengths');
     CentroidLocation = [CentroidLocation; LBCB1Readings(i,1:2), LbcbDisp'];
-    state = ResetElastDefState(state,config.NumSensors);
-    
+    state.reset();
 end
+
 CentroidLocation(1,:) = [];
 
 %Location of centroid with start as origin:

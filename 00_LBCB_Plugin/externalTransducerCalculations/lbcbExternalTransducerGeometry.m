@@ -6,7 +6,7 @@ classdef lbcbExternalTransducerGeometry < handle
         motionCenter2SpecimanOffset = [0 0 0 0 0 0]'; %config
         motionCenterXfrm = eye(3); %config
         motionCenter2LbcbOffset = [0 0 0]'; %config
-        sensorBounds = zeroes(1,2); %config
+        sensorBounds = zeros(1,2); %config
         numSensors = 0;
     end
     methods

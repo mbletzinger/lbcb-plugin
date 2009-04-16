@@ -16,12 +16,8 @@ config.Lbcb2.NumSensors = config.Lbcb2.IdxBounds(2)...
     - config.Lbcb2.IdxBounds(1) + 1;
 config.AllNumSensors = length(config.AllNames);
 
-config.Lbcb1.TransformLbcb2Model     = eye(3);
-config.Lbcb2.TransformLbcb2Model     = eye(3);
-
 %Sensitivity of string pot reading(sort of calibration factor)
-config.Lbcb1.Sensitivities = ones(1,config.Lbcb1.NumSensors)';
-config.Lbcb2.Sensitivities = ones(1,config.Lbcb2.NumSensors)';
+config.Sensitivities = ones(1,config.AllNumSensors)';
 
 %SJKIM OCT01-2007
 % Initial length of String pot
