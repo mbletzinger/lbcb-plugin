@@ -14,5 +14,8 @@ classdef lbcbExternalTransducerGeometry < handle
             me.sensorBounds = bounds;
             me.numSensors = bounds(2)- bounds(1) + 1;
         end
+        function values = sensorValuesSubset(svalues)
+            values = svalues(me.sensorBounds(1),me.sensorBounds(2));
+        end
     end
 end

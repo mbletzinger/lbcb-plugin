@@ -1,4 +1,4 @@
-function [disp forces] = parseLbcbMsg(me,msg)
+function [disp forces] = parseLbcbMsg(msg)
 MDLVals  = cell(1);
 
 % Deliminate received data and save in variables ------------------------------------------------------------------
