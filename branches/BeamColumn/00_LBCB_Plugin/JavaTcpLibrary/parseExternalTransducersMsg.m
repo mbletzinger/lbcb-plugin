@@ -1,14 +1,14 @@
-function values = parseExternalTransducersMsg(me,msg)
+function values = parseExternalTransducersMsg(names,msg)
 AUXVals  = cell(1);
 
 
 % Deliminate received data and save in variables ------------------------------------------------------------------
 ind_i = 0;
-numChannels = me.ExtTrans.Config.AllNumSensors;
+numChannels = length(names);;
 recv = cell(numChannels * 3,1);
 values = zeros(numChannels,1);
 delimiter = sprintf(' \t');
-while length(msg)>0
+while iempty(msg) ==false
         ind_i = ind_i+1;
         [token, msg] = strtok(msg,delimiter);
         recv{ind_i} = token;
@@ -26,7 +26,7 @@ end
 % For Test
 for k=1:numChannels
     for j=1:numChannels
-        if strcmp(me.ExtTrans.Config.AllNames{j},MDLVals{1}{k,2})
+        if strcmp(names{j},MDLVals{1}{k,2})
             values(j) = MDLVals{1}{k,3};
             break;
         end
