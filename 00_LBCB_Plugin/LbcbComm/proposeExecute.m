@@ -73,7 +73,7 @@ classdef proposeExecute < handle
                 case {'LBCB1', 'LBCB2'}
                     reading = lbcbReading();
                     reading.parse(response);
-                case 'EsxternalTransducers'
+                case 'ExternalTransducers'
                     reading = parseExternalTransducers(response);
             end
         end

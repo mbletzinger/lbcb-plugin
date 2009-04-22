@@ -4,6 +4,7 @@ classdef lbcbTarget < handle
         dispDofs = zeros(6,1); % true if controlled dof displacement
         forceDofs = zeros(6,1);% true if controlled dof force
         dofLabels = {'x','y','z'};
+        node = '';
     end
     methods
         function setCurrentPosition(me,dofData)
@@ -16,6 +17,10 @@ classdef lbcbTarget < handle
         function setForceDof(me,index,value)
             me.target.force(index) = value;
             me.forceDofs(index) = 1;
+        end
+        function reading = target2Reading(me)
+            reading = lbcbReading();
+            reading.lbcb = me.target();
         end
         function msg = createMsg(me)
             msg = '';
