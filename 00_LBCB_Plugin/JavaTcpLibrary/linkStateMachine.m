@@ -20,21 +20,22 @@ classdef linkStateMachine < handle
             me.link = link;
             me.state.setState('READY');
         end
-        function execute(me,action,msg)
+        function done = execute(me,action,msg)
             me.action.setState(action);
+            done = 1;
             switch action
                 case 'CONNECT'
-                    me.link.open();
+                    done = me.link.open();
                 case 'DISCONNECT'
                     me.link.close();
                 case 'SEND'
                     me.link.send(msg);
                 case'RECEIVE'
-                    me.link.read(msg);
+                    me.link.read();
             end
             me.state.setState('PENDING');
         end
-        function state = check(me)
+        function isDone = check(me)
             isDone = me.link.isDone();
             if isDone
                 status = me.link.getResponse();
@@ -44,7 +45,6 @@ classdef linkStateMachine < handle
                     me.state.setState('ERROR');
                 end
             end
-            state = me.state;
         end
         function reset(me)
             me.state.setState('READY');

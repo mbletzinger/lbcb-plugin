@@ -1,64 +1,159 @@
 classdef proposeExecute < handle
     properties
         factory = {};
-        link = {};
+        lsm = {};
         targets = cell(2,1);
-        readings = cell(2,1);
-        stepExecuteState = stateEnum({...
+        readings = cell(3,1);
+        receivePending = 0;
+        state = stateEnum({...
             'Send Target LBCB1',...
             'Send Target LBCB2',...
             'Send Execute',...
             'Get Control Point LBCB1',...
             'Get Control Point LBCB2',...
             'Get Control Point External Transducers',...
+            'Done'...
             });
    end
     methods
-        function me = stepExecute(factory,linkState)
+        function me = proposeExecute(factory,linkState)
             me.factory = factory;
-            me.link = linkState;
+            me.lsm = linkState;
         end
-        function status = setTarget(me,lbcb1,lbcb2)
-            msg = me.factory.createCommand('propose',targetL1.createMsg(),'LBCB1',1);
-            status = sender.send(msg.msg);
+        
+        function setTarget(me,lbcb1,lbcb2)
+            me.targets = {lbcb1, lbcb2};
         end
-            if(status.isState('NONE') == false)
-                return;
+        
+        function done = execute(me)
+            done = 0;
+            switch me.state.getState()
+                case 'Send Target LBCB1'
+                    if me.executeSendTarget(1)
+                        me.state.setState('Send Target LBCB2');
+                    end
+                case 'Send Target LBCB2'
+                    if me.executeSendTarget(0)
+                        me.state.setState('Send Execute');
+                    end
+                case 'Send Execute'
+                    if me.executeSendExecute()
+                        me.state.setState('Get Control Point LBCB1');
+                    end
+                case 'Get Control Point LBCB1'
+                    if me.executeGetControlPoint(1)
+                        me.state.setState('Get Control Point LBCB2');
+                    end
+                case 'Get Control Point LBCB2'
+                    if me.executeGetControlPoint(2)
+                        me.state.setState('Get Control Point External Transducers');
+                    end
+                case 'Get Control Point External Transducers'
+                    if me.executeGetControlPoint(2)
+                        me.state.setState('Send Target LBCB1');
+                        done = 1;
+                    end
+            end            
+        end
+        
+        function sendMsg(me,command,cps,target)
+            switch command
+                case 'propose'
+                    msg = me.factory.createCommand('propose',target.createMsg(),cps,1);
+                case 'execute'
+                    msg = me.factory.createCommand('execute','',0,1);
+                case 'get-control-point'
+                    msg = me.factory.createCommand('get-control-point','dummy',cps,0);
             end
-            msg = me.factory.createCommand('propose',targetL2.createMsg(),'LBCB2',1);
-            status = sender.send(msg.msg);
-            if(status.isState('NONE') == false)
-                return;
+            me.lsm.execute('SEND',msg.msg);
+        end
+        function reading = getReadings(me,cps)
+            response = me.lsm.link.response.getContent();
+            switch cps
+                case {'LBCB1', 'LBCB2'}
+                    reading = lbcbReading();
+                    reading.parse(response);
+                case 'EsxternalTransducers'
+                    reading = parseExternalTransducers(response);
             end
-            msg = me.factory.createCommand('execute','',0,1);
-            status = sender.send(msg.msg);
-            if(status.isState('NONE') == false)
-                return;
+        end
+        
+        function done = executeSendTarget(me,isLbcb1)
+            if isLbcb1
+                cps = 'LBCB1';
+                tgt= 1;
+            else
+                cps = 'LBCB2';
+                tgt= 2;
+            end            
+            done = 0;
+            switch me.lsm.state.getState()
+                case 'READY'
+                    if me.receivePending
+                        me.lsm.execute('RECEIVE');
+                    else
+                        me.sendMsg('propose',me.targets{tgt},cps);
+                    end
+                case 'PENDING'
+                    me.lsm.check();
+                case 'DONE'
+                    if me.receivePending
+                        me.receivePending = 0;
+                    else
+                        me.receivePending = 1;
+                        me.lsm.reset();
+                        done = 1;
+                    end
+                case 'ERROR'
             end
-            msg = me.factory.createCommand('get-control-point','dummy','LBCB1',0);
-            status = sender.send(msg.msg);
-            if(status.isState('NONE') == false)
-                return;
+        end
+        
+        function done = executeSendExecute(me)
+            done = 0;
+            switch me.lsm.state.getState()
+                case 'READY'
+                    if me.receivePending
+                        me.lsm.execute('RECEIVE');
+                    else
+                        me.sendMsg('execute',{},'');
+                    end
+                case 'PENDING'
+                    me.lsm.check();
+                case 'DONE'
+                    if me.receivePending
+                        me.receivePending = 0;
+                    else
+                        me.receivePending = 1;
+                        me.lsm.reset();
+                        done = 1;
+                    end
+                case 'ERROR'
             end
-           me.lbcb1ControlPoint.parse(sender.response.getContent());
-            msg = me.factory.createCommand('get-control-point','dummy','LBCB2',0);
-            status = sender.send(msg.msg);
-            if(status.isState('NONE') == false)
-                return;
+        end
+        
+        function done = executeGetControlPoint(me,cpsIdx)
+            cpsNames = {'LBCB1','LBCB2','ExternalTransducers'};
+            done = 0;
+            switch me.lsm.state.getState()
+                case 'READY'
+                    if me.receivePending
+                        me.lsm.execute('RECEIVE');
+                    else
+                        me.sendMsg('get-control-point',me.targets{tgt},cpsNames{cpsIdx});
+                    end
+                case 'PENDING'
+                    me.lsm.check();
+                case 'DONE'
+                    if me.receivePending
+                        me.readings{cpsIdx} = me.getReadings(cpsNames{cpsIdx});
+                        me.receivePending = 0;
+                    else
+                        me.receivePending = 1;
+                        me.lsm.reset();
+                        done = 1;
+                    end
+                case 'ERROR'
             end
-           me.lbcb2ControlPoint.parse(sender.response.getContent());
-            msg = me.factory.createCommand('get-control-point','dummy','ExternalSensors',0);
-            status = sender.send(msg.msg);
-            if(status.isState('NONE') == false)
-                return;
-            end
-           values = parseExternalTransducersMsg(me.exTrans.names,sender.response.getContent());
-           me.extTransControlPoint.update(values);
-           lengths = me.lbcb1EdState.geometry.sensorValuesSubset(me.extTrans.currentLengths);
-           me.lbcb1ControlPoint.ed.disp = ExtTrans2Cartesian(me.lbcb1EdState,me.extTransParams,lengths);
-
-           lengths = me.lbcb2EdState.geometry.sensorValuesSubset(me.extTrans.currentLengths);
-           me.lbcb2ControlPoint.ed.disp = ExtTrans2Cartesian(me.lbcb2EdState,me.extTransParams,lengths);
         end
     end
 end

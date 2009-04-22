@@ -20,6 +20,10 @@ classdef commandMsgFactory < handle
                 cmd.setSteps();
             end
         end
+        function rsp = createResponse(me,content,cps,command)
+            rsp = responseMsg(command);
+            rsp.msg.setContent(content);
+        end
         function cmd = parseCommand(me,jmsg)
             cmd = commandMsg(me.simState,jmsg);
         end

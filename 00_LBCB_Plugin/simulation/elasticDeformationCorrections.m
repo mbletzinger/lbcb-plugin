@@ -1,4 +1,4 @@
-classdef elasticDeformation <handle
+classdef elasticDeformationCorrections <handle
     properties
         tolerances = [];
         differences = [];
