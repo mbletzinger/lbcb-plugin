@@ -1,6 +1,6 @@
-classdef commandSender < handle
+classdef commandListener < handle
     properties
-        sender= org.nees.uiuc.simcor.CommandSender;
+        listener= org.nees.uiuc.simcor.CommandListener;
         params = org.nees.uiuc.simcor.tcp.TcpParameters;
         status = stateEnum({'NONE',...
             'IO_ERROR',...
@@ -11,38 +11,37 @@ classdef commandSender < handle
         errorMsg = '';
     end
     methods
-        function me = commandSender(remoteHost, remotePort)
+        function me = commandListener(localPort)
             if  nargin > 0
-                me.params.setRemoteHost(remoteHost);
-                me.params.setRemotePort(remotePort);
+                me.params.setlocalPort(localPort);
                 me.params.setTcpReadTimeout(30);
-                me.sender.setParams(me.params);
-                me.sender.setupConnection();
+                me.listener.setParams(me.params);
+                me.listener.setupConnection();
             end
             
         end
-        function open(me)
-            me.sender.openConnection();
+        function isConnected = open(me)
+            isConnected = me.listener.isConnected();
         end
         function send(me,jmsg)
-            me.command = jmsg;
-            me.sender.sendCommand(jmsg);
+            me.response = jmsg;
+            me.listener.sendResponse(jmsg);
         end
         function done = isDone(me)
-            done = me.sender.isDone();
+            done = me.listener.isDone();
         end
         function status = getResponse(me)
-            action = me.sender.getResponse();
+            action = me.listener.getResponse();
             me.status.setState(action.getError());
             me.errorMsg = action.getErrorMsg();
             status = me.status;
-            me.response = action.getMsg();
+            me.command = action.getMsg();
         end
         function read(me)
-            me.sender.readResponse()
+            me.listener.readCommand()
         end
         function close(me)
-            me.sender.closeConnection()
+            me.listener.close()
         end
     end
 end
