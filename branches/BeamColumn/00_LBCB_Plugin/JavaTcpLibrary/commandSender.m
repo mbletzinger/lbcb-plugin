@@ -6,9 +6,9 @@ classdef commandSender < handle
             'IO_ERROR',...
             'TIMEOUT',...
             'UNKNOWN_REMOTE_HOST'});
-        dto = {};
         command = {};
         response = {};
+        errorMsg = '';
     end
     methods
         function me = commandSender(remoteHost, remotePort)
@@ -17,25 +17,32 @@ classdef commandSender < handle
                 me.params.setRemotePort(remotePort);
                 me.params.setTcpReadTimeout(30);
                 me.sender.setParams(me.params);
-                me.dto = sender.getDto;
+                me.sender.setupConnection();
             end
-
+            
         end
-        function status = open(me)
+        function open(me)
             me.sender.openConnection();
-            me.status.setState(me.dto.getError());
-            status = me.status;
         end
-        function status = send(me,jmsg)
+        function send(me,jmsg)
             me.command = jmsg;
             me.sender.sendCommand(jmsg);
-            me.status.setState(me.dto.getError());
+        end
+        function done = isDone(me)
+            done = me.sender.isDone();
+        end
+        function status = getResponse(me)
+            action = me.sender.getResponse();
+            me.status.setState(action.getError());
+            me.errorMsg = action.getErrorMsg();
             status = me.status;
-            if(status.isState('NONE'))
-                me.response = me.sender.getResponse();
-                me.status.setState(me.dto.getError());
-                status = me.status;
-            end
+            me.response = action.getMsg();
+        end
+        function read(me)
+            me.sender.read()
+        end
+        function close(me)
+            me.sender.close()
         end
     end
 end
