@@ -99,11 +99,11 @@ classdef proposeExecute < handle
                 case 'DONE'
                     if me.receivePending
                         me.receivePending = 0;
+                        done = 1;
                     else
                         me.receivePending = 1;
-                        me.lsm.reset();
-                        done = 1;
                     end
+                    me.lsm.reset();
                 case 'ERROR'
             end
         end

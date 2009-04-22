@@ -1,4 +1,4 @@
-function [d1,d2,d3] = MtnCtrToCntrl(D1,D2,D3)
+function [d1,d2,d3] = MtnCtrToCntrl(d1,D2,D3)
 
 % Bugs: Node 2 will return an "incorrect" value, since it's referrence
 % angle is pi/2.  Need to add this in, depending on what the referrence
@@ -9,9 +9,9 @@ function [d1,d2,d3] = MtnCtrToCntrl(D1,D2,D3)
 %D3 = [ 68.5617  121.2150         0         0         0    0.0175];
 %d1 = [-.6667 0 1.5882496];
 
-d1 = [175.7487 52.8846 2.26961];
-D2 = [-0.0008  192.0000         0         0         0    1.5708];
-D3 = [71.9995  120.0003         0         0         0    0.0000];
+% d1 = [175.7487 52.8846 2.26961];
+% D2 = [-0.0008  192.0000         0         0         0    1.5708];
+% D3 = [71.9995  120.0003         0         0         0    0.0000];
 
 
 % Programmed by David J. Bennier

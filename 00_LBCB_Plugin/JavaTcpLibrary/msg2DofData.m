@@ -3,8 +3,9 @@ classdef msg2DofData < handle
         delimiter = sprintf(' \t');
     end
     methods
-        function data = parse(me,msg)
+        function data = parse(me,msg,mdl)
             data = {lbcbTarget()};
+            data{1}.node = mdl;
             tgt =1;
             tokens = me.splitTokens(msg);
             cellA = me.tokensSort(tokens);
@@ -15,6 +16,7 @@ classdef msg2DofData < handle
                 if(index == 0)
                     tgt = tgt + 1;
                     data{tgt} = lbcbTarget();
+                    data{tgt}.node = cellA{r,1};
                     continue;
                 end
                 if isForce
