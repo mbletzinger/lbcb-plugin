@@ -1,4 +1,4 @@
-function config = configSimCorLink()
+function config = NetworkSettings()
 
 config.localPort = 11999;
 config.inputFilesUseModelCoordinates = 0; % 1 = yes 0 = no
