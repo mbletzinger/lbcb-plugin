@@ -1,10 +1,10 @@
-classdef commandMsgFactory < handle
+classdef msgFactory < handle
     properties
         simState = {};
         node = '';
     end
     methods
-        function me = commandMsgFactory(simState,node)
+        function me = msgFactory(simState,node)
             me.simState = simState;
             me.node = node;
         end
