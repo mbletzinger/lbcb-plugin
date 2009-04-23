@@ -34,10 +34,11 @@ classdef simulationState < handle
         function me = simulationState(step)
             me.step = step;
         end
-        function start(me)
+        function start(me,startStep)
             me.startTime = clock;
+            me.step = startStep;
         end
-        function increment(me,useSubStep)
+        function next(me,useSubStep)
             if(useSubStep)
                 me.subStep = me.subStep + 1;
                 return;

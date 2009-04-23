@@ -1,4 +1,4 @@
-classdef simcorComm < handle
+classdef simcorLink < handle
     properties
         factory = {};
         lsm = {};
@@ -8,11 +8,12 @@ classdef simcorComm < handle
         m2d = msg2DofData();
         response = {};
         command = {};
+        connected = stateEnum({'DISCONNECTED','CONNECTING','CONNECTED','ERROR','DISCONNECTING'});
     end
     methods
-        function me = simcorComm(factory,linkState)
+        function me = simcorLink(factory,lsm)
             me.factory = factory;
-            me.lsm = linkState;
+            me.lsm = lsm;
         end
         
         function getCommand(me)
@@ -23,7 +24,49 @@ classdef simcorComm < handle
             me.commandPending = 1;
             me.response = responses;
         end
-
+        
+        function done = isConnected(me)
+            done = 0;
+            switch me.connected.getState()
+                case {'DISCONNECTED','ERROR'}
+                    me.lsm.execute('CONNECT');
+                    me.connected.setState('CONNECTING');
+                case'CONNECTING'
+                    if  me.lsm.check()
+                        if me.lsm.state.isState('ERROR')
+                            me.connected.setState('ERROR');
+                        else
+                            me.connected.setState('CONNECTED');
+                        end
+                    end
+                case 'DISCONNECTING'
+                case 'CONNECTED'
+                    done = 1
+            end
+        end
+        
+        function done = isDisconnected(me)
+            done = 0;
+            switch me.connected.getState()
+                case 'DISCONNECTED'
+                    done = 1;
+                    case 'ERROR'
+                            me.connected.setState('DISCONNECTED');
+                    
+                case'CONNECTING'
+                case'DISCONNECTING'
+                    if  me.lsm.check()
+                        if me.lsm.state.isState('ERROR')
+                            me.connected.setState('ERROR');
+                        else
+                            me.connected.setState('DISCONNECTED');
+                        end
+                    end
+                case'CONNECTED'
+                    me.lsm.execute('DISCONNECT');
+                    me.connected.setState('DISCONNECTING');
+            end
+        end
         function done = execute(me)
             done = 0;
             switch me.lsm.state.getState()
