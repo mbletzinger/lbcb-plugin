@@ -11,11 +11,11 @@ classdef CommandSender < handle
         errorMsg = '';
     end
     methods
-        function me = CommandSender(remoteHost, remotePort)
+        function me = CommandSender(remoteHost, remotePort,timeout)
             if  nargin > 0
                 me.params.setRemoteHost(remoteHost);
                 me.params.setRemotePort(remotePort);
-                me.params.setTcpReadTimeout(30);
+                me.params.setTcpReadTimeout(timeout);
                 me.sender.setParams(me.params);
                 me.sender.setupConnection();
             end

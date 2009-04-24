@@ -1,9 +1,10 @@
-classdef NetworkSettings < handle
+classdef Network < handle
     properties
         simcorPort = 0;
         triggerPort = 0;
         lbcbPort = 0;
         lbcbHost='';
+        timeout=0;
         simState = {};
         simcorLink = {};
         lbcbLink={};
@@ -26,11 +27,14 @@ classdef NetworkSettings < handle
             });
     end
     methods
-        function setupNetwork(me)
+        function me = Network()
             config = ConfigNetworkSettings();
             me.msgFactory = MsgFactory(me.simState,config.controlPointNodes{1});
-            me.cmdListener= CommandListener(me.simcorPort);
-            me.cmdSender = CommandSender(me.lbcbHost,me.lbcbPort);
+            
+        end
+        function setup(me)
+            me.cmdListener= CommandListener(me.simcorPort, me.timeout);
+            me.cmdSender = CommandSender(me.lbcbHost,me.lbcbPort,me.timeout);
             me.simcorLink = SimCorLink(me.msgFactory,LinkStateMachine(me.cmdListener));
             me.lbcbLink = SimCorLink(me.msgFactory,LinkStateMachine(me.cmdSender));
         end
@@ -42,6 +46,7 @@ classdef NetworkSettings < handle
                 errorMsg{i} = me.cmdSender.errorMsg;
                 i = i + 1;
                 errorsExist = 1;
+                me.senderState.setState('CLOSED');
             end
             if(me.cmdListener.status.isStatus('NONE') == 0)
                 errorMsg{i} = me.cmdSender.errorMsg;
