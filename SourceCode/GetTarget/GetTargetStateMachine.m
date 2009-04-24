@@ -1,8 +1,8 @@
-classdef getTargetStateMachine < handle
+classdef GetTargetStateMachine < handle
     properties
         action = stateEnum({...
             'INITIALIZE SOURCE',...
-            'GET STEP'...
+            'GET TARGET'...
             });
         state = stateEnum({...
             'NO SOURCE',...
@@ -27,7 +27,7 @@ classdef getTargetStateMachine < handle
         target = {};
     end
     methods
-        function me = getTargetStateMachine(simState)
+        function me = GetTargetStateMachine(simState)
             config = configSimCorLink();
             me.controlPointNodes = config.controlPointNodes;
             me.link = simcorLink(simState,commandListener(config.localPort));
@@ -46,11 +46,10 @@ classdef getTargetStateMachine < handle
                         me.loadInputFiles();
                         me.state.setState('SELECTED SOURCE');
                     end
-                case 'GET STEP'
+                case 'GET TARGET'
                           if me.simcorSource
                               link.getCommand()
                           end
-                case 'RESET'
             end
         end
         

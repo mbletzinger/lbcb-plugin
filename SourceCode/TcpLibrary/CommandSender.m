@@ -1,4 +1,4 @@
-classdef commandSender < handle
+classdef CommandSender < handle
     properties
         sender= org.nees.uiuc.simcor.CommandSender;
         params = org.nees.uiuc.simcor.tcp.TcpParameters;
@@ -11,7 +11,7 @@ classdef commandSender < handle
         errorMsg = '';
     end
     methods
-        function me = commandSender(remoteHost, remotePort)
+        function me = CommandSender(remoteHost, remotePort)
             if  nargin > 0
                 me.params.setRemoteHost(remoteHost);
                 me.params.setRemotePort(remotePort);
