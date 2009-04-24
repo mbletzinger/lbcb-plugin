@@ -1,4 +1,4 @@
-classdef linkStateMachine < handle
+classdef LinkStateMachine < handle
     properties
         link = {};
         connected = 0;
@@ -16,7 +16,7 @@ classdef linkStateMachine < handle
             });
     end
     methods
-        function me = linkStateMachine(link)
+        function me = LinkStateMachine(link)
             me.link = link;
             me.state.setState('READY');
         end

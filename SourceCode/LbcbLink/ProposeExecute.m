@@ -5,6 +5,8 @@ classdef ProposeExecute < handle
         targets = cell(2,1);
         readings = cell(3,1);
         receivePending = 0;
+        numberOfTimeouts = 0;
+        timeoutMultiplier= 0;
         state = stateEnum({...
             'Send Target LBCB1',...
             'Send Target LBCB2',...
@@ -19,6 +21,8 @@ classdef ProposeExecute < handle
         function me = ProposeExecute(factory,lsm)
             me.factory = factory;
             me.lsm = lsm;
+            config = ConfigNetworkSettings();
+            me.timeoutMultiplier = config.multiplier;
         end
         
         function setTarget(me,lbcb1,lbcb2)
@@ -97,6 +101,7 @@ classdef ProposeExecute < handle
                 case 'PENDING'
                     me.lsm.check();
                 case 'DONE'
+                    me.clearTimeoutErrors();
                     if me.receivePending
                         me.receivePending = 0;
                         done = 1;
@@ -120,6 +125,7 @@ classdef ProposeExecute < handle
                 case 'PENDING'
                     me.lsm.check();
                 case 'DONE'
+                    me.clearTimeoutErrors();
                     if me.receivePending
                         me.receivePending = 0;
                     else
@@ -134,6 +140,8 @@ classdef ProposeExecute < handle
         function done = executeGetControlPoint(me,cpsIdx)
             cpsNames = {'LBCB1','LBCB2','ExternalTransducers'};
             done = 0;
+            me.receivePending = 0;
+            
             switch me.lsm.state.getState()
                 case 'READY'
                     if me.receivePending
@@ -144,15 +152,28 @@ classdef ProposeExecute < handle
                 case 'PENDING'
                     me.lsm.check();
                 case 'DONE'
+                    me.clearTimeoutErrors();
                     if me.receivePending
                         me.readings{cpsIdx} = me.getReadings(cpsNames{cpsIdx});
                         me.receivePending = 0;
-                    else
-                        me.receivePending = 1;
                         me.lsm.reset();
                         done = 1;
+                    else
+                        me.receivePending = 1;
                     end
                 case 'ERROR'
+            end
+        end
+        function clearTimeoutErrors(me)
+            status = me.lsm.link.getResponse();
+            switch status.getState()
+                case 'NONE'
+                    me.numberOfTimeouts = 0;
+                case 'IO_ERROR'
+                    if me.numberOfTimeouts < me.timeoutMultiplier
+                        me.numberOfTimeouts = me.numberOfTimeouts + 1;
+                        me.lsm.status.setState('NONE');
+                    end
             end
         end
     end
