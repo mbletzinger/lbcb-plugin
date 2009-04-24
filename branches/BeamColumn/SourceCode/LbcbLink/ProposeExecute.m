@@ -1,4 +1,4 @@
-classdef proposeExecute < handle
+classdef ProposeExecute < handle
     properties
         factory = {};
         lsm = {};
@@ -16,9 +16,9 @@ classdef proposeExecute < handle
             });
    end
     methods
-        function me = proposeExecute(factory,linkState)
+        function me = ProposeExecute(factory,lsm)
             me.factory = factory;
-            me.lsm = linkState;
+            me.lsm = lsm;
         end
         
         function setTarget(me,lbcb1,lbcb2)

@@ -26,9 +26,6 @@ classdef SimulationState < handle
             });
     end
     methods
-        function me = simulationState(step)
-            me.step = step;
-        end
         function start(me,startStep)
             me.startTime = clock;
             me.step = startStep;
