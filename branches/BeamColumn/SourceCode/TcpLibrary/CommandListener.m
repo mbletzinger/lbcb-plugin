@@ -1,4 +1,4 @@
-classdef commandListener < handle
+classdef CommandListener < handle
     properties
         listener= org.nees.uiuc.simcor.CommandListener;
         params = org.nees.uiuc.simcor.tcp.TcpParameters;
@@ -11,7 +11,7 @@ classdef commandListener < handle
         errorMsg = '';
     end
     methods
-        function me = commandListener(localPort)
+        function me = CommandListener(localPort)
             if  nargin > 0
                 me.params.setlocalPort(localPort);
                 me.params.setTcpReadTimeout(30);
