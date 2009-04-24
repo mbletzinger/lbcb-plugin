@@ -1,4 +1,4 @@
-classdef elasticDeformationParameters < handle
+classdef ElasticDeformationParameters < handle
     properties
         % Allowable tolerance for jacobian updates vector size is the number of
         % external transducers

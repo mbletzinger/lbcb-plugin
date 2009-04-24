@@ -1,4 +1,4 @@
-function config = configLimitDefaults()
+function config = ConfigLimitDefaults()
 
 config.CheckDisp = 1;                   % 1 for check, 0 for ignore     
 config.CheckDispInc = 1;                % 1 for check, 0 for ignore     

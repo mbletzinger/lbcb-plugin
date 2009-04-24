@@ -27,10 +27,10 @@ classdef GetTargetStateMachine < handle
         target = {};
     end
     methods
-        function me = GetTargetStateMachine(simState)
-            config = configSimCorLink();
+        function me = GetTargetStateMachine(factory,lsm)
+            config = ConfigSimCorLink();
             me.controlPointNodes = config.controlPointNodes;
-            me.link = simcorLink(simState,commandListener(config.localPort));
+            me.link = lsm;
         end
         
         function execute(me,action)

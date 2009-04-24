@@ -1,4 +1,4 @@
-classdef elasticDeformationCalculations < handle
+classdef ElasticDeformationCalculations < handle
     properties
         extTrans = {};
         extTransParams = {};
@@ -17,7 +17,7 @@ classdef elasticDeformationCalculations < handle
    end
     methods
         function me = elasticDeformationCalculations()
-            [me.extTrans,lbcbGeos,me.extTransParams] = createExternalTransducerObjects();
+            [me.extTrans,lbcbGeos,me.extTransParams] = CreateExternalTransducerObjects();
             me.lbcb1EdState = externalTransducers2LbcbLocation(lbcbGeos{1});
             me.lbcb1EdState.reset();
             me.lbcb2EdState = externalTransducers2LbcbLocation(lbcbGeos{2});

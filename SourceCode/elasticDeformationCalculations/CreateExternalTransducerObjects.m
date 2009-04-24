@@ -1,11 +1,11 @@
-function [allExtTrans,lbcbGeos,params] = createExternalTransducerObjects()
+function [allExtTrans,lbcbGeos,params] = CreateExternalTransducerObjects()
 lbcbGeos = cell(2,1);
-config = configExternalTransducers();
+config = ConfigExternalTransducers();
 allExtTrans = allExternalTransducers(config.AllNames);
 allExtTrans.sensitivities = config.Sensitivities;
 allExtTrans.initialLengths = config.InitialLength;
 
-params = elasticDeformationParameters();
+params = ElasticDeformationParameters();
 params.tolerance = config.Params.TOL;
 params.pertD = [config.Params.Dx config.Params.Dz  config.Params.Ry];
 

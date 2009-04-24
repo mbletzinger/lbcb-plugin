@@ -1,4 +1,4 @@
-classdef elasticDeformationCorrections <handle
+classdef ElasticDeformationCorrections <handle
     properties
         tolerances = [];
         differences = [];
@@ -7,9 +7,10 @@ classdef elasticDeformationCorrections <handle
         transform = {};
     end
     methods
-        function me = elasticDeformation(tolerances,transform)
+        function me = ElasticDeformationCalculations(transform)
+            config = ConfigSimulationParameters();
             me.transform = transform;
-            me.tolerances = tolerances; 
+            me.tolerances = config.DispTolerance; 
         end
         function isWithinTolerances = checkTolerances(me,tgt,measurements)
             me.differences = me.transform.model2Lbcb(tgt) - (measurements - me.offsets);
