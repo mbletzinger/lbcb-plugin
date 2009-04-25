@@ -1,10 +1,10 @@
-classdef dataArchive < handle
+classdef DataArchive < handle
     properties
     path = '';
     headers={};
     end
     methods
-        function me = dataArchive(name)
+        function me = DataArchive(name)
             me = me.createPath(name);
         end
         function write(me,stepNumber,data,note)
@@ -33,7 +33,7 @@ classdef dataArchive < handle
            suffix =  datestr(now,'_yyyy_mm_dd_HH_MM_SS');
         end
         function me = createPath(me,name)
-            root = cd;
+            root = pwd;
             path = fullfile(root,'Logs');
             if isdir( name ) ==false
                 mkdir(name); 

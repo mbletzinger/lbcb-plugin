@@ -1,4 +1,4 @@
-classdef  inputFile < handle
+classdef  InputFile < handle
     properties
     targets = targetSequence();
     end
