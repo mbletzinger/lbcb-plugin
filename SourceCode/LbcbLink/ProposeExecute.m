@@ -25,7 +25,7 @@ classdef ProposeExecute < handle
             me.timeoutMultiplier = config.multiplier;
         end
         
-        function setTarget(me,targets)
+        function setTargets(me,targets)
             me.targets = targets;
         end
         

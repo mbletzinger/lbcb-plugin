@@ -9,17 +9,17 @@ classdef Network < handle
         simcorLink = {};
         lbcbLink={};
         triggerLink={};
-        msgFactory = {};
+        factory = {};
         cmdSender = {};
         cmdListener = {};
-        senderState = stateEnum({...
+        senderState = StateEnum({...
             'CLOSED',...
             'CONNECTING',...
             'CONNECTED',...
             'OPEN SENT',...
             'SESSION  OPENED'...
             });
-        listenerState = stateEnum({...
+        listenerState = StateEnum({...
             'CLOSED',...
             'CONNECTED',...
             'WAITING FOR SESSION',...
@@ -27,16 +27,17 @@ classdef Network < handle
             });
     end
     methods
-        function me = Network()
+        function me = Network(simState)
+            me.simState = simState;
             config = ConfigNetworkSettings();
-            me.msgFactory = MsgFactory(me.simState,config.controlPointNodes{1});
+            me.factory = MsgFactory(simState,config.controlPointNodes{1});
             
         end
         function setup(me)
             me.cmdListener= CommandListener(me.simcorPort, me.timeout);
             me.cmdSender = CommandSender(me.lbcbHost,me.lbcbPort,me.timeout);
-            me.simcorLink = SimCorLink(me.msgFactory,LinkStateMachine(me.cmdListener));
-            me.lbcbLink = SimCorLink(me.msgFactory,LinkStateMachine(me.cmdSender));
+            me.simcorLink = SimCorLink(me.factory,LinkStateMachine(me.cmdListener));
+            me.lbcbLink = SimCorLink(me.factory,LinkStateMachine(me.cmdSender));
         end
         function [errorsExist errorMsg] = checkForErrors(me)
             errorMsg = {};
@@ -67,7 +68,7 @@ classdef Network < handle
                         end
                     end
                 case  'CONNECTED'
-                    msg = me.msgFactory.createCommand('open-session','dummySession',[],0);
+                    msg = me.factory.createCommand('open-session','dummySession',[],0);
                     me.cmdSender.send(msg);
                     me.senderStates.setState('OPEN SENT');
                 case  'OPEN SENT'

@@ -13,7 +13,7 @@ classdef SimulationEngine < handle
     methods
         function me = SimulationEngine()
             me.simState = SimulationState();
-            me.network = NetworkSettings();
+            me.network = Network(me.simState);
             me.stepReduction{1} = StepReduction();
             me.stepReduction{2} = StepReduction();
             me.transform = CreateTransforms();

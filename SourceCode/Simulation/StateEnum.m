@@ -1,10 +1,10 @@
-classdef  stateEnum < handle
+classdef  StateEnum < handle
     properties
     states = { };
     idx = 1;
     end
     methods
-        function me = stateEnum(states)
+        function me = StateEnum(states)
             me.states = states;
             me.idx = 1;
         end
