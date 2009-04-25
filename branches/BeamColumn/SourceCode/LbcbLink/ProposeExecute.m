@@ -25,8 +25,8 @@ classdef ProposeExecute < handle
             me.timeoutMultiplier = config.multiplier;
         end
         
-        function setTarget(me,lbcb1,lbcb2)
-            me.targets = {lbcb1, lbcb2};
+        function setTarget(me,targets)
+            me.targets = targets;
         end
         
         function done = execute(me)
@@ -73,23 +73,25 @@ classdef ProposeExecute < handle
         end
         function reading = getReadings(me,cps)
             response = me.lsm.link.response.getContent();
+            node = me.lsm.link.response.getNode();
             switch cps
                 case {'LBCB1', 'LBCB2'}
                     reading = lbcbReading();
-                    reading.parse(response);
+                    reading.parse(response,node);
                 case 'ExternalTransducers'
                     reading = parseExternalTransducers(response);
             end
         end
         
         function done = executeSendTarget(me,isLbcb1)
+            me.receivePending = 0;
             if isLbcb1
                 cps = 'LBCB1';
                 tgt= 1;
             else
                 cps = 'LBCB2';
                 tgt= 2;
-            end            
+            end
             done = 0;
             switch me.lsm.state.getState()
                 case 'READY'
@@ -101,7 +103,6 @@ classdef ProposeExecute < handle
                 case 'PENDING'
                     me.lsm.check();
                 case 'DONE'
-                    me.clearTimeoutErrors();
                     if me.receivePending
                         me.receivePending = 0;
                         done = 1;
@@ -110,10 +111,12 @@ classdef ProposeExecute < handle
                     end
                     me.lsm.reset();
                 case 'ERROR'
+                    me.clearTimeoutErrors();
             end
         end
         
         function done = executeSendExecute(me)
+            me.receivePending = 0;
             done = 0;
             switch me.lsm.state.getState()
                 case 'READY'
@@ -125,23 +128,22 @@ classdef ProposeExecute < handle
                 case 'PENDING'
                     me.lsm.check();
                 case 'DONE'
-                    me.clearTimeoutErrors();
                     if me.receivePending
                         me.receivePending = 0;
+                        done = 1;
                     else
                         me.receivePending = 1;
-                        me.lsm.reset();
-                        done = 1;
                     end
+                        me.lsm.reset();
                 case 'ERROR'
+                    me.clearTimeoutErrors();
             end
         end
         
         function done = executeGetControlPoint(me,cpsIdx)
             cpsNames = {'LBCB1','LBCB2','ExternalTransducers'};
             done = 0;
-            me.receivePending = 0;
-            
+            me.receivePending = 0;            
             switch me.lsm.state.getState()
                 case 'READY'
                     if me.receivePending
@@ -152,16 +154,16 @@ classdef ProposeExecute < handle
                 case 'PENDING'
                     me.lsm.check();
                 case 'DONE'
-                    me.clearTimeoutErrors();
                     if me.receivePending
                         me.readings{cpsIdx} = me.getReadings(cpsNames{cpsIdx});
                         me.receivePending = 0;
-                        me.lsm.reset();
                         done = 1;
                     else
                         me.receivePending = 1;
                     end
+                        me.lsm.reset();
                 case 'ERROR'
+                    me.clearTimeoutErrors();
             end
         end
         function clearTimeoutErrors(me)
