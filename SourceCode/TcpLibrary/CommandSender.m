@@ -15,7 +15,7 @@ classdef CommandSender < handle
             if  nargin > 0
                 me.params.setRemoteHost(remoteHost);
                 me.params.setRemotePort(remotePort);
-                me.params.setTcpReadTimeout(timeout);
+                me.params.setTcpTimeout(timeout);
                 me.sender.setParams(me.params);
                 me.sender.setupConnection();
             end
