@@ -14,7 +14,7 @@ classdef CommandListener < handle
         function me = CommandListener(localPort,timeout)
             if  nargin > 0
                 me.params.setLocalPort(localPort);
-                me.params.setTcpReadTimeout(timeout);
+                me.params.setTcpTimeout(timeout);
                 me.listener.setParams(me.params);
                 me.listener.setupConnection();
             end

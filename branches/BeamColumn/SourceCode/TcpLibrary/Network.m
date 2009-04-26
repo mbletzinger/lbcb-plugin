@@ -19,6 +19,7 @@ classdef Network < handle
             'OPEN SENT',...
             'SESSION  OPENED',...
             'CLOSE SENT',...
+            'SESSION  CLOSED',...
             'DISCONNECTING'...
             });
         simcorState = StateEnum({...
@@ -52,13 +53,15 @@ classdef Network < handle
             errorMsg = {};
             errorsExist = 0;
             i = 1;
-            if(me.cmdSender.status.isState('NONE') == 0)
+            status = me.cmdSender.getResponse();
+            if(status.isState('NONE') == 0)
                 errorMsg{i} = me.cmdSender.errorMsg;
                 i = i + 1;
                 errorsExist = 1;
                 me.lbcbState.setState('CLOSED');
             end
-            if(me.cmdListener.status.isState('NONE') == 0)
+            status = me.cmdListener.getResponse();
+            if(status.isState('NONE') == 0)
                 errorMsg{i} = me.cmdSender.errorMsg;
                 errorsExist = 1;
             end
@@ -68,17 +71,19 @@ classdef Network < handle
             done = 0;
             switch cn
                 case 'UI-SIMCOR'
-                    me.closeUiSimCor();
+                    done = me.closeUiSimCor();
                 case 'LBCB'
-                    me.closeLbcb();
+                    done = me.closeLbcb();
                 case 'DAQ DEVICES'
                 case 'ALL'
-                    me.closeUiSimCor();
-                    me.closeLbcb();
+                    ud = me.closeUiSimCor();
+                    ld = me.closeLbcb();
+                    done = ud && ld;
             end
         end
         function done = closeLbcb(me)
             done = 0;
+            me.lbcbState.getState()
             switch me.lbcbState.getState()
                 case 'CLOSED'
                     done = 1;
@@ -89,7 +94,18 @@ classdef Network < handle
                             me.lbcbState.setState('CLOSED');
                         end
                     end
-                case  {'SESSION  OPENED','CONNECTED', 'OPEN SENT'}
+                case  'SESSION  OPENED'
+                    msg = me.factory.createCommand('close-session','dummySession',[],0);
+                    me.cmdSender.send(msg.jmsg);
+                    me.lbcbState.setState('CLOSE SENT');
+                case  'CLOSE SENT'
+                    if(me.cmdSender.isDone())
+                        status = me.cmdSender.getResponse();
+                        if status.isState('NONE')
+                            me.lbcbState.setState('SESSION  CLOSED');
+                        end
+                    end
+                case  {'SESSION  CLOSED','CONNECTED', 'OPEN SENT'}
                     me.cmdSender.close();
                     me.lbcbState.setState('DISCONNECTING');
             end
@@ -117,18 +133,20 @@ classdef Network < handle
             done = 0;
             switch cn
                 case 'UI-SIMCOR'
-                    me.connectUiSimCor();
+                    done = me.connectUiSimCor();
                 case 'LBCB'
-                    me.connectLbcb();
+                    done = me.connectLbcb();
                 case 'DAQ DEVICES'
                 case 'ALL'
-                    me.connectUiSimCor();
-                    me.connectLbcb();
+                    ud = me.connectUiSimCor();
+                    ld = me.connectLbcb();
+                    done = ud && ld;
             end
         end
         
         function done = connectLbcb(me)
             done = 0;
+            me.lbcbState.getState()
             switch me.lbcbState.getState()
                 case 'CLOSED'
                     me.cmdSender.open();
