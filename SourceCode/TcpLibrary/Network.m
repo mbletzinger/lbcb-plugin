@@ -12,18 +12,27 @@ classdef Network < handle
         factory = {};
         cmdSender = {};
         cmdListener = {};
-        senderState = StateEnum({...
+        lbcbState = StateEnum({...
             'CLOSED',...
             'CONNECTING',...
             'CONNECTED',...
             'OPEN SENT',...
-            'SESSION  OPENED'...
+            'SESSION  OPENED',...
+            'CLOSE SENT',...
+            'DISCONNECTING'...
             });
-        listenerState = StateEnum({...
+        simcorState = StateEnum({...
             'CLOSED',...
             'CONNECTED',...
             'WAITING FOR SESSION',...
-            'SESSION  OPENED'...
+            'SESSION  OPENED',...
+            'DISCONNECTING'...
+            });
+        connection = StateEnum({...
+            'UI-SIMCOR',...
+            'LBCB',...
+            'DAQ DEVICES',...
+            'ALL'...
             });
     end
     methods
@@ -36,72 +45,137 @@ classdef Network < handle
         function setup(me)
             me.cmdListener= CommandListener(me.simcorPort, me.timeout);
             me.cmdSender = CommandSender(me.lbcbHost,me.lbcbPort,me.timeout);
-            me.simcorLink = SimCorLink(me.factory,LinkStateMachine(me.cmdListener));
-            me.lbcbLink = SimCorLink(me.factory,LinkStateMachine(me.cmdSender));
+            me.simcorLink = LinkStateMachine(me.cmdListener);
+            me.lbcbLink = LinkStateMachine(me.cmdSender);
         end
         function [errorsExist errorMsg] = checkForErrors(me)
             errorMsg = {};
             errorsExist = 0;
             i = 1;
-            if(me.cmdSender.status.isStatus('NONE') == 0)
+            if(me.cmdSender.status.isState('NONE') == 0)
                 errorMsg{i} = me.cmdSender.errorMsg;
                 i = i + 1;
                 errorsExist = 1;
-                me.senderState.setState('CLOSED');
+                me.lbcbState.setState('CLOSED');
             end
-            if(me.cmdListener.status.isStatus('NONE') == 0)
+            if(me.cmdListener.status.isState('NONE') == 0)
                 errorMsg{i} = me.cmdSender.errorMsg;
                 errorsExist = 1;
             end
         end
-        function done = isConnected(me)
-            senderDone = 0;
-            switch me.senderStates.getState()
+        
+        function done = closeConnection(me,cn)
+            done = 0;
+            switch cn
+                case 'UI-SIMCOR'
+                    me.closeUiSimCor();
+                case 'LBCB'
+                    me.closeLbcb();
+                case 'DAQ DEVICES'
+                case 'ALL'
+                    me.closeUiSimCor();
+                    me.closeLbcb();
+            end
+        end
+        function done = closeLbcb(me)
+            done = 0;
+            switch me.lbcbState.getState()
+                case 'CLOSED'
+                    done = 1;
+                case  'DISCONNECTING'
+                    if(me.cmdSender.isDone())
+                        status = me.cmdSender.getResponse();
+                        if status.isState('NONE')
+                            me.lbcbState.setState('CLOSED');
+                        end
+                    end
+                case  {'SESSION  OPENED','CONNECTED', 'OPEN SENT'}
+                    me.cmdSender.close();
+                    me.lbcbState.setState('DISCONNECTING');
+            end
+        end
+        
+        function done = closeUiSimCor(me)
+            done = 0;
+            switch me.simcorStates.getState()
+                case  'CLOSED'
+                    done = 1;
+                case  'DISCONNECTING'
+                    if(me.cmdListener.isDone())
+                        status = me.cmdListener.getResponse();
+                        if status.isState('NONE')
+                            me.simcorStates.setState('CLOSED');
+                        end
+                    end
+                case {'SESSION  OPENED','CONNECTED','WAITING FOR SESSION'}
+                    me.cmdListener.close()
+                    me.simcorStates.setState('DISCONNECTING');
+            end
+        end
+
+        function done = isConnected(me,cn)
+            done = 0;
+            switch cn
+                case 'UI-SIMCOR'
+                    me.connectUiSimCor();
+                case 'LBCB'
+                    me.connectLbcb();
+                case 'DAQ DEVICES'
+                case 'ALL'
+                    me.connectUiSimCor();
+                    me.connectLbcb();
+            end
+        end
+        
+        function done = connectLbcb(me)
+            done = 0;
+            switch me.lbcbState.getState()
                 case 'CLOSED'
                     me.cmdSender.open();
-                    me.senderStates.setState('CONNECTING');
+                    me.lbcbState.setState('CONNECTING');
                 case  'CONNECTING'
                     if(me.cmdSender.isDone())
                         status = me.cmdSender.getResponse();
                         if status.isState('NONE')
-                            me.senderStates.setState('CONNECTED');
+                            me.lbcbState.setState('CONNECTED');
                         end
                     end
                 case  'CONNECTED'
                     msg = me.factory.createCommand('open-session','dummySession',[],0);
-                    me.cmdSender.send(msg);
-                    me.senderStates.setState('OPEN SENT');
+                    me.cmdSender.send(msg.jmsg);
+                    me.lbcbState.setState('OPEN SENT');
                 case  'OPEN SENT'
                     if(me.cmdSender.isDone())
                         status = me.cmdSender.getResponse();
                         if status.isState('NONE')
-                            me.senderStates.setState('SESSION  OPENED');
+                            me.lbcbState.setState('SESSION  OPENED');
                         end
                     end
                 case  'SESSION  OPENED'
-                    senderDone = 1;
+                    done = 1;
             end
+        end
             
-            listenerDone = 0;
-            switch me.listenerStates.getState()
+       function done = connectUiSimCor(me)
+            done = 0;
+            switch me.simcorStates.getState()
                 case  'CLOSED'
                     if me.cmdListener.open()
-                        me.listenerStates.setState('CONNECTED');
+                        me.simcorStates.setState('CONNECTED');
                     end
                 case 'CONNECTED'
                     me.cmdListener.read();
-                    me.listenerStates.setState('WAITING FOR SESSION');
+                    me.simcorStates.setState('WAITING FOR SESSION');
                 case 'WAITING FOR SESSION'
                     if(me.cmdListener.isDone())
                         status = me.cmdListener.getResponse();
                         if status.isState('NONE') && strcmp(me.cmdListener.command,'open-session')
-                            me.listenerStates.setState('SESSION  OPENED');
+                            me.simcorStates.setState('SESSION  OPENED');
                         end
                     end
                 case 'SESSION  OPENED'
-                    listenerDone = 1;
+                    done = 1;
             end
-            done = listenerDone && senderDone;
-        end
+       end
     end
 end

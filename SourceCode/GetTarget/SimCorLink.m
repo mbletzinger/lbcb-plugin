@@ -1,17 +1,17 @@
-classdef simcorLink < handle
+classdef SimCorLink < handle
     properties
         factory = {};
         lsm = {};
         targets = cell(3,1);
         readings = cell(3,1);
         commandPending = 1;
-        m2d = msg2DofData();
+        m2d = Msg2DofData();
         response = {};
         command = {};
-        connected = stateEnum({'DISCONNECTED','CONNECTING','CONNECTED','ERROR','DISCONNECTING'});
+        connected = StateEnum({'DISCONNECTED','CONNECTING','CONNECTED','ERROR','DISCONNECTING'});
     end
     methods
-        function me = simcorLink(factory,lsm)
+        function me = SimCorLink(factory,lsm)
             me.factory = factory;
             me.lsm = lsm;
         end

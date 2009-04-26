@@ -2,7 +2,7 @@ classdef CommandListener < handle
     properties
         listener= org.nees.uiuc.simcor.CommandListener;
         params = org.nees.uiuc.simcor.tcp.TcpParameters;
-        status = stateEnum({'NONE',...
+        status = StateEnum({'NONE',...
             'IO_ERROR',...
             'TIMEOUT',...
             'UNKNOWN_REMOTE_HOST'});
@@ -41,7 +41,7 @@ classdef CommandListener < handle
             me.listener.readCommand()
         end
         function close(me)
-            me.listener.close()
+            me.listener.closeConnection()
         end
     end
 end
