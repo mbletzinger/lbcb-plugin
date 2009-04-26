@@ -15,8 +15,8 @@ classdef  StateEnum < handle
             tmp = find(strcmp(me.states,state));
             me.idx = tmp(1);
         end
-        function result = isState(state)
-            result = strcmp(getState(),state);
+        function result = isState(me,state)
+            result = strcmp(me.getState(),state);
         end
     end
 end

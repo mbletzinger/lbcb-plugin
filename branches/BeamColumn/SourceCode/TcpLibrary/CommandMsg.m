@@ -1,17 +1,19 @@
-classdef commandMsg < handle
+classdef CommandMsg < handle
     properties
-        msg = org.nees.uiuc.simcor.data.SimCorMsgDao;
-        type = stateEnum({'OK', 'NOT_OK', 'COMMAND'});
+        jmsg = org.nees.uiuc.simcor.msg.SimCorMsg;
+        type = StateEnum({'OK', 'NOT_OK', 'COMMAND'});
         simState = {};
     end
     methods
-        function me = commandMsg(simState, msg)
+        function me = CommandMsg(simState, jmsg)
             if nargin > 0
                 if(isobject(simState))
                     me.simState = simState;
                 end
-                if(isobject(msg))
-                    me.msg = msg;
+            end
+            if nargin > 1
+                if(isobject(jmsg))
+                    me.jmsg = jmsg;
                 end
             end
         end
@@ -19,11 +21,11 @@ classdef commandMsg < handle
             me.simState = simState;
         end
         function generateTransId(me)
-            me.msg.createTransId();
+            me.jmsg.createTransId();
         end
         function setSteps(me)
-            me.msg.setStep(simState.step);
-            me.msg.setSubStep(simState.subStep);
+            me.jmsg.setStepNumber(me.simState.step);
+            me.jmsg.setSubStepNumber(me.simState.subStep);
         end
     end
 end

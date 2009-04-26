@@ -60,7 +60,7 @@ classdef ProposeExecute < handle
             end            
         end
         
-        function sendMsg(me,command,cps,target)
+        function sendMsg(me,command,target,cps)
             switch command
                 case 'propose'
                     msg = me.factory.createCommand('propose',target.createMsg(),cps,1);
@@ -92,6 +92,8 @@ classdef ProposeExecute < handle
                 cps = 'LBCB2';
                 tgt= 2;
             end
+            me.targets
+            cps
             done = 0;
             switch me.lsm.state.getState()
                 case 'READY'

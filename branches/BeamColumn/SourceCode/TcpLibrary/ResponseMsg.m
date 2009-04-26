@@ -1,15 +1,15 @@
-classdef responseMsg < handle
+classdef ResponseMsg < handle
     properties
-        msg = org.nees.uiuc.simcor.data.SimCorMsg;
-        type = stateEnum({'OK', 'NOT_OK', 'COMMAND'});
+        jmsg = org.nees.uiuc.simcor.data.SimCorMsg;
+        type = StateEnum({'OK', 'NOT_OK', 'COMMAND'});
     end
     methods
-        function me = responseMsg(jmsg)
+        function me = ResponseMsg(jmsg)
             if nargin > 0
-                if(isobject(msg))
-                    me.msg = org.nees.uiuc.simcor.data.SimCorMsg(jmsg);
-                    me.msg.setResponse('OK');
-                    me.msg.setCommand([]);
+                if(isobject(jmsg))
+                    me.jmsg = org.nees.uiuc.simcor.data.SimCorMsg(jmsg);
+                    me.jmsg.setResponse('OK');
+                    me.jmsg.setCommand([]);
                 end
             end
         end
