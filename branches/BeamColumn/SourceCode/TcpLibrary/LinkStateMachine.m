@@ -39,7 +39,7 @@ classdef LinkStateMachine < handle
             isDone = me.link.isDone();
             if isDone
                 status = me.link.getResponse();
-                if status.isStatus('NONE')
+                if status.isState('NONE')
                     me.state.setState('DONE');
                 else
                     me.state.setState('ERROR');

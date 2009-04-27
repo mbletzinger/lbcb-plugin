@@ -3,9 +3,12 @@ classdef Msg2DofData < handle
         delimiter = sprintf(' \t');
     end
     methods
+        function cps = parseCps(me,mdl)
+            cps = sscanf(mdl(:),':%s');
+        end
         function data = parse(me,msg,mdl)
-            data = {lbcbTarget()};
-            data{1}.node = parseCps(mdl);
+            data = {LbcbTarget()};
+            data{1}.cps = me.parseCps(mdl);
             tgt =1;
             tokens = me.splitTokens(msg);
             cellA = me.tokensSort(tokens);
@@ -87,9 +90,6 @@ classdef Msg2DofData < handle
                     index = index + 3;
                     isForce = 1;
             end
-        end
-        function cps = parseCps(mdl)
-            cps = sscanf(mdl,':%s');
         end
     end
 end
