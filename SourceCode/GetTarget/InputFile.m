@@ -1,6 +1,8 @@
 classdef  InputFile < handle
     properties
-    targets = targetSequence();
+    targets = {};
+    node = '';
+    path = '';
     end
     methods
         function load(me,path)
@@ -10,7 +12,8 @@ classdef  InputFile < handle
                 errordlg('Input file should have six columns of data.');
                 return
             end
-            me.targets.setTargets(targets);
+            me.targets = targets;
+            me.path = path;
         end
     end
 end
