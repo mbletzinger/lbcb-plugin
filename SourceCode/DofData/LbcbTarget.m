@@ -24,24 +24,45 @@ classdef LbcbTarget < handle
         end
         function msg = createMsg(me)
             msg = '';
+            first = 1;
             for i = 1:3
                 if(me.dispDofs(i))
-                    msg = strcat(msg,sprintf('%s\t%s\t%.10e\t',me.dofLabels{i},'displacement',me.target.disp(i)));
+                    if first
+                        msg = strcat(msg,sprintf('%s\t%s\t%.10e\t',me.dofLabels{i},'displacement',me.target.disp(i)));
+                        first = 0;
+                    else
+                        msg = strcat(msg,sprintf('\t%s\t%s\t%.10e\t',me.dofLabels{i},'displacement',me.target.disp(i)));
+                    end
                 end
             end
             for i = 4:6
                 if(me.dispDofs(i))
-                    msg = strcat(msg,sprintf('%s\t%s\t%.10e\t',me.dofLabels{i-3},'rotation',me.target.disp(i)));
+                    if first
+                        msg = strcat(msg,sprintf('%s\t%s\t%.10e\t',me.dofLabels{i-3},'rotation',me.target.disp(i)));
+                        first = 0;
+                    else
+                        msg = strcat(msg,sprintf('\t%s\t%s\t%.10e\t',me.dofLabels{i-3},'rotation',me.target.disp(i)));
+                    end
                 end
             end
             for i = 1:3
                 if(me.forceDofs(i))
-                    msg = strcat(msg,sprintf('%s\t%s\t%.10e\t',me.dofLabels{i},'force',me.target.force(i)));
+                    if first
+                        msg = strcat(msg,sprintf('%s\t%s\t%.10e\t',me.dofLabels{i},'force',me.target.force(i)));
+                        first = 0;
+                    else
+                        msg = strcat(msg,sprintf('\t%s\t%s\t%.10e\t',me.dofLabels{i},'force',me.target.force(i)));
+                    end
                 end
             end
             for i = 4:6
                 if(me.forceDofs(i))
-                    msg = strcat(msg,sprintf('%s\t%s\t%.10e\t',me.dofLabels{i-3},'moment',me.target.force(i)));
+                    if first
+                        msg = strcat(msg,sprintf('%s\t%s\t%.10e\t',me.dofLabels{i-3},'moment',me.target.force(i)));
+                        first = 0;
+                    else
+                        msg = strcat(msg,sprintf('\t%s\t%s\t%.10e\t',me.dofLabels{i-3},'moment',me.target.force(i)));
+                    end
                 end
             end
         end

@@ -20,30 +20,46 @@ network.lbcbHost ='rp3267.cee.uiuc.edu';
 network.lbcbPort =6342;
 network.setup();
 notDone = 1;
+
 while(notDone)
     done = network.isConnected('LBCB');
-    if(done)
+    [errorsExist errorMsg] = network.checkForErrors();
+    if(done || errorsExist)
         notDone = 0;
+        if(errorsExist)
+            char(errorMsg)
+        end
     end
-    pause(2);
+    pause(0.5);
 end
+
 pe = ProposeExecute(network.factory,network.lbcbLink);
 pe.setTargets(targets);
 notDone = 1;
+
 while(notDone)
     done = pe.execute();
-    [errorsExist errorMsg] = network.checkForErrors()
-    if done || errorsExist
+    [errorsExist errorMsg] = network.checkForErrors();
+    if(done || errorsExist)
+        notDone = 0;
+        if(errorsExist)
+            char(errorMsg)
+        end
         notDone = 0;
     end
-    pause(2);
+    pause(0.5);
 end
 
 notDone = 1;
 while(notDone)
     done = network.closeConnection('LBCB');
-    if(done)
+    [errorsExist errorMsg] = network.checkForErrors();
+    errorsExist = 0;
+    if(done || errorsExist)
         notDone = 0;
+        if(errorsExist)
+            char(errorMsg)
+        end
     end
-    pause(2);
+    pause(0.5);
 end
