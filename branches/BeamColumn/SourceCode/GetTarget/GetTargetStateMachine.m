@@ -23,19 +23,19 @@ classdef GetTargetStateMachine < handle
         controlPointNodes = {};
         link ={};
         simcorSource = 0;
-        substeps = stepReduction();
+        substeps = StepReduction();
         target = {};
         sessionClosing = 0;
-        factory = {};
+        network = {};
         simState = 0;
         response = {};
     end
     methods
-        function me = GetTargetStateMachine(factory,lsm,simState)
-            config = ConfigSimCorLink();
+        function me = GetTargetStateMachine(network,lsm,simState)
+            config = ConfigNetworkSettings();
             me.controlPointNodes = config.controlPointNodes;
             me.link = lsm;
-            me.factory = factory;
+            me.network = network;
             me.simState = simState;
         end
         
@@ -60,7 +60,7 @@ classdef GetTargetStateMachine < handle
         function done = isDone(me)
             switch me.state.getState()
                 case 'INITIALIZING SOURCE'
-                    done = network.isConnected('UI-SIMCOR');
+                    done = me.network.isConnected('UI-SIMCOR');
                     if done
                         me.state.setState('SOURCE READY');
                     end
@@ -80,7 +80,7 @@ classdef GetTargetStateMachine < handle
                                 me.command = m2d.parse(cnt,nd);
                                 me.state.setState('TARGET READY');
                             case 'close-session'
-                                rsp = me.factory.createResponse('Close accepted','',me.lsm.link.command);
+                                rsp = me.network.factory.createResponse('Close accepted','',me.lsm.link.command);
                                 me.lsm.execute('SEND',rsp);
                                 me.state.setState('SESSION IS CLOSING');
                         end
@@ -96,7 +96,7 @@ classdef GetTargetStateMachine < handle
                             cnt = sprintf('%s\t%s',cnt,me.response{t}.createMsg());
                         end
                     end
-                    rsp = me.factory.createResponse(cnt,'',me.lsm.link.command);
+                    rsp = me.network.factory.createResponse(cnt,'',me.lsm.link.command);
                     me.lsm.execute('SEND',rsp);
                     me.state.setState( 'SENDING RESPONSE');
                 case 'SENDING RESPONSE'

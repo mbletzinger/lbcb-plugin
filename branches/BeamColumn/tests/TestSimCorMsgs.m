@@ -7,22 +7,24 @@ javaaddpath(fullfile(pwd,'SourceCode','TcpLibrary','UiSimCorJava-0.0.1-SNAPSHOT.
 javaaddpath(fullfile(pwd,'SourceCode','TcpLibrary','log4j-1.2.15.jar'));
 javaaddpath(fullfile(pwd,'SourceCode','TcpLibrary'));
 
-responses = {LbcbReading(), LbcbReading};
+responses = {Target(),Target(),Target()};
 
-responses{1}.disp(1) = 0.003;
-responses{2}.disp(4) = 0.003;
-responses{1}.force(2) = 35;
-responses{2}.force(6) = 2000;
+responses{1}.setDispDof(1,0.003);
+responses{2}.setDispDof(4,0.003);
+responses{1}.setForceDof(2,35);
+responses{2}.setForceDof(6,2000);
+responses{3}.setDispDof(5,0.003);
+responses{3}.setForceDof(3,2000);
 
 simState = SimulationState();
 network = Network(simState);
 network.lbcbHost ='rp3267.cee.uiuc.edu';
 network.lbcbPort =6342;
-network.simcorPort =6343;
+network.simcorPort =11999;
 network.setup();
 notDone = 1;
 
-gt = GetTargetStateMachine(network.factory,network.simcorLink);
+gt = GetTargetStateMachine(network,network.simcorLink,simState);
 
 testGetTarget(gt,network,'INITIALIZING SOURCE');
 
@@ -34,7 +36,7 @@ end
 
 notDone = 1;
 while(notDone)
-    done = network.closeConnection('LBCB');
+    done = network.closeConnection('UI-SIMCOR');
     [errorsExist errorMsg] = network.checkForErrors();
     errorsExist = 0;
     if(done || errorsExist)

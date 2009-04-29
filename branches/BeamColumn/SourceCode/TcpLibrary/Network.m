@@ -113,19 +113,19 @@ classdef Network < handle
         
         function done = closeUiSimCor(me)
             done = 0;
-            switch me.simcorStates.getState()
+            switch me.simcorState.getState()
                 case  'CLOSED'
                     done = 1;
                 case  'DISCONNECTING'
                     if(me.cmdListener.isDone())
                         status = me.cmdListener.getResponse();
                         if status.isState('NONE')
-                            me.simcorStates.setState('CLOSED');
+                            me.simcorState.setState('CLOSED');
                         end
                     end
                 case {'SESSION  OPENED','CONNECTED','WAITING FOR SESSION'}
                     me.cmdListener.close()
-                    me.simcorStates.setState('DISCONNECTING');
+                    me.simcorState.setState('DISCONNECTING');
             end
         end
 
@@ -176,19 +176,19 @@ classdef Network < handle
             
        function done = connectUiSimCor(me)
             done = 0;
-            switch me.simcorStates.getState()
+            switch me.simcorState.getState()
                 case  'CLOSED'
                     if me.cmdListener.open()
-                        me.simcorStates.setState('CONNECTED');
+                        me.simcorState.setState('CONNECTED');
                     end
                 case 'CONNECTED'
                     me.cmdListener.read();
-                    me.simcorStates.setState('WAITING FOR SESSION');
+                    me.simcorState.setState('WAITING FOR SESSION');
                 case 'WAITING FOR SESSION'
                     if(me.cmdListener.isDone())
                         status = me.cmdListener.getResponse();
                         if status.isState('NONE') && strcmp(me.cmdListener.command,'open-session')
-                            me.simcorStates.setState('SESSION  OPENED');
+                            me.simcorState.setState('SESSION  OPENED');
                         end
                     end
                 case 'SESSION  OPENED'
