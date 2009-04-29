@@ -88,7 +88,9 @@ classdef Network < handle
                     ud = me.closeUiSimCor();
                     ld = me.closeLbcb();
                     done = ud && ld;
-            end
+                  otherwise
+                    error = sprintf('%s not recognized',cn)
+           end
         end
         function done = closeLbcb(me)
             done = 0;
@@ -137,7 +139,7 @@ classdef Network < handle
                     end
                 case {'SESSION  OPENED','CONNECTED',...
                         'WAITING FOR SESSION','LISTENING FOR UI-SIMCOR CONNECTION'}
-                    me.cmdListener.close()
+                    me.cmdListener.close();
                     me.simcorState.setState('DISCONNECTING');
                 otherwise
                     error = sprintf('%s not recognized',me.simcorState.getState())

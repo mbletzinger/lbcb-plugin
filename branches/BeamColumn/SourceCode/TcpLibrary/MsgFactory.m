@@ -23,6 +23,7 @@ classdef MsgFactory < handle
         function rsp = createResponse(me,content,jcommand)
             rsp = ResponseMsg(jcommand);
             rsp.jmsg.setContent(content);
+            rsp.jmsg.setResponseOk();
         end
         function cmd = parseCommand(me,jmsg)
             cmd = CommandMsg(me.simState,jmsg);

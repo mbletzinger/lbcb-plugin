@@ -36,13 +36,16 @@ classdef CommandListener < handle
                 done = me.listener.isDone();
             end
         end
+        function status = getResponse(me) % need this for the link state machine
+            status = me.getCommand();
+        end
         function status = getCommand(me)
             action = me.listener.getCommand();
             me.status.setState(action.getError());
             me.errorMsg = action.getErrorMsg();
             status = me.status;
             me.command = action.getMsg();
-            msg = action.dump()
+%            msg = action.dump()
         end
         function read(me)
             me.listener.readCommand()
