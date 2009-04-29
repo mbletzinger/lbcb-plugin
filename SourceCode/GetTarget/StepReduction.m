@@ -4,7 +4,7 @@ classdef StepReduction < handle
         numSteps = 0;
         targetChange = [];
         target = [];
-        subStepTargets = targetSequence();
+        subStepTargets = {};
     end
     methods
         function me = StepReduction()

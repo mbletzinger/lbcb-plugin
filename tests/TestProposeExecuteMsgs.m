@@ -7,7 +7,7 @@ javaaddpath(fullfile(pwd,'SourceCode','TcpLibrary','UiSimCorJava-0.0.1-SNAPSHOT.
 javaaddpath(fullfile(pwd,'SourceCode','TcpLibrary','log4j-1.2.15.jar'));
 javaaddpath(fullfile(pwd,'SourceCode','TcpLibrary'));
 
-targets = {LbcbTarget(), LbcbTarget};
+targets = {Target(), Target()};
 
 targets{1}.setDispDof(1,0.003);
 targets{2}.setDispDof(4,0.003);
@@ -17,7 +17,7 @@ targets{2}.setForceDof(6,2000);
 simState = SimulationState();
 network = Network(simState);
 network.lbcbHost ='rp3267.cee.uiuc.edu';
-network.lbcbPort =6342;
+network.lbcbPort =6343;
 network.setup();
 notDone = 1;
 
@@ -27,7 +27,7 @@ while(notDone)
     if(done || errorsExist)
         notDone = 0;
         if(errorsExist)
-            char(errorMsg)
+            errorMsg
         end
     end
     pause(0.5);
@@ -43,7 +43,7 @@ while(notDone)
     if(done || errorsExist)
         notDone = 0;
         if(errorsExist)
-            char(errorMsg)
+            errorMsg
         end
         notDone = 0;
     end

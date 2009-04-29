@@ -7,7 +7,7 @@ classdef Msg2DofData < handle
             cps = sscanf(mdl(:),':%s');
         end
         function data = parse(me,msg,mdl)
-            data = {LbcbTarget()};
+            data = {Target()};
             data{1}.cps = me.parseCps(mdl);
             tgt =1;
             tokens = me.splitTokens(msg);
@@ -18,16 +18,14 @@ classdef Msg2DofData < handle
                 [index isForce value] = me.findIndex(subCell);
                 if(index == 0)
                     tgt = tgt + 1;
-                    data{tgt} = lbcbTarget();
+                    data{tgt} = Target();
                     data{tgt}.node = cellA{r,1};
                     continue;
                 end
                 if isForce
-                    data{tgt}.target.force(index) = value;
-                    data{tgt}.forceDofs(index) = 1;
+                    data{tgt}.setForceDof(index,value);
                 else
-                    data{tgt}.target.disp(index) = value;
-                    data{tgt}.dispDofs(index) = 1;
+                    data{tgt}.setDispDof(index,value);
                 end
             end
         end
