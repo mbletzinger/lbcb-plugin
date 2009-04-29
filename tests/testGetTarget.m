@@ -1,5 +1,6 @@
 function done = testGetTarget(gt, network,action)
 notDone = 1;
+done = 0;
 gt.execute(action);
 while(notDone)
     gt.state.getState()
@@ -13,6 +14,9 @@ while(notDone)
         notDone = 0;
     end
     pause(0.5);
-    notDone = gt.sessionClosing == 0;
+    if gt.sessionClosing
+        done = 1;
+        notDone = 0;
+    end
 end
 end

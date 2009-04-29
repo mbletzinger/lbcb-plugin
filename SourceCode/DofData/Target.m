@@ -4,6 +4,7 @@ classdef Target < handle
         dispDofs = zeros(6,1); % true if controlled dof displacement
         forceDofs = zeros(6,1);% true if controlled dof force
         dofLabels = {'x','y','z'};
+        node = '';
         cps = '';
     end
     methods

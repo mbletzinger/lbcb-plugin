@@ -21,20 +21,21 @@ classdef GetTargetStateMachine < handle
         filenames = {};
         inputFilesUseModelCoordinates = 0;
         controlPointNodes = {};
-        link ={};
+        lsm ={};
         simcorSource = 0;
         substeps = StepReduction();
-        target = {};
+        targets = {};
         sessionClosing = 0;
         network = {};
         simState = 0;
         response = {};
+        m2d = Msg2DofData();
     end
     methods
         function me = GetTargetStateMachine(network,lsm,simState)
             config = ConfigNetworkSettings();
             me.controlPointNodes = config.controlPointNodes;
-            me.link = lsm;
+            me.lsm = lsm;
             me.network = network;
             me.simState = simState;
             me.simcorSource = config.useSimCor;
@@ -54,7 +55,7 @@ classdef GetTargetStateMachine < handle
                 case 'SEND RESPONSE'
                         me.state.setState('RESPONSE AVAILABLE');
                 otherwise
-                    error = sprintf('%s not recognized',action)
+                    error = sprintf('action [%s] not recognized',action)
             end
         end
 
@@ -77,13 +78,13 @@ classdef GetTargetStateMachine < handle
                         cmd = char(me.lsm.link.command.getCommand());
                         switch cmd
                             case 'propose'
-                                cnt = me.lsm.link.command.getContent();
-                                nd = me.lsm.link.command.getNode();
-                                me.command = m2d.parse(cnt,nd);
+                                cnt = char(me.lsm.link.command.getContent());
+                                nd = char(me.lsm.link.command.getNode());
+                                me.targets = me.m2d.parse(cnt,nd);
                                 me.state.setState('TARGET READY');
                             case 'close-session'
-                                rsp = me.network.factory.createResponse('Close accepted','',me.lsm.link.command);
-                                me.lsm.execute('SEND',rsp);
+                                rsp = me.network.factory.createResponse('Close accepted',me.lsm.link.command);
+                                me.lsm.execute('SEND',rsp.jmsg);
                                 me.state.setState('SESSION IS CLOSING');
                         end
                     end
@@ -113,9 +114,9 @@ classdef GetTargetStateMachine < handle
                     end
                 case 'SESSION HAS CLOSED'
                     done = 1;
-                                me.sessionClosing = 1;
+                    me.sessionClosing = 1;
                 otherwise
-                    error = sprintf('%s not recognized',me.state.getState())
+                    error = sprintf('state [%s] not recognized',me.state.getState())
             end
         end
 

@@ -32,8 +32,11 @@ testGetTarget(gt,network,'INITIALIZE SOURCE');
 
 gt.response = responses;
 while(notDone)
-    notDone = testGetTarget(gt,network,'TARGET REQUESTED');
-    testGetTarget(gt,network,'SEND RESPONSE');
+    testGetTarget(gt,network,'GET TARGET');
+    notDone = gt.sessionClosing == 0;
+    if notDone
+        testGetTarget(gt,network,'SEND RESPONSE');
+    end
 end
 
 notDone = 1;
@@ -49,4 +52,4 @@ while(notDone)
     end
     pause(0.5);
 end
-
+% network.cmdListener.close()

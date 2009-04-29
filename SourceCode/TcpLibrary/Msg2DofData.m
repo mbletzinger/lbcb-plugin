@@ -34,7 +34,7 @@ classdef Msg2DofData < handle
             lgth = length(tokens);
             cellLgth = lgth / 3;  % this is a low ball guess
             cellLgth = cellLgth + mod(lgth,3);
-            cellA = cell(cellLgth,3);
+            cellA = cell(int16(cellLgth),3);
             for t = 1:lgth
                 switch tokens{t}
                     case {'x','y','z'}
@@ -67,6 +67,9 @@ classdef Msg2DofData < handle
             index = 0;
             isForce = 0;
             value = row{3};
+            if isempty(row{1})
+                return;
+            end
             
             switch row{1}
                 case 'x'
