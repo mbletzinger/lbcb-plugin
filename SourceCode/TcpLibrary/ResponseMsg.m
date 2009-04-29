@@ -1,6 +1,6 @@
 classdef ResponseMsg < handle
     properties
-        jmsg = org.nees.uiuc.simcor.data.SimCorMsg;
+        jmsg = org.nees.uiuc.simcor.msg.SimCorMsg;
         type = StateEnum({'OK', 'NOT_OK', 'COMMAND'});
     end
     methods

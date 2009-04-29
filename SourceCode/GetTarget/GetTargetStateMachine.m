@@ -1,11 +1,11 @@
 classdef GetTargetStateMachine < handle
     properties
-        action = stateEnum({...
+        action = StateEnum({...
             'INITIALIZE SOURCE',...
             'GET TARGET'...
             'SEND RESPONSE',...
             });
-        state = stateEnum({...
+        state = StateEnum({...
             'INITIALIZING SOURCE',...
             'SOURCE READY',...
             'TARGET REQUESTED',...
@@ -37,6 +37,7 @@ classdef GetTargetStateMachine < handle
             me.link = lsm;
             me.network = network;
             me.simState = simState;
+            me.simcorSource = config.useSimCor;
         end
         
         function execute(me,action)
@@ -58,10 +59,11 @@ classdef GetTargetStateMachine < handle
         end
 
         function done = isDone(me)
+            done = 0;
             switch me.state.getState()
                 case 'INITIALIZING SOURCE'
-                    done = me.network.isConnected('UI-SIMCOR');
-                    if done
+                    d = me.network.isConnected('UI-SIMCOR');
+                    if d
                         me.state.setState('SOURCE READY');
                     end
                 case 'SOURCE READY'
@@ -96,8 +98,8 @@ classdef GetTargetStateMachine < handle
                             cnt = sprintf('%s\t%s',cnt,me.response{t}.createMsg());
                         end
                     end
-                    rsp = me.network.factory.createResponse(cnt,'',me.lsm.link.command);
-                    me.lsm.execute('SEND',rsp);
+                    rsp = me.network.factory.createResponse(cnt,me.lsm.link.command);
+                    me.lsm.execute('SEND',rsp.jmsg);
                     me.state.setState( 'SENDING RESPONSE');
                 case 'SENDING RESPONSE'
                     d = me.lsm.check();
@@ -111,6 +113,7 @@ classdef GetTargetStateMachine < handle
                     end
                 case 'SESSION HAS CLOSED'
                     done = 1;
+                                me.sessionClosing = 1;
                 otherwise
                     error = sprintf('%s not recognized',me.state.getState())
             end
@@ -124,7 +127,7 @@ classdef GetTargetStateMachine < handle
             end
             me.inputfiles = cell(numNodes,1);
             for i = 1:numNodes
-                me.inputfiles{i} = inputFile();
+                me.inputfiles{i} = InputFile();
                 me.inputfiles{i}.load(me.filenames{i});
             end
         end
