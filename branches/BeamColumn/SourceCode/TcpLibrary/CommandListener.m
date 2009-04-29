@@ -9,6 +9,7 @@ classdef CommandListener < handle
         command = {};
         response = {};
         errorMsg = '';
+        shuttingDown = 0;
     end
     methods
         function me = CommandListener(localPort,timeout)
@@ -22,25 +23,32 @@ classdef CommandListener < handle
         end
         function isConnected = open(me)
             isConnected = me.listener.isConnected();
+            me.shuttingDown = 0;
         end
         function send(me,jmsg)
             me.response = jmsg;
             me.listener.sendResponse(jmsg);
         end
         function done = isDone(me)
-            done = me.listener.isDone();
+            if me.shuttingDown
+                done = me.listener.closeConnection();
+            else
+                done = me.listener.isDone();
+            end
         end
-        function status = getResponse(me)
-            action = me.listener.getResponse();
+        function status = getCommand(me)
+            action = me.listener.getCommand();
             me.status.setState(action.getError());
             me.errorMsg = action.getErrorMsg();
             status = me.status;
             me.command = action.getMsg();
+            msg = action.dump()
         end
         function read(me)
             me.listener.readCommand()
         end
         function close(me)
+            me.shuttingDown = 1;
             me.listener.closeConnection()
         end
     end

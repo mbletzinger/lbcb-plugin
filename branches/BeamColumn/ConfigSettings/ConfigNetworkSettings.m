@@ -8,3 +8,4 @@ config.timeout=60000; % Time in milliseconds for how long to wait for a message 
 config.multiplier=5; % timeout x multiplier > maximum OM ramp time.
 config.inputFilesUseModelCoordinates = 0; % 1 = yes 0 = no
 config.controlPointNodes= {'MDL-00-01','MDL-00-02','MDL-00-03'}; % Order has to match simcor messages
+config.useSimCor = 1; % 1 = Use UI-SIMCOR as target source 0 = Use input files as target source

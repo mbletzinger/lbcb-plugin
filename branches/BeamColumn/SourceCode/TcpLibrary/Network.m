@@ -24,8 +24,10 @@ classdef Network < handle
             });
         simcorState = StateEnum({...
             'CLOSED',...
+            'LISTENING FOR UI-SIMCOR CONNECTION',...
             'CONNECTED',...
             'WAITING FOR SESSION',...
+            'SESSION OPENING',...
             'SESSION  OPENED',...
             'DISCONNECTING'...
             });
@@ -41,6 +43,12 @@ classdef Network < handle
             me.simState = simState;
             config = ConfigNetworkSettings();
             me.factory = MsgFactory(simState,config.controlPointNodes{1});
+            me.simcorPort = config.simcorPort;
+            me.triggerPort = config.triggerPort;
+            me.lbcbPort = config.lbcbPort;
+            me.lbcbHost = config.lbcbHost;
+            me.timeout = config.timeout;
+            
             
         end
         function setup(me)
@@ -48,21 +56,22 @@ classdef Network < handle
             me.cmdSender = CommandSender(me.lbcbHost,me.lbcbPort,me.timeout);
             me.simcorLink = LinkStateMachine(me.cmdListener);
             me.lbcbLink = LinkStateMachine(me.cmdSender);
+            me.simcorState.setState('LISTENING FOR UI-SIMCOR CONNECTION');
         end
         function [errorsExist errorMsg] = checkForErrors(me)
             errorMsg = {};
             errorsExist = 0;
             i = 1;
             status = me.cmdSender.getResponse();
-            if(status.isState('NONE') == 0)
-                errorMsg{i} = me.cmdSender.errorMsg;
+            if(status.isState('NONE') == 0 && me.lbcbState.isState('CLOSED') == 0)
+                errorMsg{i} = sprintf('Command Sender: %s',char(me.cmdSender.errorMsg));
                 i = i + 1;
                 errorsExist = 1;
                 me.lbcbState.setState('CLOSED');
             end
-            status = me.cmdListener.getResponse();
-            if(status.isState('NONE') == 0)
-                errorMsg{i} = me.cmdSender.errorMsg;
+            status = me.cmdListener.getCommand();
+            if(status.isState('NONE') == 0&& me.simcorState.isState('CLOSED') == 0)
+                errorMsg{i} = sprintf('Command Listener: %s',char(me.cmdListener.errorMsg));
                 errorsExist = 1;
             end
         end
@@ -108,11 +117,14 @@ classdef Network < handle
                 case  {'SESSION  CLOSED','CONNECTED', 'OPEN SENT'}
                     me.cmdSender.close();
                     me.lbcbState.setState('DISCONNECTING');
-            end
+                 otherwise
+                    error = sprintf('%s not recognized',me.lbcbState.getState())
+           end
         end
         
         function done = closeUiSimCor(me)
             done = 0;
+            state = me.simcorState.getState()
             switch me.simcorState.getState()
                 case  'CLOSED'
                     done = 1;
@@ -123,9 +135,12 @@ classdef Network < handle
                             me.simcorState.setState('CLOSED');
                         end
                     end
-                case {'SESSION  OPENED','CONNECTED','WAITING FOR SESSION'}
+                case {'SESSION  OPENED','CONNECTED',...
+                        'WAITING FOR SESSION','LISTENING FOR UI-SIMCOR CONNECTION'}
                     me.cmdListener.close()
                     me.simcorState.setState('DISCONNECTING');
+                otherwise
+                    error = sprintf('%s not recognized',me.simcorState.getState())
             end
         end
 
@@ -141,12 +156,14 @@ classdef Network < handle
                     ud = me.connectUiSimCor();
                     ld = me.connectLbcb();
                     done = ud && ld;
+                otherwise
+                    error = sprintf('%s not recognized',cn)
             end
         end
         
         function done = connectLbcb(me)
             done = 0;
-            me.lbcbState.getState()
+%            me.lbcbState.getState()
             switch me.lbcbState.getState()
                 case 'CLOSED'
                     me.cmdSender.open();
@@ -171,13 +188,16 @@ classdef Network < handle
                     end
                 case  'SESSION  OPENED'
                     done = 1;
+                otherwise
+                    error = sprintf('%s not recognized',me.lbcbState.getState())
             end
         end
             
        function done = connectUiSimCor(me)
             done = 0;
+            state = me.simcorState.getState()
             switch me.simcorState.getState()
-                case  'CLOSED'
+                case  {'CLOSED','LISTENING FOR UI-SIMCOR CONNECTION'}
                     if me.cmdListener.open()
                         me.simcorState.setState('CONNECTED');
                     end
@@ -186,13 +206,23 @@ classdef Network < handle
                     me.simcorState.setState('WAITING FOR SESSION');
                 case 'WAITING FOR SESSION'
                     if(me.cmdListener.isDone())
-                        status = me.cmdListener.getResponse();
-                        if status.isState('NONE') && strcmp(me.cmdListener.command,'open-session')
-                            me.simcorState.setState('SESSION  OPENED');
+                        status = me.cmdListener.getCommand();
+                        if status.isState('NONE') && strcmp(char(me.cmdListener.command.getCommand()),'open-session')
+                            rsp = me.factory.createResponse('Open accepted',me.cmdListener.command);
+                            me.cmdListener.send(rsp.jmsg);
+                            me.simcorState.setState('SESSION OPENING');
                         end
+                    end
+                case 'SESSION OPENING'
+                    if me.cmdListener.isDone()
+                        done = me.cmdListener.isDone()
+                        me.simcorState.setState('SESSION  OPENED');
                     end
                 case 'SESSION  OPENED'
                     done = 1;
+                otherwise
+                    error = sprintf('%s not recognized',me.simcorState.getState())
+
             end
        end
     end

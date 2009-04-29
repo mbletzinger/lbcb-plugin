@@ -1,6 +1,6 @@
 classdef Target < handle
     properties
-        data = dofData();
+        data = DofData();
         dispDofs = zeros(6,1); % true if controlled dof displacement
         forceDofs = zeros(6,1);% true if controlled dof force
         dofLabels = {'x','y','z'};
