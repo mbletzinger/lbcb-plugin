@@ -12,10 +12,10 @@ p.InputPort 		= 11998;		    	% Connection port from UI-SimCor, use LabView2 prot
 
 % p.IP_1            	= '127.0.0.1';              	% IP address
 % p.IP_2            	= '127.0.0.1';              	% IP address
-p.IP_1            	= '130.126.243.18';              	% IP address
-p.IP_2            	= '130.126.243.18';              	% IP address
+p.IP_1            	= 'rc3018.cee.uiuc.edu';              	% IP address
+%p.IP_2            	= '130.126.243.18';              	% IP address
 p.Port_1          	= 6342;                    	% Port number
-p.Port_2          	= 6343;                    	% Port number                	                            	
+%p.Port_2          	= 6343;                    	% Port number                	                            	
 
 p.ItrElasticDeform 	= 0;				% 0 for no iteration, 1 for iteration
 p.maxitr                = 10;				% maximum number of iteration

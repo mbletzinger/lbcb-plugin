@@ -12,8 +12,8 @@ handles.MDL.InputFile 		= get(handles.Edit_File_Path,       	'String');
 % LBCB -----------------------------------------------------------------------------------------
 handles.MDL.IP_1 		= get(handles.Edit_LBCB_IP_1,	    	'String');
 handles.MDL.Port_1 		= str2num(get(handles.Edit_LBCB_Port_1,	'String'));
-handles.MDL.IP_2 		= get(handles.Edit_LBCB_IP_2,	    	'String');
-handles.MDL.Port_2 		= str2num(get(handles.Edit_LBCB_Port_2,	'String'));
+% handles.MDL.IP_2 		= get(handles.Edit_LBCB_IP_2,	    	'String');
+% handles.MDL.Port_2 		= str2num(get(handles.Edit_LBCB_Port_2,	'String'));
 
 % Disp. Iteration ------------------------------------------------------------------------------
 if 	get(handles.RB_Elastic_Deformation_ON,'value') == 1
