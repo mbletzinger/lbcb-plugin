@@ -4,17 +4,17 @@ function obj = query(obj)
 MDLVals  = cell(1);
 
 % Data from LBCB 1
-send_str1 = sprintf('get-control-point\tMDL-%02d-%02d:LBCB1\tdummy',0,1);
+send_str1 = sprintf('get-control-point\t%s\tMDL-%02d-%02d:LBCB1\tdummy',obj.TransID,0,1);
 Sendvar_LabView(obj,send_str1);                           	% Send query command for control point j
 [recv_str1] = Getvar_LabView(obj,obj.CMD.RPLY_PUT_DATA);  	% Receive data for control point j
 
 % Data from LBCB 2
-send_str2 = sprintf('get-control-point\tMDL-%02d-%02d:LBCB2\tdummy',0,1);
+send_str2 = sprintf('get-control-point\t%s\tMDL-%02d-%02d:LBCB2\tdummy',obj.TransID,0,1);
 Sendvar_LabView(obj,send_str2);                           	% Send query command for control point j
 [recv_str2] = Getvar_LabView(obj,obj.CMD.RPLY_PUT_DATA);  	% Receive data for control point j
 
 % External Measurement Data
-send_str3 = sprintf('get-control-point\tMDL-%02d-%02d:ExternalSensors\tdummy',0,1);
+send_str3 = sprintf('get-control-point\t%s\tMDL-%02d-%02d:ExternalSensors\tdummy',obj.TransID,0,1);
 Sendvar_LabView(obj,send_str3);                           	% Send query command for control point j
 [recv_str3] = Getvar_LabView(obj,obj.CMD.RPLY_PUT_DATA);  	% Receive data for control point j
 
