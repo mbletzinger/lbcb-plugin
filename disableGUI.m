@@ -16,8 +16,8 @@ set(handles.PB_Load_File,	'enable',	'off');
 set(handles.Edit_File_Path,	'enable',	'off');
 set(handles.Edit_LBCB_IP_1,	'enable',	'off');
 set(handles.Edit_LBCB_Port_1,	'enable',	'off');
-set(handles.Edit_LBCB_IP_2,	'enable',	'off');
-set(handles.Edit_LBCB_Port_2,	'enable',	'off');
+% set(handles.Edit_LBCB_IP_2,	'enable',	'off');
+% set(handles.Edit_LBCB_Port_2,	'enable',	'off');
 
 set(handles.CB_Disp_Limit1,	'enable',	'off');
 set(handles.CB_Disp_Inc1,	'enable',	'off');

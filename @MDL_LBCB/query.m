@@ -3,19 +3,20 @@ function obj = query(obj)
 %MDLNames = cell(1);
 MDLVals  = cell(1);
 
+% Data from LBCB 1
 send_str1 = sprintf('get-control-point\tMDL-%02d-%02d:LBCB1\tdummy',0,1);
-send_str2 ='DummyExecute';
-Sendvar_LabView(obj,send_str1,send_str2);                           	% Send query command for control point j
-[recv_str1] = Getvar_LabView(obj,obj.CMD.RPLY_PUT_DATA,2);  	% Receive data for control point j
+Sendvar_LabView(obj,send_str1);                           	% Send query command for control point j
+[recv_str1] = Getvar_LabView(obj,obj.CMD.RPLY_PUT_DATA);  	% Receive data for control point j
 
-send_str1 = sprintf('get-control-point\tMDL-%02d-%02d:LBCB2\tdummy',0,1);
-Sendvar_LabView(obj,send_str1,send_str2);                           	% Send query command for control point j
-[recv_str2] = Getvar_LabView(obj,obj.CMD.RPLY_PUT_DATA,2);  	% Receive data for control point j
+% Data from LBCB 2
+send_str2 = sprintf('get-control-point\tMDL-%02d-%02d:LBCB2\tdummy',0,1);
+Sendvar_LabView(obj,send_str2);                           	% Send query command for control point j
+[recv_str2] = Getvar_LabView(obj,obj.CMD.RPLY_PUT_DATA);  	% Receive data for control point j
 
-send_str1 = sprintf('get-control-point\tMDL-%02d-%02d:ExternalSensors\tdummy',0,1);
-send_str2 ='DummyExecute';
-Sendvar_LabView(obj,send_str1,send_str2);                           	% Send query command for control point j
-[recv_str3] = Getvar_LabView(obj,obj.CMD.RPLY_PUT_DATA,2);  	% Receive data for control point j
+% External Measurement Data
+send_str3 = sprintf('get-control-point\tMDL-%02d-%02d:ExternalSensors\tdummy',0,1);
+Sendvar_LabView(obj,send_str3);                           	% Send query command for control point j
+[recv_str3] = Getvar_LabView(obj,obj.CMD.RPLY_PUT_DATA);  	% Receive data for control point j
 
 % Deliminate received data and save in variables ------------------------------------------------------------------
 ind_i = 0;
@@ -36,14 +37,6 @@ for k=1:12
         MDLVals1{1}{k,2}=recv{(k-1)*3+1+4};
         MDLVals1{1}{k,3}=str2num(recv{(k-1)*3+3+4});
 end
-%
-%if ind_i > 41
-%	for k=1:3
-%	        AUXVals1{1}{k,1}=recv{(k-1)*3+41};
-%		AUXVals1{1}{k,2}=recv{(k-1)*3+42};
-%	        AUXVals1{1}{k,3}=str2num(recv{(k-1)*3+43});
-%	end
-%end
 
 % Deliminate received data and save in variables ------------------------------------------------------------------
 ind_i = 0;
@@ -65,15 +58,8 @@ for k=1:12
         MDLVals2{1}{k,3}=str2num(recv{(k-1)*3+3+4});
 end
 
-%if ind_i>41
-%	for k=1:3
-%	        AUXVals2{1}{k,1}=recv{(k-1)*3+41};
-%		AUXVals2{1}{k,2}=recv{(k-1)*3+42};
-%	        AUXVals2{1}{k,3}=str2num(recv{(k-1)*3+43});
-%	end
-%end
-%
 
+% External Measurement Data
 % Deliminate received data and save in variables ------------------------------------------------------------------
 ind_i = 0;
 recv = cell(46,1);
@@ -181,27 +167,14 @@ end
 
 % Hussam, You need to modify this part with AUXVals1{1} and your string of external sensors
 if ind_i>41
-	for k=1:3
-	    switch AUXVals1{1}{k,1}
-	        case 'SP_Horizontal'
-			obj.M_AuxDisp1(1) =AUXVals1{1}{k,3};
-	        case 'SP_Left'
-			obj.M_AuxDisp1(2) =AUXVals1{1}{k,3};
-	        case 'SP_Right'
-			obj.M_AuxDisp1(3) =AUXVals1{1}{k,3};
-	    end
-	end
-	
-	for k=1:3
-	    switch AUXVals2{1}{k,1}
-	        case 'SP_Horizontal'
-			obj.M_AuxDisp2(1) =AUXVals2{1}{k,3};
-	        case 'SP_Left'
-			obj.M_AuxDisp2(2) =AUXVals2{1}{k,3};
-	        case 'SP_Right'
-			obj.M_AuxDisp2(3) =AUXVals2{1}{k,3};
-	    end
-	end
+    for k=1:6
+        switch AUXVals1{1}{k,1}
+            case {'1_LBCB2_y','2_LBCB2_x_bot','3_LBCB2_x_top','4_LBCB1_y_left','5_LBCB1_y_right','6_LBCB1_x'}
+                obj.M_AuxDisp1(k) =AUXVals1{1}{k,3};
+            otherwise
+                disp(sprintf('%s sensor name not recognized',AUXVals1{1}{k,1}));
+        end
+    end
 end
 
 % =====================================================================================================================

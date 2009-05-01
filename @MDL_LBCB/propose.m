@@ -32,11 +32,14 @@ Tsend_str2 = sprintf('propose\t%s\tMDL-%02d-%02d:LBCB2\t',obj.TransID,0,1);  % F
 % By Sung Jig Kim, 04/30/2009
 send_str1 = [Tsend_str1 tmp_str01 tmp_str02 tmp_str03 tmp_str04 tmp_str05 tmp_str06];
 send_str2 = [Tsend_str2 tmp_str07 tmp_str08 tmp_str09 tmp_str10 tmp_str11 tmp_str12];
-
 send_str1 = send_str1(1:end-1);                 			% Remove last tab
 send_str2 = send_str2(1:end-1);                 			% Remove last tab
-Sendvar_LabView(obj,send_str1, send_str2);                                  % Send proposing command
-Getvar_LabView(obj,obj.CMD.ACKNOWLEDGE, 1);                        % Receive acknowledgement
+
+Sendvar_LabView(obj,send_str1);                                  % Send proposing command
+Getvar_LabView(obj,obj.CMD.ACKNOWLEDGE);                        % Receive acknowledgement
+
+Sendvar_LabView(obj,send_str2);                                  % Send proposing command
+Getvar_LabView(obj,obj.CMD.ACKNOWLEDGE);                        % Receive acknowledgement
 
 obj.T_Disp_0 = obj.T_Disp;
 obj.tDisp_history(obj.curStep,:)    = obj.T_Disp;

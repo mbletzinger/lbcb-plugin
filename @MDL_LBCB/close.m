@@ -26,11 +26,10 @@ function close(obj)
 %    
 %                case {'labview1'}
                     if strcmp(obj.Comm_obj_1.Status,'open')                    % if connected
-                    	send_str2 ='DummyExecute';
-                        Sendvar_LabView(obj,sprintf('close-session:LBCB2\tdummy'),send_str2);
+                    	Sendvar_LabView(obj,sprintf('close-session:LBCB2\tdummy'));
                         Getvar_LabView(obj,obj.CMD.ACKNOWLEDGE);
                         fclose(obj.Comm_obj_1);
-                        fclose(obj.Comm_obj_2);
+                        %fclose(obj.Comm_obj_2);
                     elseif strcmp(obj.Comm_obj_1.Status,'close')                % if already lost connection
     
                     end

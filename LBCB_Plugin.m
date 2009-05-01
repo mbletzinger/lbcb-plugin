@@ -90,11 +90,11 @@ disp('Connecting to LBCB_1 & LBCB_2 ...................................');
 handles.MDL.Comm_obj_1 = tcpip(handles.MDL.IP_1,handles.MDL.Port_1);            % create TCPIP obj(objInd)ect
 set(handles.MDL.Comm_obj_1,'InputBufferSize', 1024*100);                    	% set buffer size
 
-handles.MDL.Comm_obj_2 = tcpip(handles.MDL.IP_2,handles.MDL.Port_2);            % create TCPIP obj(objInd)ect
-set(handles.MDL.Comm_obj_2,'InputBufferSize', 1024*100);                    	% set buffer size
+% handles.MDL.Comm_obj_2 = tcpip(handles.MDL.IP_2,handles.MDL.Port_2);            % create TCPIP obj(objInd)ect
+% set(handles.MDL.Comm_obj_2,'InputBufferSize', 1024*100);                    	% set buffer size
 
 handles.MDL = open(handles.MDL);
-disp('Connection is established with LBCB_1 & LBCB_2.');
+disp('Connection is established with LBCB Operations Manager.');
 
 
 set(handles.PB_LBCB_Disconnect,	'enable',	'on');
@@ -642,20 +642,20 @@ end
 
 
 
-function Edit_LBCB_IP_2_Callback(hObject, eventdata, handles)
+% function Edit_LBCB_IP_2_Callback(hObject, eventdata, handles)
+% 
+% 
+% % --- Executes during object creation, after setting all properties.
+% function Edit_LBCB_IP_2_CreateFcn(hObject, eventdata, handles)
+% % hObject    handle to Edit_LBCB_IP_2 (see GCBO)
+% 
+% if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+%     set(hObject,'BackgroundColor','white');
+% end
 
 
-% --- Executes during object creation, after setting all properties.
-function Edit_LBCB_IP_2_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to Edit_LBCB_IP_2 (see GCBO)
 
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
-
-
-
-function Edit_LBCB_Port_2_Callback(hObject, eventdata, handles)
+%function Edit_LBCB_Port_2_Callback(hObject, eventdata, handles)
 
 
 

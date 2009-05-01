@@ -8,9 +8,9 @@ end
 
 
 set(handles.Edit_LBCB_IP_1,   'string',   num2str(handles.MDL.IP_1));
-set(handles.Edit_LBCB_IP_2,   'string',   num2str(handles.MDL.IP_2));
+%set(handles.Edit_LBCB_IP_2,   'string',   num2str(handles.MDL.IP_2));
 set(handles.Edit_LBCB_Port_1, 'string', handles.MDL.Port_1);
-set(handles.Edit_LBCB_Port_2, 'string', handles.MDL.Port_2);
+%set(handles.Edit_LBCB_Port_2, 'string', handles.MDL.Port_2);
 
 
 
@@ -185,8 +185,8 @@ set(handles.Edit_PortNo,		'string',	num2str(handles.MDL.InputPort));
 set(handles.Edit_File_Path,		'string',	handles.MDL.InputFile);
 set(handles.Edit_LBCB_IP_1,       	'enable',	'on');
 set(handles.Edit_LBCB_Port_1,     	'enable',	'on');
-set(handles.Edit_LBCB_IP_2,       	'enable',	'on');
-set(handles.Edit_LBCB_Port_2,     	'enable',	'on');
+%set(handles.Edit_LBCB_IP_2,       	'enable',	'on');
+%set(handles.Edit_LBCB_Port_2,     	'enable',	'on');
 
 set(handles.EB_Max_Itr,		        'string',	num2str(handles.MDL.maxitr));
 
