@@ -151,17 +151,14 @@ p.Aux_Config1.sensitivity = [1 1 1]';
 	
 	
 %Pin locations: Model coordinate system, inches. Origin of coordinate system should be platform center
-p.Aux_Config1.S1b = [-496.085,  3.349,  -6.998]'/25.4;		% base coordinate
-p.Aux_Config1.S1p = [-228.064, -2.602,   0.674]'/25.4;		% platform coordinate
+p.Aux_Config1.S1b = [-19.15  -23.65    0]'/2.54;		% base coordinate
+p.Aux_Config1.S1p = [-18.85  0.95      0]'/2.54;		% platform coordinate                     
 
-%Config.S1b = [496.085,  3.349,  -6.998]'/25.4;		% base coordinate    
-%Config.S1p = [228.064, -2.602,   0.674]'/25.4;		% platform coordinate                         
-
-p.Aux_Config1.S2b = [-193.208, -423.583,-4.428]'/25.4;		% base coordinate    
-p.Aux_Config1.S2p = [-191.633, -0.103,  -6.959]'/25.4;            	% platform coordinate
+p.Aux_Config1.S2b = [17.65   -25.55    0]'/2.54;		% base coordinate    
+p.Aux_Config1.S2p = [17.85   -0.95     0]'/2.54;        % platform coordinate
                  
-p.Aux_Config1.S3b = [ 187.711, -449.115,-5.257]'/25.4;		% base coordinate    
-p.Aux_Config1.S3p = [ 189.679, -6.127,  -0.217]'/25.4;             	% platform coordinate
+p.Aux_Config1.S3b = [42.55   1.05      0]'/2.54;		% base coordinate    
+p.Aux_Config1.S3p = [19.85   -0.95     0]'/2.54;        % platform coordinate
 
 
 %Offset for specimen: LBCB coordinate system, inches. Offset from motion center. X, Y, Z, Rx, Ry, Rz
@@ -183,6 +180,15 @@ p.Aux_Config1.drz = 0.001;
 
 p.Aux_Config2 = p.Aux_Config1;
 
+%Pin locations: Model coordinate system, inches. Origin of coordinate system should be platform center
+p.Aux_Config2.S1b = [.75     -53.475   0]'/2.54;		% base coordinate
+p.Aux_Config2.S1p = [.25     -20.1750  0]'/2.54;		% platform coordinate                     
+
+p.Aux_Config2.S2b = [26.05   -16.975   0]'/2.54;		% base coordinate    
+p.Aux_Config2.S2p = [.25     -17.8750  0]'/2.54;        % platform coordinate
+                 
+p.Aux_Config2.S3b = [25.45   18.325    0]'/2.54;		% base coordinate    
+p.Aux_Config2.S3p = [-.25    19.025    0]'/2.54;        % platform coordinate
 
 
 % ===================================================================================

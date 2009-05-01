@@ -24,7 +24,7 @@ function varargout = LBCB_Plugin(varargin)
 
 % Edit the above text to modify the response to help MLoop
 
-% Last Modified by GUIDE v2.5 13-Feb-2008 11:57:46
+% Last Modified by GUIDE v2.5 01-May-2009 15:41:25
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -1020,5 +1020,12 @@ function EB_Max_Itr_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
+
+
+% --- Executes on button press in PB_LBCB_Reconnect.
+function PB_LBCB_Reconnect_Callback(hObject, eventdata, handles)
+% hObject    handle to PB_LBCB_Reconnect (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
 
 
