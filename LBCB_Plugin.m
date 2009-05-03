@@ -95,21 +95,30 @@ set(handles.MDL.Comm_obj_1,'InputBufferSize', 1024*100);                    	% s
 
 handles.MDL = open(handles.MDL);
 
-disp('Connection is established with LBCB Operations Manager.');
-set(handles.PB_LBCB_Disconnect,	'enable',	'on');
-set(handles.PB_LBCB_Connect,	'enable',	'off');
-set(handles.PB_LBCB_Disconnect,	'enable',	'off');
-set(handles.PB_Pause,		'enable',	'on');
-set(handles.Edit_LBCB_IP_1,       'enable',	'off');
-set(handles.Edit_LBCB_Port_1,     'enable',	'off');
-
-% by Sung Jig Kim, 05/02/2009
-set(handles.PB_LBCB_Reconnect, 'UserData', 1);
-
-guidata(hObject, handles);    
-
-% Run Simulation
-Run_Simulation(hObject, eventdata, handles);
+% Modified by Sung Jig Kim, 05/03/2009
+if handles.MDL.NetworkConnectionState
+	disp('Connection is established with LBCB Operations Manager.');
+	set(handles.PB_LBCB_Disconnect,	'enable',	'on');
+	set(handles.PB_LBCB_Connect,	'enable',	'off');
+	set(handles.PB_LBCB_Reconnect,	'enable',	'off');
+	set(handles.PB_Pause,		'enable',	'on');
+	set(handles.Edit_LBCB_IP_1,       'enable',	'off');
+	set(handles.Edit_LBCB_Port_1,     'enable',	'off');
+	
+	% by Sung Jig Kim, 05/02/2009
+	set(handles.PB_LBCB_Reconnect, 'UserData', 1);
+	
+	guidata(hObject, handles);    
+	
+	% Run Simulation
+	Run_Simulation(hObject, eventdata, handles);
+else
+	set(handles.PB_LBCB_Disconnect,	'enable',	'off');
+	set(handles.PB_LBCB_Connect,	'enable',	'on');
+	set(handles.PB_LBCB_Reconnect,	'enable',	'off');
+	set(handles.Edit_LBCB_IP_1,       'enable',	'on');
+	set(handles.Edit_LBCB_Port_1,     'enable',	'on');
+end
     
 % -------------------------------------------------------------------------------------------------
 % --- Executes on button press in PB_LBCB_Disconnect.
