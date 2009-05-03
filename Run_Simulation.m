@@ -57,6 +57,7 @@ switch handles.MDL.InputSource
 	otherwise
 end
 StatusIndicator(handles,0);
+LBCB_Network_bool=1;				% For network state
 
 while End_of_Command == 0				% until end of command is reached, 
 	StepNo = StepNo + 1;				% count current step number
@@ -102,21 +103,31 @@ while End_of_Command == 0				% until end of command is reached,
 			disp(sprintf('  Elastic Deformation Iteration %d',ItrNo)); 
 			set(handles.TXT_LBCB_Tgt_Itr, 'string', sprintf('Disp. Iteration #: %d',ItrNo));
 			
-			handles = propose_execute_substeps(handles);guidata(hObject, handles);
-%			StatusIndicator(handles,23);	
-%			handles.MDL = query_mean(handles.MDL);
-%			StatusIndicator(handles,20);	
-%			handles.MDL.M_Disp = handles.MDL.M_Disp - offset;	%Remove offset
+			handles = propose_execute_substeps(handles);
 			
-			set(handles.TXT_LBCB_Mes_Itr,'string', sprintf('Disp. Iteration #: %d   %5.2f sec',ItrNo,etime(clock, time_i)));
-	
-			delta_disp = TGT - handles.MDL.M_Disp;		% in LBCB space
-			Adjusted_Command = Adjusted_Command + delta_disp;		
-			Disp_Command = Adjusted_Command;			% in LBCB space
+			% by Sung Jig Kim, 05/02/2009
+			if handles.MDL.NetworkConnectionState  % when the network connection works well
+				guidata(hObject, handles);
+	%			StatusIndicator(handles,23);	
+	%			handles.MDL = query_mean(handles.MDL);
+	%			StatusIndicator(handles,20);	
+	%			handles.MDL.M_Disp = handles.MDL.M_Disp - offset;	%Remove offset
+				
+				set(handles.TXT_LBCB_Mes_Itr,'string', sprintf('Disp. Iteration #: %d   %5.2f sec',ItrNo,etime(clock, time_i)));
+		
+				delta_disp = TGT - handles.MDL.M_Disp;		% in LBCB space
+				Adjusted_Command = Adjusted_Command + delta_disp;		
+				Disp_Command = Adjusted_Command;			% in LBCB space
+			else  % when the network connection is failed
+				break;
+			end
 		end	
-		Adjusted_Commandlast = Adjusted_Command;
-		TGTlast = TGT;
-	
+		
+		% by Sung Jig Kim, 05/02/2009
+		if handles.MDL.NetworkConnectionState  % when the network connection works well
+			Adjusted_Commandlast = Adjusted_Command;
+			TGTlast = TGT;
+		end
 	%-------------------------------------------------------------------------------
 	else	% if elastic deformation is neglected
 	%-------------------------------------------------------------------------------
@@ -130,15 +141,20 @@ while End_of_Command == 0				% until end of command is reached,
 
 		disp(sprintf('  Elastic Deformation Iteration %d',ItrNo)); 
 		set(handles.TXT_LBCB_Tgt_Itr, 'string', sprintf('Disp. Iteration #: %d',ItrNo));
-		handles = propose_execute_substeps(handles);guidata(hObject, handles);
-%		StatusIndicator(handles,23);	
-%		handles.MDL = query_mean(handles.MDL);
-%		StatusIndicator(handles,20);	
-%		handles.MDL.M_Disp = handles.MDL.M_Disp - offset;	%Remove offset
+		handles = propose_execute_substeps(handles);
 		
-%		updatePLOT(handles);
-
-		set(handles.TXT_LBCB_Mes_Itr,'string', sprintf('Disp. Iteration #: %d   %5.2f sec',ItrNo,etime(clock, time_i)));
+		% by Sung Jig Kim, 05/02/2009
+		if handles.MDL.NetworkConnectionState  % when the network connection works well
+			guidata(hObject, handles);
+	%		StatusIndicator(handles,23);	
+	%		handles.MDL = query_mean(handles.MDL);
+	%		StatusIndicator(handles,20);	
+	%		handles.MDL.M_Disp = handles.MDL.M_Disp - offset;	%Remove offset
+			
+	%		updatePLOT(handles);
+	
+			set(handles.TXT_LBCB_Mes_Itr,'string', sprintf('Disp. Iteration #: %d   %5.2f sec',ItrNo,etime(clock, time_i)));
+		end
 	end
 	
         % 
@@ -147,29 +163,66 @@ while End_of_Command == 0				% until end of command is reached,
 	% 	set(handles.TXT_Forc_M_Model, 'string', sprintf('%+10.3f\n', handles.MDL.M_Forc));
 	% end
 	% set(handles.TXT_Model_Mes_Step, 'string', sprintf('Step #: %d   %5.2f sec',StepNo,etime(clock, time_s)));
+		%%%%%%%%%%%%%
+	% by Sung Jig Kim, 05/02/2009
+	if handles.MDL.NetworkConnectionState==0
+		Help_String={'DUE TO NETWORK ERROR WITH LBCB OM...';
+		             '    1. Adjusted CMD will be the current position';
+		             '    2. Current SimCor target will be proposed when LBCB OM is reconnected';
+		             '    3. The LBCB position will be saved at ''CurrentLBCB_Position.txt'' when the network is recovered';
+		             '   ';
+		             'PLEASE, FOLLOW INSTRUCTIONS BELOW...';
+		             '    1. Push ''Reconnect'' to close the current network port and reconnect LBCB OM';
+		             '    2. Do not delete ''CurrentLBCB_Position.txt'' ';
+		             '    3. If this is the only network problem, neglect the LBCB offset';
+		             '    4. If you need to restart the LBCB Operation Manager,';
+		             '         Check current offset values in LBCB OM before switching to local origin';
+		             '         Determine offset values in the LBCB' ;
+		             '    5. Resume simulation'};
+		             
+		helpdlg(Help_String,'Instruction to resume the simulation');
+		set(handles.PB_Pause, 'value', 0);
+		LBCB_Network_bool=0;
+	end
 	
 	handles = HoldCheck(handles);
+	
 	StatusIndicator(handles,1);
 	switch handles.MDL.InputSource
 		case 1						% Input from file
-			if StepNo + 1 <= length(disp_his)
-				TGT = disp_his(StepNo+1,:)';	%'
-			else 
-				End_of_Command = 1;
+			% Modified by Sung Jig Kim, 05/02/2009
+			if LBCB_Network_bool==1
+				if StepNo + 1 <= length(disp_his)
+					TGT = disp_his(StepNo+1,:)';	%'
+				else 
+					End_of_Command = 1;
+				end
+			else % when the network is reconnected
+				StepNo=StepNo-1;                                            % adjust step number due to network error
+				LBCB_Network_bool=1;
 			end
 		case 2						% Input from network
-			[handles send_str] = Format_Rtn_Data(handles);
-			Send_Parmatlab(ip_fid,send_str);
-			recv_str = Get_Parmatlab(ip_fid,1);
-				
-			if strncmp(recv_str, 'close-session',13)
-				End_of_Command = 1;
-				Send_Parmatlab(ip_fid,sprintf('OK	0	dummyCloseSession	See you later!.'));
-				tcpip_close(ip_fid);
-				disp('Connection to UI-SimCor closed.                                     ');
-			else
-				[TransID TGT handles]    = Format_Rcv_Data(handles, recv_str);  
-		    	end
+			% Modified by Sung Jig Kim, 05/02/2009
+			if LBCB_Network_bool==1
+				[handles send_str] = Format_Rtn_Data(handles);
+				Send_Parmatlab(ip_fid,send_str);
+				recv_str = Get_Parmatlab(ip_fid,1);
+					
+				if strncmp(recv_str, 'close-session',13)
+					End_of_Command = 1;
+					Send_Parmatlab(ip_fid,sprintf('OK	0	dummyCloseSession	See you later!.'));
+					tcpip_close(ip_fid);
+					disp('Connection to UI-SimCor closed.                                     ');
+				else
+					[TransID TGT handles]    = Format_Rcv_Data(handles, recv_str);  
+			   	end
+			else % when the network is reconnected
+				StepNo=StepNo-1;                                            % adjust step number due to network error
+				TGT=tmpTGT;   % use previous target data 
+				TGTlast=load ('CurrentLBCB_Position.txt');
+				Adjusted_Commandlast=TGTlast;
+				LBCB_Network_bool=1;
+			end
 		otherwise
 	end	
 	StatusIndicator(handles,0);

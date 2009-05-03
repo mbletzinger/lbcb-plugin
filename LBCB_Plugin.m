@@ -24,7 +24,7 @@ function varargout = LBCB_Plugin(varargin)
 
 % Edit the above text to modify the response to help MLoop
 
-% Last Modified by GUIDE v2.5 01-May-2009 15:41:25
+% Last Modified by GUIDE v2.5 02-May-2009 21:05:33
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -94,20 +94,23 @@ set(handles.MDL.Comm_obj_1,'InputBufferSize', 1024*100);                    	% s
 % set(handles.MDL.Comm_obj_2,'InputBufferSize', 1024*100);                    	% set buffer size
 
 handles.MDL = open(handles.MDL);
+
 disp('Connection is established with LBCB Operations Manager.');
-
-
 set(handles.PB_LBCB_Disconnect,	'enable',	'on');
 set(handles.PB_LBCB_Connect,	'enable',	'off');
+set(handles.PB_LBCB_Disconnect,	'enable',	'off');
 set(handles.PB_Pause,		'enable',	'on');
 set(handles.Edit_LBCB_IP_1,       'enable',	'off');
 set(handles.Edit_LBCB_Port_1,     'enable',	'off');
 
-guidata(hObject, handles);
+% by Sung Jig Kim, 05/02/2009
+set(handles.PB_LBCB_Reconnect, 'UserData', 1);
 
+guidata(hObject, handles);    
 
-
+% Run Simulation
 Run_Simulation(hObject, eventdata, handles);
+    
 % -------------------------------------------------------------------------------------------------
 % --- Executes on button press in PB_LBCB_Disconnect.
 % -------------------------------------------------------------------------------------------------
@@ -1028,4 +1031,16 @@ function PB_LBCB_Reconnect_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-helpdlg('Hussam!, it is not ready yet!. Do work! work!','From Sung Jig');
+handles = Reconnect_LBCB(handles);
+guidata(hObject, handles);
+
+
+function Edit_LBCB_NetworkWaitTime_Callback(hObject, eventdata, handles)
+% hObject    handle to Edit_LBCB_NetworkWaitTime (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of Edit_LBCB_NetworkWaitTime as text
+%        str2double(get(hObject,'String')) returns contents of Edit_LBCB_NetworkWaitTime as a double
+
+

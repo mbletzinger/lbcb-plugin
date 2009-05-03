@@ -120,3 +120,10 @@ set(handles.RB_Disp_Refine_ON,			'enable',	'on');
 set(handles.RB_Disp_Refine_OFF,			'enable',	'on');
 set(handles.RB_Disp_Mesurement_LBCB,		'enable',	'on');
 set(handles.RB_Disp_Mesurement_External,	'enable',	'on');
+
+%%%%%
+% Modified by Sung Jig Kim, 05/02/2009
+set(handles.Edit_LBCB_NetworkWaitTime, 'enable', 'on');
+if handles.MDL.NetworkConnectionState==0
+	set(handles.PB_LBCB_Reconnect,	'enable',	'on');
+end

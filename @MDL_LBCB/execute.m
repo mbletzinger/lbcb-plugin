@@ -8,9 +8,8 @@ function obj = execute(obj)
 % =====================================================================================================================
 % By Sung Jig Kim, 04/30/2009
 send_str1 = sprintf('execute\t%s:LBCB2',obj.TransID);
-send_str2 ='DummyExecute';
-Sendvar_LabView(obj,send_str1,send_str2);
-Getvar_LabView(obj,obj.CMD.ACKNOWLEDGE, 2);
 
+ % by Sung Jig Kim, 05/02/2009
+[obj.NetworkConnectionState]=SendandGetvar_LabView(obj, send_str1, 1); 
 
 obj.curState = 2;
