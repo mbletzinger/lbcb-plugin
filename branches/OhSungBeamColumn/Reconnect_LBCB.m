@@ -43,6 +43,7 @@ end
 if handles.MDL.NetworkConnectionState==0
 	Help_String='No Connection present. Try it again';
 	helpdlg(Help_String,'Warning');
+	set(handles.PB_LBCB_Reconnect,	'enable',	'on');
 end
 
 handles = readGUI(handles);
