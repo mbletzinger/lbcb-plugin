@@ -8,8 +8,11 @@ set(handles.RB_Disp_Refine_ON,			'enable',	'off');
 set(handles.RB_Disp_Refine_OFF,			'enable',	'off');
 set(handles.RB_Disp_Mesurement_LBCB,		'enable',	'off');
 set(handles.RB_Disp_Mesurement_External,	'enable',	'off');
-
-
+%%%%%
+% Modified by Sung Jig Kim, 05/02/2009
+set(handles.Edit_LBCB_NetworkWaitTime, 'enable', 'off');
+set(handles.PB_LBCB_Reconnect,	'enable',	'off');
+%%%%
 set(handles.EB_Max_Itr,		        'enable',	'off');
 set(handles.Edit_PortNo,	'enable',	'off');
 set(handles.PB_Load_File,	'enable',	'off');

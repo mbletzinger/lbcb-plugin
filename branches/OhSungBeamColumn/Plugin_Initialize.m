@@ -11,7 +11,10 @@ set(handles.Edit_LBCB_IP_1,   'string',   num2str(handles.MDL.IP_1));
 %set(handles.Edit_LBCB_IP_2,   'string',   num2str(handles.MDL.IP_2));
 set(handles.Edit_LBCB_Port_1, 'string', handles.MDL.Port_1);
 %set(handles.Edit_LBCB_Port_2, 'string', handles.MDL.Port_2);
-
+%%%%%
+% Modified by Sung Jig Kim, 05/02/2009
+set(handles.Edit_LBCB_NetworkWaitTime, 'string', handles.MDL.NetworkWaitTime);
+%%%%
 
 
 %______________________________________________________________
@@ -347,8 +350,11 @@ set(h_plot2(4),'markersize',15);
 %______________________________________________________________
 
 set(handles.PB_Pause,		'enable',	'off');
-
 set(handles.PB_LBCB_Disconnect,	'enable',	'off');
+%%%%%
+% Modified by Sung Jig Kim, 05/02/2009
+set(handles.PB_LBCB_Reconnect,	'enable',	'off');
+%%%%
 set(handles.PB_LBCB_Connect,	'enable',	'on');
 
 set(handles.Edit_DLmin_DOF11,	'enable',	'on');

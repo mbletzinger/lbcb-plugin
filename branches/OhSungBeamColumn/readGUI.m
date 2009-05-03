@@ -8,6 +8,9 @@ elseif get(handles.RB_Source_Network, 'value') ==0 & get(handles.RB_Source_File,
 end
 handles.MDL.InputPort 		= str2num(get(handles.Edit_PortNo,  	'String'));
 handles.MDL.InputFile 		= get(handles.Edit_File_Path,       	'String');
+%%%%%
+% Modified by Sung Jig Kim, 05/02/2009
+handles.MDL.NetworkWaitTime = str2num(get(handles.Edit_LBCB_NetworkWaitTime,  	'String'));
 
 % LBCB -----------------------------------------------------------------------------------------
 handles.MDL.IP_1 		= get(handles.Edit_LBCB_IP_1,	    	'String');

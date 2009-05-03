@@ -17,16 +17,27 @@ if handles.MDL.StepReduction == 1
 				handles  = HoldCheck(handles);
 			end
 			set(handles.TXT_Disp_T_LBCB, 'string', sprintf('L1x %+8.3f\nL1z %+8.3f\nL1r %+8.4f\n\nL2x %+8.3f\nL2z %+8.3f\nL2r %+8.4f\n', handles.MDL.T_Disp([1 3 5 7 9 11])));
-			StatusIndicator(handles,31);	handles.MDL = propose(handles.MDL); 	
-			updatePLOT(handles);
+			StatusIndicator(handles,31);	
+			handles.MDL = propose(handles.MDL); 	
 			
-			StatusIndicator(handles,32);	handles.MDL = execute(handles.MDL); 
+			% Modified by Sung Jig Kim, 05/02/2009
+			if handles.MDL.NetworkConnectionState
+				updatePLOT(handles);
+				StatusIndicator(handles,32);	
+				handles.MDL = execute(handles.MDL); 
+			end
 			
-			StatusIndicator(handles,33);	handles.MDL = query_mean(handles.MDL,1);
-			set(handles.TXT_Disp_M_LBCB, 'string', sprintf('L1x %+8.3f\nL1z %+8.3f\nL1r %+8.4f\n\nL2x %+8.3f\nL2z %+8.3f\nL2r %+8.4f\n', handles.MDL.M_Disp([1 3 5 7 9 11])));
-			set(handles.TXT_Forc_M_LBCB, 'string', sprintf('L1x %+8.0f\nL1z %+8.0f\nL1r %+8.0f\n\nL2x %+8.0f\nL2z %+8.0f\nL2r %+8.0f\n', handles.MDL.M_Forc([1 3 5 7 9 11])));
-			updatePLOT(handles);
-			StatusIndicator(handles,30);	
+			% Modified by Sung Jig Kim, 05/02/2009
+			if handles.MDL.NetworkConnectionState
+				StatusIndicator(handles,33);	
+				handles.MDL = query_mean(handles.MDL,1);
+				set(handles.TXT_Disp_M_LBCB, 'string', sprintf('L1x %+8.3f\nL1z %+8.3f\nL1r %+8.4f\n\nL2x %+8.3f\nL2z %+8.3f\nL2r %+8.4f\n', handles.MDL.M_Disp([1 3 5 7 9 11])));
+				set(handles.TXT_Forc_M_LBCB, 'string', sprintf('L1x %+8.0f\nL1z %+8.0f\nL1r %+8.0f\n\nL2x %+8.0f\nL2z %+8.0f\nL2r %+8.0f\n', handles.MDL.M_Forc([1 3 5 7 9 11])));
+				updatePLOT(handles);
+				StatusIndicator(handles,30);	
+			else
+				break;  % stop the current process due to the network failure
+			end
 		end
 	else
 		accepted = 0;
@@ -35,16 +46,25 @@ if handles.MDL.StepReduction == 1
 			handles  = HoldCheck(handles);
 		end
 		set(handles.TXT_Disp_T_LBCB, 'string', sprintf('L1x %+8.3f\nL1z %+8.3f\nL1r %+8.4f\n\nL2x %+8.3f\nL2z %+8.3f\nL2r %+8.4f\n', handles.MDL.T_Disp([1 3 5 7 9 11])));
-		StatusIndicator(handles,21);	handles.MDL = propose(handles.MDL); 	
-		updatePLOT(handles);
+		StatusIndicator(handles,21);	
+		handles.MDL = propose(handles.MDL); 	
 		
-		StatusIndicator(handles,22);	handles.MDL = execute(handles.MDL); 
+		% Modified by Sung Jig Kim, 05/02/2009
+		if handles.MDL.NetworkConnectionState
+			updatePLOT(handles);
+			StatusIndicator(handles,22);	
+			handles.MDL = execute(handles.MDL); 
+		end
 		
-		StatusIndicator(handles,23);	handles.MDL = query_mean(handles.MDL,1);
-		set(handles.TXT_Disp_M_LBCB, 'string', sprintf('L1x %+8.3f\nL1z %+8.3f\nL1r %+8.3f\n\nL2x %+8.3f\nL2z %+8.3f\nL2r %+8.3f\n', handles.MDL.M_Disp([1 3 5 7 9 11])));
-		set(handles.TXT_Forc_M_LBCB, 'string', sprintf('L1x %+8.0f\nL1z %+8.0f\nL1r %+8.0f\n\nL2x %+8.0f\nL2z %+8.0f\nL2r %+8.0f\n', handles.MDL.M_Forc([1 3 5 7 9 11])));
-		updatePLOT(handles);
-		StatusIndicator(handles,20);	
+		% Modified by Sung Jig Kim, 05/02/2009
+		if handles.MDL.NetworkConnectionState
+			StatusIndicator(handles,23);	
+			handles.MDL = query_mean(handles.MDL,1);
+			set(handles.TXT_Disp_M_LBCB, 'string', sprintf('L1x %+8.3f\nL1z %+8.3f\nL1r %+8.3f\n\nL2x %+8.3f\nL2z %+8.3f\nL2r %+8.3f\n', handles.MDL.M_Disp([1 3 5 7 9 11])));
+			set(handles.TXT_Forc_M_LBCB, 'string', sprintf('L1x %+8.0f\nL1z %+8.0f\nL1r %+8.0f\n\nL2x %+8.0f\nL2z %+8.0f\nL2r %+8.0f\n', handles.MDL.M_Forc([1 3 5 7 9 11])));
+			updatePLOT(handles);
+			StatusIndicator(handles,20);	
+		end
 	end
 else
 	accepted = 0;
@@ -53,14 +73,23 @@ else
 		handles  = HoldCheck(handles);
 	end
 	set(handles.TXT_Disp_T_LBCB, 'string', sprintf('L1x %+8.3f\nL1z %+8.3f\nL1r %+8.4f\n\nL2x %+8.3f\nL2z %+8.3f\nL2r %+8.4f\n', handles.MDL.T_Disp([1 3 5 7 9 11])));
-	StatusIndicator(handles,21);	handles.MDL = propose(handles.MDL); 	
-	updatePLOT(handles);
+	StatusIndicator(handles,21);	
+	handles.MDL = propose(handles.MDL); 	
 	
-	StatusIndicator(handles,22);	handles.MDL = execute(handles.MDL); 
+	% Modified by Sung Jig Kim, 05/02/2009
+	if handles.MDL.NetworkConnectionState
+		updatePLOT(handles);
+		StatusIndicator(handles,22);	
+		handles.MDL = execute(handles.MDL); 
+	end
 	
-	StatusIndicator(handles,23);	handles.MDL = query_mean(handles.MDL,1);
-	set(handles.TXT_Disp_M_LBCB, 'string', sprintf('L1x %+8.3f\nL1z %+8.3f\nL1r %+8.3f\n\nL2x %+8.3f\nL2z %+8.3f\nL2r %+8.3f\n', handles.MDL.M_Disp([1 3 5 7 9 11])));
-	set(handles.TXT_Forc_M_LBCB, 'string', sprintf('L1x %+8.0f\nL1z %+8.0f\nL1r %+8.0f\n\nL2x %+8.0f\nL2z %+8.0f\nL2r %+8.0f\n', handles.MDL.M_Forc([1 3 5 7 9 11])));
-	updatePLOT(handles);
-	StatusIndicator(handles,20);	
+	% Modified by Sung Jig Kim, 05/02/2009
+	if handles.MDL.NetworkConnectionState
+		StatusIndicator(handles,23);	
+		handles.MDL = query_mean(handles.MDL,1);
+		set(handles.TXT_Disp_M_LBCB, 'string', sprintf('L1x %+8.3f\nL1z %+8.3f\nL1r %+8.3f\n\nL2x %+8.3f\nL2z %+8.3f\nL2r %+8.3f\n', handles.MDL.M_Disp([1 3 5 7 9 11])));
+		set(handles.TXT_Forc_M_LBCB, 'string', sprintf('L1x %+8.0f\nL1z %+8.0f\nL1r %+8.0f\n\nL2x %+8.0f\nL2z %+8.0f\nL2r %+8.0f\n', handles.MDL.M_Forc([1 3 5 7 9 11])));
+		updatePLOT(handles);
+		StatusIndicator(handles,20);	
+	end
 end

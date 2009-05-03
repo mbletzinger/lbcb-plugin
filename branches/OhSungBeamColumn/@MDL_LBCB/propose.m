@@ -35,15 +35,20 @@ send_str2 = [Tsend_str2 tmp_str07 tmp_str08 tmp_str09 tmp_str10 tmp_str11 tmp_st
 send_str1 = send_str1(1:end-1);                 			% Remove last tab
 send_str2 = send_str2(1:end-1);                 			% Remove last tab
 
-Sendvar_LabView(obj,send_str1);                                  % Send proposing command
-Getvar_LabView(obj,obj.CMD.ACKNOWLEDGE);                        % Receive acknowledgement
+% by Sung Jig Kim, 05/02/2009
+% LBCB 1: Send proposing command and Receive acknowledgement
+[obj.NetworkConnectionState]=SendandGetvar_LabView(obj, send_str1, 1); 
 
-Sendvar_LabView(obj,send_str2);                                  % Send proposing command
-Getvar_LabView(obj,obj.CMD.ACKNOWLEDGE);                        % Receive acknowledgement
+% LBCB 2: Send proposing command and Receive acknowledgement
+if obj.NetworkConnectionState==1
+	[obj.NetworkConnectionState]=SendandGetvar_LabView(obj, send_str2, 1); 
+end
 
-obj.T_Disp_0 = obj.T_Disp;
-obj.tDisp_history(obj.curStep,:)    = obj.T_Disp;
-
-obj.curState = 1;  
+if obj.NetworkConnectionState==1
+	obj.T_Disp_0 = obj.T_Disp;
+	obj.tDisp_history(obj.curStep,:)    = obj.T_Disp;
+	
+	obj.curState = 1;  
+end
 
 
