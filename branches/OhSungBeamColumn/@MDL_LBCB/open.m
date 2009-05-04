@@ -9,6 +9,7 @@ t_0=clock;  % current time
 while tmp_bool
 	try
 		fopen(obj.Comm_obj_1);
+		obj.NetworkConnectionState=1;
 		tmp_bool=0;
 	catch
 		pause (0.5);
