@@ -218,6 +218,8 @@ while End_of_Command == 0				% until end of command is reached,
 			   	end
 			else % when the network is reconnected
 				StepNo=StepNo-1;                                            % adjust step number due to network error
+                % This code shown below should be verified. sjkim
+                % 05/03/2009
 				TGT=tmpTGT;   % use previous target data 
 				TGTlast=load ('CurrentLBCB_Position.txt');
 				Adjusted_Commandlast=TGTlast;
