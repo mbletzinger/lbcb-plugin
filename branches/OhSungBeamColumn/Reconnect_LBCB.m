@@ -29,11 +29,12 @@ if handles.MDL.NetworkConnectionState
 		set(handles.TXT_Forc_M_LBCB, 'string', sprintf('L1x %+8.0f\nL1z %+8.0f\nL1r %+8.0f\n\nL2x %+8.0f\nL2z %+8.0f\nL2r %+8.0f\n', handles.MDL.M_Forc([1 3 5 7 9 11])));
 		updatePLOT(handles);
 		StatusIndicator(handles,20);	
-		% Save the current position
-		save ('CurrentLBCB_Position.txt', 'handles.MDL.M_Disp','-ascii');
-		button2 = questdlg('Do you want to set up the LBCB offset?','Yes','No','No');
+        tmp01=handles.MDL.M_Disp;
+        % Save the current position
+		save ('CurrentLBCB_Position.txt', 'tmp01','-ascii');
+		button2 = questdlg('Do you want to set up the LBCB offset?','LBCB Offset','Yes','No','No');
 		if strcmp(button2,'Yes')
-			Help_String='The setting for LBCB offset is under construction';
+			Help_String='Hussam!, The setting for LBCB offset is under construction';
 			helpdlg(Help_String,'Under construction');
 		end
 		set(handles.PB_LBCB_Reconnect,	'enable',	'off');
