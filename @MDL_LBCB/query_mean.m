@@ -12,7 +12,8 @@ end
 
 LBCBForc  = zeros(NumSample,6);
 LBCBDisp  = zeros(NumSample,6);
-Aux_Disp  = zeros(NumSample,3);
+Aux_Disp1  = zeros(NumSample,3);
+Aux_Disp2  = zeros(NumSample,3);
 
 for i=1:NumSample
 	% Request data
@@ -31,6 +32,26 @@ for i=1:NumSample
 		break;
 	end
 end  
+
+%%%%%%
+% Debugging, SJKIM
+% tmp_1=obj.NetworkConnectionState;
+% disp (sprintf ('Connection State: %02d', tmp_1));
+% tmp_data=Aux_Disp1;
+% Str1='External Measurement 1: ';
+% for Hussam=1:length(tmp_data)
+% 	Str1=sprintf ('%s   %+16.8e',Str1, tmp_data(Hussam));
+% end
+% disp(Str1);
+% 
+% tmp_data=Aux_Disp2;
+% Str1='External Measurement 2: ';
+% for Hussam=1:length(tmp_data)
+% 	Str1=sprintf ('%s   %+16.8e',Str1, tmp_data(Hussam));
+% end
+% disp(Str1);
+%%%%
+
 
 if obj.NetworkConnectionState   
                           
@@ -57,9 +78,9 @@ if obj.NetworkConnectionState
 	
 	%%% debugging code =================================================================================================================================
 	
-	Test_Config;
-	obj.M_Disp = obj.M_Disp / cmd_scale_rubber;
-	obj.M_Forc = obj.M_Forc / cmd_scale_rubber;
+	%Test_Config;
+	%obj.M_Disp = obj.M_Disp / cmd_scale_rubber;
+	%obj.M_Forc = obj.M_Forc / cmd_scale_rubber;
 	
 	
 	
@@ -76,5 +97,15 @@ if obj.NetworkConnectionState
 	% 1. RawMeanData for Step Reduction
 	% 2. RawMeanData for Elastic Deformation iteration
 	% 3. RawMeanData for All Step
+	
+    %%%%%%
+%     % Debugging, SJKIM
+%     tmp_data=obj.M_Disp;
+%     Str1='Measured Displacement: ';
+%     for Hussam=1:length(tmp_data)
+%         Str1=sprintf ('%s   %.8f',Str1, tmp_data(Hussam));
+%     end
+%     disp(Str1);
+%     %%%%
 
 end

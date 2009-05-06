@@ -78,13 +78,12 @@ if obj.NetworkConnectionState==1   % when network connection work sucessfully
 	%MDLNames{1} = recv{4};
 	%recv = recv(5:end);
 	
-	for k=1:6
-	        AUXVals1{1}{k,1}=recv{(k-1)*3+2+4};
-	        AUXVals1{1}{k,2}=recv{(k-1)*3+1+4};
-	        AUXVals1{1}{k,3}=str2num(recv{(k-1)*3+3+4});
-	end
-	
-	% Reformat data -------------------------------------------------------------------------------------------------------
+    for k=1:6
+        AUXVals1{1}{k,1}=recv{(k-1)*3+2+4};
+        AUXVals1{1}{k,2}=recv{(k-1)*3+1+4};
+        AUXVals1{1}{k,3}=str2num(recv{(k-1)*3+3+4});
+    end
+    % Reformat data -------------------------------------------------------------------------------------------------------
 	for k=1:12
 	    switch MDLVals1{1}{k,1}
 	        case 'displacement'
@@ -170,17 +169,19 @@ if obj.NetworkConnectionState==1   % when network connection work sucessfully
 	end
 	
 	% Hussam, You need to modify this part with AUXVals1{1} and your string of external sensors
-	if ind_i>41
-	    for k=1:6
-	        switch AUXVals1{1}{k,1}
-	            case {'1_LBCB2_y','2_LBCB2_x_bot','3_LBCB2_x_top','4_LBCB1_y_left','5_LBCB1_y_right','6_LBCB1_x'}
-	                obj.M_AuxDisp1(k) =AUXVals1{1}{k,3};
-	            otherwise
-	                disp(sprintf('%s sensor name not recognized',AUXVals1{1}{k,1}));
-	        end
-	    end
-	end
-	
+    for k=1:6
+       % Str1 = sprintf('A1:%s A2:%s A3:%s',AUXVals1{1}{k,1},AUXVals1{1}{k,2},AUXVals1{1}{k,3});
+       % disp(Str1);
+        switch AUXVals1{1}{k,2}
+            case {'4_LBCB1_y_left','5_LBCB1_y_right','6_LBCB1_x'}
+                obj.M_AuxDisp1(k-3) =AUXVals1{1}{k,3};
+            case {'1_LBCB2_y','2_LBCB2_x_bot','3_LBCB2_x_top'}
+                obj.M_AuxDisp2(k) =AUXVals1{1}{k,3};
+            otherwise
+                disp(sprintf('%s sensor name not recognized',AUXVals1{1}{k,2}));
+        end
+    end
+
 end	
 	    
 	obj.curState = 3;
