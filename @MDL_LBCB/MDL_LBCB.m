@@ -153,18 +153,18 @@ p.NumSample	   = 20;					% number of samples to use to estimate average force an
 p.Aux_Config1.T     = eye(3);
 
 %Sensitivity of string pot reading(sort of calibration factor)
-p.Aux_Config1.sensitivity = [-1 1 1]';
+p.Aux_Config1.sensitivity = [1 1 1]';
 	
 	
 %Pin locations: Model coordinate system, inches. Origin of coordinate system should be platform center
-p.Aux_Config1.S1b = [-23.65	0	-19.15       ]'/2.54;        % base coordinate
-p.Aux_Config1.S1p = [0.95	0	-18.85       ]'/2.54;        % platform coordinate                     
+p.Aux_Config1.S1b = [-19.15	-23.65	      0 ]'/2.54;        % base coordinate
+p.Aux_Config1.S1p = [-18.85	0.95	      0 ]'/2.54;        % platform coordinate                     
  
-p.Aux_Config1.S2b = [-25.55	0	17.65	     ]'/2.54;        % base coordinate    
-p.Aux_Config1.S2p = [-0.95	0	17.85        ]'/2.54;        % platform coordinate
+p.Aux_Config1.S2b = [17.65	-25.55		    0 ]'/2.54;        % base coordinate    
+p.Aux_Config1.S2p = [17.85	-0.95	       0 ]'/2.54;        % platform coordinate
                  
-p.Aux_Config1.S3b = [1.05	0	42.55        ]'/2.54;        % base coordinate    
-p.Aux_Config1.S3p = [-0.95	0	19.85        ]'/2.54;        % platform coordinate
+p.Aux_Config1.S3b = [42.55	1.05	       0 ]'/2.54;        % base coordinate    
+p.Aux_Config1.S3p = [19.85	-0.95	       0 ]'/2.54;        % platform coordinate
 
 %Offset for specimen: LBCB coordinate system, inches. Offset from motion center. X, Y, Z, Rx, Ry, Rz
 %p.Aux_Config1.Off_SPCM = [-0.26602 0 -0.4 0 -0.01 0]';
@@ -185,17 +185,17 @@ p.Aux_Config1.drz = 0.001;
 
 p.Aux_Config2 = p.Aux_Config1;
 
-p.Aux_Config1.sensitivity = [1 1 -1]';
+p.Aux_Config2.sensitivity = [1 1 1]';
 
 %Pin locations: Model coordinate system, inches. Origin of coordinate system should be platform center
-p.Aux_Config2.S1b  = [.75	0	53.475       ]'/2.54;           % Base coordinate
-p.Aux_Config2.S1p  = [.25	0	20.1750      ]'/2.54;           % Plat coordinate
+p.Aux_Config2.S1b  = [.75		-53.475      0 ]'/2.54;           % Base coordinate
+p.Aux_Config2.S1p  = [.25		-20.1750     0 ]'/2.54;           % Plat coordinate
                                                                 
-p.Aux_Config2.S2b  = [26.05	0	16.975       ]'/2.54;           % Base coordinate    
-p.Aux_Config2.S2p  = [.25	0	17.8750      ]'/2.54;           % Plat coordinate
+p.Aux_Config2.S2b  = [26.05		-16.975      0 ]'/2.54;           % Base coordinate    
+p.Aux_Config2.S2p  = [.25		-17.8750     0 ]'/2.54;           % Plat coordinate
                                                                 
-p.Aux_Config2.S3b  = [25.45	0	-18.325      ]'/2.54;           % Base coordinate    
-p.Aux_Config2.S3p  = [-.25	0	-19.025      ]'/2.54;           % Plat coordinate
+p.Aux_Config2.S3b  = [25.45		18.325     0 ]'/2.54;           % Base coordinate    
+p.Aux_Config2.S3p  = [-.25		19.025     0 ]'/2.54;           % Plat coordinate
 
 
 % ===================================================================================
