@@ -66,4 +66,24 @@ T2r = [0 1 0
        
 
 
+%------------------------------------------------------------------------------------
+% Auxiliary module configuration
+%------------------------------------------------------------------------------------
+Num_Aux = 3;
 
+% Camera Module 1
+AUX(1).URL            = '127.0.0.1:21997';
+AUX(1).protocol       = 'LabView1';                       
+AUX(1).name           = 'Camera1';     
+AUX(1).Command        = {'displacement' 'z' 3500}; 
+
+% Camera Module 1
+AUX(2).URL            = '127.0.0.1:21996';
+AUX(2).protocol       = 'LabView1';                       
+AUX(2).name           = 'Camera2';     
+AUX(2).Command        = {'displacement' 'z' 3500}; 
+% DAQ Module
+AUX(3).URL            = '127.0.0.1:21995';
+AUX(3).protocol       = 'LabView1';                       
+AUX(3).name           = 'DAQ';     
+AUX(3).Command        = {'displacement' 'z' 3500}; 

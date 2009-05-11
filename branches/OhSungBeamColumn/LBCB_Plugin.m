@@ -24,7 +24,7 @@ function varargout = LBCB_Plugin(varargin)
 
 % Edit the above text to modify the response to help MLoop
 
-% Last Modified by GUIDE v2.5 02-May-2009 21:05:33
+% Last Modified by GUIDE v2.5 07-May-2009 22:13:33
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -86,38 +86,57 @@ function PB_LBCB_Connect_Callback(hObject, eventdata, handles)
 
 handles = readGUI(handles);
 
-disp('Connecting to LBCB_1 & LBCB_2 ...................................');
-handles.MDL.Comm_obj_1 = tcpip(handles.MDL.IP_1,handles.MDL.Port_1);            % create TCPIP obj(objInd)ect
-set(handles.MDL.Comm_obj_1,'InputBufferSize', 1024*100);                    	% set buffer size
-
-% handles.MDL.Comm_obj_2 = tcpip(handles.MDL.IP_2,handles.MDL.Port_2);            % create TCPIP obj(objInd)ect
-% set(handles.MDL.Comm_obj_2,'InputBufferSize', 1024*100);                    	% set buffer size
-
-handles.MDL = open(handles.MDL);
-
-% Modified by Sung Jig Kim, 05/03/2009
-if handles.MDL.NetworkConnectionState
-	disp('Connection is established with LBCB Operations Manager.');
-	set(handles.PB_LBCB_Disconnect,	'enable',	'on');
-	set(handles.PB_LBCB_Connect,	'enable',	'off');
-	set(handles.PB_LBCB_Reconnect,	'enable',	'off');
-	set(handles.PB_Pause,		'enable',	'on');
-	set(handles.Edit_LBCB_IP_1,       'enable',	'off');
-	set(handles.Edit_LBCB_Port_1,     'enable',	'off');
-	
-	% by Sung Jig Kim, 05/02/2009
-	set(handles.PB_LBCB_Reconnect, 'UserData', 1);
-	
-	guidata(hObject, handles);    
-	
-	% Run Simulation
-	Run_Simulation(hObject, eventdata, handles);
+% Check AUX Module Connection
+if handles.Num_AuxModules < 1
+	AUX_bool=1;
 else
-	set(handles.PB_LBCB_Disconnect,	'enable',	'off');
-	set(handles.PB_LBCB_Connect,	'enable',	'on');
-	set(handles.PB_LBCB_Reconnect,	'enable',	'off');
-	set(handles.Edit_LBCB_IP_1,       'enable',	'on');
-	set(handles.Edit_LBCB_Port_1,     'enable',	'on');
+	for i=1:handles.Num_AuxModules
+		AUX_Network_Bool(i)=handles.AUX(i).NetworkConnectionState;
+	end
+	if all(AUX_Network_Bool)
+		AUX_bool=1;
+	else
+		AUX_bool=0;
+	end
+end
+
+if AUX_bool==1
+	disp('Connecting to LBCB_1 & LBCB_2 ...................................');
+	handles.MDL.Comm_obj_1 = tcpip(handles.MDL.IP_1,handles.MDL.Port_1);            % create TCPIP obj(objInd)ect
+	set(handles.MDL.Comm_obj_1,'InputBufferSize', 1024*100);                    	% set buffer size
+	
+	% handles.MDL.Comm_obj_2 = tcpip(handles.MDL.IP_2,handles.MDL.Port_2);            % create TCPIP obj(objInd)ect
+	% set(handles.MDL.Comm_obj_2,'InputBufferSize', 1024*100);                    	% set buffer size
+	
+	handles.MDL = open(handles.MDL);
+	
+	% Modified by Sung Jig Kim, 05/03/2009
+	if handles.MDL.NetworkConnectionState
+		disp('Connection is established with LBCB Operations Manager.');
+		set(handles.PB_LBCB_Disconnect,	'enable',	'on');
+		set(handles.PB_LBCB_Connect,	'enable',	'off');
+		set(handles.PB_LBCB_Reconnect,	'enable',	'off');
+		set(handles.PB_Pause,		'enable',	'on');
+		set(handles.Edit_LBCB_IP_1,       'enable',	'off');
+		set(handles.Edit_LBCB_Port_1,     'enable',	'off');
+		
+		% by Sung Jig Kim, 05/02/2009
+		set(handles.PB_LBCB_Reconnect, 'UserData', 1);
+		
+		guidata(hObject, handles);    
+		
+		% Run Simulation
+		Run_Simulation(hObject, eventdata, handles);
+	else
+		set(handles.PB_LBCB_Disconnect,	'enable',	'off');
+		set(handles.PB_LBCB_Connect,	'enable',	'on');
+		set(handles.PB_LBCB_Reconnect,	'enable',	'off');
+		set(handles.Edit_LBCB_IP_1,       'enable',	'on');
+		set(handles.Edit_LBCB_Port_1,     'enable',	'on');
+	end
+else
+	errordlg({'AUX Modules should be connected.'; 'Please connect AUX module first.'},...
+		         'AUX Module Connection Error');
 end
     
 % -------------------------------------------------------------------------------------------------
@@ -1052,4 +1071,47 @@ function Edit_LBCB_NetworkWaitTime_Callback(hObject, eventdata, handles)
 % Hints: get(hObject,'String') returns contents of Edit_LBCB_NetworkWaitTime as text
 %        str2double(get(hObject,'String')) returns contents of Edit_LBCB_NetworkWaitTime as a double
 
+%---------------------------------------------------------------------------------------------------
+% AUX Modules
+%---------------------------------------------------------------------------------------------------
+% --- Executes on button press in PB_AuxModule_Connect.
+function PB_AuxModule_Connect_Callback(hObject, eventdata, handles)
+% hObject    handle to PB_AuxModule_Connect (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
 
+handles.AUX = open(handles.AUX);    
+
+for i=1:length(handles.AUX)
+	AUX_Network_Bool(i)=handles.AUX(i).NetworkConnectionState;
+end
+set(handles.PB_AuxModule_Connect, 'UserData',AUX_Network_Bool);
+set (handles.PB_AuxModule_Connect,    'enable', 'off');
+%set (handles.PB_AuxModule_Reconnect,  'enable', 'off');
+set (handles.PB_AuxModule_Disconnect, 'enable', 'on');
+
+guidata(hObject, handles);
+
+% --- Executes on button press in PB_AuxModule_Disconnect.
+function PB_AuxModule_Disconnect_Callback(hObject, eventdata, handles)
+% hObject    handle to PB_AuxModule_Disconnect (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+Disconnect_ID= abs(get(handles.PB_AuxModule_Connect, 'UserData')-1);
+close(handles.AUX, Disconnect_ID);
+
+set (handles.PB_AuxModule_Connect,    'enable', 'on');
+%set (handles.PB_AuxModule_Reconnect,  'enable', 'off');
+set (handles.PB_AuxModule_Disconnect, 'enable', 'off'); 
+guidata(hObject, handles);
+
+% --- Executes on button press in PB_AuxModule_Reconnect.
+function PB_AuxModule_Reconnect_Callback(hObject, eventdata, handles)
+% hObject    handle to PB_AuxModule_Reconnect (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+handles = Reconnect_AUX(handles);
+guidata(hObject, handles);

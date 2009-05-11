@@ -127,3 +127,13 @@ set(handles.Edit_LBCB_NetworkWaitTime, 'enable', 'on');
 if handles.MDL.NetworkConnectionState==0
 	set(handles.PB_LBCB_Reconnect,	'enable',	'on');
 end
+
+if handles.Num_AuxModules >= 1
+	set (handles.PB_AuxModule_Disconnect, 'enable', 'on');	
+	AUX_Network_Bool = get(handles.PB_AuxModule_Connect, 'UserData');
+	if all(AUX_Network_Bool)
+		set (handles.PB_AuxModule_Reconnect,  'enable', 'off');
+	else
+		set (handles.PB_AuxModule_Reconnect,  'enable', 'on');
+	end
+end
