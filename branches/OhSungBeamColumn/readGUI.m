@@ -163,3 +163,11 @@ handles.MDL.Axis_Y4 		= get(handles.PM_Axis_Y4,		'value');
 
 handles.MDL.MovingWinWidth 	= str2num(get(handles.Edit_Window_Size, 'string'));
 handles.MDL.NumSample 		= str2num(get(handles.Edit_Sample_Size, 'string'));
+
+% AUX Module -----------------------------------------------------------------------------------------
+
+if handles.Num_AuxModules >= 1
+	for i=1:handles.Num_AuxModules
+		handles.AUX(i).NetworkWaitTime = str2num(get(handles.Edit_LBCB_NetworkWaitTime,  	'String'));
+	end
+end

@@ -1080,15 +1080,20 @@ function PB_AuxModule_Connect_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
+handles = readGUI(handles);
+
 handles.AUX = open(handles.AUX);    
 
 for i=1:length(handles.AUX)
 	AUX_Network_Bool(i)=handles.AUX(i).NetworkConnectionState;
 end
 set(handles.PB_AuxModule_Connect, 'UserData',AUX_Network_Bool);
-set (handles.PB_AuxModule_Connect,    'enable', 'off');
-%set (handles.PB_AuxModule_Reconnect,  'enable', 'off');
-set (handles.PB_AuxModule_Disconnect, 'enable', 'on');
+
+if all(AUX_Network_Bool)
+	set (handles.PB_AuxModule_Connect,    'enable', 'off');
+	%set (handles.PB_AuxModule_Reconnect,  'enable', 'off');
+	set (handles.PB_AuxModule_Disconnect, 'enable', 'on');
+end
 
 guidata(hObject, handles);
 
@@ -1112,6 +1117,6 @@ function PB_AuxModule_Reconnect_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-
+handles = readGUI(handles);
 handles = Reconnect_AUX(handles);
 guidata(hObject, handles);

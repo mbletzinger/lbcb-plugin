@@ -6,7 +6,7 @@ function close(obj,varargin)
 % Last updated  7/21/2006 2:31AM O. Kwon
 % =====================================================================================================================
 if length(obj) > 0
-	SCLogger('Connecting remote sites',3,1);
+	LPLogger('Connecting remote sites',3,1);
 end
 
 for i=1:length(obj)
