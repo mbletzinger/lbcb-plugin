@@ -135,8 +135,10 @@ if AUX_bool==1
 		set(handles.Edit_LBCB_Port_1,     'enable',	'on');
 	end
 else
-	errordlg({'AUX Modules should be connected.'; 'Please connect AUX module first.'},...
-		         'AUX Module Connection Error');
+	err_str={'Wake up! Hussam and David';
+	          'AUX Modules should be connected.'; 
+	          'Please connect AUX module first.'};
+	errordlg(err_str,'AUX Module Error');
 end
     
 % -------------------------------------------------------------------------------------------------
