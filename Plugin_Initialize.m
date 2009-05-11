@@ -469,3 +469,38 @@ handles.MDL.Aux_Config2.S3b          =  Aux_Config.S3b;
 handles.MDL.Aux_Config2.S3p          =  Aux_Config.S3p;
 handles.MDL.Aux_Config2.Off_SPCM     =  Aux_Config.Off_SPCM;
 handles.MDL.Aux_Config2.Off_MCTR     =  Aux_Config.Off_MCTR;
+
+%------------------------------------------------------------------------------------
+% Read AUXModule
+%------------------------------------------------------------------------------------
+% 05/10/2009, Sung Jig Kim
+handles.AUX = MDL_AUX;
+handles.Num_AuxModules=Num_Aux;
+
+set (handles.PB_AuxModule_Connect,    'enable', 'off');
+set (handles.PB_AuxModule_Reconnect,  'enable', 'off');
+set (handles.PB_AuxModule_Disconnect, 'enable', 'off');
+
+if handles.Num_AuxModules >= 1
+	for i=1:length(AUX)
+		handles.AUX(i)          = MDL_AUX ;    % Create objects of MDL_RF
+		handles.AUX(i).URL      = AUX(i).URL;      
+		handles.AUX(i).protocol = AUX(i).protocol; 
+		handles.AUX(i).name     = AUX(i).name     ;
+		handles.AUX(i).Command  = AUX(i).Command  ;
+	end
+
+	% Initialize the AUX Modules 
+	handles.AUX= initialize(handles.AUX);
+	for i=1:length(AUX)
+		AUX_Initialized(i)=handles.AUX(i).Initialized;
+	end
+	
+	if all(AUX_Initialized)~=1
+		errordlg({'The current version can handle the only Labview1 protocol for AUX Module'; 'Please modify input'},...
+		         'AUX Module Input Error');
+	else
+		set (handles.PB_AuxModule_Connect,    'enable', 'on');
+		set(handles.PB_AuxModule_Connect, 'UserData',AUX_Initialized*0);
+	end
+end

@@ -185,6 +185,21 @@ while End_of_Command == 0				% until end of command is reached,
 		LBCB_Network_bool=0;
 	end
 	
+	% AUX Module, Created by Sung Jig Kim, 05/07/2009
+	if handles.Num_AuxModules >= 1
+		% Trigger data
+		handles.AUX = Trigger(handles.AUX);
+		% Check Network states
+		for ak=1:length(handles.AUX)
+			AUX_Network_Bool(ak)=handles.AUX(ak).NetworkConnectionState;
+		end
+		set(handles.PB_AuxModule_Connect, 'UserData',AUX_Network_Bool);
+		
+		if all(AUX_Network_Bool)~=1
+			set(handles.PB_Pause, 'value', 0);
+		end
+	end
+	
 	handles = HoldCheck(handles);
 	
 	StatusIndicator(handles,1);

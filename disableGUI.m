@@ -122,3 +122,8 @@ set(handles.Edit_Dsub_DOF26,	'enable',	'off');
 
 set(handles.PB_LBCB_Disconnect,	'enable',	'off');
 
+
+set (handles.PB_AuxModule_Connect,    'enable', 'off');
+set (handles.PB_AuxModule_Reconnect,  'enable', 'off');
+set (handles.PB_AuxModule_Disconnect, 'enable', 'off');
+
