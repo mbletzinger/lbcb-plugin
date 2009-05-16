@@ -57,21 +57,23 @@ if obj.NetworkConnectionState
                           
 	obj.M_Forc1    = mean(LBCBForc1,1)';%'
 	obj.M_Disp1    = mean(LBCBDisp1,1)';%'
-	obj.M_AuxDisp1 = mean(Aux_Disp1,1)';%'
-	
+	obj.M_AuxDisp1 = mean(Aux_Disp1,1)'-obj.Aux_Config1.InitialLength;%'
+	OM_Disp1       = obj.M_Disp1;
+    
 	obj.M_Forc2    = mean(LBCBForc2,1)';%'
 	obj.M_Disp2    = mean(LBCBDisp2,1)';%'
-	obj.M_AuxDisp2 = mean(Aux_Disp2,1)';%'
-	
+	obj.M_AuxDisp2 = mean(Aux_Disp2,1)'-obj.Aux_Config2.InitialLength;%'
+	OM_Disp2       = obj.M_Disp2;
 	
 	if obj.DispMesurementSource == 0                % do nothing
 	
 	elseif obj.DispMesurementSource == 1            % convert stringpot readings to model coordinate system
 	        [obj.M_Disp1 obj.Aux_State1] = Extmesu2Cartesian(obj.M_AuxDisp1,obj.Aux_State1,obj.Aux_Config1);
 	        [obj.M_Disp2 obj.Aux_State2] = Extmesu2Cartesian(obj.M_AuxDisp2,obj.Aux_State2,obj.Aux_Config2);
-	        
-	end
+    end
 	
+    obj.M_Disp1 = obj.M_Disp1 .* [-1 1 1 1 -1 1]';   % DJB: Take care of sign issues.
+    
 	obj.M_Disp = [obj.M_Disp1;obj.M_Disp2]; % Measured displacement, LBCB1 coordiante, LBCB2 coordinate
 	obj.M_Forc = [obj.M_Forc1;obj.M_Forc2];
 	
@@ -97,7 +99,14 @@ if obj.NetworkConnectionState
 	% 1. RawMeanData for Step Reduction
 	% 2. RawMeanData for Elastic Deformation iteration
 	% 3. RawMeanData for All Step
-	
+    
+	SaveFileName = sprintf('LBCB1_RawMean.txt'); SaveData = [];
+    SaveData = [obj.M_AuxDisp1;obj.M_Disp1;OM_Disp1;obj.M_Forc1;obj.T_Disp(1:6);obj.Disp_T_Model(1:6)];
+    SaveSimulationData(SaveFileName,obj.StepNo,SaveData);
+    
+	SaveFileName = sprintf('LBCB2_RawMean.txt'); SaveData = [];
+    SaveData = [obj.M_AuxDisp2;obj.M_Disp2;OM_Disp2;obj.M_Forc2;obj.T_Disp(7:12);obj.Disp_T_Model(7:12)];
+    SaveSimulationData(SaveFileName,obj.StepNo,SaveData);
     %%%%%%
 %     % Debugging, SJKIM
 %     tmp_data=obj.M_Disp;

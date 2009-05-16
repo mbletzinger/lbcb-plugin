@@ -34,7 +34,7 @@ if State.StepNo == 1	%Initialize
 	State.J = zeros(3,3);
 end
 
-
+%ExtMesur = ExtMesur - State.So;
 %Global increment at each iteration. Assume large values to go into while loop.
 Glob_Inc = [1 1 1]';
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -93,4 +93,4 @@ end
 External = Config.T*State.Platform_Ctr - [Config.Off_SPCM(1) -Config.Off_SPCM(3) Config.Off_SPCM(5)]';
 
 % in LBCB coordinate system, 
-External = [External(1) 0 -External(2) 0 External(3) 0]';
+External = [-External(2) 0 -External(1) 0 External(3) 0]';

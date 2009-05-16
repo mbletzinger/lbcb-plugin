@@ -10,12 +10,23 @@ Aux_Config.T     		= eye(3);
 Aux_Config.sensitivity 	= [1 1 1]'; %'
 
 %Pin locations: Model coordinate system, inches. Origin of coordinate system should be platform center
-Aux_Config.S1b = [-496.085,  3.349,  -6.998]'/25.4;		%'% base coordinate
-Aux_Config.S1p = [-228.064, -2.602,   0.674]'/25.4;		%'% platform coordinate
-Aux_Config.S2b = [-193.208, -423.583,-4.428]'/25.4;		%'% base coordinate    
-Aux_Config.S2p = [-191.633, -0.103,  -6.959]'/25.4;            	%'% platform coordinate
-Aux_Config.S3b = [ 187.711, -449.115,-5.257]'/25.4;		%'% base coordinate    
-Aux_Config.S3p = [ 189.679, -6.127,  -0.217]'/25.4;             %'% platform coordinate
+Aux_Config1.S1b = [25.2482   19.1739	  0 ]'/2.54;		%'% base coordinate
+Aux_Config1.S1p = [0.18      18.8739	  0 ]'/2.54;		%'% platform coordinate
+Aux_Config1.S2b = [27.1482   -17.6261	  0 ]'/2.54;		%'% base coordinate    
+Aux_Config1.S2p = [0.0503    -17.8752	  0 ]'/2.54;        %'% platform coordinate
+Aux_Config1.S3b = [0.5482    -42.5261	  0 ]'/2.54;		%'% base coordinate    
+Aux_Config1.S3p = [-0.0503   -19.8727	  0 ]'/2.54;        %'% platform coordinate
+
+Aux_Config1.InitialLength = [ .88727 .729669 1.16195 ]';                     % Initial string lengths of sensors
+
+Aux_Config2.S1b = [.75		-53.475    0 ]'/2.54;		%'% base coordinate
+Aux_Config2.S1p = [.25		-20.1750   0 ]'/2.54; 		%'% platform coordinate
+Aux_Config2.S2b = [26.05	-16.975    0 ]'/2.54;		%'% base coordinate    
+Aux_Config2.S2p = [.25		-17.8750   0 ]'/2.54;       %'% platform coordinate
+Aux_Config2.S3b = [25.45	18.325     0 ]'/2.54;		%'% base coordinate    
+Aux_Config2.S3p = [-.25		19.025     0 ]'/2.54;       %'% platform coordinate
+
+Aux_Config2.InitialLength = [ 0.99303 1.03841 1.07882 ]';                 % Initial string lengths of sensors
 
 %Offset for specimen: LBCB coordinate system, inches. Offset from motion center. X, Y, Z, Rx, Ry, Rz
 %Aux_Config.Off_SPCM = [-0.26602 0 -0.4 0 -0.01 0]';
@@ -47,11 +58,11 @@ coord_n2 = [576 180];
 coord_n3 = [720 276];		
 
 
-ScaleF = 1/6;			% displacement scale factor
+ScaleF = 1;			% displacement scale factor
 
 T1 = [1  0  0
       0  0  1
-      0 -1  0];			% coordinate transformation (translation, from Model to LBCB1)  
+      0 0  -1];			% coordinate transformation (translation, from Model to LBCB1)  
 
 T1r = T1;			% coordinate transformation (rotation, from Model to LBCB1)                                   
 
@@ -69,21 +80,21 @@ T2r = [0 1 0
 %------------------------------------------------------------------------------------
 % Auxiliary module configuration
 %------------------------------------------------------------------------------------
-Num_Aux = 3;
+Num_Aux = 0;
 
-% Camera Module 1
-AUX(1).URL            = '127.0.0.1:21997';
-AUX(1).protocol       = 'LabView1';                       
-AUX(1).name           = 'Camera1';     
-AUX(1).Command        = {'displacement' 'z' 3500}; 
-
-% Camera Module 1
-AUX(2).URL            = '127.0.0.1:21996';
-AUX(2).protocol       = 'LabView1';                       
-AUX(2).name           = 'Camera2';     
-AUX(2).Command        = {'displacement' 'z' 3500}; 
-% DAQ Module
-AUX(3).URL            = '127.0.0.1:21995';
-AUX(3).protocol       = 'LabView1';                       
-AUX(3).name           = 'DAQ';     
-AUX(3).Command        = {'displacement' 'z' 3500}; 
+% % Camera Module 1
+% AUX(1).URL            = '127.0.0.1:21997';
+% AUX(1).protocol       = 'LabView1';                       
+% AUX(1).name           = 'Camera1';     
+% AUX(1).Command        = {'displacement' 'z' 3500}; 
+% 
+% % Camera Module 1
+% AUX(2).URL            = '127.0.0.1:21996';
+% AUX(2).protocol       = 'LabView1';                       
+% AUX(2).name           = 'Camera2';     
+% AUX(2).Command        = {'displacement' 'z' 3500}; 
+% % DAQ Module
+% AUX(3).URL            = '127.0.0.1:21995';
+% AUX(3).protocol       = 'LabView1';                       
+% AUX(3).name           = 'DAQ';     
+% AUX(3).Command        = {'displacement' 'z' 3500}; 

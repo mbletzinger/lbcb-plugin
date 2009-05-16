@@ -170,8 +170,8 @@ if obj.NetworkConnectionState==1   % when network connection work sucessfully
 	
 	% Hussam, You need to modify this part with AUXVals1{1} and your string of external sensors
     for k=1:6
-       % Str1 = sprintf('A1:%s A2:%s A3:%s',AUXVals1{1}{k,1},AUXVals1{1}{k,2},AUXVals1{1}{k,3});
-       % disp(Str1);
+        %Str1 = sprintf('A1:%s A2:%s A3:%s',AUXVals1{1}{k,1},AUXVals1{1}{k,2},AUXVals1{1}{k,3});
+        %disp(Str1);
         switch AUXVals1{1}{k,2}
             case {'4_LBCB1_y_left','5_LBCB1_y_right','6_LBCB1_x'}
                 obj.M_AuxDisp1(k-3) =AUXVals1{1}{k,3};
