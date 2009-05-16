@@ -33,7 +33,9 @@ if handles.MDL.StepReduction == 1
 				handles.MDL = query_mean(handles.MDL,1);
 				set(handles.TXT_Disp_M_LBCB, 'string', sprintf('L1x %+8.3f\nL1z %+8.3f\nL1r %+8.4f\n\nL2x %+8.3f\nL2z %+8.3f\nL2r %+8.4f\n', handles.MDL.M_Disp([1 3 5 7 9 11])));
 				set(handles.TXT_Forc_M_LBCB, 'string', sprintf('L1x %+8.0f\nL1z %+8.0f\nL1r %+8.0f\n\nL2x %+8.0f\nL2z %+8.0f\nL2r %+8.0f\n', handles.MDL.M_Forc([1 3 5 7 9 11])));
-				updatePLOT(handles);
+                set(handles.TXT_Disp_M_Model, 'string', sprintf('L1x %+8.3f\nL1z %+8.3f\nL1r %+8.4f\n\nL2x %+8.3f\nL2z %+8.3f\nL2r %+8.4f\n', handles.MDL.M_Disp([1 3 5 7 9 11])));
+				set(handles.TXT_Forc_M_Model, 'string', sprintf('L1x %+8.0f\nL1z %+8.0f\nL1r %+8.0f\n\nL2x %+8.0f\nL2z %+8.0f\nL2r %+8.0f\n', handles.MDL.M_Forc([1 3 5 7 9 11])));
+                updatePLOT(handles);
 				StatusIndicator(handles,30);	
 			else
 				break;  % stop the current process due to the network failure
@@ -62,7 +64,9 @@ if handles.MDL.StepReduction == 1
 			handles.MDL = query_mean(handles.MDL,1);
 			set(handles.TXT_Disp_M_LBCB, 'string', sprintf('L1x %+8.3f\nL1z %+8.3f\nL1r %+8.3f\n\nL2x %+8.3f\nL2z %+8.3f\nL2r %+8.3f\n', handles.MDL.M_Disp([1 3 5 7 9 11])));
 			set(handles.TXT_Forc_M_LBCB, 'string', sprintf('L1x %+8.0f\nL1z %+8.0f\nL1r %+8.0f\n\nL2x %+8.0f\nL2z %+8.0f\nL2r %+8.0f\n', handles.MDL.M_Forc([1 3 5 7 9 11])));
-			updatePLOT(handles);
+			set(handles.TXT_Disp_M_Model, 'string', sprintf('L1x %+8.3f\nL1z %+8.3f\nL1r %+8.4f\n\nL2x %+8.3f\nL2z %+8.3f\nL2r %+8.4f\n', handles.MDL.M_Disp([1 3 5 7 9 11])));
+            set(handles.TXT_Forc_M_Model, 'string', sprintf('L1x %+8.0f\nL1z %+8.0f\nL1r %+8.0f\n\nL2x %+8.0f\nL2z %+8.0f\nL2r %+8.0f\n', handles.MDL.M_Forc([1 3 5 7 9 11])));
+            updatePLOT(handles);
 			StatusIndicator(handles,20);	
 		end
 	end
@@ -89,7 +93,9 @@ else
 		handles.MDL = query_mean(handles.MDL,1);
 		set(handles.TXT_Disp_M_LBCB, 'string', sprintf('L1x %+8.3f\nL1z %+8.3f\nL1r %+8.3f\n\nL2x %+8.3f\nL2z %+8.3f\nL2r %+8.3f\n', handles.MDL.M_Disp([1 3 5 7 9 11])));
 		set(handles.TXT_Forc_M_LBCB, 'string', sprintf('L1x %+8.0f\nL1z %+8.0f\nL1r %+8.0f\n\nL2x %+8.0f\nL2z %+8.0f\nL2r %+8.0f\n', handles.MDL.M_Forc([1 3 5 7 9 11])));
-		updatePLOT(handles);
+		set(handles.TXT_Disp_M_Model, 'string', sprintf('L1x %+8.3f\nL1z %+8.3f\nL1r %+8.4f\n\nL2x %+8.3f\nL2z %+8.3f\nL2r %+8.4f\n', handles.MDL.M_Disp([1 3 5 7 9 11])));
+		set(handles.TXT_Forc_M_Model, 'string', sprintf('L1x %+8.0f\nL1z %+8.0f\nL1r %+8.0f\n\nL2x %+8.0f\nL2z %+8.0f\nL2r %+8.0f\n', handles.MDL.M_Forc([1 3 5 7 9 11])));
+        updatePLOT(handles);
 		StatusIndicator(handles,20);	
 	end
 end

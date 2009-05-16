@@ -56,15 +56,19 @@ switch handles.MDL.InputSource
 		
 	otherwise
 end
+
 StatusIndicator(handles,0);
 LBCB_Network_bool=1;				% For network state
 
 while End_of_Command == 0				% until end of command is reached, 
 	StepNo = StepNo + 1;				% count current step number
+    handles.MDL.StepNo = StepNo;
 	ItrNo = 1;	
 	
 	% Apply displacement -----------------------------------------------	
-	tmpTGT = TGT;					
+	tmpTGT = TGT;
+    handles.MDL.Disp_T_Model = TGT;             % DJB: Store target in model space for post processing.
+    set(handles.TXT_Disp_T_Model, 'string', sprintf('L1x %+8.3f\nL1z %+8.3f\nL1r %+8.4f\n\nL2x %+8.3f\nL2z %+8.3f\nL2r %+8.4f\n', TGT([1 3 5 7 9 11])));
 	% -------------------------------------------------------------------------------
 	if handles.MDL.ItrElasticDeform			% if elastic deformation is accounted for
 	% -------------------------------------------------------------------------------
@@ -80,7 +84,9 @@ while End_of_Command == 0				% until end of command is reached,
 	time_i = clock;
 	
 	disp(sprintf('Step %d -----------------------------',StepNo));
-	
+	set(handles.TXT_Model_Tgt_Step, 'string', sprintf('Step# %04d',StepNo));
+    set(handles.TXT_Model_Mes_Step, 'string', sprintf('Step# %04d',StepNo));
+
 		
 	% -------------------------------------------------------------------------------
 	if handles.MDL.ItrElasticDeform		% if elastic deformation is accounted for
@@ -120,7 +126,7 @@ while End_of_Command == 0				% until end of command is reached,
 				Disp_Command = Adjusted_Command;			% in LBCB space
 			else  % when the network connection is failed
 				break;
-			end
+            end
 		end	
 		
 		% by Sung Jig Kim, 05/02/2009
@@ -155,8 +161,8 @@ while End_of_Command == 0				% until end of command is reached,
 	
 			set(handles.TXT_LBCB_Mes_Itr,'string', sprintf('Disp. Iteration #: %d   %5.2f sec',ItrNo,etime(clock, time_i)));
 		end
-	end
-	
+    end
+    
         % 
 	% if handles.MDL.UpdateMonitor
 	% 	set(handles.TXT_Disp_M_Model, 'string', sprintf('%+10.3f\n', handles.MDL.M_Disp));
@@ -207,7 +213,7 @@ while End_of_Command == 0				% until end of command is reached,
 		case 1						% Input from file
 			% Modified by Sung Jig Kim, 05/02/2009
 			if LBCB_Network_bool==1
-				if StepNo + 1 <= length(disp_his)
+				if StepNo + 1 <= size(disp_his,1)
 					TGT = disp_his(StepNo+1,:)';	%'
 				else 
 					End_of_Command = 1;

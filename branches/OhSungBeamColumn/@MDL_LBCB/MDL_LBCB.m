@@ -4,7 +4,7 @@ function p = MDL_LBCB(vargin)
 %
 % Variables in GUI
 % _____________________________________________________________________________________________________________________
-
+p.StepNo =0;
 p.InputSource		= 1;			    	% 1 for file, 2 for network
 p.InputFile 		= 'DispHistory.txt';	    	% 6 column displacement data. Model space.
 p.InputPort 		= 11998;		    	% Connection port from UI-SimCor, use LabView2 protocol
@@ -20,7 +20,7 @@ p.Port_1          	= 6342;                    	% Port number
 p.NetworkConnectionState = 1;                    % Network Connection Status with Operation Manager
                                                  % 0 -> when connection is not established or connection is failed
                                                  % 1 -> when connection is established or for the first trial connection
-p.NetworkWaitTime   = 600;                         % Network waiting time. 
+p.NetworkWaitTime   = 60;                         % Network waiting time. 
 
 
 p.ItrElasticDeform 	= 0;				% 0 for no iteration, 1 for iteration
@@ -41,9 +41,9 @@ p.CheckLimit_Disp2 	= 1;                   % 1 for check, 0 for ignore
 p.CheckLimit_DispInc2 	= 1;                   % 1 for check, 0 for ignore     
 p.CheckLimit_Forc2 	= 1;                   % 1 for check, 0 for ignore     
 
-p.CAP_D_min      = [-3    -3    -2    -0.2  -0.2  -0.2       -3    -3    -2  -0.2  -0.2  -0.2 ]';             %'% Displacement limit
-p.CAP_D_max      = [ 3     3     2     0.2   0.2   0.2        3     3     2   0.2   0.2   0.2 ]';             %'% Displacement limit
-p.TGT_D_inc      = [ 1     1     1     0.05  0.05  0.05       1     1     1   0.05  0.05  0.05]';             %'% Displacement increment limit
+p.CAP_D_min      = [-0.75    -0.5    -0.5    -0.05  -0.05  -0.05     -0.75    -0.5    -0.5    -0.05  -0.05  -0.05]';             %'% Displacement limit
+p.CAP_D_max      = [0.75    0.5    0.5    0.05  0.05  0.05    0.75    0.5    0.5    0.05  0.05  0.05]';             %'% Displacement limit
+p.TGT_D_inc      = [ .1     .1     .1     0.001  0.001  0.001       .1     .1     .1   0.001  0.001  0.001]';             %'% Displacement increment limit
 p.CAP_F_min      = [-1000 -1000 -1500 -2000 -2000 -2000   -1000 -1000 -1500  -2000 -2000 -2000]';    %'% Force limit
 p.CAP_F_max      = [ 1000  1000  1500  2000  2000  2000    1000  1000  1500   2000  2000  2000]';    %'% Force limit
 
@@ -88,7 +88,7 @@ p.M_Forc2        = zeros(6,1);                  % Measured force at each step, N
 p.T_Disp_0      = zeros(12,1);                   % Previous step's target displacement, Num_DOFx1
 p.T_Disp        = zeros(12,1);                   % Target displacement, Num_DOFx1
 
-
+p.Disp_T_Model  = zeros(12,1);
 
 
 % _____________________________________________________________________________________________________________________
@@ -157,14 +157,16 @@ p.Aux_Config1.sensitivity = [1 1 1]';
 	
 	
 %Pin locations: Model coordinate system, inches. Origin of coordinate system should be platform center
-p.Aux_Config1.S1b = [-19.15	-23.65	      0 ]'/2.54;        % base coordinate
-p.Aux_Config1.S1p = [-18.85	0.95	      0 ]'/2.54;        % platform coordinate                     
+p.Aux_Config1.S1b = [0  0  0 ]'/2.54;        % base coordinate
+p.Aux_Config1.S1p = [0  0  0 ]'/2.54;        % platform coordinate                     
  
-p.Aux_Config1.S2b = [17.65	-25.55		    0 ]'/2.54;        % base coordinate    
-p.Aux_Config1.S2p = [17.85	-0.95	       0 ]'/2.54;        % platform coordinate
+p.Aux_Config1.S2b = [0  0  0 ]'/2.54;        % base coordinate    
+p.Aux_Config1.S2p = [0  0  0 ]'/2.54;        % platform coordinate
                  
-p.Aux_Config1.S3b = [42.55	1.05	       0 ]'/2.54;        % base coordinate    
-p.Aux_Config1.S3p = [19.85	-0.95	       0 ]'/2.54;        % platform coordinate
+p.Aux_Config1.S3b = [0  0  0 ]'/2.54;        % base coordinate    
+p.Aux_Config1.S3p = [0  0  0 ]'/2.54;        % platform coordinate
+
+p.Aux_Config1.InitialLength = [0 0 0];
 
 %Offset for specimen: LBCB coordinate system, inches. Offset from motion center. X, Y, Z, Rx, Ry, Rz
 %p.Aux_Config1.Off_SPCM = [-0.26602 0 -0.4 0 -0.01 0]';
@@ -188,15 +190,16 @@ p.Aux_Config2 = p.Aux_Config1;
 p.Aux_Config2.sensitivity = [1 1 1]';
 
 %Pin locations: Model coordinate system, inches. Origin of coordinate system should be platform center
-p.Aux_Config2.S1b  = [.75		-53.475      0 ]'/2.54;           % Base coordinate
-p.Aux_Config2.S1p  = [.25		-20.1750     0 ]'/2.54;           % Plat coordinate
+p.Aux_Config2.S1b  = [0  0  0 ]'/2.54;           % Base coordinate
+p.Aux_Config2.S1p  = [0  0  0 ]'/2.54;           % Plat coordinate
                                                                 
-p.Aux_Config2.S2b  = [26.05		-16.975      0 ]'/2.54;           % Base coordinate    
-p.Aux_Config2.S2p  = [.25		-17.8750     0 ]'/2.54;           % Plat coordinate
+p.Aux_Config2.S2b  = [0  0  0 ]'/2.54;           % Base coordinate    
+p.Aux_Config2.S2p  = [0  0  0 ]'/2.54;           % Plat coordinate
                                                                 
-p.Aux_Config2.S3b  = [25.45		18.325     0 ]'/2.54;           % Base coordinate    
-p.Aux_Config2.S3p  = [-.25		19.025     0 ]'/2.54;           % Plat coordinate
+p.Aux_Config2.S3b  = [0  0  0 ]'/2.54;           % Base coordinate    
+p.Aux_Config2.S3p  = [0  0  0 ]'/2.54;           % Plat coordinate
 
+p.Aux_Config2.InitialLength = [0 0 0];
 
 % ===================================================================================
 p.Aux_State1.StepNo       = 1;

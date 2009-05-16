@@ -5,7 +5,7 @@ function q = rotateZ(p,orig,rot)
 % orig     : (3x1) coordinate, origin of rotation
 % rot      : sclar, rotation angle
 
-T_Rot = [cos(rot)   -sin(rot)   0
-         sin(rot)    cos(rot)   0
+T_Rot = [cos(rot)   sin(rot)   0
+         -sin(rot)    cos(rot)   0
          0           0          1];
 q = T_Rot*(p-orig) + orig;
