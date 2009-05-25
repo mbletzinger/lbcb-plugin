@@ -14,7 +14,7 @@ while tmp_bool
 	catch
 		pause (0.5);
         if etime(clock, t_0) > obj.NetworkWaitTime
-        	Quest_string = {'The network LBCB OM seems not to be ready.';
+        	Quest_string = {'The  LBCB OM network does not seem to be ready.';
 							'Please, check network.';
 							'Do you want to try again?'};
 			QuestResult = questdlg(Quest_string, 'Network Warning','Yes','No','Yes');

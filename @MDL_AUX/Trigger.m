@@ -10,9 +10,9 @@ for i=1:length(obj)
 	obj(i).curStep= obj(i).curStep + 1;
 	if obj(i).Initialized
 		%---------------------------------------------------------------------------------------------------
-		obj(i).TransID  = sprintf('trans%4d%02d%02d%02d%02d%4.2f',clock);       % Create transaction ID
+        obj(i).TransID  = sprintf('trans%4d%02d%02d%02d%02d%4.3f',clock);       % Create transaction ID
 		obj(i).CPname = 'MDL-AUX';
-		send_str = sprintf('propose\t%s\t%s\t',obj(i).TransID ,obj(i).CPname);
+		send_str = sprintf('propose\t%s[ %04d]\t%s\t',obj(i).TransID ,obj(i).curStep, obj(i).CPname);
 		tmpstr = '';
 		for j=1:length(obj(i).Command)
 			tmpstr = [tmpstr sprintf('%s\t',num2str(obj(i).Command{j}))];

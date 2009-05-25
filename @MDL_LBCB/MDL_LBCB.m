@@ -23,14 +23,14 @@ p.NetworkConnectionState = 1;                    % Network Connection Status wit
 p.NetworkWaitTime   = 60;                         % Network waiting time. 
 
 
-p.ItrElasticDeform 	= 0;				% 0 for no iteration, 1 for iteration
+p.ItrElasticDeform 	= 1;				% 0 for no iteration, 1 for iteration
 p.maxitr                = 10;				% maximum number of iteration
 p.DispTolerance    	= [0.001 0.001 0.001 0.0005 0.0005 0.0005 0.001 0.001 0.001 0.0005 0.0005 0.0005]';	%'
 							% Displacement tolerance for displacement iteration stage. LBCB coordinate system.
 
 
-p.StepReduction 	= 0;				% 0 for no step reduction, 1 for step reduction when displacement increment is large                	
-p.DispIncMax       	= [0.01  0.01  0.01  0.005  0.005  0.005 0.01  0.01  0.01  0.005  0.005  0.005]';	%'
+p.StepReduction 	= 1;				% 0 for no step reduction, 1 for step reduction when displacement increment is large                	
+p.DispIncMax       	= [0.1  0.1  0.1  0.05  0.05  0.05 0.1  0.1  0.1  0.05  0.05  0.05]';	%'
 							% Maximum displacement increment. 
                      
                      
@@ -43,12 +43,12 @@ p.CheckLimit_Forc2 	= 1;                   % 1 for check, 0 for ignore
 
 p.CAP_D_min      = [-0.75    -0.5    -0.5    -0.05  -0.05  -0.05     -0.75    -0.5    -0.5    -0.05  -0.05  -0.05]';             %'% Displacement limit
 p.CAP_D_max      = [0.75    0.5    0.5    0.05  0.05  0.05    0.75    0.5    0.5    0.05  0.05  0.05]';             %'% Displacement limit
-p.TGT_D_inc      = [ .1     .1     .1     0.001  0.001  0.001       .1     .1     .1   0.001  0.001  0.001]';             %'% Displacement increment limit
+p.TGT_D_inc      = [ .25     .25     .25     0.01  0.01  0.01       .25     .25     .25   0.01  0.01  0.01]';             %'% Displacement increment limit
 p.CAP_F_min      = [-1000 -1000 -1500 -2000 -2000 -2000   -1000 -1000 -1500  -2000 -2000 -2000]';    %'% Force limit
 p.CAP_F_max      = [ 1000  1000  1500  2000  2000  2000    1000  1000  1500   2000  2000  2000]';    %'% Force limit
 
-p.DispMesurementSource = 0;	% 0 for LBCb, 1 for external mesurement
-p.NoiseCompensation = 0;	% 0 for single reading, 1 for multiple reading and use average value
+p.DispMesurementSource = 1;	% 0 for LBCb, 1 for external mesurement
+p.NoiseCompensation = 1;	% 0 for single reading, 1 for multiple reading and use average value
 
 p.Axis_X1	 = 1;			    % Default monitoring chart
 p.Axis_X2	 = 1;			    % Default monitoring chart

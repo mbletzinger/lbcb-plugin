@@ -169,5 +169,10 @@ handles.MDL.NumSample 		= str2num(get(handles.Edit_Sample_Size, 'string'));
 if handles.Num_AuxModules >= 1
 	for i=1:handles.Num_AuxModules
 		handles.AUX(i).NetworkWaitTime = str2num(get(handles.Edit_LBCB_NetworkWaitTime,  	'String'));
+    end
+    AUX_Network_Bool=get(handles.PB_AuxModule_Connect, 'UserData');
+    for i=1:length(handles.AUX)
+		handles.AUX(i).NetworkConnectionState=AUX_Network_Bool(i);
 	end
+    
 end

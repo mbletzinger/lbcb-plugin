@@ -36,8 +36,8 @@ TDisp3 = [str2num(recv{24})  str2num(recv{27})  str2num(recv{30})];  	% 3rd node
 % ___________________________________________________________________________________________________
 
 % Load configuration file
-Test_Config;
-
+SimCor_Config;
+disp ('Hussam');
 
 % Relative displacement of beam column connection (1st story, right-most connection) 
 n1 = TDisp2;						% node on column bottom (at connection)          ||(n3)    
@@ -74,11 +74,8 @@ tmp_r3 = T*Rel3Cord;
 r2(1:2) = (tmp_r2 - (coord_n2-coord_n1)');			%'% increment of deformed configuration from undeformed configuration
 r3(1:2) = (tmp_r3 - (coord_n3-coord_n1)');                      %'% increment of deformed configuration from undeformed configuration
 
-r2 = [r2(1) r2(2)  0  0  0  r2(3)]';			%'% convert to 6 DOF. Use zeros for out of plane direction. Model coordinate system.
-r3 = [r3(1) r3(2)  0  0  0  r3(3)]';			%'% convert to 6 DOF. Use zeros for out of plane direction. Model coordinate system.
-
-
-
+r2 = [r2(1) 0  r2(2)  0  r2(3)  0]';			%'% convert to 6 DOF. Use zeros for out of plane direction. Model coordinate system.
+r3 = [r3(1) 0  r3(2)  0  r3(3)  0]';			%'% convert to 6 DOF. Use zeros for out of plane direction. Model coordinate system.
 
 
 % ___________________________________________________________________________________________________

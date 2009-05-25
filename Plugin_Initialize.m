@@ -447,7 +447,7 @@ StatusIndicator(handles,0);
 
 
 % Read external measurement configuration
-Test_Config;
+LBCB_Plugin_Config;
 
 handles.MDL.Aux_Config1.T            =  Aux_Config.T;
 handles.MDL.Aux_Config1.sensitivity  =  Aux_Config.sensitivity;
@@ -457,8 +457,8 @@ handles.MDL.Aux_Config1.S2b          =  Aux_Config1.S2b;
 handles.MDL.Aux_Config1.S2p          =  Aux_Config1.S2p;
 handles.MDL.Aux_Config1.S3b          =  Aux_Config1.S3b;
 handles.MDL.Aux_Config1.S3p          =  Aux_Config1.S3p;
-handles.MDL.Aux_Config1.Off_SPCM     =  Aux_Config.Off_SPCM;
-handles.MDL.Aux_Config1.Off_MCTR     =  Aux_Config.Off_MCTR;
+handles.MDL.Aux_Config1.Off_SPCM     =  Aux_Config1.Off_SPCM;
+handles.MDL.Aux_Config1.Off_MCTR     =  Aux_Config1.Off_MCTR;
 handles.MDL.Aux_Config1.InitialLength= Aux_Config1.InitialLength;
 
 handles.MDL.Aux_Config2.T            =  Aux_Config.T;
@@ -469,8 +469,8 @@ handles.MDL.Aux_Config2.S2b          =  Aux_Config2.S2b;
 handles.MDL.Aux_Config2.S2p          =  Aux_Config2.S2p;
 handles.MDL.Aux_Config2.S3b          =  Aux_Config2.S3b;
 handles.MDL.Aux_Config2.S3p          =  Aux_Config2.S3p;
-handles.MDL.Aux_Config2.Off_SPCM     =  Aux_Config.Off_SPCM;
-handles.MDL.Aux_Config2.Off_MCTR     =  Aux_Config.Off_MCTR;
+handles.MDL.Aux_Config2.Off_SPCM     =  Aux_Config2.Off_SPCM;
+handles.MDL.Aux_Config2.Off_MCTR     =  Aux_Config2.Off_MCTR;
 handles.MDL.Aux_Config2.InitialLength= Aux_Config2.InitialLength;
 
 %------------------------------------------------------------------------------------

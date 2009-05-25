@@ -168,12 +168,15 @@ function PB_Load_File_Callback(hObject, eventdata, handles)
 
 [file,path] = uigetfile({'*.txt';'*.dat';'*.m';'*.mdl';'*.mat';'*.*'},'Load displacement history.');
 if file ~= 0
-	set(handles.Edit_File_Path, 'String',[path file]);
+    CurDir=sprintf('%s\\',cd);
+	if strcmp(CurDir,path)
+		set(handles.Edit_File_Path, 'String',file);
+	else
+		set(handles.Edit_File_Path, 'String',[path file]);
+	end
 	handles.MDL.InputFile = [path file];
 	guidata(hObject, handles);
 end
-
-
 
 
 % -------------------------------------------------------------------------------------------------

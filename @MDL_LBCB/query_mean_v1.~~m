@@ -1,4 +1,4 @@
-function obj = query_mean(obj, varargin)
+%function obj = query_mean(obj, varargin)
 
 if obj.NoiseCompensation == 0
         NumSample = 1;
@@ -46,7 +46,7 @@ end
 %%% debugging code =================================================================================================================================
 obj.M_Disp1 = obj.T_Disp(1:6);  
 obj.M_Disp2 = obj.T_Disp(7:12);  
-Test_Config;
+SimCor_Config;
 zer = zeros(3,3);
 
 d1 = inv([T1 zer; zer T1])*obj.M_Disp1;         % convert LBCB coordinate system to model coordinate system
