@@ -1,23 +1,40 @@
 % script for Plugin_Initialize.m
-function Plugin_Initialize_CreateFile;
+%function Plugin_Initialize_CreateFile;
 
 DateStr=clock;
 TestDate_Str=sprintf('%04d%02d%02d%02d%02d',DateStr(1:5));
 
-FileName='LBCB1_RawMean.txt';
+CurDir=cd;
+FolderNames=sprintf('%s\\Backup_RawMean', CurDir);
+if exist(FolderNames)~=7
+    mkdir(FolderNames);
+end
+
+FileName=sprintf('%s\\LBCB1_RawMean.txt', CurDir);
 if exist(FileName)~=0
-	FileName2=sprintf('Backup_LBCB1_RawMean_%4d%02d%02d%02d%02d%2.0f.txt',clock);   
+	FileName2=sprintf('%s\\LBCB1_RawMean_%4d%02d%02d%02d%02d%2.0f.txt',FolderNames,clock);   
 	copyfile(FileName,FileName2); 
 	delete (FileName);
 end
-FileName='LBCB2_RawMean.txt';
+FileName=sprintf('%s\\LBCB2_RawMean.txt', CurDir);
 if exist(FileName)~=0
-	FileName2=sprintf('Backup_LBCB2_RawMean_%4d%02d%02d%02d%02d%2.0f.txt',clock);   
+	FileName2=sprintf('%s\\LBCB2_RawMean_%4d%02d%02d%02d%02d%2.0f.txt',FolderNames,clock);   
+	copyfile(FileName,FileName2); 
+	delete (FileName);
+end
+FileName=sprintf('%s\\NetwkLog_LBCB.txt', CurDir);
+if exist(FileName)~=0
+	FileName2=sprintf('%s\\NetwkLog_LBCB_%4d%02d%02d%02d%02d%2.0f.txt',FolderNames,clock);   
 	copyfile(FileName,FileName2); 
 	delete (FileName);
 end
 
-
+FileName=sprintf('%s\\NetwkLog_SimCor.txt', CurDir);
+if exist(FileName)~=0
+	FileName2=sprintf('%s\\NetwkLog_SimCor_%4d%02d%02d%02d%02d%2.0f.txt',FolderNames,clock);   
+	copyfile(FileName,FileName2); 
+	delete (FileName);
+end
 % RawMeanData for Elastic Deformation iteration LBCB1
 DisComp={'Dx(in)','Dy(in)','Dz(in)','Rx(rad)','Ry(rad)','Rz(rad)'};
 ForComp={'Fx(kip)','Fy(kip)','Fz(kip)','Mx(kip-in)','My(kip-in)','Mz(kip-in)'};

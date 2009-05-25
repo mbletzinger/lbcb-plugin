@@ -89,7 +89,7 @@ while End_of_Command == 0				% until end of command is reached,
 
 		
 	% -------------------------------------------------------------------------------
-	if handles.MDL.ItrElasticDeform		% if elastic deformation is accounted for
+	if handles.MDL.ItrElasticDeform		% if elastic deformation is accounted for...you can find the MDL.ItrEla....in the MDL-LBCB file
 	% -------------------------------------------------------------------------------
 		% initialize iteration for elastic deformation
 		delta_disp = 10*ones(12,1);
@@ -172,12 +172,12 @@ while End_of_Command == 0				% until end of command is reached,
 		%%%%%%%%%%%%%
 	% by Sung Jig Kim, 05/02/2009
 	if handles.MDL.NetworkConnectionState==0
-		Help_String={'DUE TO NETWORK ERROR WITH LBCB OM...';
+		Help_String={'DUE TO AN LBCB OM NETWORK ERROR...';
 		             '    1. Adjusted CMD will be the current position';
 		             '    2. Current SimCor target will be proposed when LBCB OM is reconnected';
 		             '    3. The LBCB position will be saved at ''CurrentLBCB_Position.txt'' when the network is recovered';
 		             '   ';
-		             'PLEASE, FOLLOW INSTRUCTIONS BELOW...';
+		             'PLEASE, FOLLOW THE INSTRUCTIONS BELOW...';
 		             '    1. Push ''Reconnect'' to close the current network port and reconnect LBCB OM';
 		             '    2. Do not delete ''CurrentLBCB_Position.txt'' ';
 		             '    3. If this is the only network problem, neglect the LBCB offset';

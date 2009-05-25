@@ -29,7 +29,9 @@ function close(obj)
                     	%Sendvar_LabView(obj,sprintf('close-session:LBCB2\tdummy'));
                         % by Sung Jig Kim, 05/02/2009
                         send_str=sprintf('close-session:LBCB2\tdummy');
-                        SendandGetvar_LabView(obj, send_str, 3);
+                        % sjkim
+                        %SendandGetvar_LabView(obj, send_str, 3);
+                        %
                         %Getvar_LabView(obj,obj.CMD.ACKNOWLEDGE);
                         fclose(obj.Comm_obj_1);
                         %fclose(obj.Comm_obj_2);

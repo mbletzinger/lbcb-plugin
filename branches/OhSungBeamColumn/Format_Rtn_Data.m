@@ -7,8 +7,10 @@ function [handles send_str] = Format_Rtn_Data(handles)
 % Conversion displacement from LBCB space to Model space
 % ______________________________________________________________________________________________
 % Load configuration file
-Test_Config;
+% LBCB Configuration;
+SimCor_Config;
 
+       disp ('David');
 
 SF   = [ScaleF ScaleF ScaleF 1 1 1]';			%'% scale factor, displacement + rotation
 SF_f = [ScaleF^2 ScaleF^2 ScaleF^2 ScaleF^3 ScaleF^3 ScaleF^3]';	%'% scale factor, force + moment
@@ -40,7 +42,7 @@ MD3 = MD3([1 2 6]);		% model space
 
 MF2      = MF2([1 2 6]);		% model space
 MF3      = MF3([1 2 6]);		% model space
-MF1      = zeros(size(MF2));		% support reaction from equilibrium
+MF1      = zeros(size(MF2));	% support reaction from equilibrium
 MF1(1:2) = -(MF2(1:2)+MF3(1:2));
 MF1(3)   = -(MF2(3)+MF3(3)) + MF3(1)*(coord_n3(2) - coord_n1(2)) + MF2(1)*(coord_n2(2) - coord_n1(2)) + MF2(2)*(coord_n1(1) - coord_n2(1));
 

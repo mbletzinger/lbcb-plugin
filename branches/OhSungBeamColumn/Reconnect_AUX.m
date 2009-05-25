@@ -16,6 +16,7 @@ handles.AUX = open(handles.AUX);
 for i=1:length(handles.AUX)
 	AUX_Network_Bool(i)=handles.AUX(i).NetworkConnectionState;
 end
+
 set(handles.PB_AuxModule_Connect, 'UserData',AUX_Network_Bool);
 
 if all (AUX_Network_Bool)
