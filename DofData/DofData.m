@@ -5,8 +5,8 @@
 %   disp - Translation and rotation DOFs Dx,Dy,Dz, Rx, Ry, Rz.
 %   force - Force and Moment DOFs Fx, Fy, Fz, Mx, My, Mz.
 %
-% Last updated  $DATE$ 
-% Author: $Author$
+% Last updated  $DATE:$ 
+% $Author:$
 % =====================================================================================================================
 classdef DofData < handle
     properties
