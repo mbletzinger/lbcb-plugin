@@ -44,8 +44,25 @@ classdef MdlLbcb < handle
         end
         
         % Continue executing the current action
-        function state = execute(me)
-            state = me.state;
+        function done = execute(me)
+            s = me.action.getState();
+            done = 0;
+            switch s
+                case 'OPEN CONNECTION'
+                    me.openConnectionAction();
+                case 'CLOSE CONNECTION'
+                    me.closeConnectionAction();
+                case 'EXECUTING TRANSACTION'
+                    me.executeTransactionAction();
+                case 'NONE'
+                    done = 1;
+                otherwise
+                    Str = sprintf('State %s not recognized',s);
+                    disp(Str);
+            end
+            if me.state.isState('READY')
+                done = 1;
+            end
         end
         
         % Start to open a connection to the operations manager
@@ -137,7 +154,7 @@ classdef MdlLbcb < handle
                 me.action.setState('NONE');
             end
         end
-        function executeCloseAction(me)
+        function closeConnectionAction(me)
             cf = me.simcorTcp.getConnectionFactory();
             if cf.closeConnection()
                 me.state.setState('READY');
