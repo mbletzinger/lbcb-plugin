@@ -8,8 +8,8 @@
 %   m2d - class used to convert messages into reading data.
 %   node - MDL label.
 %
-% Last updated  $DATE$ 
-% Author: $Author$
+% $LastChangedDate$ 
+% $Author$
 % =====================================================================================================================
 classdef LbcbReading < handle
     properties
