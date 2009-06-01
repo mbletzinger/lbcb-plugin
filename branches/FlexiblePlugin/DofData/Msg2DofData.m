@@ -1,11 +1,22 @@
+% =====================================================================================================================
+% Class Which parse LBCB get-control-point messages
+%
+% Members:
+%   delimiter - character which separates message fields.
+%
+% $LastChangedDate$ 
+% $Author$
+% =====================================================================================================================
 classdef Msg2DofData < handle
     properties
         delimiter = sprintf(' \t');
     end
     methods
+        % Extracts the control point suffix from the control point address
         function cps = parseCps(me,mdl)
             cps = sscanf(mdl(:),':%s');
         end
+        % Parses the data portion of a control point message
         function data = parse(me,msg,mdl)
             data = {Target()};
             data{1}.cps = me.parseCps(mdl);
@@ -29,6 +40,13 @@ classdef Msg2DofData < handle
                 end
             end
         end
+        % Sorts the token array into a cell array:
+        % Column 1 - Is either the cartesian axis or the control point
+        % address
+        %
+        % Column 2 - Is the DOF type
+        % Column 3 - Is the value at the DOF.
+        
         function cellA = tokensSort(me,tokens)
             row = 1;
             lgth = length(tokens);
@@ -55,6 +73,7 @@ classdef Msg2DofData < handle
                 end
             end
         end
+        % Splits the message up into tokens using the delimiter
         function tokens =  splitTokens(me,msg)
             i = 0;
             while isempty(msg) == 0
@@ -63,6 +82,7 @@ classdef Msg2DofData < handle
                 tokens{i} = token;
             end
         end
+        %  Calculates the index of a data entry in the token array
         function [index isForce value] = findIndex(me,row)
             index = 0;
             isForce = 0;

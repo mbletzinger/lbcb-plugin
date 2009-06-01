@@ -8,8 +8,8 @@
 %   cps - The control point suffix ex. LBCB1, ExternalSensors.
 %  
 %
-% Last updated  $DATE$ 
-% Author: $Author$
+% $LastChangedDate$ 
+% $Author$
 % =====================================================================================================================
 classdef Target < handle
     properties
