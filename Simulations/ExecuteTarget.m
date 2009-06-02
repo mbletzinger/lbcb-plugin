@@ -1,3 +1,13 @@
+% =====================================================================================================================
+% Class which process the propose/execute/get-control-point sequence
+%
+% Members:
+%   mdlLbcb - MdlLbcb module to communicate with the OM.
+%   targets - Current targets.
+%
+% $LastChangedDate$ 
+% $Author$
+% =====================================================================================================================
 classdef ExecuteTarget < handle
     properties
         mdlLbcb = {};
@@ -18,10 +28,12 @@ classdef ExecuteTarget < handle
         function me = ExecuteTarget(mdlLbcb)
             me.mdlLbcb = mdlLbcb;
         end
+        % Start the propose/execute/get-control-point sequence
         function execute(me,targets)
             me.targets = targets;
             me.startPropose(targets);
         end
+        % Continue the sequence return true if completed
         function result = isDone(me)
             result = 0;
             if me.mdlLbcb.isDone()
