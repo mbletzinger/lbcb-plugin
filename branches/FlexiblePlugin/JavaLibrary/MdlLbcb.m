@@ -44,7 +44,7 @@ classdef MdlLbcb < handle
         end
         
         % Continue executing the current action
-        function done = execute(me)
+        function done = isDone(me)
             s = me.action.getState();
             done = 0;
             switch s
@@ -88,7 +88,7 @@ classdef MdlLbcb < handle
         end
         
         % Create a simple command  all arguments are strings.  Any argument
-        % that is not used should be passed in as ''
+        % that is not used should be passed in as an empty matrix [].
         % The return is a Java object containing the message.
         function jmsg = createCommand(cmd, mdl, cps, content)
             tf = me.simcorTcp.getTransactionFactory();
