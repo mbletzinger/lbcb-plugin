@@ -40,7 +40,7 @@ classdef ExecuteTarget < handle
             end
         end
     end
-    methods (Access='private')
+    methods (Access=private)
         function startPropose(me,targets)
             lgth = length(targets);
             mdl = cell(lgth,1);
