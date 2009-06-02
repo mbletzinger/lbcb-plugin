@@ -119,7 +119,7 @@ classdef MdlLbcb < handle
         end
     end
     
-    methods (Access='private')
+    methods (Access=private)
         %  Process open connection
         function openConnectionAction(me)
             s = InitStates();
