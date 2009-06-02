@@ -18,8 +18,18 @@ classdef ExecuteTarget < handle
         function me = ExecuteTarget(mdlLbcb)
             me.mdlLbcb = mdlLbcb;
         end
-        function executeTarget(me,targets)
+        function execute(me,targets)
             me.targets = targets;
+            me.startPropose(targets);
+        end
+        function result = isDone(me)
+            result = 0;
+            if me.mdlLbcb.isDone()
+            end
+        end
+    end
+    methods (Access='private')
+        function startPropose(me,targets)
             lgth = length(targets);
             mdl = cell(lgth,1);
             cps = cell(lgth,1);
@@ -34,9 +44,11 @@ classdef ExecuteTarget < handle
             me.state.setState('BUSY');
             me.action.setState('PROPOSE');
         end
-        function result = isDone(me)
-            if me.mdlLbcb.execute()
-            end
+        function startExecute(me)
+            jmsg = me.mdlLbcb.createCommand('execute',me.targets(1).node,[],[]);
+            me.mdlLbcb.start(jmsg);
+            me.state.setState('BUSY');
+            me.action.setState('EXECUTE');
         end
     end
 end
