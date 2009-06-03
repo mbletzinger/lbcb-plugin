@@ -30,6 +30,18 @@ classdef OneTargetActions < handle
             end
         end
         function done = execute(me)
+            a = me.state.getState();
+            done = 0;
+            switch a
+                case 'DONE'
+                    done = 1;
+                case 'CONNECT OM'
+                    me.executeConnectOm();
+                case 'DISCONNECT OM'
+                    me.executeDisconnectOm();
+                case 'EXECUTE TARGET'
+                    me.executeExecuteTarget();
+            end
         end
     end
     methods (Access=private)

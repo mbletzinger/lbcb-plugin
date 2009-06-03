@@ -60,7 +60,12 @@ javaaddpath(fullfile(pwd,'JavaLibrary','log4j-1.2.15.jar'));
 javaaddpath(fullfile(pwd,'JavaLibrary'));
 
 handles.cfg = Configuration;
-handles.actions = OneTargetActions(cfg);
+handles.cfg.load();
+handles.actions = OneTargetActions(handles.cfg);
+
+handles.utimer = timer('Period',1, 'TasksToExecute',100000,'ExecutionMode','fixedSpacing', 'Name','SimulationTimer');
+handles.utimer.TimerFcn = { @executeSimulation,hObject,handles};
+start(handles.utimer);
 
 % Update handles structure
 guidata(hObject, handles);
@@ -296,14 +301,18 @@ function Exit_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 delete(handles.OneTarget);
-
+handles.utimer.stop()
+delete(handles.utimer);
 
 % --- Executes on button press in ConnectButton.
 function ConnectButton_Callback(hObject, eventdata, handles)
 % hObject    handle to ConnectButton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-
+ done = handles.actions.execute();
+if done
+    handles.action.setAction('');
+end
 
 
 function L2Dx_Callback(hObject, eventdata, handles)
@@ -465,8 +474,8 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
     set(hObject,'BackgroundColor','white');
 end
 
-function executeSimulation(hObject,handles)
-    done = handles.actions.isDone();
+function executeSimulation(obj,event,hObject,handles)
+    done = handles.actions.execute();
     if done
         updateTable(handles);
         guidata(hObject, handles);
