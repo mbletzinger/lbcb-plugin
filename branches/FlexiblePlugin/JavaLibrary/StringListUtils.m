@@ -14,16 +14,23 @@ classdef StringListUtils < handle
     end
     methods
         % converts a java string list to a cell array
-        function result = sl2ca(list)
+        function result = sl2ca(me,list)
             length = list.size();
             result = cell(length,1);
-            for i = 0:length
-                result(i) = list.get(i);
+            for i = 0:length - 1
+                result{i + 1} = list.get(i);
             end
         end
         % converts a cell array to a java string list
-        function result = ca2sl(cellArray)
-            result = me.strUtil.a2sl(cellArray);
+        function result = ca2sl(me,cellArray)
+            lgth = length(cellArray);
+            stringA= javaArray('java.lang.String',lgth);
+            for i=1:lgth
+                if isempty(cellArray{i}) == 0
+                    stringA(i) = java.lang.String(cellArray{i});
+                end
+            end
+            result = me.strUtil.a2sl(stringA);
         end
     end
 end

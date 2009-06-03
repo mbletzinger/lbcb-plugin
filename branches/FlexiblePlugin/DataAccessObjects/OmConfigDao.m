@@ -20,19 +20,21 @@ classdef OmConfigDao < handle
         su = StringListUtils();
     end
     methods
-        function me = omConfigDao(cfg)
+        function me = OmConfigDao(cfg)
             me.cfg = cfg;
         end
         function result = get.numLbcbs(me)
-              resultS = me.cfg.props.getProperty('om.numLbcbs');
-              result = sscanf(resultS,'%d');
+              result = me.cfg.props.getProperty('om.numLbcbs');
         end
         function set.numLbcbs(me,value)
-            valS = sprintf('%d', value);
-              me.cfg.props.setProperty('om.numLbcbs',valS);
+              me.cfg.props.setProperty('om.numLbcbs',value);
         end
         function result = get.sensorNames(me)
               resultSL = me.cfg.props.getPropertyList('om.sensorNames');
+              if isempty(resultSL)
+                  result = [];
+                  return;
+              end
               result = me.su.sl2ca(resultSL);
         end
         function set.sensorNames(me,value)
@@ -41,6 +43,10 @@ classdef OmConfigDao < handle
         end
         function result = get.apply2Lbcb(me)
               resultSL = me.cfg.props.getPropertyList('om.apply2Lbcb');
+              if isempty(resultSL)
+                  result = [];
+                  return;
+              end
               result = me.su.sl2ca(resultSL);
         end
         function set.apply2Lbcb(me,value)
