@@ -22,7 +22,7 @@ function varargout = OneTargetTest(varargin)
 
 % Edit the above text to modify the response to help OneTargetTest
 
-% Last Modified by GUIDE v2.5 03-Jun-2009 02:44:03
+% Last Modified by GUIDE v2.5 03-Jun-2009 12:53:42
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -60,6 +60,7 @@ javaaddpath(fullfile(pwd,'JavaLibrary','log4j-1.2.15.jar'));
 javaaddpath(fullfile(pwd,'JavaLibrary'));
 
 handles.cfg = Configuration;
+handles.actions = OneTargetActions(cfg);
 
 % Update handles structure
 guidata(hObject, handles);
@@ -80,18 +81,18 @@ varargout{1} = handles.output;
 
 
 
-function Dx_Callback(hObject, eventdata, handles)
-% hObject    handle to Dx (see GCBO)
+function L1Dx_Callback(hObject, eventdata, handles)
+% hObject    handle to L1Dx (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% Hints: get(hObject,'String') returns contents of Dx as text
-%        str2double(get(hObject,'String')) returns contents of Dx as a double
+% Hints: get(hObject,'String') returns contents of L1Dx as text
+%        str2double(get(hObject,'String')) returns contents of L1Dx as a double
 
 
 % --- Executes during object creation, after setting all properties.
-function Dx_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to Dx (see GCBO)
+function L1Dx_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to L1Dx (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
@@ -103,18 +104,18 @@ end
 
 
 
-function Rx_Callback(hObject, eventdata, handles)
-% hObject    handle to Rx (see GCBO)
+function L1Rx_Callback(hObject, eventdata, handles)
+% hObject    handle to L1Rx (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% Hints: get(hObject,'String') returns contents of Rx as text
-%        str2double(get(hObject,'String')) returns contents of Rx as a double
+% Hints: get(hObject,'String') returns contents of L1Rx as text
+%        str2double(get(hObject,'String')) returns contents of L1Rx as a double
 
 
 % --- Executes during object creation, after setting all properties.
-function Rx_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to Rx (see GCBO)
+function L1Rx_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to L1Rx (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
@@ -126,18 +127,18 @@ end
 
 
 
-function Dy_Callback(hObject, eventdata, handles)
-% hObject    handle to Dy (see GCBO)
+function L1Dy_Callback(hObject, eventdata, handles)
+% hObject    handle to L1Dy (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% Hints: get(hObject,'String') returns contents of Dy as text
-%        str2double(get(hObject,'String')) returns contents of Dy as a double
+% Hints: get(hObject,'String') returns contents of L1Dy as text
+%        str2double(get(hObject,'String')) returns contents of L1Dy as a double
 
 
 % --- Executes during object creation, after setting all properties.
-function Dy_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to Dy (see GCBO)
+function L1Dy_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to L1Dy (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
@@ -149,18 +150,18 @@ end
 
 
 
-function Ry_Callback(hObject, eventdata, handles)
-% hObject    handle to Ry (see GCBO)
+function L1Ry_Callback(hObject, eventdata, handles)
+% hObject    handle to L1Ry (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% Hints: get(hObject,'String') returns contents of Ry as text
-%        str2double(get(hObject,'String')) returns contents of Ry as a double
+% Hints: get(hObject,'String') returns contents of L1Ry as text
+%        str2double(get(hObject,'String')) returns contents of L1Ry as a double
 
 
 % --- Executes during object creation, after setting all properties.
-function Ry_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to Ry (see GCBO)
+function L1Ry_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to L1Ry (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
@@ -172,18 +173,18 @@ end
 
 
 
-function Dz_Callback(hObject, eventdata, handles)
-% hObject    handle to Dz (see GCBO)
+function L1Dz_Callback(hObject, eventdata, handles)
+% hObject    handle to L1Dz (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% Hints: get(hObject,'String') returns contents of Dz as text
-%        str2double(get(hObject,'String')) returns contents of Dz as a double
+% Hints: get(hObject,'String') returns contents of L1Dz as text
+%        str2double(get(hObject,'String')) returns contents of L1Dz as a double
 
 
 % --- Executes during object creation, after setting all properties.
-function Dz_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to Dz (see GCBO)
+function L1Dz_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to L1Dz (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
@@ -195,18 +196,18 @@ end
 
 
 
-function Rz_Callback(hObject, eventdata, handles)
-% hObject    handle to Rz (see GCBO)
+function L1Rz_Callback(hObject, eventdata, handles)
+% hObject    handle to L1Rz (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% Hints: get(hObject,'String') returns contents of Rz as text
-%        str2double(get(hObject,'String')) returns contents of Rz as a double
+% Hints: get(hObject,'String') returns contents of L1Rz as text
+%        str2double(get(hObject,'String')) returns contents of L1Rz as a double
 
 
 % --- Executes during object creation, after setting all properties.
-function Rz_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to Rz (see GCBO)
+function L1Rz_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to L1Rz (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
@@ -295,3 +296,189 @@ function Exit_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 delete(handles.OneTarget);
+
+
+% --- Executes on button press in ConnectButton.
+function ConnectButton_Callback(hObject, eventdata, handles)
+% hObject    handle to ConnectButton (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+
+function L2Dx_Callback(hObject, eventdata, handles)
+% hObject    handle to L2Dx (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of L2Dx as text
+%        str2double(get(hObject,'String')) returns contents of L2Dx as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function L2Dx_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to L2Dx (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function L2Rx_Callback(hObject, eventdata, handles)
+% hObject    handle to L2Rx (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of L2Rx as text
+%        str2double(get(hObject,'String')) returns contents of L2Rx as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function L2Rx_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to L2Rx (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function L2Dy_Callback(hObject, eventdata, handles)
+% hObject    handle to L2Dy (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of L2Dy as text
+%        str2double(get(hObject,'String')) returns contents of L2Dy as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function L2Dy_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to L2Dy (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function L2Ry_Callback(hObject, eventdata, handles)
+% hObject    handle to L2Ry (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of L2Ry as text
+%        str2double(get(hObject,'String')) returns contents of L2Ry as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function L2Ry_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to L2Ry (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function L2Dz_Callback(hObject, eventdata, handles)
+% hObject    handle to L2Dz (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of L2Dz as text
+%        str2double(get(hObject,'String')) returns contents of L2Dz as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function L2Dz_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to L2Dz (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function L2Rz_Callback(hObject, eventdata, handles)
+% hObject    handle to L2Rz (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of L2Rz as text
+%        str2double(get(hObject,'String')) returns contents of L2Rz as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function L2Rz_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to L2Rz (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on selection change in LbcbSelect.
+function LbcbSelect_Callback(hObject, eventdata, handles)
+% hObject    handle to LbcbSelect (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: contents = get(hObject,'String') returns LbcbSelect contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from LbcbSelect
+
+
+% --- Executes during object creation, after setting all properties.
+function LbcbSelect_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to LbcbSelect (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: popupmenu controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+function executeSimulation(hObject,handles)
+    done = handles.actions.isDone();
+    if done
+        updateTable(handles);
+        guidata(hObject, handles);
+    end
+    
+function updateTable(handles)
+lbcbS = get(handles.LbcbSelect,'Value');
+tData = {};
+if lbcbS == 1
+    tData = handles.actions.lbcb1Table;
+else
+    tData = handles.actions.lbcb1Table;
+end
+set(handles.LbcbTable,'Data',tData);
+ 

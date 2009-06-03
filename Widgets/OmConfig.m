@@ -22,7 +22,7 @@ function varargout = OmConfig(varargin)
 
 % Edit the above text to modify the response to help OmConfig
 
-% Last Modified by GUIDE v2.5 02-Jun-2009 18:04:32
+% Last Modified by GUIDE v2.5 03-Jun-2009 12:56:06
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -978,4 +978,3 @@ for m = 1:15
             set(handles.ExtS15,'String',names(m));    
     end
 end
-
