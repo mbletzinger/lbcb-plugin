@@ -22,7 +22,7 @@ function varargout = OmConfig(varargin)
 
 % Edit the above text to modify the response to help OmConfig
 
-% Last Modified by GUIDE v2.5 02-Jun-2009 11:49:28
+% Last Modified by GUIDE v2.5 02-Jun-2009 18:04:32
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -54,16 +54,43 @@ function OmConfig_OpeningFcn(hObject, eventdata, handles, varargin)
 
 % Choose default command line output for OmConfig
 handles.output = hObject;
+if(nargin > 3)
+    for index = 1:2:(nargin-3),
+        if nargin-3==index, break, end
+        label = lower(varargin{index});
+        switch label
+            case 'cfg'
+                cfg = varargin{index+1};
+            otherwise
+            str= sprintf('%s not recognized',label);
+            disp(str);
+        end
+    end
+end
+
+handles.dao = OmConfigDao(cfg);
+handles.numTypes = StateEnum(get(handles.NumberOfLbcbsMenu,'String'));
+handles.appliedTypes = StateEnum(get(handles.Applied2Lbcb1,'String'));
+
+current = handles.dao.numLbcbs;
+if isempty(current) == 0
+    handles.numTypes.setState(current);
+    set(handles.NumberOfLbcbsMenu,'Value',handles.numTypes.idx);
+end
+
+if isempty(handles.dao.sensorNames) == 0
+    fillPopups(handles);
+end
 
 % Update handles structure
 guidata(hObject, handles);
 
 % UIWAIT makes OmConfig wait for user response (see UIRESUME)
-% uiwait(handles.figure1);
+% uiwait(handles.OmConfig);
 
 
 % --- Outputs from this function are returned to the command line.
-function varargout = OmConfig_OutputFcn(hObject, eventdata, handles) 
+function varargout = OmConfig_OutputFcn(hObject, eventdata, handles)  %#ok<*INUSL>
 % varargout  cell array for returning output args (see VARARGOUT);
 % hObject    handle to figure
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -81,7 +108,10 @@ function NumberOfLbcbsMenu_Callback(hObject, eventdata, handles)
 
 % Hints: contents = get(hObject,'String') returns NumberOfLbcbsMenu contents as cell array
 %        contents{get(hObject,'Value')} returns selected item from NumberOfLbcbsMenu
-
+contents = get(hObject,'String');
+value = contents{get(hObject,'Value')};
+handles.dao.numLbcbs = value;
+guidata(hObject, handles);
 
 % --- Executes during object creation, after setting all properties.
 function NumberOfLbcbsMenu_CreateFcn(hObject, eventdata, handles)
@@ -101,7 +131,7 @@ function OkButton_Callback(hObject, eventdata, handles)
 % hObject    handle to OkButton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-
+delete(handles.OmConfig);
 
 % --- Executes on button press in CancelButton.
 function CancelButton_Callback(hObject, eventdata, handles)
@@ -118,6 +148,8 @@ function ExtS1_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of ExtS1 as text
 %        str2double(get(hObject,'String')) returns contents of ExtS1 as a double
+value = get(hObject,'String');
+updateSensorNames(hObject,1,value,handles);
 
 
 % --- Executes during object creation, after setting all properties.
@@ -141,7 +173,9 @@ function Applied2Lbcb1_Callback(hObject, eventdata, handles)
 
 % Hints: contents = get(hObject,'String') returns Applied2Lbcb1 contents as cell array
 %        contents{get(hObject,'Value')} returns selected item from Applied2Lbcb1
-
+contents = get(hObject,'String');
+value = contents{get(hObject,'Value')};
+updateApplied2Lbcb(hObject,1,value,handles);
 
 % --- Executes during object creation, after setting all properties.
 function Applied2Lbcb1_CreateFcn(hObject, eventdata, handles)
@@ -156,30 +190,6 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
 end
 
 
-
-function edit8_Callback(hObject, eventdata, handles)
-% hObject    handle to edit8 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of edit8 as text
-%        str2double(get(hObject,'String')) returns contents of edit8 as a double
-
-
-% --- Executes during object creation, after setting all properties.
-function edit8_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to edit8 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
-
-
-
 function ExtS2_Callback(hObject, eventdata, handles)
 % hObject    handle to ExtS2 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -187,6 +197,8 @@ function ExtS2_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of ExtS2 as text
 %        str2double(get(hObject,'String')) returns contents of ExtS2 as a double
+value = get(hObject,'String');
+updateSensorNames(hObject,2,value,handles);
 
 
 % --- Executes during object creation, after setting all properties.
@@ -210,6 +222,9 @@ function Applied2Lbcb2_Callback(hObject, eventdata, handles)
 
 % Hints: contents = get(hObject,'String') returns Applied2Lbcb2 contents as cell array
 %        contents{get(hObject,'Value')} returns selected item from Applied2Lbcb2
+contents = get(hObject,'String');
+value = contents{get(hObject,'Value')};
+updateApplied2Lbcb(hObject,2,value,handles);
 
 
 % --- Executes during object creation, after setting all properties.
@@ -233,6 +248,8 @@ function ExtS3_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of ExtS3 as text
 %        str2double(get(hObject,'String')) returns contents of ExtS3 as a double
+value = get(hObject,'String');
+updateSensorNames(hObject,3,value,handles);
 
 
 % --- Executes during object creation, after setting all properties.
@@ -256,6 +273,9 @@ function Applied2Lbcb3_Callback(hObject, eventdata, handles)
 
 % Hints: contents = get(hObject,'String') returns Applied2Lbcb3 contents as cell array
 %        contents{get(hObject,'Value')} returns selected item from Applied2Lbcb3
+contents = get(hObject,'String');
+value = contents{get(hObject,'Value')};
+updateApplied2Lbcb(hObject,3,value,handles);
 
 
 % --- Executes during object creation, after setting all properties.
@@ -279,6 +299,8 @@ function ExtS4_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of ExtS4 as text
 %        str2double(get(hObject,'String')) returns contents of ExtS4 as a double
+value = get(hObject,'String');
+updateSensorNames(hObject,4,value,handles);
 
 
 % --- Executes during object creation, after setting all properties.
@@ -302,6 +324,9 @@ function Applied2Lbcb4_Callback(hObject, eventdata, handles)
 
 % Hints: contents = get(hObject,'String') returns Applied2Lbcb4 contents as cell array
 %        contents{get(hObject,'Value')} returns selected item from Applied2Lbcb4
+contents = get(hObject,'String');
+value = contents{get(hObject,'Value')};
+updateApplied2Lbcb(hObject,4,value,handles);
 
 
 % --- Executes during object creation, after setting all properties.
@@ -325,6 +350,8 @@ function ExtS5_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of ExtS5 as text
 %        str2double(get(hObject,'String')) returns contents of ExtS5 as a double
+value = get(hObject,'String');
+updateSensorNames(hObject,5,value,handles);
 
 
 % --- Executes during object creation, after setting all properties.
@@ -348,6 +375,9 @@ function Applied2Lbcb5_Callback(hObject, eventdata, handles)
 
 % Hints: contents = get(hObject,'String') returns Applied2Lbcb5 contents as cell array
 %        contents{get(hObject,'Value')} returns selected item from Applied2Lbcb5
+contents = get(hObject,'String');
+value = contents{get(hObject,'Value')};
+updateApplied2Lbcb(hObject,5,value,handles);
 
 
 % --- Executes during object creation, after setting all properties.
@@ -371,6 +401,8 @@ function ExtS6_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of ExtS6 as text
 %        str2double(get(hObject,'String')) returns contents of ExtS6 as a double
+value = get(hObject,'String');
+updateSensorNames(hObject,6,value,handles);
 
 
 % --- Executes during object creation, after setting all properties.
@@ -394,6 +426,9 @@ function Applied2Lbcb6_Callback(hObject, eventdata, handles)
 
 % Hints: contents = get(hObject,'String') returns Applied2Lbcb6 contents as cell array
 %        contents{get(hObject,'Value')} returns selected item from Applied2Lbcb6
+contents = get(hObject,'String');
+value = contents{get(hObject,'Value')};
+updateApplied2Lbcb(hObject,6,value,handles);
 
 
 % --- Executes during object creation, after setting all properties.
@@ -417,6 +452,8 @@ function ExtS7_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of ExtS7 as text
 %        str2double(get(hObject,'String')) returns contents of ExtS7 as a double
+value = get(hObject,'String');
+updateSensorNames(hObject,7,value,handles);
 
 
 % --- Executes during object creation, after setting all properties.
@@ -440,6 +477,9 @@ function Applied2Lbcb7_Callback(hObject, eventdata, handles)
 
 % Hints: contents = get(hObject,'String') returns Applied2Lbcb7 contents as cell array
 %        contents{get(hObject,'Value')} returns selected item from Applied2Lbcb7
+contents = get(hObject,'String');
+value = contents{get(hObject,'Value')};
+updateApplied2Lbcb(hObject,7,value,handles);
 
 
 % --- Executes during object creation, after setting all properties.
@@ -463,6 +503,8 @@ function ExtS8_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of ExtS8 as text
 %        str2double(get(hObject,'String')) returns contents of ExtS8 as a double
+value = get(hObject,'String');
+updateSensorNames(hObject,8,value,handles);
 
 
 % --- Executes during object creation, after setting all properties.
@@ -486,6 +528,9 @@ function Applied2Lbcb8_Callback(hObject, eventdata, handles)
 
 % Hints: contents = get(hObject,'String') returns Applied2Lbcb8 contents as cell array
 %        contents{get(hObject,'Value')} returns selected item from Applied2Lbcb8
+contents = get(hObject,'String');
+value = contents{get(hObject,'Value')};
+updateApplied2Lbcb(hObject,8,value,handles);
 
 
 % --- Executes during object creation, after setting all properties.
@@ -509,6 +554,8 @@ function ExtS9_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of ExtS9 as text
 %        str2double(get(hObject,'String')) returns contents of ExtS9 as a double
+value = get(hObject,'String');
+updateSensorNames(hObject,9,value,handles);
 
 
 % --- Executes during object creation, after setting all properties.
@@ -532,6 +579,9 @@ function Applied2Lbcb9_Callback(hObject, eventdata, handles)
 
 % Hints: contents = get(hObject,'String') returns Applied2Lbcb9 contents as cell array
 %        contents{get(hObject,'Value')} returns selected item from Applied2Lbcb9
+contents = get(hObject,'String');
+value = contents{get(hObject,'Value')};
+updateApplied2Lbcb(hObject,9,value,handles);
 
 
 % --- Executes during object creation, after setting all properties.
@@ -555,6 +605,8 @@ function ExtS10_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of ExtS10 as text
 %        str2double(get(hObject,'String')) returns contents of ExtS10 as a double
+value = get(hObject,'String');
+updateSensorNames(hObject,10,value,handles);
 
 
 % --- Executes during object creation, after setting all properties.
@@ -578,6 +630,9 @@ function Applied2Lbcb10_Callback(hObject, eventdata, handles)
 
 % Hints: contents = get(hObject,'String') returns Applied2Lbcb10 contents as cell array
 %        contents{get(hObject,'Value')} returns selected item from Applied2Lbcb10
+contents = get(hObject,'String');
+value = contents{get(hObject,'Value')};
+updateApplied2Lbcb(hObject,10,value,handles);
 
 
 % --- Executes during object creation, after setting all properties.
@@ -601,6 +656,8 @@ function ExtS11_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of ExtS11 as text
 %        str2double(get(hObject,'String')) returns contents of ExtS11 as a double
+value = get(hObject,'String');
+updateSensorNames(hObject,11,value,handles);
 
 
 % --- Executes during object creation, after setting all properties.
@@ -624,6 +681,9 @@ function Applied2Lbcb11_Callback(hObject, eventdata, handles)
 
 % Hints: contents = get(hObject,'String') returns Applied2Lbcb11 contents as cell array
 %        contents{get(hObject,'Value')} returns selected item from Applied2Lbcb11
+contents = get(hObject,'String');
+value = contents{get(hObject,'Value')};
+updateApplied2Lbcb(hObject,11,value,handles);
 
 
 % --- Executes during object creation, after setting all properties.
@@ -647,6 +707,8 @@ function ExtS12_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of ExtS12 as text
 %        str2double(get(hObject,'String')) returns contents of ExtS12 as a double
+value = get(hObject,'String');
+updateSensorNames(hObject,1,value,handles);
 
 
 % --- Executes during object creation, after setting all properties.
@@ -670,6 +732,9 @@ function Applied2Lbcb12_Callback(hObject, eventdata, handles)
 
 % Hints: contents = get(hObject,'String') returns Applied2Lbcb12 contents as cell array
 %        contents{get(hObject,'Value')} returns selected item from Applied2Lbcb12
+contents = get(hObject,'String');
+value = contents{get(hObject,'Value')};
+updateApplied2Lbcb(hObject,12,value,handles);
 
 
 % --- Executes during object creation, after setting all properties.
@@ -693,6 +758,8 @@ function ExtS13_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of ExtS13 as text
 %        str2double(get(hObject,'String')) returns contents of ExtS13 as a double
+value = get(hObject,'String');
+updateSensorNames(hObject,13,value,handles);
 
 
 % --- Executes during object creation, after setting all properties.
@@ -716,6 +783,9 @@ function Applied2Lbcb13_Callback(hObject, eventdata, handles)
 
 % Hints: contents = get(hObject,'String') returns Applied2Lbcb13 contents as cell array
 %        contents{get(hObject,'Value')} returns selected item from Applied2Lbcb13
+contents = get(hObject,'String');
+value = contents{get(hObject,'Value')};
+updateApplied2Lbcb(hObject,13,value,handles);
 
 
 % --- Executes during object creation, after setting all properties.
@@ -739,6 +809,8 @@ function ExtS14_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of ExtS14 as text
 %        str2double(get(hObject,'String')) returns contents of ExtS14 as a double
+value = get(hObject,'String');
+updateSensorNames(hObject,14,value,handles);
 
 
 % --- Executes during object creation, after setting all properties.
@@ -762,6 +834,9 @@ function Applied2Lbcb14_Callback(hObject, eventdata, handles)
 
 % Hints: contents = get(hObject,'String') returns Applied2Lbcb14 contents as cell array
 %        contents{get(hObject,'Value')} returns selected item from Applied2Lbcb14
+contents = get(hObject,'String');
+value = contents{get(hObject,'Value')};
+updateApplied2Lbcb(hObject,14,value,handles);
 
 
 % --- Executes during object creation, after setting all properties.
@@ -785,6 +860,8 @@ function ExtS15_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of ExtS15 as text
 %        str2double(get(hObject,'String')) returns contents of ExtS15 as a double
+value = get(hObject,'String');
+updateSensorNames(hObject,15,value,handles);
 
 
 % --- Executes during object creation, after setting all properties.
@@ -808,10 +885,13 @@ function Applied2Lbcb15_Callback(hObject, eventdata, handles)
 
 % Hints: contents = get(hObject,'String') returns Applied2Lbcb15 contents as cell array
 %        contents{get(hObject,'Value')} returns selected item from Applied2Lbcb15
+contents = get(hObject,'String');
+value = contents{get(hObject,'Value')};
+updateApplied2Lbcb(hObject,15,value,handles);
 
 
 % --- Executes during object creation, after setting all properties.
-function Applied2Lbcb15_CreateFcn(hObject, eventdata, handles)
+function Applied2Lbcb15_CreateFcn(hObject, eventdata, handles) %#ok<*INUSD,*DEFNU>
 % hObject    handle to Applied2Lbcb15 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
@@ -821,3 +901,81 @@ function Applied2Lbcb15_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
+
+function updateApplied2Lbcb(hObject,idx, value, handles)
+values = handles.dao.apply2Lbcb;
+if isempty(values)
+    values = cell(15,1);
+end
+values{idx} = value;
+handles.dao.apply2Lbcb = values;
+guidata(hObject, handles);
+
+function updateSensorNames(hObject,idx,value,handles)
+names = handles.dao.sensorNames;
+if isempty(names)
+    names = cell(15,1);
+end
+names{idx} = value;
+handles.dao.sensorNames = names;
+guidata(hObject, handles);
+
+function fillPopups(handles)
+values = handles.dao.apply2Lbcb;
+names = handles.dao.sensorNames;
+for m = 1:15
+    if isempty(values{m})
+        idx = 1;
+    else
+        handles.appliedTypes.setState(values(m));
+        idx = handles.appliedTypes.idx;
+    end
+    switch m
+        case 1
+            set(handles.Applied2Lbcb1,'Value',idx);    
+            set(handles.ExtS1,'String',names(m));    
+        case 2
+            set(handles.Applied2Lbcb2,'Value',idx);    
+            set(handles.ExtS2,'String',names(m));    
+        case 3
+            set(handles.Applied2Lbcb3,'Value',idx);    
+            set(handles.ExtS3,'String',names(m));    
+        case 4
+            set(handles.Applied2Lbcb4,'Value',idx);    
+            set(handles.ExtS4,'String',names(m));    
+        case 5
+            set(handles.Applied2Lbcb5,'Value',idx);    
+            set(handles.ExtS5,'String',names(m));    
+        case 6
+            set(handles.Applied2Lbcb6,'Value',idx);    
+            set(handles.ExtS6,'String',names(m));    
+        case 7
+            set(handles.Applied2Lbcb7,'Value',idx);    
+            set(handles.ExtS7,'String',names(m));    
+        case 8
+            set(handles.Applied2Lbcb8,'Value',idx);    
+            set(handles.ExtS8,'String',names(m));    
+        case 9
+            set(handles.Applied2Lbcb9,'Value',idx);    
+            set(handles.ExtS9,'String',names(m));    
+        case 10
+            set(handles.Applied2Lbcb10,'Value',idx);    
+            set(handles.ExtS10,'String',names(m));    
+        case 11
+            set(handles.Applied2Lbcb11,'Value',idx);    
+            set(handles.ExtS11,'String',names(m));    
+        case 12
+            set(handles.Applied2Lbcb12,'Value',idx);    
+            set(handles.ExtS12,'String',names(m));    
+        case 13
+            set(handles.Applied2Lbcb13,'Value',idx);    
+            set(handles.ExtS13,'String',names(m));    
+        case 14
+            set(handles.Applied2Lbcb14,'Value',idx);    
+            set(handles.ExtS14,'String',names(m));    
+        case 15
+            set(handles.Applied2Lbcb15,'Value',idx);    
+            set(handles.ExtS15,'String',names(m));    
+    end
+end
+

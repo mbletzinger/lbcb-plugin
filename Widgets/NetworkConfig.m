@@ -69,6 +69,7 @@ if(nargin > 3)
                 cfg = varargin{index+1};
             otherwise
             str= sprintf('%s not recognized',label);
+            disp(str);
         end
     end
 end
