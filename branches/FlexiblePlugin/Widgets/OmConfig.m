@@ -22,7 +22,7 @@ function varargout = OmConfig(varargin)
 
 % Edit the above text to modify the response to help OmConfig
 
-% Last Modified by GUIDE v2.5 03-Jun-2009 12:56:06
+% Last Modified by GUIDE v2.5 08-Jun-2009 15:02:15
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -150,7 +150,7 @@ function ExtS1_Callback(hObject, eventdata, handles)
 %        str2double(get(hObject,'String')) returns contents of ExtS1 as a double
 value = get(hObject,'String');
 updateSensorNames(hObject,1,value,handles);
-
+Applied2Lbcb1_Callback(handles.Applied2Lbcb1,eventdata,handles);
 
 % --- Executes during object creation, after setting all properties.
 function ExtS1_CreateFcn(hObject, eventdata, handles)
@@ -199,6 +199,7 @@ function ExtS2_Callback(hObject, eventdata, handles)
 %        str2double(get(hObject,'String')) returns contents of ExtS2 as a double
 value = get(hObject,'String');
 updateSensorNames(hObject,2,value,handles);
+Applied2Lbcb2_Callback(handles.Applied2Lbcb2,eventdata,handles);
 
 
 % --- Executes during object creation, after setting all properties.
@@ -250,6 +251,7 @@ function ExtS3_Callback(hObject, eventdata, handles)
 %        str2double(get(hObject,'String')) returns contents of ExtS3 as a double
 value = get(hObject,'String');
 updateSensorNames(hObject,3,value,handles);
+Applied2Lbcb3_Callback(handles.Applied2Lbcb3,eventdata,handles);
 
 
 % --- Executes during object creation, after setting all properties.
@@ -301,6 +303,7 @@ function ExtS4_Callback(hObject, eventdata, handles)
 %        str2double(get(hObject,'String')) returns contents of ExtS4 as a double
 value = get(hObject,'String');
 updateSensorNames(hObject,4,value,handles);
+Applied2Lbcb4_Callback(handles.Applied2Lbcb4,eventdata,handles);
 
 
 % --- Executes during object creation, after setting all properties.
@@ -352,6 +355,7 @@ function ExtS5_Callback(hObject, eventdata, handles)
 %        str2double(get(hObject,'String')) returns contents of ExtS5 as a double
 value = get(hObject,'String');
 updateSensorNames(hObject,5,value,handles);
+Applied2Lbcb5_Callback(handles.Applied2Lbcb5,eventdata,handles);
 
 
 % --- Executes during object creation, after setting all properties.
@@ -403,6 +407,7 @@ function ExtS6_Callback(hObject, eventdata, handles)
 %        str2double(get(hObject,'String')) returns contents of ExtS6 as a double
 value = get(hObject,'String');
 updateSensorNames(hObject,6,value,handles);
+Applied2Lbcb6_Callback(handles.Applied2Lbcb6,eventdata,handles);
 
 
 % --- Executes during object creation, after setting all properties.
@@ -454,6 +459,7 @@ function ExtS7_Callback(hObject, eventdata, handles)
 %        str2double(get(hObject,'String')) returns contents of ExtS7 as a double
 value = get(hObject,'String');
 updateSensorNames(hObject,7,value,handles);
+Applied2Lbcb7_Callback(handles.Applied2Lbcb7,eventdata,handles);
 
 
 % --- Executes during object creation, after setting all properties.
@@ -505,6 +511,7 @@ function ExtS8_Callback(hObject, eventdata, handles)
 %        str2double(get(hObject,'String')) returns contents of ExtS8 as a double
 value = get(hObject,'String');
 updateSensorNames(hObject,8,value,handles);
+Applied2Lbcb8_Callback(handles.Applied2Lbcb8,eventdata,handles);
 
 
 % --- Executes during object creation, after setting all properties.
@@ -556,6 +563,7 @@ function ExtS9_Callback(hObject, eventdata, handles)
 %        str2double(get(hObject,'String')) returns contents of ExtS9 as a double
 value = get(hObject,'String');
 updateSensorNames(hObject,9,value,handles);
+Applied2Lbcb9_Callback(handles.Applied2Lbcb9,eventdata,handles);
 
 
 % --- Executes during object creation, after setting all properties.
@@ -607,6 +615,7 @@ function ExtS10_Callback(hObject, eventdata, handles)
 %        str2double(get(hObject,'String')) returns contents of ExtS10 as a double
 value = get(hObject,'String');
 updateSensorNames(hObject,10,value,handles);
+Applied2Lbcb10_Callback(handles.Applied2Lbcb10,eventdata,handles);
 
 
 % --- Executes during object creation, after setting all properties.
@@ -658,6 +667,7 @@ function ExtS11_Callback(hObject, eventdata, handles)
 %        str2double(get(hObject,'String')) returns contents of ExtS11 as a double
 value = get(hObject,'String');
 updateSensorNames(hObject,11,value,handles);
+Applied2Lbcb11_Callback(handles.Applied2Lbcb11,eventdata,handles);
 
 
 % --- Executes during object creation, after setting all properties.
@@ -709,6 +719,7 @@ function ExtS12_Callback(hObject, eventdata, handles)
 %        str2double(get(hObject,'String')) returns contents of ExtS12 as a double
 value = get(hObject,'String');
 updateSensorNames(hObject,1,value,handles);
+Applied2Lbcb12_Callback(handles.Applied2Lbcb12,eventdata,handles);
 
 
 % --- Executes during object creation, after setting all properties.
@@ -760,6 +771,7 @@ function ExtS13_Callback(hObject, eventdata, handles)
 %        str2double(get(hObject,'String')) returns contents of ExtS13 as a double
 value = get(hObject,'String');
 updateSensorNames(hObject,13,value,handles);
+Applied2Lbcb13_Callback(handles.Applied2Lbcb13,eventdata,handles);
 
 
 % --- Executes during object creation, after setting all properties.
@@ -811,6 +823,7 @@ function ExtS14_Callback(hObject, eventdata, handles)
 %        str2double(get(hObject,'String')) returns contents of ExtS14 as a double
 value = get(hObject,'String');
 updateSensorNames(hObject,14,value,handles);
+Applied2Lbcb14_Callback(handles.Applied2Lbcb14,eventdata,handles);
 
 
 % --- Executes during object creation, after setting all properties.
@@ -862,6 +875,7 @@ function ExtS15_Callback(hObject, eventdata, handles)
 %        str2double(get(hObject,'String')) returns contents of ExtS15 as a double
 value = get(hObject,'String');
 updateSensorNames(hObject,15,value,handles);
+Applied2Lbcb15_Callback(handles.Applied2Lbcb15,eventdata,handles);
 
 
 % --- Executes during object creation, after setting all properties.
@@ -911,6 +925,15 @@ values{idx} = value;
 handles.dao.apply2Lbcb = values;
 guidata(hObject, handles);
 
+function updateSensitivities(hObject,idx, value, handles)
+values = handles.dao.sensitivities;
+if isempty(values)
+    values = ones(15,1);
+end
+values(idx) = value;
+handles.dao.sensitivities = values;
+guidata(hObject, handles);
+
 function updateSensorNames(hObject,idx,value,handles)
 names = handles.dao.sensorNames;
 if isempty(names)
@@ -923,6 +946,7 @@ guidata(hObject, handles);
 function fillPopups(handles)
 values = handles.dao.apply2Lbcb;
 names = handles.dao.sensorNames;
+sens = handles.dao.sensitivities;
 for m = 1:15
     if isempty(values{m})
         idx = 1;
@@ -934,47 +958,452 @@ for m = 1:15
         case 1
             set(handles.Applied2Lbcb1,'Value',idx);    
             set(handles.ExtS1,'String',names(m));    
+            set(handles.sens1,'String',sprintf('%f',sens(m)));
         case 2
             set(handles.Applied2Lbcb2,'Value',idx);    
             set(handles.ExtS2,'String',names(m));    
+            set(handles.sens2,'String',sprintf('%f',sens(m)));
         case 3
             set(handles.Applied2Lbcb3,'Value',idx);    
             set(handles.ExtS3,'String',names(m));    
+            set(handles.sens3,'String',sprintf('%f',sens(m)));
         case 4
             set(handles.Applied2Lbcb4,'Value',idx);    
             set(handles.ExtS4,'String',names(m));    
+            set(handles.sens4,'String',sprintf('%f',sens(m)));
         case 5
             set(handles.Applied2Lbcb5,'Value',idx);    
             set(handles.ExtS5,'String',names(m));    
+            set(handles.sens5,'String',sprintf('%f',sens(m)));
         case 6
             set(handles.Applied2Lbcb6,'Value',idx);    
             set(handles.ExtS6,'String',names(m));    
+            set(handles.sens6,'String',sprintf('%f',sens(m)));
         case 7
             set(handles.Applied2Lbcb7,'Value',idx);    
             set(handles.ExtS7,'String',names(m));    
+            set(handles.sens7,'String',sprintf('%f',sens(m)));
         case 8
             set(handles.Applied2Lbcb8,'Value',idx);    
             set(handles.ExtS8,'String',names(m));    
+            set(handles.sens8,'String',sprintf('%f',sens(m)));
         case 9
             set(handles.Applied2Lbcb9,'Value',idx);    
             set(handles.ExtS9,'String',names(m));    
+            set(handles.sens9,'String',sprintf('%f',sens(m)));
         case 10
             set(handles.Applied2Lbcb10,'Value',idx);    
             set(handles.ExtS10,'String',names(m));    
+            set(handles.sens10,'String',sprintf('%f',sens(m)));
         case 11
             set(handles.Applied2Lbcb11,'Value',idx);    
             set(handles.ExtS11,'String',names(m));    
+            set(handles.sens11,'String',sprintf('%f',sens(m)));
         case 12
             set(handles.Applied2Lbcb12,'Value',idx);    
             set(handles.ExtS12,'String',names(m));    
+            set(handles.sens12,'String',sprintf('%f',sens(m)));
         case 13
             set(handles.Applied2Lbcb13,'Value',idx);    
             set(handles.ExtS13,'String',names(m));    
+            set(handles.sens13,'String',sprintf('%f',sens(m)));
         case 14
             set(handles.Applied2Lbcb14,'Value',idx);    
             set(handles.ExtS14,'String',names(m));    
+            set(handles.sens14,'String',sprintf('%f',sens(m)));
         case 15
             set(handles.Applied2Lbcb15,'Value',idx);    
             set(handles.ExtS15,'String',names(m));    
+            set(handles.sens15,'String',sprintf('%f',sens(m)));
     end
+end
+
+
+
+function sens1_Callback(hObject, eventdata, handles)
+% hObject    handle to sens1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of sens1 as text
+%        str2double(get(hObject,'String')) returns contents of sens1 as a double
+contents = get(hObject,'String');
+value = sscanf(contents,'%f');
+updateSensitivities(hObject,1,value,handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function sens1_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to sens1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function sens2_Callback(hObject, eventdata, handles)
+% hObject    handle to sens2 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of sens2 as text
+%        str2double(get(hObject,'String')) returns contents of sens2 as a double
+contents = get(hObject,'String');
+value = sscanf(contents,'%f');
+updateSensitivities(hObject,2,value,handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function sens2_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to sens2 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function sens3_Callback(hObject, eventdata, handles)
+% hObject    handle to sens3 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of sens3 as text
+%        str2double(get(hObject,'String')) returns contents of sens3 as a double
+contents = get(hObject,'String');
+value = sscanf(contents,'%f');
+updateSensitivities(hObject,3,value,handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function sens3_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to sens3 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function sens4_Callback(hObject, eventdata, handles)
+% hObject    handle to sens4 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of sens4 as text
+%        str2double(get(hObject,'String')) returns contents of sens4 as a double
+contents = get(hObject,'String');
+value = sscanf(contents,'%f');
+updateSensitivities(hObject,4,value,handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function sens4_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to sens4 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function sens5_Callback(hObject, eventdata, handles)
+% hObject    handle to sens5 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of sens5 as text
+%        str2double(get(hObject,'String')) returns contents of sens5 as a double
+contents = get(hObject,'String');
+value = sscanf(contents,'%f');
+updateSensitivities(hObject,5,value,handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function sens5_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to sens5 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function sens6_Callback(hObject, eventdata, handles)
+% hObject    handle to sens6 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of sens6 as text
+%        str2double(get(hObject,'String')) returns contents of sens6 as a double
+contents = get(hObject,'String');
+value = sscanf(contents,'%f');
+updateSensitivities(hObject,6,value,handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function sens6_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to sens6 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function sens7_Callback(hObject, eventdata, handles)
+% hObject    handle to sens7 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of sens7 as text
+%        str2double(get(hObject,'String')) returns contents of sens7 as a double
+contents = get(hObject,'String');
+value = sscanf(contents,'%f');
+updateSensitivities(hObject,7,value,handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function sens7_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to sens7 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function sens8_Callback(hObject, eventdata, handles)
+% hObject    handle to sens8 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of sens8 as text
+%        str2double(get(hObject,'String')) returns contents of sens8 as a double
+contents = get(hObject,'String');
+value = sscanf(contents,'%f');
+updateSensitivities(hObject,8,value,handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function sens8_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to sens8 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function sens9_Callback(hObject, eventdata, handles)
+% hObject    handle to sens9 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of sens9 as text
+%        str2double(get(hObject,'String')) returns contents of sens9 as a double
+contents = get(hObject,'String');
+value = sscanf(contents,'%f');
+updateSensitivities(hObject,9,value,handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function sens9_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to sens9 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function sens10_Callback(hObject, eventdata, handles)
+% hObject    handle to sens10 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of sens10 as text
+%        str2double(get(hObject,'String')) returns contents of sens10 as a double
+contents = get(hObject,'String');
+value = sscanf(contents,'%f');
+updateSensitivities(hObject,10,value,handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function sens10_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to sens10 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function sens11_Callback(hObject, eventdata, handles)
+% hObject    handle to sens11 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of sens11 as text
+%        str2double(get(hObject,'String')) returns contents of sens11 as a double
+contents = get(hObject,'String');
+value = sscanf(contents,'%f');
+updateSensitivities(hObject,11,value,handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function sens11_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to sens11 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function sens12_Callback(hObject, eventdata, handles)
+% hObject    handle to sens12 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of sens12 as text
+%        str2double(get(hObject,'String')) returns contents of sens12 as a double
+contents = get(hObject,'String');
+value = sscanf(contents,'%f');
+updateSensitivities(hObject,12,value,handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function sens12_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to sens12 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function sens13_Callback(hObject, eventdata, handles)
+% hObject    handle to sens13 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of sens13 as text
+%        str2double(get(hObject,'String')) returns contents of sens13 as a double
+contents = get(hObject,'String');
+value = sscanf(contents,'%f');
+updateSensitivities(hObject,13,value,handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function sens13_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to sens13 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function sens14_Callback(hObject, eventdata, handles)
+% hObject    handle to sens14 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of sens14 as text
+%        str2double(get(hObject,'String')) returns contents of sens14 as a double
+contents = get(hObject,'String');
+value = sscanf(contents,'%f');
+updateSensitivities(hObject,14,value,handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function sens14_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to sens14 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function sens15_Callback(hObject, eventdata, handles)
+% hObject    handle to sens15 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of sens15 as text
+%        str2double(get(hObject,'String')) returns contents of sens15 as a double
+contents = get(hObject,'String');
+value = sscanf(contents,'%f');
+updateSensitivities(hObject,15,value,handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function sens15_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to sens15 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
 end

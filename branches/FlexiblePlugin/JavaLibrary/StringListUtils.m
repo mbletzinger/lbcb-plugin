@@ -32,5 +32,28 @@ classdef StringListUtils < handle
             end
             result = me.strUtil.a2sl(stringA);
         end
+        % converts a java string list to a doubles array
+        function result = sl2da(me,list)
+            length = list.size();
+            if length == 0
+                result = [];
+                return
+            end
+            result = zeros(length,1);
+            for i = 0:length - 1
+                str = list.get(i);
+                result(i + 1) = sscanf(str,'%f');
+            end
+        end
+        % converts a doubles array to a java string list
+        function result = da2sl(me,array)
+            lgth = length(array);
+            stringA= javaArray('java.lang.String',lgth);
+            for i=1:lgth
+                    str = sprintf('%f',array(i));
+                    stringA(i) = java.lang.String(str);
+            end
+            result = me.strUtil.a2sl(stringA);
+        end
     end
 end

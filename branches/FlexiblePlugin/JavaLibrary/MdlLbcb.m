@@ -18,6 +18,7 @@ classdef MdlLbcb < handle
         simcorTcp = {};
         connection = {};
         response = {};
+        log = Logger;
         state = StateEnum({ ...
             'BUSY', ...
             'READY', ...
@@ -42,9 +43,9 @@ classdef MdlLbcb < handle
         
         % Continue executing the current action
         function done = isDone(me)
-            s = me.action.getState();
+            a = me.action.getState();
             done = 0;
-            switch s
+            switch a
                 case 'OPEN CONNECTION'
                     me.openConnectionAction();
                 case 'CLOSE CONNECTION'
@@ -129,6 +130,7 @@ classdef MdlLbcb < handle
             if cs.isState('IN_ERROR')
                 me.state.setState('ERRORS EXIST');
                 me.action.setState('NONE');
+                me.log.error(dbstack(),me.connection.getFromRemoteMsg().getError().getMsg());
             end
         end
         % process transaction
@@ -139,6 +141,7 @@ classdef MdlLbcb < handle
             if ts.isState('ERRORS_EXIST')
                 me.state.setState('ERRORS EXIST');
                 me.action.setState('NONE');
+                me.log.error(dbstack(),me.connection.getFromRemoteMsg().getError().getMsg());
             end
             if ts.isState('RESPONSE_AVAILABLE')
                 me.state.setState('RESPONSE AVAILABLE');
