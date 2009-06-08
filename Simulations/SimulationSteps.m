@@ -1,5 +1,5 @@
 % =====================================================================================================================
-% Class containing the state of the simulation.
+% Class containing the step count of the simulation.
 %
 % Members:
 %   step - Step number.

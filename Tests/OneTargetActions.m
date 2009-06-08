@@ -6,7 +6,9 @@ classdef OneTargetActions < handle
         lbcb2Table = {};
         cfg = {};
         targets = {};
+        log = Logger;
         simstate = SimulationState;
+        connected = 0;
         actions = StateEnum({...
             'DONE',...
             'CONNECT OM',...
@@ -23,6 +25,8 @@ classdef OneTargetActions < handle
     methods
         function me = OneTargetActions(cfg)
             me.cfg = cfg;
+            me.actions.setState('DONE');
+            me.state.setState('READY');
         end
         function setAction(me, a)
             if me.action.isState('DONE')
@@ -32,6 +36,7 @@ classdef OneTargetActions < handle
         function done = execute(me)
             a = me.state.getState();
             done = 0;
+ %           me.log.debug(dbstack(),sprintf('executing action %s',a));
             switch a
                 case 'DONE'
                     done = 1;
@@ -47,6 +52,7 @@ classdef OneTargetActions < handle
     methods (Access=private)
         function executeConnectOm(me)
             s = me.state.getState();
+            me.log.debug(dbstack,sprintf('Connect at state %s',s));
             switch s
                 case 'READY'
                     ncfg = NetworkConfigDao(me.cfg);
@@ -57,23 +63,26 @@ classdef OneTargetActions < handle
                 case 'BUSY'
                     if me.mdlLbcb.isDone()
                         me.state.setState('DONE');
+                        me.connected = 1;
                     end
                 case 'DONE'
                     me.actions.setState('DONE');
                     me.state.setState('READY');
                 otherwise
                     str = sprintf('%s not recognized',s);
-                    disp(str);
+                    me.log.error(dbstack(),str);
             end
         end
         function executeDisconnectOm(me)
             s = me.state.getState();
+            me.log.debug(dbstack,sprintf('disconnect at state %s',s));
             switch s
                 case 'READY'
                     me.mdlLbcb.close();
                 case 'BUSY'
                     if me.mdlLbcb.isDone()
                         me.state.setState('DONE');
+                        me.connected = 0;
                     end
                 case 'DONE'
                     me.actions.setState('DONE');
@@ -85,6 +94,7 @@ classdef OneTargetActions < handle
         end
         function executeExecuteTarget(me)
             s = me.state.getState();
+            me.log.debug(dbstack,sprintf('Connect at state %s',s));
             switch s
                 case 'READY'
                     me.simstate.next(0);
@@ -99,7 +109,7 @@ classdef OneTargetActions < handle
                     me.state.setState('READY');
                 otherwise
                     str = sprintf('%s not recognized',s);
-                    disp(str);
+                    me.log.error(dbstack(),str);
             end
         end
         function updateTables(me)

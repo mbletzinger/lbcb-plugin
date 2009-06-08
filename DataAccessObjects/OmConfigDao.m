@@ -14,6 +14,7 @@ classdef OmConfigDao < handle
         numLbcbs
         sensorNames
         apply2Lbcb
+        sensitivities
     end
     properties
         cfg = Configuration();
@@ -52,6 +53,18 @@ classdef OmConfigDao < handle
         function set.apply2Lbcb(me,value)
             valS = me.su.ca2sl(value);
               me.cfg.props.setPropertyList('om.apply2Lbcb',valS);
+        end
+        function result = get.sensitivities(me)
+              resultSL = me.cfg.props.getPropertyList('om.sensitivities');
+              if isempty(resultSL)
+                  result = ones(15,1);
+                  return;
+              end
+              result = me.su.sl2da(resultSL);
+        end
+        function set.sensitivities(me,value)
+            valS = me.su.da2sl(value);
+              me.cfg.props.setPropertyList('om.sensitivities',valS);
         end
     end
 end

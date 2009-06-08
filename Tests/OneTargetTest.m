@@ -62,13 +62,15 @@ javaaddpath(fullfile(pwd,'JavaLibrary'));
 handles.cfg = Configuration;
 handles.cfg.load();
 handles.actions = OneTargetActions(handles.cfg);
+handles.log = Logger;
 
 handles.utimer = timer('Period',1, 'TasksToExecute',100000,'ExecutionMode','fixedSpacing', 'Name','SimulationTimer');
 handles.utimer.TimerFcn = { @executeSimulation,hObject,handles};
-start(handles.utimer);
+handles.targets = { Target, Target };
 
 % Update handles structure
 guidata(hObject, handles);
+start(handles.utimer);
 
 % UIWAIT makes OneTargetTest wait for user response (see UIRESUME)
 % uiwait(handles.OneTarget);
@@ -83,6 +85,8 @@ function varargout = OneTargetTest_OutputFcn(hObject, eventdata, handles)
 
 % Get default command line output from handles structure
 varargout{1} = handles.output;
+stop(handles.utimer);
+delete(handles.utimer);
 
 
 
@@ -92,8 +96,8 @@ function L1Dx_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 % Hints: get(hObject,'String') returns contents of L1Dx as text
-%        str2double(get(hObject,'String')) returns contents of L1Dx as a double
-
+value = str2double(get(hObject,'String'));
+handles.targets{1}.setDispDof(1,value);
 
 % --- Executes during object creation, after setting all properties.
 function L1Dx_CreateFcn(hObject, eventdata, handles)
@@ -116,6 +120,8 @@ function L1Rx_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of L1Rx as text
 %        str2double(get(hObject,'String')) returns contents of L1Rx as a double
+value = str2double(get(hObject,'String'));
+handles.targets{1}.setDispDof(4,value);
 
 
 % --- Executes during object creation, after setting all properties.
@@ -139,6 +145,8 @@ function L1Dy_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of L1Dy as text
 %        str2double(get(hObject,'String')) returns contents of L1Dy as a double
+value = str2double(get(hObject,'String'));
+handles.targets{1}.setDispDof(2,value);
 
 
 % --- Executes during object creation, after setting all properties.
@@ -162,6 +170,8 @@ function L1Ry_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of L1Ry as text
 %        str2double(get(hObject,'String')) returns contents of L1Ry as a double
+value = str2double(get(hObject,'String'));
+handles.targets{1}.setDispDof(5,value);
 
 
 % --- Executes during object creation, after setting all properties.
@@ -178,17 +188,19 @@ end
 
 
 
-function L1Dz_Callback(hObject, eventdata, handles)
+function L1Dz_Callback(hObject, eventdata, handles) %#ok<*DEFNU>
 % hObject    handle to L1Dz (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
 % Hints: get(hObject,'String') returns contents of L1Dz as text
 %        str2double(get(hObject,'String')) returns contents of L1Dz as a double
+value = str2double(get(hObject,'String'));
+handles.targets{1}.setDispDof(3,value);
 
 
 % --- Executes during object creation, after setting all properties.
-function L1Dz_CreateFcn(hObject, eventdata, handles)
+function L1Dz_CreateFcn(hObject, eventdata, handles) %#ok<*INUSD>
 % hObject    handle to L1Dz (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
@@ -201,13 +213,15 @@ end
 
 
 
-function L1Rz_Callback(hObject, eventdata, handles)
+function L1Rz_Callback(hObject, eventdata, handles) %#ok<*INUSL>
 % hObject    handle to L1Rz (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
 % Hints: get(hObject,'String') returns contents of L1Rz as text
 %        str2double(get(hObject,'String')) returns contents of L1Rz as a double
+value = str2double(get(hObject,'String'));
+handles.targets{1}.setDispDof(6,value);
 
 
 % --- Executes during object creation, after setting all properties.
@@ -250,6 +264,13 @@ function ExecuteButton_Callback(hObject, eventdata, handles)
 % hObject    handle to ExecuteButton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+done = handles.actions.execute();
+
+if done
+        handles.action.setAction('EXECUTE TARGET');
+        handles.log.debug(dbstack(),' Starting to execute a target');
+end
+
 
 
 % --------------------------------------------------------------------
@@ -301,7 +322,7 @@ function Exit_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 delete(handles.OneTarget);
-handles.utimer.stop()
+stop(handles.utimer);
 delete(handles.utimer);
 
 % --- Executes on button press in ConnectButton.
@@ -309,9 +330,18 @@ function ConnectButton_Callback(hObject, eventdata, handles)
 % hObject    handle to ConnectButton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
- done = handles.actions.execute();
+value = get(hObject,'String');
+disconnected = strcmp('Connect',value);
+done = handles.actions.execute();
+
 if done
-    handles.action.setAction('');
+    if disconnected
+        handles.action.setAction('CONNECT OM');
+        handles.log.debug(dbstack(),' Starting to connect');
+    else
+        handles.action.setAction('DISCONNECT OM');        
+        handles.log.debug(dbstack(),' Starting to disconnect');
+    end
 end
 
 
@@ -322,6 +352,8 @@ function L2Dx_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of L2Dx as text
 %        str2double(get(hObject,'String')) returns contents of L2Dx as a double
+value = str2double(get(hObject,'String'));
+handles.targets{2}.setDispDof(1,value);
 
 
 % --- Executes during object creation, after setting all properties.
@@ -345,6 +377,8 @@ function L2Rx_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of L2Rx as text
 %        str2double(get(hObject,'String')) returns contents of L2Rx as a double
+value = str2double(get(hObject,'String'));
+handles.targets{2}.setDispDof(4,value);
 
 
 % --- Executes during object creation, after setting all properties.
@@ -368,6 +402,8 @@ function L2Dy_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of L2Dy as text
 %        str2double(get(hObject,'String')) returns contents of L2Dy as a double
+value = str2double(get(hObject,'String'));
+handles.targets{2}.setDispDof(2,value);
 
 
 % --- Executes during object creation, after setting all properties.
@@ -391,6 +427,8 @@ function L2Ry_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of L2Ry as text
 %        str2double(get(hObject,'String')) returns contents of L2Ry as a double
+value = str2double(get(hObject,'String'));
+handles.targets{2}.setDispDof(5,value);
 
 
 % --- Executes during object creation, after setting all properties.
@@ -414,6 +452,8 @@ function L2Dz_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of L2Dz as text
 %        str2double(get(hObject,'String')) returns contents of L2Dz as a double
+value = str2double(get(hObject,'String'));
+handles.targets{2}.setDispDof(3,value);
 
 
 % --- Executes during object creation, after setting all properties.
@@ -437,6 +477,8 @@ function L2Rz_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of L2Rz as text
 %        str2double(get(hObject,'String')) returns contents of L2Rz as a double
+value = str2double(get(hObject,'String'));
+handles.targets{2}.setDispDof(6,value);
 
 
 % --- Executes during object creation, after setting all properties.
@@ -476,9 +518,11 @@ end
 
 function executeSimulation(obj,event,hObject,handles)
     done = handles.actions.execute();
+ %   handles.log.debug(dbstack(),' running simulation step');
     if done
         updateTable(handles);
         guidata(hObject, handles);
+        updateButtons(handles);
     end
     
 function updateTable(handles)
@@ -491,3 +535,9 @@ else
 end
 set(handles.LbcbTable,'Data',tData);
  
+function updateButtons(handles)
+if handles.actions.connected
+    set(handles.ConnectButton,'String','Disconnect');
+else
+    set(handles.ConnectButton,'String','Connect');
+end
