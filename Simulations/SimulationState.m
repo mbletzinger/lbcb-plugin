@@ -4,6 +4,8 @@
 % Members:
 %   step - Step number.
 %   subStep - Substep number.
+%   id - internal step count
+%   idCounter = static count of how many steps have been created
 %
 % $LastChangedDate$ 
 % $Author$
@@ -12,26 +14,44 @@ classdef SimulationState < handle
     properties
         step = 0;
         subStep = 0;
-        startTime = clock;
+        time = [];
     end
     methods
-        % sets the starting step and starts the clock
-        function start(me,startStep)
-            me.startTime = clock;
-            me.step = startStep;
+        function me = SimulationState(step, subStep)
+            me.step = step;
+            me.subStep = subStep;
+            me.id = newId();
+            me.time = clock;
         end
-        % increment the step or substep
-        function next(me,useSubStep)
+        % increment the step or substep and return in a new instance
+        function simstate = nextStep(me,useSubStep)
+            step = me.step;
+            subStep = me.substep;
             if(useSubStep)
-                me.subStep = me.subStep + 1;
-                return;
+                subStep = subStep+ 1;
+            else
+                step = step + 1;
             end
-                me.step = me.step + 1;
-                me.subStep = 1;
+            simstate = SimulationState(step,subStep);
         end
         % return how much time has elapsed
         function et = getElapsedTime(me)
-            et = clock - me.startTime;
+            et = me.time - getStartTime();
+        end
+    end
+    methods (Static, Access = private)
+        function id = newId()
+            persistent idCounter;
+            idCounter = idCounter + 1;
+            id = idCounter;
+        end
+        % sets the start time if empty and returns it
+        function startTime = getStartTime()
+            persistent sTime;
+            if isempty(sTime)
+                sTime = clock;
+            end
+            startTime = sTime;
         end
     end
 end
