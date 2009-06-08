@@ -10,7 +10,7 @@
 % $LastChangedDate$ 
 % $Author$
 % =====================================================================================================================
-classdef SimulationState < handle
+classdef SimulationSteps < handle
     properties
         step = 0;
         subStep = 0;

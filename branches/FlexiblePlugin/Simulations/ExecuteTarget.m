@@ -45,9 +45,6 @@ classdef ExecuteTarget < handle
         % Continue the sequence return true if completed
         function result = isDone(me)
             result = 0;
-            if me.mdlLbcb.isDone() == 0
-                return;
-            end
             a = me.action.getState();
             switch a
                 case 'DONE'
@@ -65,49 +62,7 @@ classdef ExecuteTarget < handle
             end
         end
     end
-    methods (Access=private)
-        function startPropose(me,targets)
-            me.mdlLbcb.start(jmsg);
-            me.state.setState('BUSY');
-            me.action.setState('PROPOSE');
-        end
-        function startExecute(me)
-            jmsg = me.mdlLbcb.createCommand('execute',me.targets(1).node,[],[]);
-            me.mdlLbcb.start(jmsg);
-            me.state.setState('BUSY');
-            me.action.setState('EXECUTE');
-        end
-        function startGetControlPoint(me)
-            c = me.cpsMsg.getState();
-            switch c
-                case 'LBCB1'
-                    if me.numLbcbs == 2
-                        me.cpsMsg.setState('LBCB2');
-                    else
-                        me.cpsMsg.setState('ExternalSensors');
-                    end
-                case 'LBCB2'
-                    me.cpsMsg.setState('ExternalSensors');
-                case 'ExternalSensors'
-                    me.cpsMsg.setState('NONE');
-                    me.state.setState('READY');
-                    me.action.setState('DONE');
-                    return;
-                case 'NONE'
-                    me.cpsMsg.setState('LBCB1');
-                    me.readings = cell(me.numLbcbs,1);
-            end
-            jmsg = me.mdlLbcb.createCommand('execute',me.targets(1).node,a.cpsMsg,[]);
-            me.mdlLbcb.start(jmsg);
-            me.state.setState('BUSY');
-            me.action.setState('GET_CONTROL_POINT');            
-        end
         function readControlPoint(me)
-           rsp =  me.mdlLbcb.response;
-           lbcb = LbcbReading;
-           [address contents] = rsp.getContent();
-           lbcb.parse(contents,rsp.me.targets(1).node);
-           me.readings{me.cpsMsg.idx} = lbcb;
         end
     end
 end
