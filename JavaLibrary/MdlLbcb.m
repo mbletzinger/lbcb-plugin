@@ -4,7 +4,6 @@
 % Members:
 %   params - Java object containing network parameters.
 %   simcorTcp - Java object which enacts transactions with the Operations Manager.
-%   simstate -  contains the simulation state information.
 %   connection - Java object containing the TCP connection.
 %   state - StateEnum object storing the current state.
 %   action - StateEnum object storing the current action
@@ -18,7 +17,6 @@ classdef MdlLbcb < handle
         params = org.nees.uiuc.simcor.tcp.TcpParameters;
         simcorTcp = {};
         connection = {};
-        simstate = {};
         response = {};
         state = StateEnum({ ...
             'BUSY', ...
@@ -34,8 +32,7 @@ classdef MdlLbcb < handle
             });
     end
     methods
-        function me = MdlLbcb(omHost, omPort,timeout,simstate)
-            me.simstate = simstate;
+        function me = MdlLbcb(omHost, omPort,timeout)
             me.params.setRemoteHost(omHost);
             me.params.setRemotePort(omPort);
             me.params.setTimeout(timeout);
@@ -98,16 +95,16 @@ classdef MdlLbcb < handle
         % Start a transaction with the operations manager.  A transaction
         % consists of a command sent to the OM and the response returned by
         % the OM.
-        function start(me,jmsg)
+        function start(me,jmsg, simsteps)
             tf = me.simcorTcp.getTransactionFactory();
             id = TransactionIdentity;
 
-            if me.simstate.step > 0
-                id.setStep(me.simstate.step);
+            if simsteps.step > 0
+                id.setStep(me.simsteps.step);
             end
             
-            if me.simstate.subStep > 0
-                id.setSubStep(me.simstate.subStep);
+            if me.simsteps.subStep > 0
+                id.setSubStep(me.simsteps.subStep);
             end
             
             id.createTransId();

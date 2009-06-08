@@ -14,7 +14,7 @@ classdef LbcbStep < handle
             end
         end
         function jmsg = generateProposeMsg(me)
-            lgth = length(me.command);
+            lgth = length(me.lbcb.command);
             mdl = cell(lgth,1);
             cps = cell(lgth,1);
             contents = cell(lgth,1);
@@ -25,7 +25,21 @@ classdef LbcbStep < handle
             end
             jmsg = getMdlLbcb.createCompoundCommand('propose',mdl,cps,contents);
         end
-        function parseControlPointMsg(me,jmsg)
+        function parseControlPointMsg(me,rsp)
+           [address contents] = rsp.getContent();
+           switch char(address,getSuffix())
+               case 'LBCB1'
+                   lbcb = LbcbReading;
+                   lbcb.parse(contents,rsp,me.lbcb,command(1).node);
+                   me.lbcb{1}.response = lbcb;
+               case 'LBCB2'
+                   lbcb = LbcbReading;
+                   lbcb.parse(contents,rsp,me.lbcb.command(1).node);
+                   me.lbcb{2}.response = lbcb;
+               case 'ExternalSensors'
+                   % FINISH THIS
+           end
+           me.readings{me.cpsMsg.idx} = lbcb;
         end
     end
     methods (Static)
