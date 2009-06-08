@@ -67,16 +67,6 @@ classdef ExecuteTarget < handle
     end
     methods (Access=private)
         function startPropose(me,targets)
-            lgth = length(targets);
-            mdl = cell(lgth,1);
-            cps = cell(lgth,1);
-            contents = cell(lgth,1);
-            for t = 1:lgth
-                mdl(t) = targets(t).node;
-                cps(t) = targets(t).cps;
-                contents(t) = targets(t).createMsg();
-            end
-            jmsg = me.mdlLbcb.createCompoundCommand('propose',mdl,cps,contents);
             me.mdlLbcb.start(jmsg);
             me.state.setState('BUSY');
             me.action.setState('PROPOSE');
