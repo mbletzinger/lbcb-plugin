@@ -1,3 +1,4 @@
+% what now?
 %clear java
 %clear classes
 %clc
