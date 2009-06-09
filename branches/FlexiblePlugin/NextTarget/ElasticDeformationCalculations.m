@@ -37,10 +37,20 @@ classdef ElasticDeformationCalculations < handle
             end
             me.perturbations = [config.Params.pertDx, config.Params.pertDz, config.Params.pertRy ];
         end
-        function lbcbRout = calculate(me, lbcbRin)
+        
+        % calculate LBCB position based on external sensor readings.
+        function calculate(me, lbcbCP)
             lbcbRout = LbcbReading;
-            lbcbRout.ed.force = lbcbRin.lbcb.force;
+            lbcbR = lbcbCP.response;
+            extSensor = lbcbCP.externalSensors;
+            lbcbR.ed.force = lbcbR.lbcb.force;
+
+            % temp fix
+            lbcbR.ed.disp = lbcbR.lbcb.disp;
+            
             %  Ken's work goes here
+            
+            
         end
     end
 end
