@@ -36,10 +36,14 @@ classdef  InputFile < handle
                     tgt2.force = tgts2(t,7:12);
                     targets = { tgt1, tgt2 };
                 end
-                me.steps{1} = LbcbStep(SimulationStep(t,0),targets);
+                me.steps{t} = LbcbStep(SimulationSteps(t,0),targets);
             end
         end
         function step = next(me)
+            if me.sIdx > length(me.steps)
+                step = [];
+                return;
+            end
             step = me.steps{me.sIdx};
             me.sIdx = me.sIdx + 1;
         end
