@@ -40,7 +40,6 @@ classdef ElasticDeformationCalculations < handle
         
         % calculate LBCB position based on external sensor readings.
         function calculate(me, lbcbCP)
-            lbcbRout = LbcbReading;
             lbcbR = lbcbCP.response;
             extSensor = lbcbCP.externalSensors;
             lbcbR.ed.force = lbcbR.lbcb.force;

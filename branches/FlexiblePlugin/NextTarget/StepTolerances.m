@@ -20,7 +20,7 @@ classdef StepTolerances < handle
         used2= [];
     end
     methods
-        function yes = withinTolerances(currentStep)
+        function yes = withinTolerances(me, currentStep)
             yes = 1;
         end
     end

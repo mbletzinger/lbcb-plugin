@@ -14,12 +14,13 @@ classdef SimulationSteps < handle
     properties
         step = 0;
         subStep = 0;
+        id = 0;
     end
     methods
-        function me = SimulationState(step, subStep)
+        function me = SimulationSteps(step, subStep)
             me.step = step;
             me.subStep = subStep;
-            me.id = newId();
+            me.id = SimulationSteps.newId();
         end
         % increment the step or substep and return in a new instance
         function simstate = nextStep(me,useSubStep)

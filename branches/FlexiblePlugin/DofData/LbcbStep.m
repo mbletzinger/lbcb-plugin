@@ -1,7 +1,7 @@
 classdef LbcbStep < handle
     properties
-        lbcb = {};
-        simstep = {};
+        lbcb = {}; % Number of LBCBs Instances of LbcbControlPoint 
+        simstep = {}; % SimulationStep instance 
     end
     methods
         function me = LbcbStep(simstep, targets)

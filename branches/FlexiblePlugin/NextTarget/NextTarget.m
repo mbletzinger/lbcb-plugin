@@ -23,44 +23,66 @@ classdef NextTarget < SimulationState
         end
         function done = isDone(me)
             done = 1;
-            %calculate elastic deformations
-            for l = 1: length(me.curStep.lbcb)
-                getED().calculate(me.curStep.lbcb{l});
-            end
-            % check tolerances
-            if getST().withinTolerances(me.curStep)
-                % get next input step
+            % Dumb MATLAB  double negative comparison to see if the current
+            % step is not empty
+            if isempty(me.curStep) == 0 
+                %calculate elastic deformations
+                for l = 1: length(me.curStep.lbcb)
+                    ed = NextTarget.getED(l-1);
+                    ed.calculate(me.curStep.lbcb{l});
+                end
+                % check tolerances
+                st = NextTarget.getST();
+                if st.withinTolerances(me.curStep)
+                    % get next input step
+                    me.nextStep = me.inpF.next();
+                else
+                    % get next derived dof step
+                    dd = NextTarget.getDD();
+                    me.nextStep = dd.newStep(me.curStep);
+                end
+            else % This must be the first step
                 me.nextStep = me.inpF.next();
-            else
-                % get next derived dof step
-                me.nextStep = getDD().newStep(me.curStep);
             end
         end
     end
     methods (Static)
         % static DerivedDof instance
-        function odd = getDD()
-            persistent dd;
-            if isempty(dd)
-                dd = DerivedDof;
-            end
-            odd = dd;
+        function dd = getDD()
+            global gdd;
+            dd = gdd;
+        end
+        function setDD(dd)
+            global gdd;
+            gdd = dd;
         end
         % static ElasticDeformationCalculations instance
-        function ed = getED(edIn)
-            persistent ped;
-            if isempty(edIn) == 0
-                ped = edIn;
+        function ed = getED(isLbcb2)
+            global ged1;
+            global ged2;
+            if isLbcb2
+                ed = ged2;
+            else
+                ed = ged1;
             end
-            ed = ped;
+        end
+        function setED(ed,isLbcb2)
+            global ged1;
+            global ged2;
+            if isLbcb2
+                ged2 = ed;
+            else
+                ged1 = ed;
+            end
         end
         % static StepTolerances  instance
-        function st = getST(stIn)
-            persistent pst;
-            if isempty(stIn) == 0
-                pst = stIn;
-            end
-            st = pst;
+        function st = getST()
+            global gst;
+            st = gst;
+        end
+        function setST(st)
+            global gst;
+            gst = st;
         end
     
     end
