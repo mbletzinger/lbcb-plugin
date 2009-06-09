@@ -45,7 +45,7 @@ classdef LbcbStep < handle
     methods (Static)
         function ml = getMdlLbcb(mlIn)
             persistent mdlLbcb;
-            if isempty(mlIn)
+            if isempty(mlIn) == 0
                 mdlLbcb = mlIn;
             end
             ml = mdlLbcb;
