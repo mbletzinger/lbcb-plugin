@@ -12,6 +12,10 @@
 % $Author$
 % =====================================================================================================================
 classdef LbcbReading < handle
+    properties (Dependent = true)
+        disp;
+        force;
+    end
     properties
         lbcb = DofData();
         ed = DofData();
@@ -19,11 +23,36 @@ classdef LbcbReading < handle
         node = '';
     end
     methods
-        % Convert a message into an lbcb reading.
+        % convenience function to get displacements based on whether the
+        % application is using elastic deformation or not.  A set function
+        % is not provided because the values must be set according to the
+        % source
+        function dof = get.disp(me)
+            if LbcbReading.useEd()
+                dof = me.ed.disp;
+            else
+                dof = me.lbcb.disp;
+            end
+        end
+        function dof = get.force(me)
+            dof = me.lbcb.force;
+        end
+         % Convert a message into an lbcb reading.
         function parse(me,msg,node)
             targets = me.m2d.parse(msg,node);
             me.lbcb = targets{1}.data;
             me.ed.force = me.lbcb.force;
+        end
+    end
+    methods (Static)
+        % static DerivedDof instance
+        function yes = useEd()
+            global useEd;
+            yes = useEd;
+        end
+        function setUseEd(yes)
+            global useEd;
+            useEd = yes;
         end
     end
 end
