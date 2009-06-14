@@ -20,6 +20,7 @@ classdef NextTarget < SimulationState
             me.inpF = inpF;
         end
         function start(me)
+            me.curStep = me.nextStep;
         end
         function done = isDone(me)
             done = 1;
@@ -44,6 +45,11 @@ classdef NextTarget < SimulationState
             else % This must be the first step
                 me.nextStep = me.inpF.next();
             end
+        end
+        % needs to be called immediately after isDone returns true.
+        function yes = withinLimits(me)
+            lc = NextTarget.getLC();
+            yes = lc.withinLimits(me.nextStep,me.curStep);
         end
     end
     methods (Static)
@@ -83,6 +89,15 @@ classdef NextTarget < SimulationState
         function setST(st)
             global gst;
             gst = st;
+        end
+        % static LimitChecks  instance
+        function lc = getLC()
+            global glc;
+            lc = glc;
+        end
+        function setLC(lc)
+            global glc;
+            glc = lc;
         end
     
     end
