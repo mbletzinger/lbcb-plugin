@@ -13,6 +13,8 @@ classdef WindowLimitsDao < handle
     properties (Dependent = true)
         window1 = [];
         window2 = [];
+        used1 = [];
+        used2 = [];
     end
     properties
         label = 'limits';
@@ -25,28 +27,55 @@ classdef WindowLimitsDao < handle
             me.label = label;
         end
         function result = get.window1(me)
-              resultSL = me.cfg.props.getPropertyList(sprintf('%s.window1',me.label));
-              if isempty(resultSL)
-                  result = [];
-                  return;
-              end
-              result = me.su.sl2da(resultSL);
+            resultSL = me.cfg.props.getPropertyList(sprintf('%s.window1',me.label));
+            if isempty(resultSL)
+                result = [];
+                return;
+            end
+            result = me.su.sl2da(resultSL);
         end
         function set.window1(me,value)
             valS = me.su.ca2sl(value);
-              me.cfg.props.setPropertyList(sprintf('%s.window1',me.label),valS);
+            me.cfg.props.setPropertyList(sprintf('%s.window1',me.label),valS);
         end
         function result = get.window2(me)
-              resultSL = me.cfg.props.getPropertyList(sprintf('%s.window2',me.label));
-              if isempty(resultSL)
-                  result = [];
-                  return;
-              end
-              result = me.su.sl2da(resultSL);
+            resultSL = me.cfg.props.getPropertyList(sprintf('%s.window2',me.label));
+            if isempty(resultSL)
+                result = [];
+                return;
+            end
+            result = me.su.sl2da(resultSL);
         end
         function set.window2(me,value)
             valS = me.su.ca2sl(value);
-              me.cfg.props.setPropertyList(sprintf('%s.lower1',me.label),valS);
+            me.cfg.props.setPropertyList(sprintf('%s.lower1',me.label),valS);
+        end
+        
+        function result = get.used1(me)
+            resultSL = me.cfg.props.getPropertyList(sprintf('%s.used1',me.label));
+            if isempty(resultSL)
+                result = [];
+                return;
+            end
+            result = me.su.sl2ia(resultSL);
+        end
+        function set.used1(me,value)
+            valS = me.su.ia2sl(value);
+            me.cfg.props.setPropertyList(sprintf('%s.used1',me.label),valS);
+        end
+        
+        function result = get.used2(me)
+            resultSL = me.cfg.props.getPropertyList(sprintf('%s.used2',me.label));
+            if isempty(resultSL)
+                result = [];
+                return;
+            end
+            result = me.su.sl2ia(resultSL);
+        end
+        function set.used2(me,value)
+            valS = me.su.ia2sl(value);
+            me.cfg.props.setPropertyList(sprintf('%s.used2',me.label),valS);
         end
     end
+    
 end
