@@ -8,20 +8,20 @@ classdef CommandLimits < handle
         function me = CommandLimits(cfg)
             me.limits = LimitsDao('command.limits',cfg);
         end
-        function yes = withinLimits(step)
+        function yes = withinLimits(me,step)
             yes = 1;
             me.faults1 = zeros(12,2);
             me.faults2 = zeros(12,2);
             cmds1 = step.lbcb{1}.command;
             cmds2 = step.lbcb{2}.command;
             for l = 1:12
-                    if l > 6
-                        dof1 = cmds1.force(l -6);
-                        dof2 = cmds2.force(l -6);
-                    else
-                        dof1 = cmds1.disp(l);
-                        dof2 = cmds2.disp(l);
-                    end
+                if l > 6
+                    dof1 = cmds1.force(l -6);
+                    dof2 = cmds2.force(l -6);
+                else
+                    dof1 = cmds1.disp(l);
+                    dof2 = cmds2.disp(l);
+                end
                 if(me.limits.used1(l))
                     if dof1 < me.limits.lower1(l)
                         yes = 0;
