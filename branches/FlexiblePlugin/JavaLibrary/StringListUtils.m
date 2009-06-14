@@ -55,5 +55,28 @@ classdef StringListUtils < handle
             end
             result = me.strUtil.a2sl(stringA);
         end
+        % converts a java string list to an int array
+        function result = sl2ia(me,list)
+            length = list.size();
+            if length == 0
+                result = [];
+                return
+            end
+            result = zeros(length,1);
+            for i = 0:length - 1
+                str = list.get(i);
+                result(i + 1) = sscanf(str,'%d');
+            end
+        end
+        % converts a int array to a java string list
+        function result = ia2sl(me,array)
+            lgth = length(array);
+            stringA= javaArray('java.lang.String',lgth);
+            for i=1:lgth
+                str = sprintf('%d',array(i));
+                stringA(i) = java.lang.String(str);
+            end
+            result = me.strUtil.a2sl(stringA);
+        end
     end
 end
