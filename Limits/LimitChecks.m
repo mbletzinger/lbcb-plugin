@@ -10,8 +10,12 @@ classdef LimitChecks < handle
         end
         function yes = withinLimits(me, curStep, prevStep)
             yes1 = me.cmd.withinLimits(curStep);
-            yes2 = me.inc.withinLimits(curStep,prevStep);
-            yes = yes1 || yes2;
+            if isempty(prevStep)
+                yes2 = 1;
+            else
+                yes2 = me.inc.withinLimits(curStep,prevStep);
+            end
+            yes = yes1 && yes2;
         end
     end
 end

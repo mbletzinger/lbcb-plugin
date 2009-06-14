@@ -49,7 +49,7 @@ classdef NextTarget < SimulationState
         % needs to be called immediately after isDone returns true.
         function yes = withinLimits(me)
             lc = NextTarget.getLC();
-            yes = lc.withinLimits(me.nextStep,me.curStep);
+            yes = lc.withinLimits(me.nextStep,me.curStep );
         end
     end
     methods (Static)
