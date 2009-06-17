@@ -3,6 +3,12 @@ classdef CommandLimits < handle
         faults1 = zeros(12,2);
         faults2 = zeros(12,2);
         limits = [];
+        commands1 = zeros(12,1);
+        commands2 = zeros(12,1);
+    end
+    events
+        CommandLimitExceeded
+        CommandCurrentValueUpdated
     end
     methods
         function me = CommandLimits(cfg)
@@ -22,6 +28,8 @@ classdef CommandLimits < handle
                     dof1 = cmds1.disp(l);
                     dof2 = cmds2.disp(l);
                 end
+                me.commands1(l) = dof1;
+                me.commands2(l) = dof2;
                 if(me.limits.used1(l))
                     if dof1 < me.limits.lower1(l)
                         yes = 0;
@@ -42,6 +50,10 @@ classdef CommandLimits < handle
                         me.faults2(l,2) = 1;
                     end
                 end
+            end
+            notify(me,'CommandCurrentValueUpdated');
+            if yes == 0
+                notify(me,'CommandLimitExceeded');
             end
         end
     end
