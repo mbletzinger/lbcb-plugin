@@ -15,6 +15,7 @@ classdef OmConfigDao < handle
         sensorNames
         apply2Lbcb
         sensitivities
+        useFakeOm
     end
     properties
         cfg = Configuration();
@@ -30,10 +31,21 @@ classdef OmConfigDao < handle
         function set.numLbcbs(me,value)
               me.cfg.props.setProperty('om.numLbcbs',value);
         end
+        function result = get.useFakeOm(me)
+              str = char(me.cfg.props.getProperty('om.useFakeOm'));
+              if isempty(str)
+                  result = 0;
+                  return;
+              end
+              result = sscanf(str,'%d');
+        end
+        function set.useFakeOm(me,value)
+              me.cfg.props.setProperty('om.useFakeOm',sprintf('%d',value));
+        end
         function result = get.sensorNames(me)
               resultSL = me.cfg.props.getPropertyList('om.sensorNames');
               if isempty(resultSL)
-                  result = [];
+                  result = ones(15,1);
                   return;
               end
               result = me.su.sl2ca(resultSL);

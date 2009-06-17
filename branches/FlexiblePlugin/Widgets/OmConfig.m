@@ -22,7 +22,7 @@ function varargout = OmConfig(varargin)
 
 % Edit the above text to modify the response to help OmConfig
 
-% Last Modified by GUIDE v2.5 08-Jun-2009 15:02:15
+% Last Modified by GUIDE v2.5 16-Jun-2009 18:08:10
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -69,6 +69,7 @@ if(nargin > 3)
 end
 
 handles.dao = OmConfigDao(cfg);
+handles.cfg = cfg;
 handles.numTypes = StateEnum(get(handles.NumberOfLbcbsMenu,'String'));
 handles.appliedTypes = StateEnum(get(handles.Applied2Lbcb1,'String'));
 
@@ -82,6 +83,12 @@ if isempty(handles.dao.sensorNames) == 0
     fillPopups(handles);
 end
 
+on = handles.dao.useFakeOm;
+if isempty(on)
+    on = 0;
+end
+set(handles.UseFakeOm,'Value',on);
+setToggleButtonColor(handles.UseFakeOm,on);
 % Update handles structure
 guidata(hObject, handles);
 
@@ -132,14 +139,6 @@ function OkButton_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 delete(handles.OmConfig);
-
-% --- Executes on button press in CancelButton.
-function CancelButton_Callback(hObject, eventdata, handles)
-% hObject    handle to CancelButton (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-
 
 function ExtS1_Callback(hObject, eventdata, handles)
 % hObject    handle to ExtS1 (see GCBO)
@@ -1406,4 +1405,30 @@ function sens15_CreateFcn(hObject, eventdata, handles)
 %       See ISPC and COMPUTER.
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on button press in UseFakeOm.
+function UseFakeOm_Callback(hObject, eventdata, handles)
+% hObject    handle to UseFakeOm (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of UseFakeOm
+on = get(hObject,'Value');
+handles.dao.useFakeOm = on;
+setToggleButtonColor(hObject,on);
+
+% --- Executes on button press in FakeOmProperties.
+function FakeOmProperties_Callback(hObject, eventdata, handles)
+% hObject    handle to FakeOmProperties (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+FakeOmProperties('cfg',handles.cfg);
+
+function setToggleButtonColor(hObject,on)
+if on
+    set(hObject,'BackgroundColor',[0.925, 0.914, 0.847]);
+else
+    set(hObject,'BackgroundColor',[0.933,0.933,0.933]);
 end

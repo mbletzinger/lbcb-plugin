@@ -22,7 +22,7 @@ function varargout = LbcbPlugin(varargin)
 
 % Edit the above text to modify the response to help LbcbPlugin
 
-% Last Modified by GUIDE v2.5 10-Jun-2009 17:51:57
+% Last Modified by GUIDE v2.5 16-Jun-2009 09:34:40
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -54,7 +54,8 @@ function LbcbPlugin_OpeningFcn(hObject, eventdata, handles, varargin) %#ok<*INUS
 
 % Choose default command line output for LbcbPlugin
 handles.output = hObject;
-set(handles.Rev, 'String','$LastChangedDate$');
+handles.actions = LbcbPluginActions();
+handles.actions.initialize();
 % Update handles structure
 guidata(hObject, handles);
 
@@ -3986,3 +3987,69 @@ function MzICV2_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
+
+
+% --------------------------------------------------------------------
+function File_Callback(hObject, eventdata, handles)
+% hObject    handle to File (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --------------------------------------------------------------------
+function Edit_Callback(hObject, eventdata, handles)
+% hObject    handle to Edit (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --------------------------------------------------------------------
+function NetworkConfiguration_Callback(hObject, eventdata, handles)
+% hObject    handle to NetworkConfiguration (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+NetworkConfig('cfg',handles.cfg);
+
+% --------------------------------------------------------------------
+function OmConfiguration_Callback(hObject, eventdata, handles)
+% hObject    handle to OmConfiguration (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+OmConfig('cfg',handles.cfg);
+
+% --------------------------------------------------------------------
+function Load_Callback(hObject, eventdata, handles)
+% hObject    handle to Load (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+handles.cfg.load()
+
+% --------------------------------------------------------------------
+function Save_Callback(hObject, eventdata, handles)
+% hObject    handle to Save (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+handles.cfg.save()
+
+% --------------------------------------------------------------------
+function Import_Callback(hObject, eventdata, handles)
+% hObject    handle to Import (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+handles.cfg.import()
+
+
+% --------------------------------------------------------------------
+function Export_Callback(hObject, eventdata, handles)
+% hObject    handle to Export (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+handles.cfg.export()
+
+
+% --------------------------------------------------------------------
+function Exit_Callback(hObject, eventdata, handles)
+% hObject    handle to Exit (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+delete(handles.LbcbPlugin);
