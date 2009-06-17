@@ -14,7 +14,27 @@ classdef LbcbPluginActions < handle
         toleranceCurrentValueHandles2 = {};
         incrementCurrentValueHandles1 = {};
         incrementCurrentValueHandles2 = {};
+        
         cl = [];
+        st = [];
+        il = [];
+        
+        oc = OpenClose;
+        peOm = ProposeExecuteOm;
+        gcpOm = GetControlPointsOm;
+        nxtTgt = NextTarget;
+        sndTrig = SendTrigger;
+        
+        log = Logger;
+        currentAction = StateEnum({...
+            'OPEN CONNECTION',...
+            'CLOSE CONNECTION',...
+            'NEXT TARGET',...
+            'PROPOSE EXECUTE',...
+            'GET CONTROL POINTS',...
+            'CHECK LIMITS'...
+            'READY'
+            });
     end
     methods
         function me  = LbcbPluginActions(handles)
@@ -26,9 +46,11 @@ classdef LbcbPluginActions < handle
             
             me.handles.cfg = Configuration;
             me.handles.cfg.load();
-            me.handles.log = Logger;
+            me.handles.log = me.log;
+            me.currentAction.setState('READY');
         end
         initialize(me)
+        execute(me)
         updateCommandLimits(me)
         updateIncrementLimits(me)
         updateCommandCurrentValue(me)

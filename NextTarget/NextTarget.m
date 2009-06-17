@@ -16,9 +16,6 @@ classdef NextTarget < SimulationState
         nextStep = [];
     end
     methods
-        function me = NextTarget(inpF)
-            me.inpF = inpF;
-        end
         function start(me)
             me.curStep = me.nextStep;
         end

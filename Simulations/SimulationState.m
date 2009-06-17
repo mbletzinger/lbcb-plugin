@@ -7,18 +7,16 @@ classdef SimulationState < handle
             'READY', ...
             'ERRORS EXIST' ...
             });
-    end
-    methods (Abstract)
-        start(me)
-        isDone(me)
+        log = Logger;
     end
     methods (Static)
-        function ml = getMdlLbcb(mlIn)
-            persistent mdlLbcb;
-            if isempty(mlIn)
-                mdlLbcb = mlIn;
-            end
+        function ml = getMdlLbcb()
+            global mdlLbcb;
             ml = mdlLbcb;
+        end
+        function setMdlLbcb(mlIn)
+            global mdlLbcb;
+            mdlLbcb = mlIn;
         end
     end
     

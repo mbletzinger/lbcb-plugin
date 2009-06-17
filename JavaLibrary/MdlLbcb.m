@@ -55,8 +55,7 @@ classdef MdlLbcb < handle
                 case 'NONE'
                     done = 1;
                 otherwise
-                    Str = sprintf('State %s not recognized',s);
-                    disp(Str);
+                    me.log.error(dbstack,sprintf('State %s not recognized',s));
             end
             if me.state.isState('READY')
                 done = 1;
