@@ -87,6 +87,8 @@ me.commandCurrentValueHandles2{12} = me.handles.MzCV2;
 
 addlistener(me.cl,'CommandCurrentValueUpdated',@me.updateCommandCurrentValue);
 
+me.st = StepTolerances(me.handles.cfg);
+
 me.commandTolerancesHandles1 = cell(12,1);
 me.commandTolerancesHandles1{1} = me.handles.DxT1;
 me.commandTolerancesHandles1{2} = me.handles.DyT1;
@@ -143,6 +145,7 @@ me.toleranceCurrentValueHandles2{10} = me.handles.MxTCV2;
 me.toleranceCurrentValueHandles2{11} = me.handles.MyTCV2;
 me.toleranceCurrentValueHandles2{12} = me.handles.MzTCV2;
 
+me.il = IncrementLimits(me.handles.cfg);
 
 me.incrementLimitsHandles1 = cell(12,1);
 me.incrementLimitsHandles1{1} = me.handles.DxI1;

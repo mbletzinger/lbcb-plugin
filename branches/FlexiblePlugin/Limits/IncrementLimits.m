@@ -5,7 +5,7 @@ classdef IncrementLimits < handle
         limits = [];
     end
     methods
-        function me = CommandLimits(cfg)
+        function me = IncrementLimits(cfg)
             me.limits = WindowLimitDao('command.limits',cfg);
         end
         function yes = withinLimits(me,curStep,prevStep)

@@ -5,7 +5,7 @@ classdef StepTolerances < handle
         limits = [];
     end
     methods
-        function me = CommandLimits(cfg)
+        function me = StepTolerances(cfg)
             me.limits = LimitsDao('command.limits',cfg);
         end
         function yes = withinLimits(me,step)
