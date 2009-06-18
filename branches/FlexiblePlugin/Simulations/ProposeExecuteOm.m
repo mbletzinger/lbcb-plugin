@@ -1,4 +1,4 @@
-classdef ProposeExecute < SimulationState
+classdef ProposeExecuteOm < SimulationState
     properties
         action = StateEnum({ ...
             'DONE'...
@@ -7,9 +7,6 @@ classdef ProposeExecute < SimulationState
             });
     end
     methods
-        function me = ProposeExecute(step)
-            me.step = step;
-        end
         function start(me)
             me.startPropose();
         end

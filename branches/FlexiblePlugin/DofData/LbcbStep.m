@@ -29,13 +29,13 @@ classdef LbcbStep < handle
            [address contents] = rsp.getContent();
            switch char(address,getSuffix())
                case 'LBCB1'
-                   lbcb = LbcbReading;
-                   lbcb.parse(contents,rsp,me.lbcb,command(1).node);
-                   me.lbcb{1}.response = lbcb;
+                   lbcbR = LbcbReading;
+                   lbcbR.parse(contents,rsp,me.lbcb,command(1).node);
+                   me.lbcb{1}.response = lbcbR;
                case 'LBCB2'
-                   lbcb = LbcbReading;
-                   lbcb.parse(contents,rsp,me.lbcb.command(1).node);
-                   me.lbcb{2}.response = lbcb;
+                   lbcbR = LbcbReading;
+                   lbcbR.parse(contents,rsp,me.lbcb.command(1).node);
+                   me.lbcb{2}.response = lbcbR;
                case 'ExternalSensors'
                    % FINISH THIS
            end

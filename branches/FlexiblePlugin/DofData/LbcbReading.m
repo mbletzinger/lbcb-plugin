@@ -12,15 +12,15 @@
 % $Author$
 % =====================================================================================================================
 classdef LbcbReading < handle
-    properties (Dependent = true)
-        disp;
-        force;
-    end
     properties
         lbcb = DofData();
         ed = DofData();
         m2d = Msg2DofData();
         node = '';
+    end
+    properties (Dependent = true)
+        disp;
+        force;
     end
     methods
         % convenience function to get displacements based on whether the
