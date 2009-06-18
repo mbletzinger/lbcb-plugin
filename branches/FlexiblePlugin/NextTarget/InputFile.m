@@ -1,40 +1,49 @@
 classdef  InputFile < handle
     properties
     steps = {};
-    filename1 = '';
-    filename2 = '';
+    filename = '';
+    specfilename = '';
     sIdx = 1;
+    commandDofs = [];
     end
     methods
-        function load(me,path1, path2)
-            tgts1= load(path1);	% 12 column data
-            tmp = size(tgts1);
-            if tmp(2) ~= 12
-                errordlg(sprintf('Input file %s should have six columns of data.',path1));
+        function load(me,path)
+            tgts= load(path);
+            tmp = size(tgts);
+            s = sum(me.commandDofs);
+            if tmp(2) ~= s
+                errordlg(sprintf('Input file %s should have %d columns of data.',path,s));
                 return
             end
-            me.filename1 = path1;
-            if isempty(path2) == 0
-                tgts2= load(path2);	% 12 column data
-                tmp = size(tgts2);
-                if tmp(2) ~= 12
-                    errordlg(sprintf('Input file %s should have six columns of data.',path2));
-                    return
-                end
-                me.filename2 = path2;
-            end
-            lgth = length(tgts1);
+            lgth = length(tgts);
             me.steps = cell(lgth,1);
             for t = 1:lgth
                 tgt1 = Target;
-                tgt1.disp = tgts1(t,1:6);
-                tgt1.force = tgts1(t,7:12);
-                targets = { tgt1};
-                if isempty(tgts2) == 0
-                    tgt2 = Target;
-                    tgt2.disp = tgts2(t,1:6);
-                    tgt2.force = tgts2(t,7:12);
+                tgt2 = Target;
+                i = 0;
+                for d = 1:24
+                    if me.commandDofs(d) == 0
+                        continue;
+                    end
+                    i = i+1;
+                    if d < 7
+                        tgt1.setDispDof(d,tgts(t,i));
+                        continue;
+                    end
+                    if d < 13
+                        tgt1.setForceDof(d - 6,tgts(t,i));
+                        continue;
+                    end
+                    if d < 19
+                        tgt2.setDispDof(d - 12,tgts(t,i));
+                        continue;
+                    end
+                    tgt2.setForceDof(d - 18,tgts(t,i));
+                end
+                if sum(me.commandDofs(12:24)) > 0
                     targets = { tgt1, tgt2 };
+                else
+                    targets = {tgt1};
                 end
                 me.steps{t} = LbcbStep(SimulationSteps(t,0),targets);
             end
@@ -46,6 +55,18 @@ classdef  InputFile < handle
             end
             step = me.steps{me.sIdx};
             me.sIdx = me.sIdx + 1;
+        end
+        function readSpecfile(me,path)
+            me.commandDofs = zeros(1,24);
+            [pathstr, name, ext, versn] = fileparts(path);
+            specname = sprintf('%s_spec%s',name,ext);
+            specpath = fullfile(pathstr,specname);
+            if exist(specname,'file') == 2
+                cmdDofs = load(specpath);
+            else
+                cmdDofs = [1 1 1 1 1 1];
+            end
+            me.commandDofs(1,1:length(cmdDofs)) = cmdDofs;
         end
     end
 end

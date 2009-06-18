@@ -55,8 +55,6 @@ me.commandLimitsHandles2{10,2} = me.handles.MxU2;
 me.commandLimitsHandles2{11,2} = me.handles.MyU2;
 me.commandLimitsHandles2{12,2} = me.handles.MzU2;
 
-addlistener(me.cl,'CommandLimitExceeded',@me.updateCommandLimits);
-
 me.commandCurrentValueHandles1 = cell(12,1);
 me.commandCurrentValueHandles1{1} = me.handles.DxCV1;
 me.commandCurrentValueHandles1{2} = me.handles.DyCV1;
@@ -84,8 +82,6 @@ me.commandCurrentValueHandles2{9} = me.handles.FzCV2;
 me.commandCurrentValueHandles2{10} = me.handles.MxCV2;
 me.commandCurrentValueHandles2{11} = me.handles.MyCV2;
 me.commandCurrentValueHandles2{12} = me.handles.MzCV2;
-
-addlistener(me.cl,'CommandCurrentValueUpdated',@me.updateCommandCurrentValue);
 
 me.st = StepTolerances(me.handles.cfg);
 

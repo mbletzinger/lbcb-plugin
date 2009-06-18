@@ -52,25 +52,8 @@ classdef LbcbPluginActions < handle
             me.handles.log = me.log;
             me.currentAction.setState('READY');
         end
-        function openCloseConnection(me, connection,closeIt)
-            switch connection
-                case 'OperationManager'
-                    ncfg = NetworkConfigDao(me.cfg);
-                    ml = MdlLbcb(ncfg.omHost, ncfg.omPort, ncfg.timeout);
-                    SimulationState.setMdlLbcb(ml);
-                    me.oc.start(connection,closeIt);
-                    %                 case 'TriggerBroadcasting'
-                    %                 case 'SimCor'
-                otherwise
-                    me.log.error(dbstack(),sprintf('%s not recognized',connection));
-            end
-        end
-        function runInputFile(me,inFile)
-            me.nxtTgt.inpF = inFile;
-            me.nxtTgt.start();
-            ocfg = OmConfigDao(me.cfg);
-            me.fakeOm = ocfg.useFakeOm;
-        end
+        openCloseConnection(me, connection,closeIt)
+        runInputFile(me,inFile)
         initialize(me)
         execute(me)
         updateCommandLimits(me)
@@ -80,5 +63,8 @@ classdef LbcbPluginActions < handle
         updateIncrementCurrentValue(me)
         updateStepTolerances(me)
         shutdown(me);
+    end
+    methods (Static)
+        colorText(hndl,fault)
     end
 end
