@@ -1,6 +1,7 @@
 classdef LbcbPluginActions < handle
     properties
         handles = [];
+        cfg = [];
         commandLimitsHandles1 = {};
         commandLimitsHandles2 = {};
         commandTolerancesHandles1 = {};
@@ -23,7 +24,7 @@ classdef LbcbPluginActions < handle
         peOm = ProposeExecuteOm;
         gcpOm = GetControlPointsOm;
         nxtTgt = NextTarget;
-        sndTrig = SendTrigger;
+%        sndTrig = SendTrigger;
         
         log = Logger;
         currentAction = StateEnum({...
@@ -47,8 +48,8 @@ classdef LbcbPluginActions < handle
             javaaddpath(fullfile(pwd,'JavaLibrary','log4j-1.2.15.jar'));
             javaaddpath(fullfile(pwd,'JavaLibrary'));
             
-            me.handles.cfg = Configuration;
-            me.handles.cfg.load();
+            me.cfg = Configuration;
+            me.cfg.load();
             me.handles.log = me.log;
             me.currentAction.setState('READY');
         end
@@ -56,13 +57,15 @@ classdef LbcbPluginActions < handle
         runInputFile(me,inFile)
         initialize(me)
         execute(me)
-        updateCommandLimits(me)
-        updateIncrementLimits(me)
+        colorCommandLimits(me)
+        colorIncrementLimits(me)
         updateCommandCurrentValue(me)
         updateToleranceCurrentValue(me)
         updateIncrementCurrentValue(me)
-        updateStepTolerances(me)
-        shutdown(me);
+        colorStepTolerances(me)
+        shutdown(me)
+        setRunButton(me,hndl,value)
+        setCommandLimit(me,dof,lbcb,isLower,str);
     end
     methods (Static)
         colorText(hndl,fault)

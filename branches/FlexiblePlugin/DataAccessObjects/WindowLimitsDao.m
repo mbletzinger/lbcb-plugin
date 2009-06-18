@@ -22,7 +22,7 @@ classdef WindowLimitsDao < handle
         su = StringListUtils();
     end
     methods
-        function me = OmConfigDao(label, cfg)
+        function me = WindowLimitsDao(label, cfg)
             me.cfg = cfg;
             me.label = label;
         end

@@ -1,6 +1,6 @@
 function initialize(me)
 
-me.cl = CommandLimits(me.handles.cfg);
+me.cl = CommandLimits(me.cfg);
 me.commandLimitsHandles1 = cell(12,2);
 me.commandLimitsHandles1{1,1} = me.handles.DxL1;
 me.commandLimitsHandles1{2,1} = me.handles.DyL1;
@@ -55,6 +55,29 @@ me.commandLimitsHandles2{10,2} = me.handles.MxU2;
 me.commandLimitsHandles2{11,2} = me.handles.MyU2;
 me.commandLimitsHandles2{12,2} = me.handles.MzU2;
 
+for c = 1:12
+    low1 = me.cl.limits.lower1(c);
+    up1 =  me.cl.limits.upper1(c);
+    us1 = me.cl.limits.used1(c);
+    if us1
+        set(me.commandLimitsHandles1{c,1},'String',sprintf('%.5e',low1));
+        set(me.commandLimitsHandles1{c,2},'String',sprintf('%.5e',up1));
+    else
+        set(me.commandLimitsHandles1{c,1},'String','');
+        set(me.commandLimitsHandles1{c,2},'String','');
+    end
+    low2 = me.cl.limits.lower2(c);
+    up2 =  me.cl.limits.upper2(c);
+    us2 = me.cl.limits.used2(c);
+    if us2
+        set(me.commandLimitsHandles2{c,1},'String',sprintf('%.5e',low2));
+        set(me.commandLimitsHandles2{c,2},'String',sprintf('%.5e',up2));
+    else
+        set(me.commandLimitsHandles2{c,1},'String','');
+        set(me.commandLimitsHandles2{c,2},'String','');
+    end
+end
+
 me.commandCurrentValueHandles1 = cell(12,1);
 me.commandCurrentValueHandles1{1} = me.handles.DxCV1;
 me.commandCurrentValueHandles1{2} = me.handles.DyCV1;
@@ -83,7 +106,7 @@ me.commandCurrentValueHandles2{10} = me.handles.MxCV2;
 me.commandCurrentValueHandles2{11} = me.handles.MyCV2;
 me.commandCurrentValueHandles2{12} = me.handles.MzCV2;
 
-me.st = StepTolerances(me.handles.cfg);
+me.st = StepTolerances(me.cfg);
 
 me.commandTolerancesHandles1 = cell(12,1);
 me.commandTolerancesHandles1{1} = me.handles.DxT1;
@@ -141,7 +164,7 @@ me.toleranceCurrentValueHandles2{10} = me.handles.MxTCV2;
 me.toleranceCurrentValueHandles2{11} = me.handles.MyTCV2;
 me.toleranceCurrentValueHandles2{12} = me.handles.MzTCV2;
 
-me.il = IncrementLimits(me.handles.cfg);
+me.il = IncrementLimits(me.cfg);
 
 me.incrementLimitsHandles1 = cell(12,1);
 me.incrementLimitsHandles1{1} = me.handles.DxI1;
@@ -199,5 +222,6 @@ me.incrementCurrentValueHandles2{10} = me.handles.MxICV2;
 me.incrementCurrentValueHandles2{11} = me.handles.MyICV2;
 me.incrementCurrentValueHandles2{12} = me.handles.MzICV2;
 
-me.fakeGcp = FakeOm(me.handles.cfg);
+me.fakeGcp = FakeOm(me.cfg);
+me.setRunButton(0);
 end

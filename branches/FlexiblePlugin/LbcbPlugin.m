@@ -22,7 +22,7 @@ function varargout = LbcbPlugin(varargin)
 
 % Edit the above text to modify the response to help LbcbPlugin
 
-% Last Modified by GUIDE v2.5 16-Jun-2009 09:34:40
+% Last Modified by GUIDE v2.5 18-Jun-2009 04:15:43
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -54,7 +54,7 @@ function LbcbPlugin_OpeningFcn(hObject, eventdata, handles, varargin) %#ok<*INUS
 
 % Choose default command line output for LbcbPlugin
 handles.output = hObject;
-handles.actions = LbcbPluginActions();
+handles.actions = LbcbPluginActions(handles);
 handles.actions.initialize();
 % Update handles structure
 guidata(hObject, handles);
@@ -79,7 +79,7 @@ function RunHold_Callback(hObject, eventdata, handles) %#ok<*INUSD,*DEFNU>
 % hObject    handle to RunHold (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-
+handles.actions.setRunButton(get(hObject,'Value'));
 
 % --- Executes on selection change in Messages.
 function Messages_Callback(hObject, eventdata, handles)
@@ -133,7 +133,7 @@ function DxL1_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of DxL1 as text
 %        str2double(get(hObject,'String')) returns contents of DxL1 as a double
-
+handles.actions.setCommandLimit(1,1,1,get(hObject,'String'));
 
 % --- Executes during object creation, after setting all properties.
 function DxL1_CreateFcn(hObject, eventdata, handles)
@@ -156,6 +156,7 @@ function DxU1_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of DxU1 as text
 %        str2double(get(hObject,'String')) returns contents of DxU1 as a double
+handles.actions.setCommandLimit(1,1,0,get(hObject,'String'));
 
 
 % --- Executes during object creation, after setting all properties.
@@ -202,6 +203,7 @@ function DyL1_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of DyL1 as text
 %        str2double(get(hObject,'String')) returns contents of DyL1 as a double
+handles.actions.setCommandLimit(2,1,1,get(hObject,'String'));
 
 
 % --- Executes during object creation, after setting all properties.
@@ -225,6 +227,7 @@ function DyU1_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of DyU1 as text
 %        str2double(get(hObject,'String')) returns contents of DyU1 as a double
+handles.actions.setCommandLimit(2,1,0,get(hObject,'String'));
 
 
 % --- Executes during object creation, after setting all properties.
@@ -271,6 +274,7 @@ function DzL1_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of DzL1 as text
 %        str2double(get(hObject,'String')) returns contents of DzL1 as a double
+handles.actions.setCommandLimit(3,1,1,get(hObject,'String'));
 
 
 % --- Executes during object creation, after setting all properties.
@@ -294,6 +298,7 @@ function DzU1_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of DzU1 as text
 %        str2double(get(hObject,'String')) returns contents of DzU1 as a double
+handles.actions.setCommandLimit(3,1,0,get(hObject,'String'));
 
 
 % --- Executes during object creation, after setting all properties.
@@ -340,6 +345,7 @@ function RxL1_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of RxL1 as text
 %        str2double(get(hObject,'String')) returns contents of RxL1 as a double
+handles.actions.setCommandLimit(4,1,1,get(hObject,'String'));
 
 
 % --- Executes during object creation, after setting all properties.
@@ -363,6 +369,7 @@ function RxU1_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of RxU1 as text
 %        str2double(get(hObject,'String')) returns contents of RxU1 as a double
+handles.actions.setCommandLimit(4,1,0,get(hObject,'String'));
 
 
 % --- Executes during object creation, after setting all properties.
@@ -409,6 +416,7 @@ function RyL1_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of RyL1 as text
 %        str2double(get(hObject,'String')) returns contents of RyL1 as a double
+handles.actions.setCommandLimit(5,1,1,get(hObject,'String'));
 
 
 % --- Executes during object creation, after setting all properties.
@@ -432,6 +440,7 @@ function RyU1_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of RyU1 as text
 %        str2double(get(hObject,'String')) returns contents of RyU1 as a double
+handles.actions.setCommandLimit(5,1,0,get(hObject,'String'));
 
 
 % --- Executes during object creation, after setting all properties.
@@ -475,6 +484,7 @@ function RzL1_Callback(hObject, eventdata, handles)
 % hObject    handle to RzL1 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+handles.actions.setCommandLimit(6,1,1,get(hObject,'String'));
 
 % Hints: get(hObject,'String') returns contents of RzL1 as text
 %        str2double(get(hObject,'String')) returns contents of RzL1 as a double
@@ -501,7 +511,7 @@ function RzU1_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of RzU1 as text
 %        str2double(get(hObject,'String')) returns contents of RzU1 as a double
-
+handles.actions.setCommandLimit(6,1,0,get(hObject,'String'));
 
 % --- Executes during object creation, after setting all properties.
 function RzU1_CreateFcn(hObject, eventdata, handles)
@@ -547,6 +557,7 @@ function DxL2_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of DxL2 as text
 %        str2double(get(hObject,'String')) returns contents of DxL2 as a double
+handles.actions.setCommandLimit(1,2,1,get(hObject,'String'));
 
 
 % --- Executes during object creation, after setting all properties.
@@ -570,6 +581,7 @@ function DxU2_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of DxU2 as text
 %        str2double(get(hObject,'String')) returns contents of DxU2 as a double
+handles.actions.setCommandLimit(1,2,0,get(hObject,'String'));
 
 
 % --- Executes during object creation, after setting all properties.
@@ -616,6 +628,7 @@ function DyL2_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of DyL2 as text
 %        str2double(get(hObject,'String')) returns contents of DyL2 as a double
+handles.actions.setCommandLimit(2,2,1,get(hObject,'String'));
 
 
 % --- Executes during object creation, after setting all properties.
@@ -639,6 +652,7 @@ function DyU2_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of DyU2 as text
 %        str2double(get(hObject,'String')) returns contents of DyU2 as a double
+handles.actions.setCommandLimit(2,2,0,get(hObject,'String'));
 
 
 % --- Executes during object creation, after setting all properties.
@@ -685,6 +699,7 @@ function DzL2_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of DzL2 as text
 %        str2double(get(hObject,'String')) returns contents of DzL2 as a double
+handles.actions.setCommandLimit(3,2,1,get(hObject,'String'));
 
 
 % --- Executes during object creation, after setting all properties.
@@ -708,6 +723,7 @@ function DzU2_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of DzU2 as text
 %        str2double(get(hObject,'String')) returns contents of DzU2 as a double
+handles.actions.setCommandLimit(3,2,0,get(hObject,'String'));
 
 
 % --- Executes during object creation, after setting all properties.
@@ -754,6 +770,7 @@ function RxL2_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of RxL2 as text
 %        str2double(get(hObject,'String')) returns contents of RxL2 as a double
+handles.actions.setCommandLimit(4,2,1,get(hObject,'String'));
 
 
 % --- Executes during object creation, after setting all properties.
@@ -777,6 +794,7 @@ function RxU2_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of RxU2 as text
 %        str2double(get(hObject,'String')) returns contents of RxU2 as a double
+handles.actions.setCommandLimit(4,2,0,get(hObject,'String'));
 
 
 % --- Executes during object creation, after setting all properties.
@@ -823,6 +841,7 @@ function RyL2_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of RyL2 as text
 %        str2double(get(hObject,'String')) returns contents of RyL2 as a double
+handles.actions.setCommandLimit(5,2,1,get(hObject,'String'));
 
 
 % --- Executes during object creation, after setting all properties.
@@ -846,6 +865,7 @@ function RyU2_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of RyU2 as text
 %        str2double(get(hObject,'String')) returns contents of RyU2 as a double
+handles.actions.setCommandLimit(5,2,0,get(hObject,'String'));
 
 
 % --- Executes during object creation, after setting all properties.
@@ -892,6 +912,7 @@ function RzL2_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of RzL2 as text
 %        str2double(get(hObject,'String')) returns contents of RzL2 as a double
+handles.actions.setCommandLimit(6,2,1,get(hObject,'String'));
 
 
 % --- Executes during object creation, after setting all properties.
@@ -915,6 +936,7 @@ function RzU2_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of RzU2 as text
 %        str2double(get(hObject,'String')) returns contents of RzU2 as a double
+handles.actions.setCommandLimit(6,2,0,get(hObject,'String'));
 
 
 % --- Executes during object creation, after setting all properties.
@@ -961,6 +983,7 @@ function FxL1_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of FxL1 as text
 %        str2double(get(hObject,'String')) returns contents of FxL1 as a double
+handles.actions.setCommandLimit(7,1,1,get(hObject,'String'));
 
 
 % --- Executes during object creation, after setting all properties.
@@ -984,6 +1007,7 @@ function FxU1_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of FxU1 as text
 %        str2double(get(hObject,'String')) returns contents of FxU1 as a double
+handles.actions.setCommandLimit(7,1,0,get(hObject,'String'));
 
 
 % --- Executes during object creation, after setting all properties.
@@ -1030,6 +1054,7 @@ function FyL1_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of FyL1 as text
 %        str2double(get(hObject,'String')) returns contents of FyL1 as a double
+handles.actions.setCommandLimit(8,1,1,get(hObject,'String'));
 
 
 % --- Executes during object creation, after setting all properties.
@@ -1044,8 +1069,6 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
     set(hObject,'BackgroundColor','white');
 end
 
-
-
 function FyU1_Callback(hObject, eventdata, handles)
 % hObject    handle to FyU1 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -1053,6 +1076,7 @@ function FyU1_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of FyU1 as text
 %        str2double(get(hObject,'String')) returns contents of FyU1 as a double
+handles.actions.setCommandLimit(8,1,0,get(hObject,'String'));
 
 
 % --- Executes during object creation, after setting all properties.
@@ -1099,6 +1123,7 @@ function FzL1_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of FzL1 as text
 %        str2double(get(hObject,'String')) returns contents of FzL1 as a double
+handles.actions.setCommandLimit(9,1,1,get(hObject,'String'));
 
 
 % --- Executes during object creation, after setting all properties.
@@ -1122,6 +1147,7 @@ function FzU1_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of FzU1 as text
 %        str2double(get(hObject,'String')) returns contents of FzU1 as a double
+handles.actions.setCommandLimit(9,1,0,get(hObject,'String'));
 
 
 % --- Executes during object creation, after setting all properties.
@@ -1168,6 +1194,7 @@ function MxL1_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of MxL1 as text
 %        str2double(get(hObject,'String')) returns contents of MxL1 as a double
+handles.actions.setCommandLimit(10,1,1,get(hObject,'String'));
 
 
 % --- Executes during object creation, after setting all properties.
@@ -1191,6 +1218,7 @@ function MxU1_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of MxU1 as text
 %        str2double(get(hObject,'String')) returns contents of MxU1 as a double
+handles.actions.setCommandLimit(10,1,0,get(hObject,'String'));
 
 
 % --- Executes during object creation, after setting all properties.
@@ -1237,6 +1265,7 @@ function MyL1_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of MyL1 as text
 %        str2double(get(hObject,'String')) returns contents of MyL1 as a double
+handles.actions.setCommandLimit(11,1,1,get(hObject,'String'));
 
 
 % --- Executes during object creation, after setting all properties.
@@ -1260,6 +1289,7 @@ function MyU1_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of MyU1 as text
 %        str2double(get(hObject,'String')) returns contents of MyU1 as a double
+handles.actions.setCommandLimit(11,1,0,get(hObject,'String'));
 
 
 % --- Executes during object creation, after setting all properties.
@@ -1306,6 +1336,7 @@ function MzL1_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of MzL1 as text
 %        str2double(get(hObject,'String')) returns contents of MzL1 as a double
+handles.actions.setCommandLimit(12,1,1,get(hObject,'String'));
 
 
 % --- Executes during object creation, after setting all properties.
@@ -1329,6 +1360,7 @@ function MzU1_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of MzU1 as text
 %        str2double(get(hObject,'String')) returns contents of MzU1 as a double
+handles.actions.setCommandLimit(12,1,0,get(hObject,'String'));
 
 
 % --- Executes during object creation, after setting all properties.
@@ -1375,6 +1407,7 @@ function FxL2_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of FxL2 as text
 %        str2double(get(hObject,'String')) returns contents of FxL2 as a double
+handles.actions.setCommandLimit(7,2,1,get(hObject,'String'));
 
 
 % --- Executes during object creation, after setting all properties.
@@ -1398,6 +1431,7 @@ function FxU2_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of FxU2 as text
 %        str2double(get(hObject,'String')) returns contents of FxU2 as a double
+handles.actions.setCommandLimit(7,2,0,get(hObject,'String'));
 
 
 % --- Executes during object creation, after setting all properties.
@@ -1444,6 +1478,7 @@ function FyL2_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of FyL2 as text
 %        str2double(get(hObject,'String')) returns contents of FyL2 as a double
+handles.actions.setCommandLimit(8,2,1,get(hObject,'String'));
 
 
 % --- Executes during object creation, after setting all properties.
@@ -1467,6 +1502,7 @@ function FyU2_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of FyU2 as text
 %        str2double(get(hObject,'String')) returns contents of FyU2 as a double
+handles.actions.setCommandLimit(8,2,0,get(hObject,'String'));
 
 
 % --- Executes during object creation, after setting all properties.
@@ -1513,7 +1549,7 @@ function FzL2_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of FzL2 as text
 %        str2double(get(hObject,'String')) returns contents of FzL2 as a double
-
+handles.actions.setCommandLimit(9,2,1,get(hObject,'String'));
 
 % --- Executes during object creation, after setting all properties.
 function FzL2_CreateFcn(hObject, eventdata, handles)
@@ -1536,6 +1572,7 @@ function FzU2_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of FzU2 as text
 %        str2double(get(hObject,'String')) returns contents of FzU2 as a double
+handles.actions.setCommandLimit(9,2,0,get(hObject,'String'));
 
 
 % --- Executes during object creation, after setting all properties.
@@ -1579,6 +1616,7 @@ function MxL2_Callback(hObject, eventdata, handles)
 % hObject    handle to MxL2 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+handles.actions.setCommandLimit(10,2,1,get(hObject,'String'));
 
 % Hints: get(hObject,'String') returns contents of MxL2 as text
 %        str2double(get(hObject,'String')) returns contents of MxL2 as a double
@@ -1605,6 +1643,7 @@ function MxU2_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of MxU2 as text
 %        str2double(get(hObject,'String')) returns contents of MxU2 as a double
+handles.actions.setCommandLimit(10,2,0,get(hObject,'String'));
 
 
 % --- Executes during object creation, after setting all properties.
@@ -1651,6 +1690,7 @@ function MyL2_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of MyL2 as text
 %        str2double(get(hObject,'String')) returns contents of MyL2 as a double
+handles.actions.setCommandLimit(11,2,1,get(hObject,'String'));
 
 
 % --- Executes during object creation, after setting all properties.
@@ -1674,6 +1714,7 @@ function MyU2_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of MyU2 as text
 %        str2double(get(hObject,'String')) returns contents of MyU2 as a double
+handles.actions.setCommandLimit(1,2,0,get(hObject,'String'));
 
 
 % --- Executes during object creation, after setting all properties.
@@ -1720,6 +1761,7 @@ function MzL2_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of MzL2 as text
 %        str2double(get(hObject,'String')) returns contents of MzL2 as a double
+handles.actions.setCommandLimit(12,2,1,get(hObject,'String'));
 
 
 % --- Executes during object creation, after setting all properties.
@@ -1743,6 +1785,7 @@ function MzU2_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of MzU2 as text
 %        str2double(get(hObject,'String')) returns contents of MzU2 as a double
+handles.actions.setCommandLimit(12,2,0,get(hObject,'String'));
 
 
 % --- Executes during object creation, after setting all properties.
@@ -4008,35 +4051,35 @@ function NetworkConfiguration_Callback(hObject, eventdata, handles)
 % hObject    handle to NetworkConfiguration (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-NetworkConfig('cfg',handles.cfg);
+NetworkConfig('cfg',handles.actions.cfg);
 
 % --------------------------------------------------------------------
 function OmConfiguration_Callback(hObject, eventdata, handles)
 % hObject    handle to OmConfiguration (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-OmConfig('cfg',handles.cfg);
+OmConfig('cfg',handles.actions.cfg);
 
 % --------------------------------------------------------------------
 function Load_Callback(hObject, eventdata, handles)
 % hObject    handle to Load (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-handles.cfg.load()
+handles.actions.cfg.load()
 
 % --------------------------------------------------------------------
 function Save_Callback(hObject, eventdata, handles)
 % hObject    handle to Save (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-handles.cfg.save()
+handles.actions.cfg.save()
 
 % --------------------------------------------------------------------
 function Import_Callback(hObject, eventdata, handles)
 % hObject    handle to Import (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-handles.cfg.import()
+handles.actions.cfg.import()
 
 
 % --------------------------------------------------------------------
@@ -4044,7 +4087,7 @@ function Export_Callback(hObject, eventdata, handles)
 % hObject    handle to Export (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-handles.cfg.export()
+handles.actions.cfg.export()
 
 
 % --------------------------------------------------------------------
@@ -4053,3 +4096,10 @@ function Exit_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 delete(handles.LbcbPlugin);
+
+
+% --- Executes on button press in pushbutton5.
+function pushbutton5_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton5 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)

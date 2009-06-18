@@ -6,7 +6,7 @@ classdef IncrementLimits < handle
     end
     methods
         function me = IncrementLimits(cfg)
-            me.limits = WindowLimitDao('command.limits',cfg);
+            me.limits = WindowLimitsDao('command.limits',cfg);
         end
         function yes = withinLimits(me,curStep,prevStep)
             yes = 1;
