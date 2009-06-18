@@ -1,4 +1,4 @@
-classdef GetControlPoints < SimulationState
+classdef GetControlPointsOm < SimulationState
     properties
         cpsMsg = StateEnum({...
             'LBCB1',...
@@ -9,10 +9,7 @@ classdef GetControlPoints < SimulationState
         
     end
     methods
-        function me = GetControlPoints(step)
-            me.step = step;
-        end
-        function start(me)
+       function start(me)
             me.cpsMsg.setState('LBCB1');
             jmsg = getMdlLbcb().createCommand('get-control-point',...
                 me.step.lbcb.command(1).node,me.cpsMsg.getState(),[]);

@@ -30,11 +30,14 @@ classdef LbcbPluginActions < handle
             'OPEN CONNECTION',...
             'CLOSE CONNECTION',...
             'NEXT TARGET',...
-            'PROPOSE EXECUTE',...
-            'GET CONTROL POINTS',...
+            'OM PROPOSE EXECUTE',...
+            'OM GET CONTROL POINTS',...
             'CHECK LIMITS'...
             'READY'
             });
+        fakeOm = 0;
+        fakeGcp = {};
+        running = 0;
     end
     methods
         function me  = LbcbPluginActions(handles)
@@ -48,6 +51,25 @@ classdef LbcbPluginActions < handle
             me.handles.cfg.load();
             me.handles.log = me.log;
             me.currentAction.setState('READY');
+        end
+        function openCloseConnection(me, connection,closeIt)
+            switch connection
+                case 'OperationManager'
+                    ncfg = NetworkConfigDao(me.cfg);
+                    ml = MdlLbcb(ncfg.omHost, ncfg.omPort, ncfg.timeout);
+                    SimulationState.setMdlLbcb(ml);
+                    me.oc.start(connection,closeIt);
+                    %                 case 'TriggerBroadcasting'
+                    %                 case 'SimCor'
+                otherwise
+                    me.log.error(dbstack(),sprintf('%s not recognized',connection));
+            end
+        end
+        function runInputFile(me,inFile)
+            me.nxtTgt.inpF = inFile;
+            me.nxtTgt.start();
+            ocfg = OmConfigDao(me.cfg);
+            me.fakeOm = ocfg.useFakeOm;
         end
         initialize(me)
         execute(me)
