@@ -6,10 +6,6 @@ classdef CommandLimits < handle
         commands1 = zeros(12,1);
         commands2 = zeros(12,1);
     end
-    events
-        CommandLimitExceeded
-        CommandCurrentValueUpdated
-    end
     methods
         function me = CommandLimits(cfg)
             me.limits = LimitsDao('command.limits',cfg);
@@ -50,10 +46,6 @@ classdef CommandLimits < handle
                         me.faults2(l,2) = 1;
                     end
                 end
-            end
-            notify(me,'CommandCurrentValueUpdated');
-            if yes == 0
-                notify(me,'CommandLimitExceeded');
             end
         end
     end
