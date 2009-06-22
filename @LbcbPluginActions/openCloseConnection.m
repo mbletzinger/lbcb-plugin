@@ -5,6 +5,7 @@ switch connection
         ml = MdlLbcb(ncfg.omHost, ncfg.omPort, ncfg.timeout);
         SimulationState.setMdlLbcb(ml);
         me.oc.start(connection,closeIt);
+        start(me.simTimer);
         %                 case 'TriggerBroadcasting'
         %                 case 'SimCor'
     otherwise

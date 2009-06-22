@@ -22,7 +22,7 @@ function varargout = LbcbPlugin(varargin)
 
 % Edit the above text to modify the response to help LbcbPlugin
 
-% Last Modified by GUIDE v2.5 18-Jun-2009 04:15:43
+% Last Modified by GUIDE v2.5 22-Jun-2009 10:37:23
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -4081,7 +4081,6 @@ function Import_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 handles.actions.cfg.import()
 
-
 % --------------------------------------------------------------------
 function Export_Callback(hObject, eventdata, handles)
 % hObject    handle to Export (see GCBO)
@@ -4098,8 +4097,9 @@ function Exit_Callback(hObject, eventdata, handles)
 delete(handles.LbcbPlugin);
 
 
-% --- Executes on button press in pushbutton5.
-function pushbutton5_Callback(hObject, eventdata, handles)
-% hObject    handle to pushbutton5 (see GCBO)
+% --- Executes on button press in InputFile.
+function InputFile_Callback(hObject, eventdata, handles)
+% hObject    handle to InputFile (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+handles.actions.setInputFile();
