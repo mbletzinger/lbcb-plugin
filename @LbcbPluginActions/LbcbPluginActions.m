@@ -36,10 +36,11 @@ classdef LbcbPluginActions < handle
             'CHECK LIMITS'...
             'READY'
             });
-        fakeOm = 0;
-        fakeGcp = {};
+        fakeOm = 0; % flag indicating fake OM
+        fakeGcp = {}; % object used to generate fake control points
         running = 0;
         simTimer = {};
+        
     end
     methods
         function me  = LbcbPluginActions(handles)
@@ -70,6 +71,7 @@ classdef LbcbPluginActions < handle
         setRunButton(me,hndl,value)
         setCommandLimit(me,dof,lbcb,isLower,str);
         setInputFile(me)
+        setLoggerLevels(me)
     end
     methods (Static)
         colorText(hndl,fault)

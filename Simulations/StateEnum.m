@@ -34,5 +34,10 @@ classdef  StateEnum < handle
         function result = isState(me,state)
             result = strcmp(me.getState(),state);
         end
+        % Sets the state to the label in argument 'state'
+        function result = greaterThanOrEqualTo(me,state)
+            tmp = find(strcmp(me.states,state));
+            result = me.idx >= tmp(1);
+        end
     end
 end

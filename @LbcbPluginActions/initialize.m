@@ -224,4 +224,7 @@ me.incrementCurrentValueHandles2{12} = me.handles.MzICV2;
 
 me.fakeGcp = FakeOm(me.cfg);
 me.setRunButton(0);
+
+Logger.setMsgHandle(me.handles.Messages);
+me.setLoggerLevels();
 end

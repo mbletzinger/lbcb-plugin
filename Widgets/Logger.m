@@ -1,6 +1,12 @@
 classdef Logger < handle
     properties
         filename = '';
+        levelTypes = StateEnum({...
+            'DEBUG',...
+            'INFO',...
+            'WARNING',...
+            'ERROR'...
+            });
     end
     methods
         function debug(me,stack,msg)
@@ -18,12 +24,57 @@ classdef Logger < handle
     end
     methods (Access = private)
         function process(me,level,stack,msg)
-            str = sprintf('%s - %s: %s',level,me.sstring(stack),msg);
-            disp(str);
+            me.levelTypes.setState(level)
+            cl = Logger.getCmdLevel();
+            if me.levelTypes.greaterThanOrEqualTo(cl)
+                str = sprintf('%s - %s: %s',level,me.sstring(stack),msg);
+                disp(str);
+            end
+            ml = Logger.getMsgLevel();
+            hnd = Logger.getMsgHandle();
+            if me.levelTypes.greaterThanOrEqualTo(ml) && isempty(hnd) == 0
+                if me.levelTypes.isState('INFO')
+                    str = msg;
+                else
+                    str = sprintf('%s: %s',level,msg);
+                end
+                msgs = get(hnd,'String');
+                nmsgs = { msgs{:} str};
+                set(hnd,'String',nmsgs);
+            end
         end
-        function str = sstring(me, stack)
+        function str = sstring(me, stack) %#ok<MANU>
+            if length(stack) > 1
             str = sprintf('%s>%s,%d',stack(1).file,stack(1).name,stack(1).line);
+            else
+                str = 'MAIN';
+            end
         end
     end
-
+    methods (Static)
+        function setCmdLevel(level)
+            global cmdLevel;
+            cmdLevel = level;
+        end
+        function level = getCmdLevel()
+            global cmdLevel;
+            level = cmdLevel;
+        end
+        function setMsgLevel(level)
+            global msgLevel;
+            msgLevel = level;
+        end
+        function level = getMsgLevel()
+            global msgLevel;
+            level = msgLevel;
+        end
+        function setMsgHandle(handle)
+            global msgHandle;
+            msgHandle = handle;
+        end
+        function handle = getMsgHandle()
+            global msgHandle;
+            handle = msgHandle;
+        end
+    end
 end

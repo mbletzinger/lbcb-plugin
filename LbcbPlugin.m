@@ -22,7 +22,7 @@ function varargout = LbcbPlugin(varargin)
 
 % Edit the above text to modify the response to help LbcbPlugin
 
-% Last Modified by GUIDE v2.5 22-Jun-2009 10:37:23
+% Last Modified by GUIDE v2.5 22-Jun-2009 18:05:06
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -4103,3 +4103,12 @@ function InputFile_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 handles.actions.setInputFile();
+
+
+% --------------------------------------------------------------------
+function LoggingLevels_Callback(hObject, eventdata, handles)
+% hObject    handle to LoggingLevels (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+LoggerLevels('cfg',handles.actions.cfg);
+handles.actions.setLoggerLevels();
