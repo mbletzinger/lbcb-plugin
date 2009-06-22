@@ -39,6 +39,7 @@ classdef LbcbPluginActions < handle
         fakeOm = 0;
         fakeGcp = {};
         running = 0;
+        simTimer = {};
     end
     methods
         function me  = LbcbPluginActions(handles)
@@ -52,6 +53,8 @@ classdef LbcbPluginActions < handle
             me.cfg.load();
             me.handles.log = me.log;
             me.currentAction.setState('READY');
+            me.simTimer = timer('Period',1, 'TasksToExecute',1000000,'ExecutionMode','fixedSpacing','Name','SimulationTimer');
+            me.simTimer.TimerFcn = 'me.execute';
         end
         openCloseConnection(me, connection,closeIt)
         runInputFile(me,inFile)
@@ -66,6 +69,7 @@ classdef LbcbPluginActions < handle
         shutdown(me)
         setRunButton(me,hndl,value)
         setCommandLimit(me,dof,lbcb,isLower,str);
+        setInputFile(me)
     end
     methods (Static)
         colorText(hndl,fault)

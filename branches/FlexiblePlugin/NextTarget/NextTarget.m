@@ -14,6 +14,7 @@ classdef NextTarget < SimulationState
         inpF = [];
         curStep = [];
         nextStep = [];
+        simCompleted = 0;
     end
     methods
         function start(me)
@@ -34,6 +35,7 @@ classdef NextTarget < SimulationState
                 if st.withinTolerances(me.curStep)
                     % get next input step
                     me.nextStep = me.inpF.next();
+                    me.simCompleted = me.inpF.endOfFile;
                 else
                     % get next derived dof step
                     dd = NextTarget.getDD();

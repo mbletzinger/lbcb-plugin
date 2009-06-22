@@ -5,8 +5,10 @@ function  setRunButton(me,value)
     if value
         set(hndl,'BackgroundColor','g');
         set(hndl,'FontWeight','bold');
+        start(me.simTimer);
     else
         set(hndl,'BackgroundColor','w');
         set(hndl,'FontWeight','normal');
+        stop(me.simTimer);
     end
 end

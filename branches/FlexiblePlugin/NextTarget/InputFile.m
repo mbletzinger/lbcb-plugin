@@ -5,14 +5,19 @@ classdef  InputFile < handle
     specfilename = '';
     sIdx = 1;
     commandDofs = [];
+    endOfFile = 0;
     end
     methods
-        function load(me,path)
+        function done = load(me,path)
+            endOfFile = 0;
+            done = 0;
             tgts= load(path);
             tmp = size(tgts);
+            me.readSpecfile(path);
             s = sum(me.commandDofs);
             if tmp(2) ~= s
                 errordlg(sprintf('Input file %s should have %d columns of data.',path,s));
+                done = 0;
                 return
             end
             lgth = length(tgts);
@@ -47,14 +52,19 @@ classdef  InputFile < handle
                 end
                 me.steps{t} = LbcbStep(SimulationSteps(t,0),targets);
             end
+            done = 1;
         end
         function step = next(me)
             if me.sIdx > length(me.steps)
                 step = [];
                 return;
             end
-            step = me.steps{me.sIdx};
-            me.sIdx = me.sIdx + 1;
+            if me.sIdx > length(me.steps)
+                me.endOfFile = 1;
+            else
+                step = me.steps{me.sIdx};
+                me.sIdx = me.sIdx + 1;
+            end
         end
         function readSpecfile(me,path)
             me.commandDofs = zeros(1,24);
