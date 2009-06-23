@@ -9,8 +9,7 @@ classdef  InputFile < handle
     end
     methods
         function done = load(me,path)
-            endOfFile = 0;
-            done = 0;
+            me.endOfFile = 0;
             tgts= load(path);
             tmp = size(tgts);
             me.readSpecfile(path);
@@ -20,6 +19,34 @@ classdef  InputFile < handle
                 done = 0;
                 return
             end
+            me.loadSteps(tgts)
+            done = 1;
+        end
+        function step = next(me)
+            if me.sIdx > length(me.steps)
+                step = [];
+                return;
+            end
+            if me.sIdx > length(me.steps)
+                me.endOfFile = 1;
+            else
+                step = me.steps{me.sIdx};
+                me.sIdx = me.sIdx + 1;
+            end
+        end
+        function readSpecfile(me,path)
+            me.commandDofs = zeros(1,24);
+            [pathstr, name, ext, versn] = fileparts(path);
+            specname = sprintf('%s_spec%s',name,ext);
+            specpath = fullfile(pathstr,specname);
+            if exist(specname,'file') == 2
+                cmdDofs = load(specpath);
+            else
+                cmdDofs = [1 1 1 1 1 1];
+            end
+            me.commandDofs(1,1:length(cmdDofs)) = cmdDofs;
+        end
+        function loadSteps(tgts)
             lgth = length(tgts);
             me.steps = cell(lgth,1);
             for t = 1:lgth
@@ -52,31 +79,6 @@ classdef  InputFile < handle
                 end
                 me.steps{t} = LbcbStep(SimulationSteps(t,0),targets);
             end
-            done = 1;
-        end
-        function step = next(me)
-            if me.sIdx > length(me.steps)
-                step = [];
-                return;
-            end
-            if me.sIdx > length(me.steps)
-                me.endOfFile = 1;
-            else
-                step = me.steps{me.sIdx};
-                me.sIdx = me.sIdx + 1;
-            end
-        end
-        function readSpecfile(me,path)
-            me.commandDofs = zeros(1,24);
-            [pathstr, name, ext, versn] = fileparts(path);
-            specname = sprintf('%s_spec%s',name,ext);
-            specpath = fullfile(pathstr,specname);
-            if exist(specname,'file') == 2
-                cmdDofs = load(specpath);
-            else
-                cmdDofs = [1 1 1 1 1 1];
-            end
-            me.commandDofs(1,1:length(cmdDofs)) = cmdDofs;
         end
     end
 end

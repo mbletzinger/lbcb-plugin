@@ -54,8 +54,29 @@ function LbcbPlugin_OpeningFcn(hObject, eventdata, handles, varargin) %#ok<*INUS
 
 % Choose default command line output for LbcbPlugin
 handles.output = hObject;
-handles.actions = LbcbPluginActions(handles);
+cfg = {};
+infile = {};
+if(nargin > 3)
+    for index = 1:2:(nargin-3),
+        if nargin-3==index, break, end
+        label = lower(varargin{index});
+        switch label
+            case 'cfg'
+                cfg = varargin{index+1};
+            case 'inFile'
+                infile = varargin{index+1};
+            otherwise
+            str= sprintf('%s not recognized',label);
+            disp(str);
+        end
+    end
+end
+
+handles.actions = LbcbPluginActions(handles,cfg);
 handles.actions.initialize();
+if isempty(infile) == 0
+    handles.actions.setInputFile(infile);
+end
 % Update handles structure
 guidata(hObject, handles);
 
@@ -4102,7 +4123,7 @@ function InputFile_Callback(hObject, eventdata, handles)
 % hObject    handle to InputFile (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-handles.actions.setInputFile();
+handles.actions.setInputFile({});
 
 
 % --------------------------------------------------------------------
