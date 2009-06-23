@@ -43,15 +43,15 @@ classdef LbcbPluginActions < handle
         
     end
     methods
-        function me  = LbcbPluginActions(handles)
+        function me  = LbcbPluginActions(handles,cfg)
             me.handles = handles;
-            set(me.handles.Rev, 'String','$LastChangedDate: 2009-06-10 18:15:21 -0500 (Wed, 10 Jun 2009) $');
             javaaddpath(fullfile(pwd,'JavaLibrary','UiSimCorJava-0.0.1-SNAPSHOT.jar'));
             javaaddpath(fullfile(pwd,'JavaLibrary','log4j-1.2.15.jar'));
             javaaddpath(fullfile(pwd,'JavaLibrary'));
-            
-            me.cfg = Configuration;
-            me.cfg.load();
+            if isempty(cfg)
+                me.cfg = Configuration;
+                me.cfg.load();
+            end
             me.handles.log = me.log;
             me.currentAction.setState('READY');
             me.simTimer = timer('Period',1, 'TasksToExecute',1000000,'ExecutionMode','fixedSpacing','Name','SimulationTimer');
@@ -70,7 +70,7 @@ classdef LbcbPluginActions < handle
         shutdown(me)
         setRunButton(me,hndl,value)
         setCommandLimit(me,dof,lbcb,isLower,str);
-        setInputFile(me)
+        setInputFile(me,infile)
         setLoggerLevels(me)
     end
     methods (Static)
