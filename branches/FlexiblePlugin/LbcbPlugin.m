@@ -65,6 +65,8 @@ if(nargin > 3)
                 cfg = varargin{index+1};
             case 'infile'
                 infile = varargin{index+1};
+            case 'notimer'
+                handles.notimer = varargin{index+1};
             otherwise
             str= sprintf('%s not recognized',label);
             disp(str);
@@ -100,11 +102,16 @@ function RunHold_Callback(hObject, eventdata, handles) %#ok<*INUSD,*DEFNU>
 % hObject    handle to RunHold (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-% handles.actions.running = get(hObject,'Value');
-% handles.actions.nxtTgt.start();
-% handles.actions.currentAction.setState('NEXT TARGET');
-% LbcbPluginActions.execute([],[],handles.actions);
-handles.actions.setRunButton(get(hObject,'Value'));
+if handles.notimer
+    disp('no timer execution');
+    handles.actions.running = 1;
+    if handles.actions.currentAction.isState('READY')
+        handles.actions.startSimulation(1);
+    end
+    LbcbPluginActions.execute([],[],handles.actions);
+else
+    handles.actions.setRunButton(get(hObject,'Value'));
+end
 
 % --- Executes on selection change in Messages.
 function Messages_Callback(hObject, eventdata, handles)

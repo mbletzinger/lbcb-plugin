@@ -75,6 +75,7 @@ classdef LbcbPluginActions < handle
         setCommandLimit(me,dof,lbcb,isLower,str);
         setInputFile(me,infile)
         setLoggerLevels(me)
+        startSimulation(me,notimer)
     end
     methods (Static)
         colorText(hndl,fault)
