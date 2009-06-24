@@ -224,6 +224,15 @@ me.incrementCurrentValueHandles2{10} = me.handles.MxICV2;
 me.incrementCurrentValueHandles2{11} = me.handles.MyICV2;
 me.incrementCurrentValueHandles2{12} = me.handles.MzICV2;
 
+lc = LimitChecks;
+
+lc.cmd = me.cl;
+lc.inc = me.il;
+me.nxtTgt.setLC(lc);
+me.nxtTgt.setDD(DerivedDof);
+me.nxtTgt.setED(ElasticDeformationCalculations(me.cfg,0),0);
+me.nxtTgt.setED(ElasticDeformationCalculations(me.cfg,1),1);
+
 me.fakeGcp = FakeOm(me.cfg);
 me.setRunButton(0);
 

@@ -26,14 +26,14 @@ classdef ElasticDeformationCalculations < handle
         perturbations = [];
     end
     methods
-        function me = ElasticDeformationCalculations(cfg,isLbcb2)
+        function me = ElasticDeformationCalculations(cfg,isLbcb1)
             config = ConfigExternalSensors(cfg);
-            if isLbcb2
-                me.base = config.Lbcb2.Base;
-                me.plat = config.Lbcb2.Plat;
-            else
+            if isLbcb1
                 me.base = config.Lbcb1.Base;
                 me.plat = config.Lbcb1.Plat;
+            else
+                me.base = config.Lbcb2.Base;
+                me.plat = config.Lbcb2.Plat;
             end
             me.perturbations = [config.Params.pertDx, config.Params.pertDz, config.Params.pertRy ];
         end

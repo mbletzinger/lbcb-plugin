@@ -5,6 +5,8 @@ function  setRunButton(me,value)
     if value
         set(hndl,'BackgroundColor','g');
         set(hndl,'FontWeight','bold');
+        me.nxtTgt.start();
+        me.currentAction.setState('NEXT TARGET');
         start(me.simTimer);
     else
         set(hndl,'BackgroundColor','w');

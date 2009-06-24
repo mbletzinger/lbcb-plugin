@@ -100,6 +100,10 @@ function RunHold_Callback(hObject, eventdata, handles) %#ok<*INUSD,*DEFNU>
 % hObject    handle to RunHold (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+% handles.actions.running = get(hObject,'Value');
+% handles.actions.nxtTgt.start();
+% handles.actions.currentAction.setState('NEXT TARGET');
+% LbcbPluginActions.execute([],[],handles.actions);
 handles.actions.setRunButton(get(hObject,'Value'));
 
 % --- Executes on selection change in Messages.
