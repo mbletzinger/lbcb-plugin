@@ -45,12 +45,16 @@ classdef LbcbPluginActions < handle
     methods
         function me  = LbcbPluginActions(handles,cfg)
             me.handles = handles;
-            javaaddpath(fullfile(pwd,'JavaLibrary','UiSimCorJava-0.0.1-SNAPSHOT.jar'));
-            javaaddpath(fullfile(pwd,'JavaLibrary','log4j-1.2.15.jar'));
-            javaaddpath(fullfile(pwd,'JavaLibrary'));
+            if isempty(javaclasspath('-dynamic'))
+                javaaddpath(fullfile(pwd,'JavaLibrary','UiSimCorJava-0.0.1-SNAPSHOT.jar'));
+                javaaddpath(fullfile(pwd,'JavaLibrary','log4j-1.2.15.jar'));
+                javaaddpath(fullfile(pwd,'JavaLibrary'));
+            end
             if isempty(cfg)
                 me.cfg = Configuration;
                 me.cfg.load();
+            else
+                me.cfg = cfg;
             end
             me.handles.log = me.log;
             me.currentAction.setState('READY');

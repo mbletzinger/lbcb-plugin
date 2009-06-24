@@ -63,7 +63,7 @@ if(nargin > 3)
         switch label
             case 'cfg'
                 cfg = varargin{index+1};
-            case 'inFile'
+            case 'infile'
                 infile = varargin{index+1};
             otherwise
             str= sprintf('%s not recognized',label);
@@ -81,7 +81,7 @@ end
 guidata(hObject, handles);
 
 % UIWAIT makes LbcbPlugin wait for user response (see UIRESUME)
-% uiwait(handles.LbcbPlugin);
+ uiwait(handles.LbcbPlugin);
 
 
 % --- Outputs from this function are returned to the command line.
@@ -92,7 +92,7 @@ function varargout = LbcbPlugin_OutputFcn(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 % Get default command line output from handles structure
-varargout{1} = handles.output;
+varargout{1} = 1;
 
 
 % --- Executes on button press in RunHold.
