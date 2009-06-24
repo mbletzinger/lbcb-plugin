@@ -27,7 +27,7 @@ classdef NextTarget < SimulationState
             if isempty(me.curStep) == 0 
                 %calculate elastic deformations
                 for l = 1: length(me.curStep.lbcb)
-                    ed = NextTarget.getED(l-1);
+                    ed = NextTarget.getED(l == 1);
                     ed.calculate(me.curStep.lbcb{l});
                 end
                 % check tolerances
@@ -62,22 +62,22 @@ classdef NextTarget < SimulationState
             gdd = dd;
         end
         % static ElasticDeformationCalculations instance
-        function ed = getED(isLbcb2)
+        function ed = getED(isLbcb1)
             global ged1;
             global ged2;
-            if isLbcb2
-                ed = ged2;
-            else
+            if isLbcb1
                 ed = ged1;
+            else
+                ed = ged2;
             end
         end
-        function setED(ed,isLbcb2)
+        function setED(ed,isLbcb1)
             global ged1;
             global ged2;
-            if isLbcb2
-                ged2 = ed;
-            else
+            if isLbcb1
                 ged1 = ed;
+            else
+                ged2 = ed;
             end
         end
         % static StepTolerances  instance

@@ -1,8 +1,9 @@
 function execute(obj, event,me)
-if running == 0  % in a hold state
+if me.running == 0  % in a hold state
     return;
 end
 a = me.currentAction.getState();
+me.log.debug(dbstack,sprintf('Executing action %s',a));
 switch a
     case  { 'OPEN CONNECTION', 'CLOSE CONNECTION' }
         done = me.oc.isDone();
@@ -17,8 +18,8 @@ switch a
                 me.setRunHoldButton(0); % Pause the simulation
                 me.currentAction.setState('READY');
             else % Execute next step
-                if usefakeOm == 0
-                    me.peOm.step = nxtTgt.nextStep;
+                if me.fakeOm == 0
+                    me.peOm.step = me.nxtTgt.nextStep;
                 end
                 me.currentAction.setState('CHECK LIMITS');
             end
@@ -46,7 +47,7 @@ switch a
             end
         end
     case 'CHECK LIMITS'
-        done = nxtTgt.withinLimits();
+        done = me.nxtTgt.withinLimits();
         if done
                 me.currentAction.setState('OM PROPOSE EXECUTE');
         else

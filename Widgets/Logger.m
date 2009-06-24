@@ -39,7 +39,11 @@ classdef Logger < handle
                     str = sprintf('%s: %s',level,msg);
                 end
                 msgs = get(hnd,'String');
-                nmsgs = { msgs{:} str};
+                if ischar(msgs)
+                    nmsgs = {str};
+                else
+                    nmsgs = { msgs{:} str};
+                end
                 set(hnd,'String',nmsgs);
             end
         end
