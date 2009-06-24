@@ -22,7 +22,7 @@ function varargout = FakeOmProperties(varargin)
 
 % Edit the above text to modify the response to help FakeOmProperties
 
-% Last Modified by GUIDE v2.5 16-Jun-2009 13:29:49
+% Last Modified by GUIDE v2.5 24-Jun-2009 15:23:57
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -1783,6 +1783,1041 @@ handles.actions.setDerived(12,get(hObject,'Value'),1);
 % --- Executes during object creation, after setting all properties.
 function MzD2_CreateFcn(hObject, eventdata, handles)
 % hObject    handle to MzD2 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: popupmenu controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function ExtS1_Callback(hObject, eventdata, handles)
+% hObject    handle to ExtS1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of ExtS1 as text
+%        str2double(get(hObject,'String')) returns contents of ExtS1 as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function ExtS1_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to ExtS1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function ExtO1_Callback(hObject, eventdata, handles)
+% hObject    handle to ExtO1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of ExtO1 as text
+%        str2double(get(hObject,'String')) returns contents of ExtO1 as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function ExtO1_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to ExtO1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on selection change in ExtA1.
+function ExtA1_Callback(hObject, eventdata, handles)
+% hObject    handle to ExtA1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: contents = get(hObject,'String') returns ExtA1 contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from ExtA1
+
+
+% --- Executes during object creation, after setting all properties.
+function ExtA1_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to ExtA1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: popupmenu controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function ExtS2_Callback(hObject, eventdata, handles)
+% hObject    handle to ExtS2 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of ExtS2 as text
+%        str2double(get(hObject,'String')) returns contents of ExtS2 as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function ExtS2_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to ExtS2 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function ExtO2_Callback(hObject, eventdata, handles)
+% hObject    handle to ExtO2 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of ExtO2 as text
+%        str2double(get(hObject,'String')) returns contents of ExtO2 as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function ExtO2_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to ExtO2 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on selection change in ExtA2.
+function ExtA2_Callback(hObject, eventdata, handles)
+% hObject    handle to ExtA2 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: contents = get(hObject,'String') returns ExtA2 contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from ExtA2
+
+
+% --- Executes during object creation, after setting all properties.
+function ExtA2_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to ExtA2 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: popupmenu controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function ExtS3_Callback(hObject, eventdata, handles)
+% hObject    handle to ExtS3 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of ExtS3 as text
+%        str2double(get(hObject,'String')) returns contents of ExtS3 as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function ExtS3_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to ExtS3 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function ExtO3_Callback(hObject, eventdata, handles)
+% hObject    handle to ExtO3 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of ExtO3 as text
+%        str2double(get(hObject,'String')) returns contents of ExtO3 as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function ExtO3_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to ExtO3 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on selection change in ExtA3.
+function ExtA3_Callback(hObject, eventdata, handles)
+% hObject    handle to ExtA3 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: contents = get(hObject,'String') returns ExtA3 contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from ExtA3
+
+
+% --- Executes during object creation, after setting all properties.
+function ExtA3_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to ExtA3 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: popupmenu controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function ExtS4_Callback(hObject, eventdata, handles)
+% hObject    handle to ExtS4 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of ExtS4 as text
+%        str2double(get(hObject,'String')) returns contents of ExtS4 as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function ExtS4_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to ExtS4 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function ExtO4_Callback(hObject, eventdata, handles)
+% hObject    handle to ExtO4 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of ExtO4 as text
+%        str2double(get(hObject,'String')) returns contents of ExtO4 as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function ExtO4_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to ExtO4 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on selection change in ExtA4.
+function ExtA4_Callback(hObject, eventdata, handles)
+% hObject    handle to ExtA4 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: contents = get(hObject,'String') returns ExtA4 contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from ExtA4
+
+
+% --- Executes during object creation, after setting all properties.
+function ExtA4_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to ExtA4 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: popupmenu controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function ExtS5_Callback(hObject, eventdata, handles)
+% hObject    handle to ExtS5 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of ExtS5 as text
+%        str2double(get(hObject,'String')) returns contents of ExtS5 as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function ExtS5_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to ExtS5 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function ExtO5_Callback(hObject, eventdata, handles)
+% hObject    handle to ExtO5 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of ExtO5 as text
+%        str2double(get(hObject,'String')) returns contents of ExtO5 as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function ExtO5_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to ExtO5 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on selection change in ExtA5.
+function ExtA5_Callback(hObject, eventdata, handles)
+% hObject    handle to ExtA5 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: contents = get(hObject,'String') returns ExtA5 contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from ExtA5
+
+
+% --- Executes during object creation, after setting all properties.
+function ExtA5_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to ExtA5 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: popupmenu controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function ExtS6_Callback(hObject, eventdata, handles)
+% hObject    handle to ExtS6 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of ExtS6 as text
+%        str2double(get(hObject,'String')) returns contents of ExtS6 as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function ExtS6_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to ExtS6 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function ExtO6_Callback(hObject, eventdata, handles)
+% hObject    handle to ExtO6 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of ExtO6 as text
+%        str2double(get(hObject,'String')) returns contents of ExtO6 as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function ExtO6_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to ExtO6 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on selection change in ExtA6.
+function ExtA6_Callback(hObject, eventdata, handles)
+% hObject    handle to ExtA6 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: contents = get(hObject,'String') returns ExtA6 contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from ExtA6
+
+
+% --- Executes during object creation, after setting all properties.
+function ExtA6_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to ExtA6 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: popupmenu controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function ExtS7_Callback(hObject, eventdata, handles)
+% hObject    handle to ExtS7 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of ExtS7 as text
+%        str2double(get(hObject,'String')) returns contents of ExtS7 as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function ExtS7_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to ExtS7 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function ExtO7_Callback(hObject, eventdata, handles)
+% hObject    handle to ExtO7 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of ExtO7 as text
+%        str2double(get(hObject,'String')) returns contents of ExtO7 as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function ExtO7_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to ExtO7 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on selection change in ExtA7.
+function ExtA7_Callback(hObject, eventdata, handles)
+% hObject    handle to ExtA7 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: contents = get(hObject,'String') returns ExtA7 contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from ExtA7
+
+
+% --- Executes during object creation, after setting all properties.
+function ExtA7_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to ExtA7 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: popupmenu controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function ExtS8_Callback(hObject, eventdata, handles)
+% hObject    handle to ExtS8 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of ExtS8 as text
+%        str2double(get(hObject,'String')) returns contents of ExtS8 as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function ExtS8_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to ExtS8 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function ExtO8_Callback(hObject, eventdata, handles)
+% hObject    handle to ExtO8 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of ExtO8 as text
+%        str2double(get(hObject,'String')) returns contents of ExtO8 as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function ExtO8_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to ExtO8 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on selection change in ExtA8.
+function ExtA8_Callback(hObject, eventdata, handles)
+% hObject    handle to ExtA8 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: contents = get(hObject,'String') returns ExtA8 contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from ExtA8
+
+
+% --- Executes during object creation, after setting all properties.
+function ExtA8_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to ExtA8 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: popupmenu controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function ExtS9_Callback(hObject, eventdata, handles)
+% hObject    handle to ExtS9 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of ExtS9 as text
+%        str2double(get(hObject,'String')) returns contents of ExtS9 as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function ExtS9_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to ExtS9 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function ExtO9_Callback(hObject, eventdata, handles)
+% hObject    handle to ExtO9 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of ExtO9 as text
+%        str2double(get(hObject,'String')) returns contents of ExtO9 as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function ExtO9_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to ExtO9 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on selection change in ExtA9.
+function ExtA9_Callback(hObject, eventdata, handles)
+% hObject    handle to ExtA9 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: contents = get(hObject,'String') returns ExtA9 contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from ExtA9
+
+
+% --- Executes during object creation, after setting all properties.
+function ExtA9_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to ExtA9 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: popupmenu controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function ExtS10_Callback(hObject, eventdata, handles)
+% hObject    handle to ExtS10 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of ExtS10 as text
+%        str2double(get(hObject,'String')) returns contents of ExtS10 as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function ExtS10_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to ExtS10 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function ExtO10_Callback(hObject, eventdata, handles)
+% hObject    handle to ExtO10 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of ExtO10 as text
+%        str2double(get(hObject,'String')) returns contents of ExtO10 as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function ExtO10_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to ExtO10 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on selection change in ExtA10.
+function ExtA10_Callback(hObject, eventdata, handles)
+% hObject    handle to ExtA10 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: contents = get(hObject,'String') returns ExtA10 contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from ExtA10
+
+
+% --- Executes during object creation, after setting all properties.
+function ExtA10_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to ExtA10 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: popupmenu controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function ExtS11_Callback(hObject, eventdata, handles)
+% hObject    handle to ExtS11 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of ExtS11 as text
+%        str2double(get(hObject,'String')) returns contents of ExtS11 as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function ExtS11_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to ExtS11 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function ExtO11_Callback(hObject, eventdata, handles)
+% hObject    handle to ExtO11 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of ExtO11 as text
+%        str2double(get(hObject,'String')) returns contents of ExtO11 as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function ExtO11_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to ExtO11 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on selection change in ExtA11.
+function ExtA11_Callback(hObject, eventdata, handles)
+% hObject    handle to ExtA11 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: contents = get(hObject,'String') returns ExtA11 contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from ExtA11
+
+
+% --- Executes during object creation, after setting all properties.
+function ExtA11_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to ExtA11 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: popupmenu controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function ExtS12_Callback(hObject, eventdata, handles)
+% hObject    handle to ExtS12 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of ExtS12 as text
+%        str2double(get(hObject,'String')) returns contents of ExtS12 as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function ExtS12_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to ExtS12 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function ExtO12_Callback(hObject, eventdata, handles)
+% hObject    handle to ExtO12 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of ExtO12 as text
+%        str2double(get(hObject,'String')) returns contents of ExtO12 as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function ExtO12_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to ExtO12 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on selection change in ExtA12.
+function ExtA12_Callback(hObject, eventdata, handles)
+% hObject    handle to ExtA12 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: contents = get(hObject,'String') returns ExtA12 contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from ExtA12
+
+
+% --- Executes during object creation, after setting all properties.
+function ExtA12_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to ExtA12 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: popupmenu controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function ExtS13_Callback(hObject, eventdata, handles)
+% hObject    handle to ExtS13 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of ExtS13 as text
+%        str2double(get(hObject,'String')) returns contents of ExtS13 as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function ExtS13_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to ExtS13 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function ExtO13_Callback(hObject, eventdata, handles)
+% hObject    handle to ExtO13 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of ExtO13 as text
+%        str2double(get(hObject,'String')) returns contents of ExtO13 as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function ExtO13_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to ExtO13 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on selection change in ExtA13.
+function ExtA13_Callback(hObject, eventdata, handles)
+% hObject    handle to ExtA13 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: contents = get(hObject,'String') returns ExtA13 contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from ExtA13
+
+
+% --- Executes during object creation, after setting all properties.
+function ExtA13_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to ExtA13 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: popupmenu controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function ExtS14_Callback(hObject, eventdata, handles)
+% hObject    handle to ExtS14 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of ExtS14 as text
+%        str2double(get(hObject,'String')) returns contents of ExtS14 as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function ExtS14_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to ExtS14 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function ExtO14_Callback(hObject, eventdata, handles)
+% hObject    handle to ExtO14 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of ExtO14 as text
+%        str2double(get(hObject,'String')) returns contents of ExtO14 as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function ExtO14_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to ExtO14 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on selection change in ExtA14.
+function ExtA14_Callback(hObject, eventdata, handles)
+% hObject    handle to ExtA14 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: contents = get(hObject,'String') returns ExtA14 contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from ExtA14
+
+
+% --- Executes during object creation, after setting all properties.
+function ExtA14_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to ExtA14 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: popupmenu controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function ExtS15_Callback(hObject, eventdata, handles)
+% hObject    handle to ExtS15 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of ExtS15 as text
+%        str2double(get(hObject,'String')) returns contents of ExtS15 as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function ExtS15_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to ExtS15 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function ExtO15_Callback(hObject, eventdata, handles)
+% hObject    handle to ExtO15 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of ExtO15 as text
+%        str2double(get(hObject,'String')) returns contents of ExtO15 as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function ExtO15_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to ExtO15 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on selection change in ExtA15.
+function ExtA15_Callback(hObject, eventdata, handles)
+% hObject    handle to ExtA15 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: contents = get(hObject,'String') returns ExtA15 contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from ExtA15
+
+
+% --- Executes during object creation, after setting all properties.
+function ExtA15_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to ExtA15 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
