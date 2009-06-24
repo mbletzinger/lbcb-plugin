@@ -13,6 +13,8 @@ classdef SetupLimitTest < handle
             end
             me.genFakeParameters(d);
             me.genInputFile(idx,isUpper);
+            lcfg = LogLevelsDao(me.cfg);
+            lcfg.cmdLevel = 'DEBUG';
         end
         function m = getMultiplier(me, d)
             if d <=3
