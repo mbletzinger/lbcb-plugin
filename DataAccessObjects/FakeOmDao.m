@@ -17,6 +17,9 @@ classdef FakeOmDao < handle
         offset2
         derived1
         derived2
+        eScale
+        eOffset
+        eDerived
     end
     properties
         cfg = Configuration();
@@ -107,6 +110,45 @@ classdef FakeOmDao < handle
             valS = me.su.da2sl(value);
               me.cfg.props.setPropertyList('fake.om.offset2',valS);
         end
+        
+        function result = get.eDerived(me)
+              resultSL = me.cfg.props.getPropertyList('fake.om.eDerived');
+              if isempty(resultSL)
+                  result = [];
+                  return;
+              end
+              result = me.su.sl2ca(resultSL);
+        end
+        function set.eDerived(me,value)
+            valS = me.su.ca2sl(value);
+              me.cfg.props.setPropertyList('fake.om.eDerived',valS);
+        end
                 
+        function result = get.eScale(me)
+              resultSL = me.cfg.props.getPropertyList('fake.om.eScale');
+              if isempty(resultSL)
+                  result = ones(12,1);
+                  return;
+              end
+              result = me.su.sl2da(resultSL);
+        end
+        function set.eScale(me,value)
+            valS = me.su.da2sl(value);
+              me.cfg.props.setPropertyList('fake.om.eScale',valS);
+        end
+                
+        function result = get.eOffset(me)
+              resultSL = me.cfg.props.getPropertyList('fake.om.eOffset');
+              if isempty(resultSL)
+                  result = zeros(12,1);
+                  return;
+              end
+              result = me.su.sl2da(resultSL);
+        end
+        function set.eOffset(me,value)
+            valS = me.su.da2sl(value);
+              me.cfg.props.setPropertyList('fake.om.eOffset',valS);
+        end
+        
     end
 end
