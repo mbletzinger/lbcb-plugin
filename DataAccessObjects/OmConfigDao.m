@@ -45,7 +45,7 @@ classdef OmConfigDao < handle
         function result = get.sensorNames(me)
               resultSL = me.cfg.props.getPropertyList('om.sensorNames');
               if isempty(resultSL)
-                  result = ones(15,1);
+                  result = cell(15,1);
                   return;
               end
               result = me.su.sl2ca(resultSL);

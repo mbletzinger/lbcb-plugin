@@ -8,7 +8,7 @@ classdef FakeOm < handle
             me.cfg = FakeOmDao(cfg);
             me.drvO = StateEnum(me.cfg.derivedOptions);
         end
-        function ostep = generateControlPoints(istep)
+        function ostep = generateControlPoints(me,istep)
             lgt = length(istep.lbcb); %#ok<*MCNPN> Until LINT understands object properties 
             ostep.lbcb  = cell(lgt,1);
             for l = 1: lgt
@@ -18,15 +18,17 @@ classdef FakeOm < handle
                 if l ==1
                     scl = me.cfg.scale1;
                     ofst = me.cfg.offset1;
-                    drv = me.derived1;
+                    drv = me.cfg.derived1;
                 else
                     scl = me.cfg.scale2;
                     ofst = me.cfg.offset2;
-                    drv = me.derived2;
+                    drv = me.cfg.derived2;
                 end
                 for d = 1:6
-                    ncp.response.lbcb.disp(d) = me.getDof(drv{d}) * scl(d) + ofst(d);
-                    ncp.response.lbcb.force(d) = me.getDof(drv{d + 6}) * scl(d + 6) + ofst(d + 6);
+                    ddof = me.getDof(cp.command,drv(d));
+                    fddof = me.getDof(cp.command,drv(d+ 6));
+                    ncp.response.lbcb.disp(d) = ddof * scl(d) + ofst(d);
+                    ncp.response.lbcb.force(d) = fddof * scl(d + 6) + ofst(d + 6);
                 end
                 ostep.lbcb{l} = ncp;
             end
