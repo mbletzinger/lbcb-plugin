@@ -36,12 +36,14 @@ classdef GetControlPointsOm < SimulationState
                     getMdlLbcb().start(jmsg);
                     me.state.setState('BUSY');
                 case 'LBCB2'
+                    me.step.parseControlPointMsg(getMdlLbcb().response)
                     me.cpsMsg.setState('ExternalSensors');
                     jmsg = getMdlLbcb().createCommand('get-control-point',...
                         me.step.lbcb.command(1).node,me.cpsMsg.getState(),[]);
                     getMdlLbcb().start(jmsg);
                     me.state.setState('BUSY');
                 case 'ExternalSensors'
+                    me.step.parseControlPointMsg(getMdlLbcb().response)
                     me.cpsMsg.setState('DONE');
                     me.state.setState('READY');
                 case 'NONE'
