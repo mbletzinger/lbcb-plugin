@@ -14,6 +14,10 @@ classdef LbcbStep < handle
                 me.lbcb{t}.command = targets{t};
             end
         end
+        function me = clone(istep)
+            me.simstep = istep.simstep;
+            me.lbcb = istep.lbcb;
+        end
         jmsg = generateProposeMsg(me)
         parseControlPointMsg(me,rsp)
         distributeExtSensorData(me,readings)
