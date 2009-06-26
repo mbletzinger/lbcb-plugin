@@ -944,6 +944,9 @@ guidata(hObject, handles);
 
 function fillPopups(handles)
 values = handles.dao.apply2Lbcb;
+if isempty(values)
+    values = repmat({[]},15,1);
+end
 names = handles.dao.sensorNames;
 sens = handles.dao.sensitivities;
 for m = 1:15

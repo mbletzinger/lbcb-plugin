@@ -18,5 +18,8 @@ classdef FakeOmActions < handle
         setScale(me,idx,value,isLbcb2)
         setOffset(me,idx,value,isLbcb2)
         setDerived(me,idx,valIdx,isLbcb2)
+        setEScale(me,idx,value)
+        setEOffset(me,idx,value)
+        setEDerived(me,idx,valIdx)
     end
 end

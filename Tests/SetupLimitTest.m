@@ -17,6 +17,13 @@ classdef SetupLimitTest < handle
             lcfg.cmdLevel = 'DEBUG';
             ocfg = OmConfigDao(me.cfg);
             ocfg.useFakeOm = 1;
+            sensorNames = cell(15,1);
+            apply2Lbcb = cell(15,1);
+            sensorNames(1:6,1) = {'Ext 1' 'Ext 2' 'Ext 3', 'Ext 4', 'Long Ext 5' 'Short Ext 6'}';
+            apply2Lbcb(1:6,1) = {'LBCB 1' 'LBCB 1' 'LBCB 1' 'LBCB 2' 'LBCB 2' 'LBCB 2'}';
+            ocfg.sensorNames = sensorNames;
+            ocfg.apply2Lbcb = apply2Lbcb;
+            ocfg.numLbcbs = '2';
         end
         function m = getMultiplier(me, d)
             if d <=3
@@ -44,6 +51,11 @@ classdef SetupLimitTest < handle
                 fcfg.derived2{d} = derived.getState();
                 fcfg.scale1(d) = s / m;
                 fcfg.scale2(d) = s / m;
+            end
+            for d = 1:6
+                s = me.getMultiplier(1);
+                fcfg.eDerived{d} = derived.getState();
+                fcfg.eScale(d) = s / m;
             end
         end
         function genInputFile(me, idx, isUpper)
