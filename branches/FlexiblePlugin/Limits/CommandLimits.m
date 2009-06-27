@@ -24,18 +24,14 @@ classdef CommandLimits < handle
         end
         function [faults commands] = wL(me,cmds,lower,upper,used)
             faults = zeros(12,2);
+            commands(1:6) = cmds.disp;
+            commands(7:12) = cmds.force;
             for l = 1:12
-                if l > 6
-                    dof = cmds.force(l -6);
-                else
-                    dof = cmds.disp(l);
-                end
-                commands = dof;
                 if(used(l))
-                    if dof < lower(l)
+                    if commands(l) < lower(l)
                         faults(l,1) = 1;
                     end
-                    if dof > upper(l)
+                    if commands(l) > upper(l)
                         faults(l,2) = 1;
                     end
                 end

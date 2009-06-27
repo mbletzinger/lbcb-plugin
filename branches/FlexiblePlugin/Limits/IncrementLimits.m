@@ -11,7 +11,6 @@ classdef IncrementLimits < handle
             me.limits = WindowLimitsDao('command.limits',cfg);
         end
         function yes = withinLimits(me,curStep,prevStep)
-            me.faults1 = zeros(12,1);
             me.faults2 = zeros(12,1);
             [me.faults1 me.increments1 ] = me.wL(curStep.lbcb{1}.command,...
                 prevStep.lbcb{1}.command,me.limits.window1,me.limits.used1);
@@ -24,16 +23,11 @@ classdef IncrementLimits < handle
         end
         function [faults increments] = wL(me,curCmd,prevCmd,window,used)
             faults = zeros(12,1);
-            increments = zeros(12,1);
+            increments(1:6) = curCmd.disp - prevCmd.disp;
+            increments(7:12) = curCmd.force - prevCmd.force;
             for l = 1:12
-                if l > 6
-                    dof = curCmd.force(l -6) - prevCmd.force(l-6);
-                else
-                    dof = curCmd.disp(l) - prevCmd.disp(l);
-                end
-                increments(l) = dof;
-                if(used(l))
-                    if abs(dof) > window(l)
+                if used(l)
+                    if abs(increments(l)) > window(l)
                         faults(l) = 1;
                     end
                 end
