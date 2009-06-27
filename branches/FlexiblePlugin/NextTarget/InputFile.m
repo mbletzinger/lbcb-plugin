@@ -77,7 +77,7 @@ classdef  InputFile < handle
                 else
                     targets = {tgt1};
                 end
-                me.steps{t} = LbcbStep(SimulationSteps(t,0),targets);
+                me.steps{t} = LbcbStep('simstep',SimulationSteps(t,0),'targets',targets);
             end
         end
     end
