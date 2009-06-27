@@ -73,7 +73,7 @@ classdef  InputFile < handle
                     tgt2.setForceDof(d - 18,tgts(t,i));
                 end
                 if sum(me.commandDofs(12:24)) > 0
-                    targets = { tgt1, tgt2 };
+                    targets = { tgt1; tgt2 };
                 else
                     targets = {tgt1};
                 end

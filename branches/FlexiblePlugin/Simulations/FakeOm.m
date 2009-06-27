@@ -35,7 +35,7 @@ classdef FakeOm < handle
                 end
                 ostep.lbcb{l} = ncp;
                 ocfg = OmConfigDao(me.cfg);
-                names = ocfg.sensorNames
+                names = ocfg.sensorNames;
                 readings = zeros(15,1);
                 for e = 1:15
                     if isempty(names{e})
@@ -44,7 +44,7 @@ classdef FakeOm < handle
                     ddof = me.getDof(cp.command,drv(e));
                     readings(e) = ddof * scl(e) + ofst(e);
                 end
-                ostep.distributeExtSensorData(readings);
+                ostep.distributeExtSensorData(readings,ocfg.sensitivities);
             end
             ostep.simstep = istep.simstep;
         end

@@ -1,10 +1,10 @@
-function distributeExtSensorData(me,readings)
-me.externalSensorRaw = readings;
-el1 = zeroes(length(n));
+function distributeExtSensorData(me,readings,se)
+me.externalSensorsRaw = readings;
+el1 = zeros(length(readings));
 el1l = 1;
-el2 = zeroes(length(n));
+el2 = zeros(length(readings));
 el2l = 1;
-for s = 1:length(n)
+for s = 1:length(readings)
     r = readings(s) * se(s);
     if strcmp(a(s),'LBCB1')
         el1(el1l) = r;
