@@ -11,7 +11,7 @@ classdef FakeOm < handle
         end
         function ostep = generateControlPoints(me,istep)
             lgt = length(istep.lbcb); %#ok<*MCNPN> Until LINT understands object properties
-            ostep = clone(istep);
+            ostep = LbcbStep('istep',istep);
             ostep.lbcb  = cell(lgt,1);
             fcfg = FakeOmDao(me.cfg);
             for l = 1: lgt
