@@ -51,7 +51,7 @@ switch a
         if done
                 me.currentAction.setState('OM PROPOSE EXECUTE');
         else
-            me.setRunHoldButton(0); % Pause the simulation
+            me.setRunButton(0); % Pause the simulation
         end
     case 'READY'
         me.log.error(dbstack,'Someone forgot to stop the simulation timer');

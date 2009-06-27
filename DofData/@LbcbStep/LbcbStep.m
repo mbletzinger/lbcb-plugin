@@ -2,7 +2,7 @@ classdef LbcbStep < handle
     properties
         lbcb = {}; % Number of LBCBs Instances of LbcbControlPoint
         simstep = {}; % SimulationStep instance
-        externalSensorRaw = [];
+        externalSensorsRaw = [];
         log = Logger;
     end
     methods
@@ -13,9 +13,9 @@ classdef LbcbStep < handle
                     label = lower(varargin{i});
                     switch label
                         case 'simstep'
-                            me.simstep = varargin(i+ 1);
+                            me.simstep = varargin{i+ 1};
                         case 'targets'
-                            targets = varargin(i+ 1);
+                            targets = varargin{i+ 1};
                             lgth = length(targets);
                             me.lbcb = cell(lgth,1);
                             for t = 1:lgth
@@ -23,7 +23,7 @@ classdef LbcbStep < handle
                                 me.lbcb{t}.command = targets{t};
                             end
                         case 'istep'
-                            istep = varargin(i+ 1);
+                            istep = varargin{i+ 1};
                             me.lbcb = istep.lbcb;
                             me.simstep = istep.lbcb;
                             me.externalSensorsRaw = istep.externalSensorsRaw;
@@ -39,7 +39,7 @@ classdef LbcbStep < handle
         end
         jmsg = generateProposeMsg(me)
         parseControlPointMsg(me,rsp)
-        distributeExtSensorData(me,readings)
+        distributeExtSensorData(me,readings,se)
     end
     methods (Static)
         ml = getMdlLbcb()

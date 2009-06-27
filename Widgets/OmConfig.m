@@ -949,6 +949,7 @@ if isempty(values)
 end
 names = handles.dao.sensorNames;
 sens = handles.dao.sensitivities;
+appliedLabels = {'LBCB1','LBCB2'};
 for m = 1:15
     if isempty(values{m})
         idx = 1;
@@ -958,62 +959,77 @@ for m = 1:15
     end
     switch m
         case 1
+            set(handles.Applied2Lbcb1,'String',appliedLabels);    
             set(handles.Applied2Lbcb1,'Value',idx);    
             set(handles.ExtS1,'String',names(m));    
             set(handles.sens1,'String',sprintf('%f',sens(m)));
         case 2
+            set(handles.Applied2Lbcb2,'String',appliedLabels);    
             set(handles.Applied2Lbcb2,'Value',idx);    
             set(handles.ExtS2,'String',names(m));    
             set(handles.sens2,'String',sprintf('%f',sens(m)));
         case 3
+            set(handles.Applied2Lbcb3,'String',appliedLabels);    
             set(handles.Applied2Lbcb3,'Value',idx);    
             set(handles.ExtS3,'String',names(m));    
             set(handles.sens3,'String',sprintf('%f',sens(m)));
         case 4
+            set(handles.Applied2Lbcb4,'String',appliedLabels);    
             set(handles.Applied2Lbcb4,'Value',idx);    
             set(handles.ExtS4,'String',names(m));    
             set(handles.sens4,'String',sprintf('%f',sens(m)));
         case 5
+            set(handles.Applied2Lbcb5,'String',appliedLabels);    
             set(handles.Applied2Lbcb5,'Value',idx);    
             set(handles.ExtS5,'String',names(m));    
             set(handles.sens5,'String',sprintf('%f',sens(m)));
         case 6
+            set(handles.Applied2Lbcb6,'String',appliedLabels);    
             set(handles.Applied2Lbcb6,'Value',idx);    
             set(handles.ExtS6,'String',names(m));    
             set(handles.sens6,'String',sprintf('%f',sens(m)));
         case 7
+            set(handles.Applied2Lbcb7,'String',appliedLabels);    
             set(handles.Applied2Lbcb7,'Value',idx);    
             set(handles.ExtS7,'String',names(m));    
             set(handles.sens7,'String',sprintf('%f',sens(m)));
         case 8
+            set(handles.Applied2Lbcb8,'String',appliedLabels);    
             set(handles.Applied2Lbcb8,'Value',idx);    
             set(handles.ExtS8,'String',names(m));    
             set(handles.sens8,'String',sprintf('%f',sens(m)));
         case 9
+            set(handles.Applied2Lbcb9,'String',appliedLabels);    
             set(handles.Applied2Lbcb9,'Value',idx);    
             set(handles.ExtS9,'String',names(m));    
             set(handles.sens9,'String',sprintf('%f',sens(m)));
         case 10
+            set(handles.Applied2Lbcb10,'String',appliedLabels);    
             set(handles.Applied2Lbcb10,'Value',idx);    
             set(handles.ExtS10,'String',names(m));    
             set(handles.sens10,'String',sprintf('%f',sens(m)));
         case 11
+            set(handles.Applied2Lbcb11,'String',appliedLabels);    
             set(handles.Applied2Lbcb11,'Value',idx);    
             set(handles.ExtS11,'String',names(m));    
             set(handles.sens11,'String',sprintf('%f',sens(m)));
         case 12
+            set(handles.Applied2Lbcb12,'String',appliedLabels);    
             set(handles.Applied2Lbcb12,'Value',idx);    
             set(handles.ExtS12,'String',names(m));    
             set(handles.sens12,'String',sprintf('%f',sens(m)));
         case 13
+            set(handles.Applied2Lbcb13,'String',appliedLabels);    
             set(handles.Applied2Lbcb13,'Value',idx);    
             set(handles.ExtS13,'String',names(m));    
             set(handles.sens13,'String',sprintf('%f',sens(m)));
         case 14
+            set(handles.Applied2Lbcb14,'String',appliedLabels);    
             set(handles.Applied2Lbcb14,'Value',idx);    
             set(handles.ExtS14,'String',names(m));    
             set(handles.sens14,'String',sprintf('%f',sens(m)));
         case 15
+            set(handles.Applied2Lbcb15,'String',appliedLabels);    
             set(handles.Applied2Lbcb15,'Value',idx);    
             set(handles.ExtS15,'String',names(m));    
             set(handles.sens15,'String',sprintf('%f',sens(m)));

@@ -11,7 +11,7 @@ classdef LimitChecks < handle
             else
                 yes2 = me.inc.withinLimits(curStep,prevStep);
             end
-            yes = yes1 && yes2;
+            yes = and(yes1 , yes2);
         end
     end
 end

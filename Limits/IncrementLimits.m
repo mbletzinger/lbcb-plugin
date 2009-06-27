@@ -19,7 +19,7 @@ classdef IncrementLimits < handle
                 [me.faults2 me.increments2 ] = me.wL(curStep.lbcb{2}.command,...
                     prevStep.lbcb{2}.command,me.limits.window2,me.limits.used2);
             end
-            yes = sum(me.faults1) + sum(me.faults2);
+            yes = (sum(me.faults1) + sum(me.faults2)) == 0;
         end
         function [faults increments] = wL(me,curCmd,prevCmd,window,used)
             faults = zeros(12,1);
