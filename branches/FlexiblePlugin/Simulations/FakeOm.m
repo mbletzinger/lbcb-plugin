@@ -44,7 +44,7 @@ classdef FakeOm < handle
                     ddof = me.getDof(cp.command,drv(e));
                     readings(e) = ddof * scl(e) + ofst(e);
                 end
-                ostep.distributeExtSensorData(readings,ocfg.sensitivities);
+                ostep.distributeExtSensorData(readings);
             end
             ostep.simstep = istep.simstep;
         end

@@ -232,6 +232,7 @@ me.nxtTgt.setLC(lc);
 me.nxtTgt.setDD(DerivedDof);
 me.nxtTgt.setED(ElasticDeformationCalculations(me.cfg,0),0);
 me.nxtTgt.setED(ElasticDeformationCalculations(me.cfg,1),1);
+me.nxtTgt.setST(me.st);
 
 me.fakeGcp = FakeOm(me.cfg);
 me.setRunButton(0);

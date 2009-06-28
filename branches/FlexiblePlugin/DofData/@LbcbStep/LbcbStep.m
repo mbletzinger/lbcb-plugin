@@ -39,7 +39,7 @@ classdef LbcbStep < handle
         end
         jmsg = generateProposeMsg(me)
         parseControlPointMsg(me,rsp)
-        distributeExtSensorData(me,readings,se)
+        distributeExtSensorData(me,readings)
     end
     methods (Static)
         ml = getMdlLbcb()

@@ -58,4 +58,5 @@ switch a
     otherwise
         me.log.error(dbstack,sprintf('%s not recognized',a));
 end
+LbcbPluginActions.updateGui(me.handles);
 end

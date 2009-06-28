@@ -8,10 +8,10 @@ classdef StepTolerances < handle
     end
     methods
         function me = StepTolerances(cfg)
-            me.limits = LimitsDao('command.limits',cfg);
+            me.limits = WindowLimitsDao('command.tolerances',cfg);
         end
-        function yes = withinLimits(me,step)
-            me.faults2 = ones(12,1);
+        function yes = withinTolerances(me,step)
+            me.within2 = ones(12,1);
             [me.within1 me.diffs1 ] = me.wL(step.lbcb{1}.command,...
                 step.lbcb{1}.response,me.limits.window1,me.limits.used1);
             lt = length(step.lbcb);
@@ -19,7 +19,7 @@ classdef StepTolerances < handle
                 [me.within2 me.diffs2 ] = me.wL(step.lbcb{2}.command,...
                     step.lbcb{2}.response,me.limits.window2,me.limits.used2);
             end
-            yes = (sum(me.faults1) + sum(me.faults2)) == 24;
+            yes = (sum(me.within1) + sum(me.within2)) == 24;
         end
         function [within diff] = wL(me,command, response, window, used)
             within = ones(12,1);
