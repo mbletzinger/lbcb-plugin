@@ -48,6 +48,7 @@ switch a
         end
     case 'CHECK LIMITS'
         done = me.nxtTgt.withinLimits();
+        me.updateCommandLimits();
         if done
                 me.currentAction.setState('OM PROPOSE EXECUTE');
         else
@@ -58,5 +59,5 @@ switch a
     otherwise
         me.log.error(dbstack,sprintf('%s not recognized',a));
 end
-LbcbPluginActions.updateGui(me.handles);
+LbcbPluginActions.updateGui(me);
 end

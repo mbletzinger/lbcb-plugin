@@ -54,7 +54,7 @@ classdef WindowLimitsDao < handle
         function result = get.used1(me)
             resultSL = me.cfg.props.getPropertyList(sprintf('%s.used1',me.label));
             if isempty(resultSL)
-                result = [];
+                result = zeros(12,1);
                 return;
             end
             result = me.su.sl2ia(resultSL);
@@ -67,7 +67,7 @@ classdef WindowLimitsDao < handle
         function result = get.used2(me)
             resultSL = me.cfg.props.getPropertyList(sprintf('%s.used2',me.label));
             if isempty(resultSL)
-                result = [];
+                result = zeros(12,1);
                 return;
             end
             result = me.su.sl2ia(resultSL);
