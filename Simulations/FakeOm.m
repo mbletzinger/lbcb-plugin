@@ -9,15 +9,12 @@ classdef FakeOm < handle
             fcfg = FakeOmDao(cfg);
             me.drvO = StateEnum(fcfg.derivedOptions);
         end
-        function ostep = generateControlPoints(me,istep)
+        function generateControlPoints(me,istep)
             lgt = length(istep.lbcb); %#ok<*MCNPN> Until LINT understands object properties
-            ostep = LbcbStep('istep',istep);
-            ostep.lbcb  = cell(lgt,1);
             fcfg = FakeOmDao(me.cfg);
             for l = 1: lgt
                 cp = istep.lbcb{l};
-                ncp.command = cp.command;
-                ncp.response = LbcbReading;
+                cp.response = LbcbReading;
                 if l ==1
                     scl = fcfg.scale1;
                     ofst = fcfg.offset1;
@@ -30,10 +27,9 @@ classdef FakeOm < handle
                 for d = 1:6
                     ddof = me.getDof(cp.command,drv(d));
                     fddof = me.getDof(cp.command,drv(d+ 6));
-                    ncp.response.lbcb.disp(d) = ddof * scl(d) + ofst(d);
-                    ncp.response.lbcb.force(d) = fddof * scl(d + 6) + ofst(d + 6);
+                    cp.response.lbcb.disp(d) = ddof * scl(d) + ofst(d);
+                    cp.response.lbcb.force(d) = fddof * scl(d + 6) + ofst(d + 6);
                 end
-                ostep.lbcb{l} = ncp;
                 ocfg = OmConfigDao(me.cfg);
                 names = ocfg.sensorNames;
                 readings = zeros(15,1);
@@ -44,9 +40,8 @@ classdef FakeOm < handle
                     ddof = me.getDof(cp.command,drv(e));
                     readings(e) = ddof * scl(e) + ofst(e);
                 end
-                ostep.distributeExtSensorData(readings);
+                istep.distributeExtSensorData(readings);
             end
-            ostep.simstep = istep.simstep;
         end
         function dof = getDof(me,cmd,drv)
             me.drvO.setState(drv);

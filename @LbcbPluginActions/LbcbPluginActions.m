@@ -57,6 +57,7 @@ classdef LbcbPluginActions < handle
                 me.cfg = cfg;
             end
             me.handles.log = me.log;
+            me.handles.actions = me;
             me.currentAction.setState('READY');
             me.simTimer = timer('Period',1, 'TasksToExecute',1000000,'ExecutionMode','fixedSpacing','Name','SimulationTimer');
             me.simTimer.TimerFcn = { 'LbcbPluginActions.execute', me };
@@ -64,7 +65,7 @@ classdef LbcbPluginActions < handle
         openCloseConnection(me, connection,closeIt)
         runInputFile(me,inFile)
         initialize(me)
-        colorCommandLimits(me)
+        updateCommandLimits(me)
         colorIncrementLimits(me)
         updateCommandCurrentValue(me)
         updateToleranceCurrentValue(me)
@@ -80,6 +81,6 @@ classdef LbcbPluginActions < handle
     methods (Static)
         colorText(hndl,fault)
         execute(obj, event, me)
-        updateGui(handles)
+        updateGui(me)
     end
 end

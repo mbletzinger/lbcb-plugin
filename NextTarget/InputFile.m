@@ -6,6 +6,7 @@ classdef  InputFile < handle
     sIdx = 1;
     commandDofs = [];
     endOfFile = 0;
+    log = Logger;
     end
     methods
         function done = load(me,path)
@@ -58,6 +59,7 @@ classdef  InputFile < handle
                         continue;
                     end
                     i = i+1;
+%                    me.log.debug(dbstack,sprintf('d=%d i=%d',d,i)); 
                     if d < 7
                         tgt1.setDispDof(d,tgts(t,i));
                         continue;

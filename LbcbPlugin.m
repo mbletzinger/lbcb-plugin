@@ -81,6 +81,7 @@ if isempty(infile) == 0
 end
 % Update handles structure
 guidata(hObject, handles);
+% h = handles
 
 % UIWAIT makes LbcbPlugin wait for user response (see UIRESUME)
  uiwait(handles.LbcbPlugin);

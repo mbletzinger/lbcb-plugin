@@ -1,5 +1,6 @@
-function updateGui(handles)
-    % Update handles structure
-    disp(dbstack);
-guidata(handles.LbcbPlugin, handles);
+function updateGui(me)
+% Update handles structure
+% h = me.handles
+% g = gcbo
+guidata(gcbo, me.handles);
 end

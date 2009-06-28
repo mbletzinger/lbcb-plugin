@@ -1,18 +1,29 @@
 classdef SetupLimitTest < handle
     properties
-        cfg = Configuration
-        infile = InputFile
+        cfg = {}
+        infile = {}
         maxV = 5.0
         minV = -2.0
+        tgts = [];
+        cDofs = [];
+        log = Logger;
     end
     methods
-        function setCommandLimitDof(me,idx, isUpper)
-            d = 3*(idx - 1) + 1;
-            for i = d: d+ 2
-                me.setLimits(i);
+        function me = SetupLimitTest()
+            me.cfg = Configuration;
+            me.infile = InputFile;
+            Logger.setCmdLevel('DEBUG');
+
+        end
+        function setDirection(me,isUpper)
+            for idx = 1:4
+                d = 3*(idx - 1) + 1;
+                for i = d: d+ 2
+                    me.setLimits(i);
+                end
             end
-            me.genFakeParameters(d);
-            me.genInputFile(idx,isUpper);
+            me.genFakeParameters(1);
+            me.genInputFile(isUpper);
             lcfg = LogLevelsDao(me.cfg);
             lcfg.cmdLevel = 'DEBUG';
             ocfg = OmConfigDao(me.cfg);
@@ -58,33 +69,38 @@ classdef SetupLimitTest < handle
                 fcfg.eScale(d) = s / m;
             end
         end
-        function genInputFile(me, idx, isUpper)
-            m = me.getMultiplier(idx);
+        function genInputFile(me,isUpper)
+            numSteps = 100;
+            me.tgts = zeros(numSteps,24);
+            me.cDofs = zeros(1,24);
+            for idx = 1:4
+                me.genInputDof(idx,isUpper,numSteps);
+            end
+            me.infile.commandDofs = me.cDofs;
+            me.infile.loadSteps(me.tgts);
+        end
+        function genInputDof(me, idx, isUpper,numSteps)
+            d = 3*(idx - 1) + 1;
+            m = me.getMultiplier(d);
             min = me.minV *m;
             max = me.maxV *m;
-            itv = 0.1 * m;
+            itv = (max - min) / numSteps;
             if isUpper
                 start = min + itv;
-                stop= max + itv;
                 inc = itv;
             else
                 start = max - itv;
-                stop= min - itv;
                 inc = -itv;
             end
-            numTgts = round(abs(stop - start) / itv);
-            tgts = zeros(numTgts,24);
-            cDofs = zeros(1,24);
-            d = 3*(idx - 1) + 1;
-            for i = d: d+ 2
-                cDofs(1,i) = 1;
-                cDofs(1,i+12) = 1;
-                for s = 1:numTgts
-                    tgts(s,i) = start + s * inc;
+            me.log.debug(dbstack,sprintf('d=%d start=%f inc=%f',d,start,inc)); 
+            for i = d: d + 2
+                me.cDofs(1,i) = 1;
+                me.cDofs(1,i+12) = 1;
+                for s = 1:numSteps
+                    me.tgts(s,i) = start + s * inc;
+                    me.tgts(s,i+12) = start + s * inc;
                 end
             end
-            me.infile.commandDofs = cDofs;
-            me.infile.loadSteps(tgts);
         end
         function setLimits(me,d)
             lcfg = LimitsDao('command.limits',me.cfg);
