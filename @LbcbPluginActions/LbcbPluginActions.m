@@ -80,5 +80,6 @@ classdef LbcbPluginActions < handle
     methods (Static)
         colorText(hndl,fault)
         execute(obj, event, me)
+        updateGui(handles)
     end
 end

@@ -109,6 +109,7 @@ if handles.notimer
         handles.actions.startSimulation(1);
     end
     LbcbPluginActions.execute([],[],handles.actions);
+
 else
     handles.actions.setRunButton(get(hObject,'Value'));
 end
