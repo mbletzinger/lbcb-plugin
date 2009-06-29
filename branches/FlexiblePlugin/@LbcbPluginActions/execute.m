@@ -48,10 +48,12 @@ switch a
             end
         end
     case 'CHECK LIMITS'
-        done = me.nxtTgt.withinLimits();
-        me.updateCommandLimits();
+        me
+        me.nxtTgt
+        done = me.nxtTgt.withinLimits()
+        me.updateCommandLimits()
         if done
-                me.currentAction.setState('OM PROPOSE EXECUTE');
+                me.currentAction.setState('OM PROPOSE EXECUTE')
         else
             me.setRunButton(0); % Pause the simulation
         end

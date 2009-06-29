@@ -5,6 +5,7 @@ classdef CommandLimits < handle
         limits = [];
         commands1 = zeros(12,1);
         commands2 = zeros(12,1);
+        log = Logger;
     end
     methods
         function me = CommandLimits(cfg)
@@ -15,6 +16,10 @@ classdef CommandLimits < handle
             me.faults2 = zeros(12,1);
             [me.faults1 me.commands1 ] = me.wL(step.lbcb{1}.command,...
                 me.limits.lower1,me.limits.upper1,me.limits.used1);
+%             me.log.debug(dbstack,sprintf('Lower 1 %d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d'...
+%                 ,me.limits.lower1(:)));
+%             me.log.debug(dbstack,sprintf('Lower Fault 1 %d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d'...
+%                 ,me.faults1(:,1)));
             lt = length(step.lbcb);
             if lt > 1
             [me.faults2 me.commands2 ] = me.wL(step.lbcb{2}.command,...
@@ -35,6 +40,8 @@ classdef CommandLimits < handle
                         faults(l,2) = 1;
                     end
                 end
+%                 me.log.debug(dbstack,sprintf('%d cmd %f < low %f',...
+%                     l,commands(l),lower(1))); 
             end
         end
     end

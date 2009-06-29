@@ -48,7 +48,7 @@ classdef  InputFile < handle
             me.commandDofs(1,1:length(cmdDofs)) = cmdDofs;
         end
         function loadSteps(me,tgts)
-            lgth = length(tgts);
+            [lgth dummy] = size(tgts);
             me.steps = cell(lgth,1);
             for t = 1:lgth
                 tgt1 = Target;
