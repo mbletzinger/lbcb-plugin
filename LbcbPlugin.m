@@ -110,9 +110,7 @@ function RunHold_Callback(hObject, eventdata, handles) %#ok<*INUSD,*DEFNU>
 if handles.notimer
     disp('no timer execution');
     handles.actions.running = 1;
-    if handles.actions.currentAction.isState('READY')
-        handles.actions.startSimulation(1);
-    end
+    handles.actions.startSimulation(1);
     LbcbPluginActions.execute([],[],handles.actions);
 
 else

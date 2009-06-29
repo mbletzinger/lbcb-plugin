@@ -4,7 +4,10 @@ function startSimulation(me,notimer)
         me.fakeOm = ocfg.useFakeOm;
         LbcbStep.setMdlLbcb(SimulationState.getMdlLbcb()); % created when the connection was opened
         LbcbStep.setExtSensors(me.cfg);
-        me.currentAction.setState('NEXT TARGET');
+        if me.currentAction.isState('READY')
+            me.nxtTgt.start();
+            me.currentAction.setState('NEXT TARGET');
+        end
         if notimer 
             return;
         end

@@ -1,8 +1,7 @@
 JavaTest
 s = SetupLimitTest;
-for d = 1:4
-    s.setDirection(0);
-    LbcbPlugin('cfg',s.cfg,'infile',s.infile,'notimer',0);
-%    s.setCommandLimitDof(d,1);
-%    LbcbPlugin('cfg',s.cfg,'infile',s.infile);
-end
+s.setDirection(0);
+LbcbPlugin('cfg',s.cfg,'infile',s.infile,'notimer',0);
+s = SetupLimitTest;
+s.setDirection(1);
+LbcbPlugin('cfg',s.cfg,'infile',s.infile,'notimer',0);

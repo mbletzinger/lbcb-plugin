@@ -70,7 +70,7 @@ classdef SetupLimitTest < handle
             end
         end
         function genInputFile(me,isUpper)
-            numSteps = 100;
+            numSteps = 5;
             me.tgts = zeros(numSteps,24);
             me.cDofs = zeros(1,24);
             for idx = 1:4

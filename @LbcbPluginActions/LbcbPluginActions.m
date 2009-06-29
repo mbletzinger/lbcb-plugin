@@ -59,7 +59,7 @@ classdef LbcbPluginActions < handle
             me.handles.log = me.log;
             me.handles.actions = me;
             me.currentAction.setState('READY');
-            me.simTimer = timer('Period',1, 'TasksToExecute',1000000,'ExecutionMode','fixedSpacing','Name','SimulationTimer');
+            me.simTimer = timer('Period',0.05, 'TasksToExecute',1000000,'ExecutionMode','fixedSpacing','Name','SimulationTimer');
             me.simTimer.TimerFcn = { 'LbcbPluginActions.execute', me };
         end
         openCloseConnection(me, connection,closeIt)
