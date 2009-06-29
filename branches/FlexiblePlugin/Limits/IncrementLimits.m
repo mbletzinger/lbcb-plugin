@@ -8,13 +8,13 @@ classdef IncrementLimits < handle
     end
     methods
         function me = IncrementLimits(cfg)
-            me.limits = WindowLimitsDao('command.limits',cfg);
+            me.limits = WindowLimitsDao('increment.limits',cfg);
         end
         function yes = withinLimits(me,curStep,prevStep)
             me.faults2 = zeros(12,1);
             [me.faults1 me.increments1 ] = me.wL(curStep.lbcb{1}.command,...
                 prevStep.lbcb{1}.command,me.limits.window1,me.limits.used1);
-            lt = length(step.lbcb);
+            lt = length(curStep.lbcb);
             if lt > 1
                 [me.faults2 me.increments2 ] = me.wL(curStep.lbcb{2}.command,...
                     prevStep.lbcb{2}.command,me.limits.window2,me.limits.used2);

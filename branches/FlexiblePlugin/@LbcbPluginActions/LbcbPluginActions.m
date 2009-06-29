@@ -82,5 +82,6 @@ classdef LbcbPluginActions < handle
         colorText(hndl,fault)
         execute(obj, event, me)
         updateGui(me)
+        setGui(ingui)
     end
 end
