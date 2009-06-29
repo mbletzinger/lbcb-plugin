@@ -62,8 +62,8 @@ for c = 1:12
     up1 =  me.cl.limits.upper1(c);
     us1 = me.cl.limits.used1(c);
     if us1
-        set(me.commandLimitsHandles1{c,1},'String',sprintf('%.5e',low1));
-        set(me.commandLimitsHandles1{c,2},'String',sprintf('%.5e',up1));
+        set(me.commandLimitsHandles1{c,1},'String',sprintf('%f',low1));
+        set(me.commandLimitsHandles1{c,2},'String',sprintf('%f',up1));
     else
         set(me.commandLimitsHandles1{c,1},'String','');
         set(me.commandLimitsHandles1{c,2},'String','');
@@ -72,8 +72,8 @@ for c = 1:12
     up2 =  me.cl.limits.upper2(c);
     us2 = me.cl.limits.used2(c);
     if us2
-        set(me.commandLimitsHandles2{c,1},'String',sprintf('%.5e',low2));
-        set(me.commandLimitsHandles2{c,2},'String',sprintf('%.5e',up2));
+        set(me.commandLimitsHandles2{c,1},'String',sprintf('%f',low2));
+        set(me.commandLimitsHandles2{c,2},'String',sprintf('%f',up2));
     else
         set(me.commandLimitsHandles2{c,1},'String','');
         set(me.commandLimitsHandles2{c,2},'String','');
@@ -236,6 +236,8 @@ me.nxtTgt.setST(me.st);
 
 me.fakeGcp = FakeOm(me.cfg);
 me.setRunButton(0);
+
+LbcbStep.setExtSensors(me.cfg);
 
 Logger.setMsgHandle(me.handles.Messages);
 me.setLoggerLevels();

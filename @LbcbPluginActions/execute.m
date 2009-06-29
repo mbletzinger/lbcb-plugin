@@ -37,7 +37,8 @@ switch a
         end
     case 'OM GET CONTROL POINTS'
         if me.fakeOm
-            me.nxtTgt.curStep = me.fakeGcp.generateControlPoints(me.nxtTgt.nextStep);
+            me.fakeGcp.generateControlPoints(me.nxtTgt.nextStep);
+            me.nxtTgt.curStep = me.nxtTgt.nextStep;
             me.currentAction.setState('NEXT TARGET');
         else
             done = me.gcpOm.isDone();

@@ -20,7 +20,7 @@ classdef CommandLimits < handle
             [me.faults2 me.commands2 ] = me.wL(step.lbcb{2}.command,...
                 me.limits.lower2,me.limits.upper2,me.limits.used2);
             end
-            yes = (sum(me.faults1) + sum(me.faults2)) == 0;
+            yes = sum(sum(me.faults1) + sum(me.faults2)) == 0;
         end
         function [faults commands] = wL(me,cmds,lower,upper,used)
             faults = zeros(12,2);

@@ -56,6 +56,8 @@ function LbcbPlugin_OpeningFcn(hObject, eventdata, handles, varargin) %#ok<*INUS
 handles.output = hObject;
 cfg = {};
 infile = {};
+handles.notimer = 0;
+
 if(nargin > 3)
     for index = 1:2:(nargin-3),
         if nargin-3==index, break, end
@@ -81,6 +83,8 @@ if isempty(infile) == 0
 end
 % Update handles structure
 guidata(hObject, handles);
+LbcbPluginActions.setGui(hObject);
+
 % h = handles
 
 % UIWAIT makes LbcbPlugin wait for user response (see UIRESUME)
