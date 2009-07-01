@@ -33,10 +33,11 @@ classdef MdlLbcb < handle
             });
     end
     methods
-        function me = MdlLbcb(omHost, omPort,timeout)
-            me.params.setRemoteHost(omHost);
-            me.params.setRemotePort(omPort);
-            me.params.setTimeout(timeout);
+        function me = MdlLbcb(cfg)
+            ncfg = NetworkConfigDao(cfg);
+            me.params.setRemoteHost(ncfg.omHost);
+            me.params.setRemotePort(sscanf(ncfg.omPort,'%d'));
+            me.params.setTcpTimeout(sscanf(ncfg.timeout,'%d'));
             me.simcorTcp = org.nees.uiuc.simcor.UiSimCorTcp('SEND_COMMAND',me.params);
             me.state.setState('READY');
         end
@@ -65,6 +66,7 @@ classdef MdlLbcb < handle
         % Start to open a connection to the operations manager
         function open(me)
             cf = me.simcorTcp.getConnectionFactory();
+            me.simcorTcp.setup();
             me.connection = cf.getConnection();
             me.action.setState('OPEN CONNECTION');
             me.state.setState('BUSY');
@@ -72,6 +74,8 @@ classdef MdlLbcb < handle
         
         % Start to close the connection to the operations manager
         function close(me)
+            cf = me.simcorTcp.getConnectionFactory();
+            cf.closeConnection(me.connection);
             me.action.setState('CLOSE CONNECTION');
             me.state.setState('BUSY');
         end
@@ -79,7 +83,7 @@ classdef MdlLbcb < handle
         % Create a compound command (command with multiple MDL addresses)
         % the mdl, cps, and content arguments have to be cell arrays.
         % The return is a Java object containing the message.
-        function jmsg = createCompoundCommand(cmd, mdl, cps, content)
+        function jmsg = createCompoundCommand(me,cmd, mdl, cps, content)
             tf = me.simcorTcp.getTransactionFactory();
             jmsg = tf.createCommand(cmd, mdl, cps, content);
         end
@@ -87,7 +91,7 @@ classdef MdlLbcb < handle
         % Create a simple command  all arguments are strings.  Any argument
         % that is not used should be passed in as an empty matrix [].
         % The return is a Java object containing the message.
-        function jmsg = createCommand(cmd, mdl, cps, content)
+        function jmsg = createCommand(me,cmd, mdl, cps, content)
             tf = me.simcorTcp.getTransactionFactory();
             jmsg = tf.createCommand(cmd, mdl, cps, content);
         end
@@ -96,18 +100,8 @@ classdef MdlLbcb < handle
         % consists of a command sent to the OM and the response returned by
         % the OM.
         function start(me,jmsg, simsteps)
-            tf = me.simcorTcp.getTransactionFactory();
-            id = TransactionIdentity;
-
-            if simsteps.step > 0
-                id.setStep(me.simsteps.step);
-            end
-            
-            if me.simsteps.subStep > 0
-                id.setSubStep(me.simsteps.subStep);
-            end
-            
-            id.createTransId();
+            tf = me.simcorTcp.getTransactionFactory();            
+            id = tf.createTransactionId(simsteps.step, simsteps.subStep);
             tf.setId(id);
             transaction = tf.createTransaction(jmsg);
             me.simcorTcp.startTransaction(transaction);
@@ -119,6 +113,11 @@ classdef MdlLbcb < handle
     methods (Access=private)
         %  Process open connection
         function openConnectionAction(me)
+            if isempty(me.connection)
+                cf = me.simcorTcp.getConnectionFactory();
+                me.connection = cf.getConnection();
+                return;
+            end
             s = InitStates();
             cs = StateEnum(s.connectionStates);
             cs.setState(me.connection.getConnectionState());
@@ -127,6 +126,7 @@ classdef MdlLbcb < handle
                 me.action.setState('NONE');
             end
             if cs.isState('IN_ERROR')
+                me.close();
                 me.state.setState('ERRORS EXIST');
                 me.action.setState('NONE');
                 me.log.error(dbstack(),me.connection.getFromRemoteMsg().getError().getMsg());
@@ -144,7 +144,7 @@ classdef MdlLbcb < handle
             end
             if ts.isState('RESPONSE_AVAILABLE')
                 me.state.setState('RESPONSE AVAILABLE');
-                transaction = simcor.pickupTransaction();
+                transaction = me.simcorTcp.pickupTransaction();
                 jresponse = transaction.getResponse();
                 me.response = ResponseMessage(jresponse);
             end
@@ -154,10 +154,17 @@ classdef MdlLbcb < handle
             end
         end
         function closeConnectionAction(me)
-            cf = me.simcorTcp.getConnectionFactory();
-            if cf.closeConnection()
+            s = InitStates();
+            cs = StateEnum(s.connectionStates);
+            cs.setState(me.connection.getConnectionState());
+            if cs.isState('READY')
                 me.state.setState('READY');
-                me.action.setState('NONE');                
+                me.action.setState('NONE');
+            end
+            if cs.isState('IN_ERROR')
+                me.state.setState('ERRORS EXIST');
+                me.action.setState('NONE');
+                me.log.error(dbstack(),me.connection.getFromRemoteMsg().getError().getMsg());
             end
         end
     end

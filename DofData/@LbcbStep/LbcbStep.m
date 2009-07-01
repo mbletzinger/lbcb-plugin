@@ -4,6 +4,7 @@ classdef LbcbStep < handle
         simstep = {}; % SimulationStep instance
         externalSensorsRaw = [];
         log = Logger;
+        jid = {};
     end
     methods
         function me = LbcbStep(varargin)
@@ -45,6 +46,7 @@ classdef LbcbStep < handle
         ml = getMdlLbcb()
         setMdlLbcb(ml)
         [n s a] = getExtSensors()
-        setExtSensors(cfg)
+        setConfig(cfg)
+        a = getAddress()
     end
 end
