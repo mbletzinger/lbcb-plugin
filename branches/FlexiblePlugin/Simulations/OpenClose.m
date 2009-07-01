@@ -24,6 +24,7 @@ classdef OpenClose < SimulationState
             me.connectionType.setState(connection);
         end
         function done = isDone(me)
+           c = me.connectionType.getState();
             switch c
                 case 'OperationManager'
                     ml = SimulationState.getMdlLbcb();

@@ -3,8 +3,8 @@ classdef ProposeExecuteOm < SimulationState
         action = StateEnum({ ...
             'DONE'...
             'PROPOSE', ...
-            'EXECUTE', ...
             });
+        id = {}
     end
     methods
         function start(me)
@@ -12,7 +12,8 @@ classdef ProposeExecuteOm < SimulationState
         end
         function done = isDone(me)
             done = 0;
-            if getMdlLbcb().isDone() == 0
+            ml = SimulationState.getMdlLbcb();
+            if ml.isDone() == 0
                 return;
             end
             a = me.action.getState();
@@ -21,8 +22,6 @@ classdef ProposeExecuteOm < SimulationState
                     done = 1;
                 case 'PROPOSE'
                     me.startExecute();
-                case 'EXECUTE'
-                    me.startGetControlPoint();
                 otherwise
                     str = sprintf('%s not recognized',a);
                     disp(str);
@@ -32,15 +31,20 @@ classdef ProposeExecuteOm < SimulationState
     methods (Access=private)
         function startPropose(me)
             jmsg = me.step.generateProposeMsg();
-            getMdlLbcb().start(jmsg,me.steps.simstep);
+            me.id = jmsg.getId();
+            ml = SimulationState.getMdlLbcb();
+            ml.start(jmsg,me.step.simstep);
             me.state.setState('BUSY');
             me.action.setState('PROPOSE');
         end
         function startExecute(me)
-            jmsg = getMdlLbcb().createCommand('execute',me.targets(1).node,[],[]);
-            getMdlLbcb().start(jmsg,me.steps.simstep);
+            ml = SimulationState.getMdlLbcb();
+            address = LbcbStep.getAddress();
+            jmsg = ml.createCommand('execute',address,[],[]);
+            jmsg.setId(me.id);
+            ml.start(jmsg,me.step.simstep);
             me.state.setState('BUSY');
-            me.action.setState('EXECUTE');
+            me.action.setState('DONE');
         end
     end
 end

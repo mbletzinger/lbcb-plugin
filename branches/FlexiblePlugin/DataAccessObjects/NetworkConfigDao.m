@@ -16,6 +16,7 @@ classdef NetworkConfigDao < handle
         triggerPort
         simcorPort
         timeout
+        address
     end
     properties
         cfg = Configuration();
@@ -53,6 +54,12 @@ classdef NetworkConfigDao < handle
         end
         function set.timeout(me,value)
               me.cfg.props.setProperty('network.timeout',value);
+        end
+        function result = get.address(me)
+              result = char(me.cfg.props.getProperty('network.address'));
+        end
+        function set.address(me,value)
+              me.cfg.props.setProperty('network.address',value);
         end
     end
 end

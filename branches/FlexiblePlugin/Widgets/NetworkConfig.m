@@ -1,3 +1,4 @@
+
 % =====================================================================================================================
 % Widget which allows the network config to be modified.
 %
@@ -28,7 +29,7 @@ function varargout = NetworkConfig(varargin)
 
 % Edit the above text to modify the response to help NetworkConfig
 
-% Last Modified by GUIDE v2.5 02-Jun-2009 16:51:46
+% Last Modified by GUIDE v2.5 01-Jul-2009 12:46:20
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -81,7 +82,7 @@ set(handles.OmPort,'String',handles.dao.omPort);
 set(handles.SimCorPort,'String',handles.dao.simcorPort);
 set(handles.TriggerPort,'String',handles.dao.triggerPort);
 set(handles.timeout,'String',handles.dao.timeout);
-
+set(handles.Address,'String',handles.dao.address);
 % Make the GUI modal
 set(handles.NetworkConfig,'WindowStyle','modal')
 
@@ -236,3 +237,26 @@ function OkButton_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 delete(handles.NetworkConfig);
+
+
+
+function Address_Callback(hObject, eventdata, handles)
+% hObject    handle to Address (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of Address as text
+%        str2double(get(hObject,'String')) returns contents of Address as a double
+handles.dao.address = get(hObject,'String');
+
+% --- Executes during object creation, after setting all properties.
+function Address_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to Address (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
