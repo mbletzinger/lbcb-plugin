@@ -30,8 +30,9 @@ classdef SetupLimitTest < handle
             ocfg.useFakeOm = 1;
             sensorNames = cell(15,1);
             apply2Lbcb = cell(15,1);
-            sensorNames(1:6,1) = {'Ext 1' 'Ext 2' 'Ext 3', 'Ext 4', 'Long Ext 5' 'Short Ext 6'}';
-            apply2Lbcb(1:6,1) = {'LBCB1' 'LBCB1' 'LBCB1' 'LBCB2' 'LBCB2' 'LBCB2'}';
+            sensorNames(1:6,1) = {'Ext.Long.LBCB2' 'Ext.Tranv.TopLBCB2' 'Ext.Tranv.Bot.LBCB2',...
+                'Ext.Long.LBCB1', 'Ext.Tranv.LeftLBCB1' 'Ext.Tranv.RightLBCB1'}';
+            apply2Lbcb(1:6,1) = {'LBCB2' 'LBCB2' 'LBCB2' 'LBCB1' 'LBCB1' 'LBCB1'}';
             ocfg.sensorNames = sensorNames;
             ocfg.apply2Lbcb = apply2Lbcb;
             ocfg.numLbcbs = '2';

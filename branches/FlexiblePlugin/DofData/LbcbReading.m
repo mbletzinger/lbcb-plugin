@@ -40,7 +40,8 @@ classdef LbcbReading < handle
          % Convert a message into an lbcb reading.
         function parse(me,msg,node)
             targets = me.m2d.parse(msg,node);
-            me.lbcb = targets{1}.data;
+            me.lbcb.disp = targets{1}.disp;
+            me.lbcb.force = targets{1}.force;
             me.ed.force = me.lbcb.force;
         end
     end

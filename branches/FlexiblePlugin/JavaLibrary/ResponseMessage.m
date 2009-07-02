@@ -43,8 +43,8 @@ classdef ResponseMessage < handle
                     addresses(a) = adrs.get(a);
                 end
             else
-                addresses = me.jresponse.getAddress().toString();
-                contents = me.jresponse.getContents();
+                addresses = me.jresponse.getAddress();
+                contents = me.jresponse.getContent();
             end
         end
     end

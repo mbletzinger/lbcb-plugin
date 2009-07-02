@@ -9,7 +9,6 @@
 % =====================================================================================================================
 classdef Msg2DofData < handle
     properties
-        delimiter = sprintf(' \t');
     end
     methods
         % Extracts the control point suffix from the control point address
@@ -21,7 +20,7 @@ classdef Msg2DofData < handle
             data = {Target()};
             data{1}.cps = me.parseCps(mdl);
             tgt =1;
-            tokens = me.splitTokens(msg);
+            tokens = regexp(char(msg),'\t','split');
             cellA = me.tokensSort(tokens);
             [nr dum]  = size(cellA);
             for r = 1:nr
@@ -71,15 +70,6 @@ classdef Msg2DofData < handle
                         end
                         row = row+1;
                 end
-            end
-        end
-        % Splits the message up into tokens using the delimiter
-        function tokens =  splitTokens(me,msg)
-            i = 0;
-            while isempty(msg) == 0
-                i = i+1;
-                [token, msg] = strtok(msg,me.delimiter);
-                tokens{i} = token;
             end
         end
         %  Calculates the index of a data entry in the token array

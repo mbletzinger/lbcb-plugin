@@ -1,17 +1,18 @@
 function parseControlPointMsg(me,rsp)
-[address contents] = rsp.getContent();
-switch char(address,getSuffix())
+[address contents] = rsp.getContents();
+mdl = LbcbStep.getAddress();
+switch char(address.getSuffix())
     case 'LBCB1'
         lbcbR = LbcbReading;
-        lbcbR.parse(contents,rsp,me.lbcb,command(1).node);
+        lbcbR.parse(contents,mdl);
         me.lbcb{1}.response = lbcbR;
     case 'LBCB2'
         lbcbR = LbcbReading;
-        lbcbR.parse(contents,rsp,me.lbcb.command(1).node);
+        lbcbR.parse(contents,mdl);
         me.lbcb{2}.response = lbcbR;
     case 'ExternalSensors'
         [n se a ] = LbcbStep.getExtSensors();
-        readings = ParseExternalTransducersMsg(n,contents);
+        readings = me.parseExternalSensorsMsg(n,contents);
         me.distributeExtSensorData(readings);
 end
 end
