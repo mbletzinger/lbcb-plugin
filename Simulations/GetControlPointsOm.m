@@ -12,19 +12,20 @@ classdef GetControlPointsOm < SimulationState
         function start(me)
             me.cpsMsg.setState('LBCB1');
             ml = SimulationState.getMdlLbcb();
-                        address = LbcbStep.getAddress();
+            address = LbcbStep.getAddress();
             jmsg = ml.createCommand('get-control-point',address,me.cpsMsg.getState(),[]);
-            ml.start(jmsg);
+            ml.start(jmsg,me.step.simstep,0);
             me.state.setState('BUSY');
         end
         function done = isDone(me)
             c = me.cpsMsg.getState();
             done = 0;
             ml = SimulationState.getMdlLbcb();
+            address = LbcbStep.getAddress();
             if ml.isDone() == 0
                 return;
             end
-            lgth = length(me.step.lbcb.command);
+            lgth = length(me.step.lbcb);
             switch c
                 case 'LBCB1'
                     if lgth == 2
@@ -34,19 +35,19 @@ classdef GetControlPointsOm < SimulationState
                     end
                     me.step.parseControlPointMsg(ml.response)
                     jmsg = ml.createCommand('get-control-point',address,me.cpsMsg.getState(),[]);
-                    ml.start(jmsg);
+                    ml.start(jmsg,me.step.simstep,0);
                     me.state.setState('BUSY');
                 case 'LBCB2'
                     me.step.parseControlPointMsg(ml.response)
                     me.cpsMsg.setState('ExternalSensors');
                     jmsg = ml.createCommand('get-control-point',address,me.cpsMsg.getState(),[]);
-                    ml.start(jmsg);
+                    ml.start(jmsg,me.step.simstep,0);
                     me.state.setState('BUSY');
                 case 'ExternalSensors'
                     me.step.parseControlPointMsg(ml.response)
                     me.cpsMsg.setState('DONE');
                     me.state.setState('READY');
-                case 'NONE'
+                case 'DONE'
                     done = 1;
             end
         end

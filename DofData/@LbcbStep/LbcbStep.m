@@ -40,6 +40,7 @@ classdef LbcbStep < handle
         end
         jmsg = generateProposeMsg(me)
         parseControlPointMsg(me,rsp)
+        values = parseExternalSensorsMsg(me,names,msg)
         distributeExtSensorData(me,readings)
     end
     methods (Static)

@@ -22,7 +22,6 @@ classdef MdlLbcb < handle
         state = StateEnum({ ...
             'BUSY', ...
             'READY', ...
-            'RESPONSE AVAILABLE'...
             'ERRORS EXIST' ...
             });
         action = StateEnum({ ... 
@@ -85,7 +84,7 @@ classdef MdlLbcb < handle
         % The return is a Java object containing the message.
         function jmsg = createCompoundCommand(me,cmd, mdl, cps, content)
             tf = me.simcorTcp.getTransactionFactory();
-            jmsg = tf.createCommand(cmd, mdl, cps, content);
+            jmsg = tf.createCompoundCommand(cmd, mdl, cps, content);
         end
         
         % Create a simple command  all arguments are strings.  Any argument
@@ -99,10 +98,12 @@ classdef MdlLbcb < handle
         % Start a transaction with the operations manager.  A transaction
         % consists of a command sent to the OM and the response returned by
         % the OM.
-        function start(me,jmsg, simsteps)
-            tf = me.simcorTcp.getTransactionFactory();            
-            id = tf.createTransactionId(simsteps.step, simsteps.subStep);
-            tf.setId(id);
+        function start(me,jmsg, simsteps,createId)
+            tf = me.simcorTcp.getTransactionFactory();
+            if createId
+                id = tf.createTransactionId(simsteps.step, simsteps.subStep);
+                tf.setId(id);
+            end
             transaction = tf.createTransaction(jmsg);
             me.simcorTcp.startTransaction(transaction);
             me.action.setState('EXECUTING TRANSACTION');
@@ -143,7 +144,7 @@ classdef MdlLbcb < handle
                 me.log.error(dbstack(),me.connection.getFromRemoteMsg().getError().getMsg());
             end
             if ts.isState('RESPONSE_AVAILABLE')
-                me.state.setState('RESPONSE AVAILABLE');
+                me.state.setState('READY');
                 transaction = me.simcorTcp.pickupTransaction();
                 jresponse = transaction.getResponse();
                 me.response = ResponseMessage(jresponse);
