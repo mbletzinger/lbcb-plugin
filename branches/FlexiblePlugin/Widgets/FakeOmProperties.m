@@ -22,7 +22,7 @@ function varargout = FakeOmProperties(varargin)
 
 % Edit the above text to modify the response to help FakeOmProperties
 
-% Last Modified by GUIDE v2.5 24-Jun-2009 15:23:57
+% Last Modified by GUIDE v2.5 06-Jul-2009 13:04:06
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -2822,6 +2822,52 @@ function ExtA15_CreateFcn(hObject, eventdata, handles)
 % handles    empty - handles not created until after all CreateFcns called
 
 % Hint: popupmenu controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function ConvergenceSteps_Callback(hObject, eventdata, handles)
+% hObject    handle to ConvergenceSteps (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of ConvergenceSteps as text
+%        str2double(get(hObject,'String')) returns contents of ConvergenceSteps as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function ConvergenceSteps_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to ConvergenceSteps (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function ConvergenceIncrement_Callback(hObject, eventdata, handles)
+% hObject    handle to ConvergenceIncrement (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of ConvergenceIncrement as text
+%        str2double(get(hObject,'String')) returns contents of ConvergenceIncrement as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function ConvergenceIncrement_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to ConvergenceIncrement (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
 %       See ISPC and COMPUTER.
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
