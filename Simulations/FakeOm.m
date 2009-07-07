@@ -12,6 +12,7 @@ classdef FakeOm < handle
         function generateControlPoints(me,istep)
             lgt = length(istep.lbcb); %#ok<*MCNPN> Until LINT understands object properties
             fcfg = FakeOmDao(me.cfg);
+            error = me.calcConvergence(istep);
             for l = 1: lgt
                 cp = istep.lbcb{l};
                 cp.response = LbcbReading;
@@ -27,8 +28,8 @@ classdef FakeOm < handle
                 for d = 1:6
                     ddof = me.getDof(cp.command,drv(d));
                     fddof = me.getDof(cp.command,drv(d+ 6));
-                    cp.response.lbcb.disp(d) = ddof * scl(d) + ofst(d);
-                    cp.response.lbcb.force(d) = fddof * scl(d + 6) + ofst(d + 6);
+                    cp.response.lbcb.disp(d) = ddof * scl(d) + ofst(d) - error;
+                    cp.response.lbcb.force(d) = fddof * scl(d + 6) + ofst(d + 6) - error;
                 end
                 ocfg = OmConfigDao(me.cfg);
                 names = ocfg.sensorNames;
@@ -38,7 +39,7 @@ classdef FakeOm < handle
                         break;
                     end
                     ddof = me.getDof(cp.command,drv(e));
-                    readings(e) = ddof * scl(e) + ofst(e);
+                    readings(e) = ddof * scl(e) + ofst(e) - error;
                 end
                 istep.distributeExtSensorData(readings);
             end
@@ -51,6 +52,17 @@ classdef FakeOm < handle
             else
                 dof = cmd.disp(idx);
             end
+        end
+        function error = calcConvergence(me,istep)
+            fcfg = FakeOmDao(me.cfg);
+            cstp = fcfg.convergeSteps;
+            cinc = fcfg.convergeInc;
+            stp = istep.simstep.subStep;
+            if cstp == stp
+                error = 0;
+                return;
+            end
+            error = (cstp - stp) * cinc;
         end
     end
 end

@@ -29,26 +29,26 @@ classdef WindowLimitsDao < handle
         function result = get.window1(me)
             resultSL = me.cfg.props.getPropertyList(sprintf('%s.window1',me.label));
             if isempty(resultSL)
-                result = [];
+                result = zeros(12,1);
                 return;
             end
             result = me.su.sl2da(resultSL);
         end
         function set.window1(me,value)
-            valS = me.su.ca2sl(value);
+            valS = me.su.da2sl(value);
             me.cfg.props.setPropertyList(sprintf('%s.window1',me.label),valS);
         end
         function result = get.window2(me)
             resultSL = me.cfg.props.getPropertyList(sprintf('%s.window2',me.label));
             if isempty(resultSL)
-                result = [];
+                result = zeros(12,1);
                 return;
             end
             result = me.su.sl2da(resultSL);
         end
         function set.window2(me,value)
-            valS = me.su.ca2sl(value);
-            me.cfg.props.setPropertyList(sprintf('%s.lower1',me.label),valS);
+            valS = me.su.da2sl(value);
+            me.cfg.props.setPropertyList(sprintf('%s.window2',me.label),valS);
         end
         
         function result = get.used1(me)

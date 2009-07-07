@@ -1,7 +1,10 @@
 JavaTest
 s = SetupLimitTest;
-s.setDirection(0);
+s.setTest('INCREMENT');
 LbcbPlugin('cfg',s.cfg,'infile',s.infile,'notimer',0);
 s = SetupLimitTest;
-s.setDirection(1);
+s.setTest('UPPER');
+LbcbPlugin('cfg',s.cfg,'infile',s.infile,'notimer',0);
+s = SetupLimitTest;
+s.setTest('LOWER');
 LbcbPlugin('cfg',s.cfg,'infile',s.infile,'notimer',0);

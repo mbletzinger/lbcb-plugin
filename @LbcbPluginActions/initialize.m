@@ -196,6 +196,23 @@ me.incrementLimitsHandles2{10} = me.handles.MxI2;
 me.incrementLimitsHandles2{11} = me.handles.MyI2;
 me.incrementLimitsHandles2{12} = me.handles.MzI2;
 
+for c = 1:12
+    w1 = me.il.limits.window1(c);
+    us1 = me.il.limits.used1(c);
+    if us1
+        set(me.incrementLimitsHandles1{c},'String',sprintf('%f',w1));
+    else
+        set(me.incrementLimitsHandles1{c},'String','');
+    end
+    w2 = me.il.limits.window2(c);
+    us2 = me.il.limits.used2(c);
+    if us2
+        set(me.incrementLimitsHandles2{c},'String',sprintf('%f',w2));
+    else
+        set(me.incrementLimitsHandles2{c},'String','');
+    end
+end
+
 me.incrementCurrentValueHandles1 = cell(12,1);
 me.incrementCurrentValueHandles1{1} = me.handles.DxICV1;
 me.incrementCurrentValueHandles1{2} = me.handles.DyICV1;
@@ -237,7 +254,7 @@ me.nxtTgt.setST(me.st);
 me.fakeGcp = FakeOm(me.cfg);
 me.setRunButton(0);
 
-LbcbStep.setExtSensors(me.cfg);
+LbcbStep.setConfig(me.cfg);
 
 Logger.setMsgHandle(me.handles.Messages);
 me.setLoggerLevels();

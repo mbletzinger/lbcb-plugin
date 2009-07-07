@@ -26,14 +26,11 @@ classdef  InputFile < handle
         function step = next(me)
             if me.sIdx > length(me.steps)
                 step = [];
+                me.endOfFile = 1;
                 return;
             end
-            if me.sIdx > length(me.steps)
-                me.endOfFile = 1;
-            else
-                step = me.steps{me.sIdx};
-                me.sIdx = me.sIdx + 1;
-            end
+            step = me.steps{me.sIdx};
+            me.sIdx = me.sIdx + 1;
         end
         function readSpecfile(me,path)
             me.commandDofs = zeros(1,24);

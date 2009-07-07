@@ -1,29 +1,51 @@
 classdef SetupLimitTest < handle
     properties
-        cfg = {}
-        infile = {}
-        maxV = 5.0
-        minV = -2.0
+        cfg = {};
+        infile = {};
+        maxV = 5.0;
+        minV = -2.0;
+        maxW = 0.5;
         tgts = [];
         cDofs = [];
         log = Logger;
+        test = StateEnum({...
+            'UPPER',...
+            'LOWER',...
+            'INCREMENT',...
+            'STEP',...
+            });
     end
     methods
         function me = SetupLimitTest()
             me.cfg = Configuration;
             me.infile = InputFile;
             Logger.setCmdLevel('DEBUG');
-
+            
         end
-        function setDirection(me,isUpper)
+        function setTest(me,test)
+            switch test
+                case 'UPPER'
+                    me.genInputFile(1,0);
+                    me.genFakeParameters(1,0);
+                case 'LOWER'
+                    me.genInputFile(0,0);
+                    me.genFakeParameters(1,0);
+                case 'INCREMENT'
+                    me.genInputFile(1,1);
+                    me.genFakeParameters(1,0);
+                case 'STEP'
+                    me.genInputFile(1,0);
+                    me.genFakeParameters(1,1);
+                otherwise
+                    me.log.error(dbstack, sprintf('%s not recognized',test));
+            end
+            me.clearAll();
             for idx = 1:4
                 d = 3*(idx - 1) + 1;
                 for i = d: d+ 2
-                    me.setLimits(i);
+                    me.setLimits(i,test);
                 end
             end
-            me.genFakeParameters(1);
-            me.genInputFile(isUpper);
             lcfg = LogLevelsDao(me.cfg);
             lcfg.cmdLevel = 'DEBUG';
             ocfg = OmConfigDao(me.cfg);
@@ -52,11 +74,12 @@ classdef SetupLimitTest < handle
             end
             m = 12;
         end
-        function genFakeParameters(me,idx)
+        function genFakeParameters(me,idx,needsConverge)
             fcfg = FakeOmDao(me.cfg);
             derived = StateEnum(fcfg.derivedOptions);
             derived.idx = idx;
             m = me.getMultiplier(idx);
+            % regular dofs
             for d = 1:12
                 s = me.getMultiplier(d);
                 fcfg.derived1{d} = derived.getState();
@@ -64,18 +87,27 @@ classdef SetupLimitTest < handle
                 fcfg.scale1(d) = s / m;
                 fcfg.scale2(d) = s / m;
             end
+            % external sensors
             for d = 1:6
                 s = me.getMultiplier(1);
                 fcfg.eDerived{d} = derived.getState();
                 fcfg.eScale(d) = s / m;
             end
+            if needsConverge
+                fcfg.convergeSteps = 5;
+                fcfg.convergeInc = me.maxW / 5;
+            end
         end
-        function genInputFile(me,isUpper)
-            numSteps = 5;
+        function genInputFile(me,isUpper,needsIncrement)
+            numSteps = 10;
             me.tgts = zeros(numSteps,24);
             me.cDofs = zeros(1,24);
             for idx = 1:4
-                me.genInputDof(idx,isUpper,numSteps);
+                if needsIncrement
+                    me.genIncInputDof(idx,numSteps);
+                else
+                    me.genInputDof(idx,isUpper,numSteps);
+                end
             end
             me.infile.commandDofs = me.cDofs;
             me.infile.loadSteps(me.tgts);
@@ -87,13 +119,13 @@ classdef SetupLimitTest < handle
             max = me.maxV *m;
             itv = (max - min) / numSteps;
             if isUpper
-                start = min + itv;
+                start = min +  2 * itv;
                 inc = itv;
             else
-                start = max - itv;
+                start = max - 2 * itv;
                 inc = -itv;
             end
-            me.log.debug(dbstack,sprintf('d=%d start=%f inc=%f',d,start,inc)); 
+            me.log.debug(dbstack,sprintf('d=%d start=%f inc=%f',d,start,inc));
             for i = d: d + 2
                 me.cDofs(1,i) = 1;
                 me.cDofs(1,i+12) = 1;
@@ -103,15 +135,53 @@ classdef SetupLimitTest < handle
                 end
             end
         end
-        function setLimits(me,d)
+        function genIncInputDof(me, idx,numSteps)
+            d = 3*(idx - 1) + 1;
+            m = me.getMultiplier(d);
+            min = me.minV *m;
+            itv = me.maxW * m / (numSteps - 2);
+            start = min + itv;
+            me.log.debug(dbstack,sprintf('d=%d start=%f itv=%f',d,start,itv));
+            for i = d: d + 2
+                me.cDofs(1,i) = 1;
+                me.cDofs(1,i+12) = 1;
+                dsp = start;
+                frc = start;
+                for s = 1:numSteps
+                    me.tgts(s,i) = dsp;
+                    me.tgts(s,i+12) = frc;
+                    dsp = dsp + s*itv;
+                    frc = frc + s*itv;
+                end
+            end
+        end
+        function setLimits(me,d,test)
             lcfg = LimitsDao('command.limits',me.cfg);
             m = me.getMultiplier(d);
-            lcfg.upper1(d) = me.maxV * m;
-            lcfg.lower1(d) = me.minV * m;
-            lcfg.used1(d) = 1;
-            lcfg.upper2(d) = me.maxV * m;
-            lcfg.lower2(d) = me.minV * m;
-            lcfg.used2(d) = 1;
+            
+            icfg = WindowLimitsDao('increment.limits',me.cfg);
+            scfg = WindowLimitsDao('command.tolerances',me.cfg);            
+            switch test
+                case {'UPPER' 'LOWER'}
+                    lcfg.upper1(d) = me.maxV * m;
+                    lcfg.lower1(d) = me.minV * m;
+                    lcfg.used1(d) = 1;
+                    lcfg.upper2(d) = me.maxV * m;
+                    lcfg.lower2(d) = me.minV * m;
+                    lcfg.used2(d) = 1;
+                case 'INCREMENT'
+                    icfg.window1(d) = me.maxW * m;
+                    icfg.used1(d) = 1;
+                    icfg.window2(d) = me.maxW * m;
+                    icfg.used2(d) = 1;
+                case 'STEP'
+                    scfg.window1(d) = me.maxW * m;
+                    scfg.used1(d) = 1;
+                    scfg.window2(d) = me.maxW * m;
+                    scfg.used2(d) = 1;
+                otherwise
+                    me.log.error(dbstack, sprintf('%s not recognized',test));
+            end
         end
         function clearAll(me)
             lcfg = LimitsDao('command.limits',me.cfg);
@@ -121,6 +191,16 @@ classdef SetupLimitTest < handle
             lcfg.lower2 = zeros(12,1);
             lcfg.upper2 = zeros(12,1);
             lcfg.used2 = zeros(12,1);
+            icfg = WindowLimitsDao('increment.limits',me.cfg);
+            icfg.window1 = zeros(12,1);
+            icfg.used1 = zeros(12,1);
+            icfg.window2 = zeros(12,1);
+            icfg.used2 = zeros(12,1);
+            scfg = WindowLimitsDao('command.tolerances',me.cfg);
+            scfg.window1 = zeros(12,1);
+            scfg.used1 = zeros(12,1);
+            scfg.window2 = zeros(12,1);
+            scfg.used2 = zeros(12,1);
         end
     end
 end

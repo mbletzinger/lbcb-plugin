@@ -20,6 +20,8 @@ classdef FakeOmDao < handle
         eScale
         eOffset
         eDerived
+        convergeSteps
+        convergeInc
     end
     properties
         cfg = Configuration();
@@ -149,6 +151,28 @@ classdef FakeOmDao < handle
             valS = me.su.da2sl(value);
               me.cfg.props.setPropertyList('fake.om.eOffset',valS);
         end
-        
+         function result = get.convergeSteps(me)
+              resultS = char(me.cfg.props.getProperty('fake.om.converge.steps'));
+              if isempty(resultS)
+                  result = 0;
+                  return;
+              end
+              result = sscanf(resultS,'%d');
+        end
+        function set.convergeSteps(me,value)
+              me.cfg.props.setProperty('fake.om.converge.steps',sprintf('%d',value));
+        end
+        function result = get.convergeInc(me)
+              resultS = char(me.cfg.props.getProperty('fake.om.converge.increment'));
+              if isempty(resultS)
+                  result = 0.0;
+                  return;
+              end
+              result = sscanf(resultS,'%f');
+        end
+        function set.convergeInc(me,value)
+              me.cfg.props.setProperty('fake.om.converge.increment',sprintf('%f',value));
+        end
+       
     end
 end

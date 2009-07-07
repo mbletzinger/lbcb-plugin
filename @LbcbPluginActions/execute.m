@@ -15,7 +15,7 @@ switch a
         done = me.nxtTgt.isDone();
         if done % Next target is ready
             if me.nxtTgt.simCompleted  %  No more targets
-                me.setRunHoldButton(0); % Pause the simulation
+                me.setRunButton(0); % Pause the simulation
                 me.currentAction.setState('READY');
             else % Execute next step
                 if me.fakeOm == 0
@@ -48,10 +48,9 @@ switch a
             end
         end
     case 'CHECK LIMITS'
-        me
-        me.nxtTgt
+%        me.nxtTgt
         done = me.nxtTgt.withinLimits()
-        me.updateCommandLimits()
+        me.updateCommandLimits();
         if done
                 me.currentAction.setState('OM PROPOSE EXECUTE')
         else
