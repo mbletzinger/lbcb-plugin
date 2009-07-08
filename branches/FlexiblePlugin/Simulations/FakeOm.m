@@ -2,6 +2,7 @@ classdef FakeOm < handle
     properties
         cfg = {};
         drvO = {};
+        log = Logger;
     end
     methods
         function me = FakeOm(cfg)
@@ -58,11 +59,12 @@ classdef FakeOm < handle
             cstp = fcfg.convergeSteps;
             cinc = fcfg.convergeInc;
             stp = istep.simstep.subStep;
-            if cstp == stp
+            if stp >= cstp
                 error = 0;
                 return;
             end
             error = (cstp - stp) * cinc;
+            me.log.debug(dbstack,sprintf('cstp=%d/cinc=%f/stp=%d/error=%f',cstp,cinc,stp,error));
         end
     end
 end

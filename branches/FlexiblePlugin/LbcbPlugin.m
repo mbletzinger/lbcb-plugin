@@ -22,7 +22,7 @@ function varargout = LbcbPlugin(varargin)
 
 % Edit the above text to modify the response to help LbcbPlugin
 
-% Last Modified by GUIDE v2.5 08-Jul-2009 12:35:08
+% Last Modified by GUIDE v2.5 08-Jul-2009 16:09:49
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -665,110 +665,46 @@ function RyT2_Callback(hObject, eventdata, handles)
 handles.actions.setStepTolerance(5,2,get(hObject,'String'));
 
 function RzT2_Callback(hObject, eventdata, handles)
-% hObject    handle to RzT2 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of RzT2 as text
-%        str2double(get(hObject,'String')) returns contents of RzT2 as a double
 handles.actions.setStepTolerance(6,2,get(hObject,'String'));
 
 function FxT1_Callback(hObject, eventdata, handles)
-% hObject    handle to FxT1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of FxT1 as text
-%        str2double(get(hObject,'String')) returns contents of FxT1 as a double
-
+handles.actions.setStepTolerance(7,1,get(hObject,'String'));
 
 function FyT1_Callback(hObject, eventdata, handles)
-% hObject    handle to FyT1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of FyT1 as text
-%        str2double(get(hObject,'String')) returns contents of FyT1 as a double
+handles.actions.setStepTolerance(8,1,get(hObject,'String'));
 
 function FzT1_Callback(hObject, eventdata, handles)
-% hObject    handle to FzT1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of FzT1 as text
-%        str2double(get(hObject,'String')) returns contents of FzT1 as a double
+handles.actions.setStepTolerance(9,1,get(hObject,'String'));
 
 function MxT1_Callback(hObject, eventdata, handles)
-% hObject    handle to MxT1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
+handles.actions.setStepTolerance(10,1,get(hObject,'String'));
 
-% Hints: get(hObject,'String') returns contents of MxT1 as text
-%        str2double(get(hObject,'String')) returns contents of MxT1 as a double
 
 function MyT1_Callback(hObject, eventdata, handles)
-% hObject    handle to MyT1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
+handles.actions.setStepTolerance(11,1,get(hObject,'String'));
 
-% Hints: get(hObject,'String') returns contents of MyT1 as text
-%        str2double(get(hObject,'String')) returns contents of MyT1 as a double
 
 function MzT1_Callback(hObject, eventdata, handles)
-% hObject    handle to MzT1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
+handles.actions.setStepTolerance(12,1,get(hObject,'String'));
 
-% Hints: get(hObject,'String') returns contents of MzT1 as text
-%        str2double(get(hObject,'String')) returns contents of MzT1 as a double
 
 function FxT2_Callback(hObject, eventdata, handles)
-% hObject    handle to FxT2 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of FxT2 as text
-%        str2double(get(hObject,'String')) returns contents of FxT2 as a double
+handles.actions.setStepTolerance(7,2,get(hObject,'String'));
 
 function FyT2_Callback(hObject, eventdata, handles)
-% hObject    handle to FyT2 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of FyT2 as text
-%        str2double(get(hObject,'String')) returns contents of FyT2 as a double
+handles.actions.setStepTolerance(8,2,get(hObject,'String'));
 
 function FzT2_Callback(hObject, eventdata, handles)
-% hObject    handle to FzT2 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of FzT2 as text
-%        str2double(get(hObject,'String')) returns contents of FzT2 as a double
+handles.actions.setStepTolerance(9,2,get(hObject,'String'));
 
 function MxT2_Callback(hObject, eventdata, handles)
-% hObject    handle to MxT2 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of MxT2 as text
-%        str2double(get(hObject,'String')) returns contents of MxT2 as a double
+handles.actions.setStepTolerance(10,2,get(hObject,'String'));
 
 function MyT2_Callback(hObject, eventdata, handles)
-% hObject    handle to MyT2 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of MyT2 as text
-%        str2double(get(hObject,'String')) returns contents of MyT2 as a double
+handles.actions.setStepTolerance(11,2,get(hObject,'String'));
 
 function MzT2_Callback(hObject, eventdata, handles)
-% hObject    handle to MzT2 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of MzT2 as text
-%        str2double(get(hObject,'String')) returns contents of MzT2 as a double
+handles.actions.setStepTolerance(12,2,get(hObject,'String'));
 
 function DxI1_Callback(hObject, eventdata, handles)
 % hObject    handle to DxI1 (see GCBO)
@@ -1066,3 +1002,10 @@ function LoggingLevels_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 LoggerLevels('cfg',handles.actions.cfg);
 handles.actions.setLoggerLevels();
+
+
+% --- Executes on button press in StartSimCor.
+function StartSimCor_Callback(hObject, eventdata, handles)
+% hObject    handle to StartSimCor (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)

@@ -15,6 +15,7 @@ classdef LbcbPluginActions < handle
         toleranceCurrentValueHandles2 = {};
         incrementCurrentValueHandles1 = {};
         incrementCurrentValueHandles2 = {};
+        stepHandles = cell(2,1);
         
         cl = [];
         st = [];
@@ -67,6 +68,7 @@ classdef LbcbPluginActions < handle
         initialize(me)
         updateCommandLimits(me)
         updateStepTolerances(me)
+        updateSteps(me)
         shutdown(me)
         setRunButton(me,hndl,value)
         setCommandLimit(me,dof,lbcb,isLower,str);

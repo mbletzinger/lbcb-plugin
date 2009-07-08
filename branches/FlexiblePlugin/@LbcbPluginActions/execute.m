@@ -21,6 +21,7 @@ switch a
                 if me.fakeOm == 0
                     me.peOm.step = me.nxtTgt.nextStep;
                 end
+                me.updateSteps();
                 me.currentAction.setState('CHECK LIMITS');
             end
         end
@@ -49,8 +50,9 @@ switch a
         end
     case 'CHECK LIMITS'
 %        me.nxtTgt
-        done = me.nxtTgt.withinLimits()
+        done = me.nxtTgt.withinLimits();
         me.updateCommandLimits();
+        me.updateStepTolerances();
         if done
                 me.currentAction.setState('OM PROPOSE EXECUTE')
         else
