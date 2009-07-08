@@ -1868,6 +1868,7 @@ function DxT1_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of DxT1 as text
 %        str2double(get(hObject,'String')) returns contents of DxT1 as a double
+handles.actions.setStepTolerance(1,1,get(hObject,'String'));
 
 
 % --- Executes during object creation, after setting all properties.
@@ -1914,6 +1915,7 @@ function DyT1_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of DyT1 as text
 %        str2double(get(hObject,'String')) returns contents of DyT1 as a double
+handles.actions.setStepTolerance(2,1,get(hObject,'String'));
 
 
 % --- Executes during object creation, after setting all properties.
@@ -1960,6 +1962,7 @@ function DzT1_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of DzT1 as text
 %        str2double(get(hObject,'String')) returns contents of DzT1 as a double
+handles.actions.setStepTolerance(3,1,get(hObject,'String'));
 
 
 % --- Executes during object creation, after setting all properties.
@@ -2006,6 +2009,7 @@ function RxT1_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of RxT1 as text
 %        str2double(get(hObject,'String')) returns contents of RxT1 as a double
+handles.actions.setStepTolerance(4,1,get(hObject,'String'));
 
 
 % --- Executes during object creation, after setting all properties.
@@ -2052,6 +2056,7 @@ function RyT1_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of RyT1 as text
 %        str2double(get(hObject,'String')) returns contents of RyT1 as a double
+handles.actions.setStepTolerance(5,1,get(hObject,'String'));
 
 
 % --- Executes during object creation, after setting all properties.
@@ -2098,6 +2103,7 @@ function RzT1_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of RzT1 as text
 %        str2double(get(hObject,'String')) returns contents of RzT1 as a double
+handles.actions.setStepTolerance(6,1,get(hObject,'String'));
 
 
 % --- Executes during object creation, after setting all properties.
@@ -2144,6 +2150,7 @@ function DxT2_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of DxT2 as text
 %        str2double(get(hObject,'String')) returns contents of DxT2 as a double
+handles.actions.setStepTolerance(1,2,get(hObject,'String'));
 
 
 % --- Executes during object creation, after setting all properties.
@@ -2190,6 +2197,7 @@ function DyT2_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of DyT2 as text
 %        str2double(get(hObject,'String')) returns contents of DyT2 as a double
+handles.actions.setStepTolerance(2,2,get(hObject,'String'));
 
 
 % --- Executes during object creation, after setting all properties.
@@ -2236,6 +2244,7 @@ function DzT2_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of DzT2 as text
 %        str2double(get(hObject,'String')) returns contents of DzT2 as a double
+handles.actions.setStepTolerance(3,2,get(hObject,'String'));
 
 
 % --- Executes during object creation, after setting all properties.
@@ -2282,6 +2291,7 @@ function RxT2_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of RxT2 as text
 %        str2double(get(hObject,'String')) returns contents of RxT2 as a double
+handles.actions.setStepTolerance(4,2,get(hObject,'String'));
 
 
 % --- Executes during object creation, after setting all properties.
@@ -2328,6 +2338,7 @@ function RyT2_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of RyT2 as text
 %        str2double(get(hObject,'String')) returns contents of RyT2 as a double
+handles.actions.setStepTolerance(5,2,get(hObject,'String'));
 
 
 % --- Executes during object creation, after setting all properties.
@@ -2374,6 +2385,7 @@ function RzT2_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of RzT2 as text
 %        str2double(get(hObject,'String')) returns contents of RzT2 as a double
+handles.actions.setStepTolerance(6,2,get(hObject,'String'));
 
 
 % --- Executes during object creation, after setting all properties.
@@ -2972,7 +2984,7 @@ function DxI1_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of DxI1 as text
 %        str2double(get(hObject,'String')) returns contents of DxI1 as a double
-
+handles.actions.setIncrementLimit(1,1,get(hObject,'String'));
 
 % --- Executes during object creation, after setting all properties.
 function DxI1_CreateFcn(hObject, eventdata, handles)
@@ -3018,6 +3030,7 @@ function DyI1_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of DyI1 as text
 %        str2double(get(hObject,'String')) returns contents of DyI1 as a double
+handles.actions.setIncrementLimit(2,1,get(hObject,'String'));
 
 
 % --- Executes during object creation, after setting all properties.
@@ -3064,6 +3077,7 @@ function DzI1_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of DzI1 as text
 %        str2double(get(hObject,'String')) returns contents of DzI1 as a double
+handles.actions.setIncrementLimit(3,1,get(hObject,'String'));
 
 
 % --- Executes during object creation, after setting all properties.
@@ -3110,6 +3124,7 @@ function RxI1_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of RxI1 as text
 %        str2double(get(hObject,'String')) returns contents of RxI1 as a double
+handles.actions.setIncrementLimit(4,1,get(hObject,'String'));
 
 
 % --- Executes during object creation, after setting all properties.
@@ -3156,6 +3171,7 @@ function RyI1_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of RyI1 as text
 %        str2double(get(hObject,'String')) returns contents of RyI1 as a double
+handles.actions.setIncrementLimit(5,1,get(hObject,'String'));
 
 
 % --- Executes during object creation, after setting all properties.
@@ -3202,6 +3218,7 @@ function RzI1_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of RzI1 as text
 %        str2double(get(hObject,'String')) returns contents of RzI1 as a double
+handles.actions.setIncrementLimit(6,1,get(hObject,'String'));
 
 
 % --- Executes during object creation, after setting all properties.
@@ -3248,6 +3265,7 @@ function DxI2_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of DxI2 as text
 %        str2double(get(hObject,'String')) returns contents of DxI2 as a double
+handles.actions.setIncrementLimit(1,2,get(hObject,'String'));
 
 
 % --- Executes during object creation, after setting all properties.
@@ -3294,6 +3312,7 @@ function DyI2_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of DyI2 as text
 %        str2double(get(hObject,'String')) returns contents of DyI2 as a double
+handles.actions.setIncrementLimit(2,2,get(hObject,'String'));
 
 
 % --- Executes during object creation, after setting all properties.
@@ -3340,6 +3359,7 @@ function DzI2_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of DzI2 as text
 %        str2double(get(hObject,'String')) returns contents of DzI2 as a double
+handles.actions.setIncrementLimit(3,2,get(hObject,'String'));
 
 
 % --- Executes during object creation, after setting all properties.
@@ -3386,6 +3406,7 @@ function RxI2_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of RxI2 as text
 %        str2double(get(hObject,'String')) returns contents of RxI2 as a double
+handles.actions.setIncrementLimit(4,2,get(hObject,'String'));
 
 
 % --- Executes during object creation, after setting all properties.
@@ -3432,6 +3453,7 @@ function RyI2_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of RyI2 as text
 %        str2double(get(hObject,'String')) returns contents of RyI2 as a double
+handles.actions.setIncrementLimit(5,2,get(hObject,'String'));
 
 
 % --- Executes during object creation, after setting all properties.
@@ -3478,6 +3500,7 @@ function RzI2_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of RzI2 as text
 %        str2double(get(hObject,'String')) returns contents of RzI2 as a double
+handles.actions.setIncrementLimit(6,2,get(hObject,'String'));
 
 
 % --- Executes during object creation, after setting all properties.
@@ -3524,6 +3547,7 @@ function FxI1_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of FxI1 as text
 %        str2double(get(hObject,'String')) returns contents of FxI1 as a double
+handles.actions.setIncrementLimit(7,1,get(hObject,'String'));
 
 
 % --- Executes during object creation, after setting all properties.
@@ -3570,6 +3594,7 @@ function FyI1_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of FyI1 as text
 %        str2double(get(hObject,'String')) returns contents of FyI1 as a double
+handles.actions.setIncrementLimit(8,1,get(hObject,'String'));
 
 
 % --- Executes during object creation, after setting all properties.
@@ -3616,6 +3641,7 @@ function FzI1_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of FzI1 as text
 %        str2double(get(hObject,'String')) returns contents of FzI1 as a double
+handles.actions.setIncrementLimit(9,1,get(hObject,'String'));
 
 
 % --- Executes during object creation, after setting all properties.
@@ -3662,6 +3688,7 @@ function MxI1_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of MxI1 as text
 %        str2double(get(hObject,'String')) returns contents of MxI1 as a double
+handles.actions.setIncrementLimit(10,1,get(hObject,'String'));
 
 
 % --- Executes during object creation, after setting all properties.
@@ -3708,6 +3735,7 @@ function MyI1_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of MyI1 as text
 %        str2double(get(hObject,'String')) returns contents of MyI1 as a double
+handles.actions.setIncrementLimit(11,1,get(hObject,'String'));
 
 
 % --- Executes during object creation, after setting all properties.
@@ -3754,6 +3782,7 @@ function MzI1_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of MzI1 as text
 %        str2double(get(hObject,'String')) returns contents of MzI1 as a double
+handles.actions.setIncrementLimit(12,1,get(hObject,'String'));
 
 
 % --- Executes during object creation, after setting all properties.
@@ -3800,6 +3829,7 @@ function FxI2_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of FxI2 as text
 %        str2double(get(hObject,'String')) returns contents of FxI2 as a double
+handles.actions.setIncrementLimit(7,2,get(hObject,'String'));
 
 
 % --- Executes during object creation, after setting all properties.
@@ -3846,6 +3876,7 @@ function FyI2_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of FyI2 as text
 %        str2double(get(hObject,'String')) returns contents of FyI2 as a double
+handles.actions.setIncrementLimit(8,2,get(hObject,'String'));
 
 
 % --- Executes during object creation, after setting all properties.
@@ -3892,6 +3923,7 @@ function FzI2_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of FzI2 as text
 %        str2double(get(hObject,'String')) returns contents of FzI2 as a double
+handles.actions.setIncrementLimit(9,2,get(hObject,'String'));
 
 
 % --- Executes during object creation, after setting all properties.
@@ -3938,6 +3970,7 @@ function MxI2_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of MxI2 as text
 %        str2double(get(hObject,'String')) returns contents of MxI2 as a double
+handles.actions.setIncrementLimit(10,2,get(hObject,'String'));
 
 
 % --- Executes during object creation, after setting all properties.
@@ -3984,6 +4017,7 @@ function MyI2_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of MyI2 as text
 %        str2double(get(hObject,'String')) returns contents of MyI2 as a double
+handles.actions.setIncrementLimit(11,2,get(hObject,'String'));
 
 
 % --- Executes during object creation, after setting all properties.
@@ -4030,6 +4064,7 @@ function MzI2_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of MzI2 as text
 %        str2double(get(hObject,'String')) returns contents of MzI2 as a double
+handles.actions.setIncrementLimit(12,2,get(hObject,'String'));
 
 
 % --- Executes during object creation, after setting all properties.
