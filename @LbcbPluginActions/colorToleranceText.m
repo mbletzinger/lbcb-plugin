@@ -1,9 +1,9 @@
-function colorToleranceText(hndl,fault)
-if fault
-    set(hndl,'BackgroundColor',[1.0 0.6 0.784]);
-    set(hndl,'FontWeight','bold');
-else
+function colorToleranceText(hndl,within)
+if within
     set(hndl,'BackgroundColor','w');
     set(hndl,'FontWeight','normal');
+else
+    set(hndl,'BackgroundColor','y');
+    set(hndl,'FontWeight','bold');
 end
 end
