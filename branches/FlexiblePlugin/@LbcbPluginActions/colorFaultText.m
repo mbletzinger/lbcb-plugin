@@ -1,4 +1,4 @@
-function colorText(hndl,fault)
+function colorFaultText(hndl,fault)
 if fault
     set(hndl,'BackgroundColor',[1.0 0.6 0.784]);
     set(hndl,'FontWeight','bold');

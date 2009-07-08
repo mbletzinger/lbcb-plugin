@@ -66,20 +66,19 @@ classdef LbcbPluginActions < handle
         runInputFile(me,inFile)
         initialize(me)
         updateCommandLimits(me)
-        colorIncrementLimits(me)
-        updateCommandCurrentValue(me)
-        updateToleranceCurrentValue(me)
-        updateIncrementCurrentValue(me)
-        colorStepTolerances(me)
+        updateStepTolerances(me)
         shutdown(me)
         setRunButton(me,hndl,value)
         setCommandLimit(me,dof,lbcb,isLower,str);
+        setIncrementLimit(me,dof,lbcb,str);
+        setStepTolerance(me,dof,lbcb,str);
         setInputFile(me,infile)
         setLoggerLevels(me)
         startSimulation(me,notimer)
     end
     methods (Static)
-        colorText(hndl,fault)
+        colorFaultText(hndl,fault)
+        colorToleranceText(hndl,fault)
         execute(obj, event, me)
         updateGui(me)
         setGui(ingui)

@@ -138,6 +138,23 @@ me.commandTolerancesHandles2{10} = me.handles.MxT2;
 me.commandTolerancesHandles2{11} = me.handles.MyT2;
 me.commandTolerancesHandles2{12} = me.handles.MzT2;
 
+for c = 1:12
+    w1 = me.st.limits.window1(c);
+    us1 = me.st.limits.used1(c);
+    if us1
+        set(me.commandTolerancesHandles1{c},'String',sprintf('%f',w1));
+    else
+        set(me.commandTolerancesHandles1{c},'String','');
+    end
+    w2 = me.st.limits.window2(c);
+    us2 = me.st.limits.used2(c);
+    if us2
+        set(me.commandTolerancesHandles2{c},'String',sprintf('%f',w2));
+    else
+        set(me.commandTolerancesHandles2{c},'String','');
+    end
+end
+
 me.toleranceCurrentValueHandles1 = cell(12,1);
 me.toleranceCurrentValueHandles1{1} = me.handles.DxTCV1;
 me.toleranceCurrentValueHandles1{2} = me.handles.DyTCV1;
@@ -241,10 +258,12 @@ me.incrementCurrentValueHandles2{10} = me.handles.MxICV2;
 me.incrementCurrentValueHandles2{11} = me.handles.MyICV2;
 me.incrementCurrentValueHandles2{12} = me.handles.MzICV2;
 
+
 lc = LimitChecks;
 
 lc.cmd = me.cl;
 lc.inc = me.il;
+
 me.nxtTgt.setLC(lc);
 me.nxtTgt.setDD(DerivedDof);
 me.nxtTgt.setED(ElasticDeformationCalculations(me.cfg,0),0);
