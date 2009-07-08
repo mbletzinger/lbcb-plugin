@@ -26,10 +26,10 @@ classdef LbcbStep < handle
                         case 'istep'
                             istep = varargin{i+ 1};
                             me.lbcb = istep.lbcb;
-                            me.simstep = istep.lbcb;
+                            me.simstep = istep.simstep;
                             me.externalSensorsRaw = istep.externalSensorsRaw;
                         otherwise
-                            me.log.debug(dbstack,'%s not recognized',label);
+                            me.log.debug(dbstack,sprintf('%s not recognized',label));
                     end
                 end
             end

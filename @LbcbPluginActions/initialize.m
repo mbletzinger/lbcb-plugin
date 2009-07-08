@@ -270,6 +270,9 @@ me.nxtTgt.setED(ElasticDeformationCalculations(me.cfg,0),0);
 me.nxtTgt.setED(ElasticDeformationCalculations(me.cfg,1),1);
 me.nxtTgt.setST(me.st);
 
+me.stepHandles{1} = me.handles.Step;
+me.stepHandles{2} = me.handles.SubStep;
+
 me.fakeGcp = FakeOm(me.cfg);
 me.setRunButton(0);
 

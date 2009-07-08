@@ -11,10 +11,10 @@ classdef DerivedDof < handle
     end
     methods
         % generate a new LbcbStep based on the current step
-        function nstep = newStep(cstep)
+        function nstep = newStep(me,cstep)
             % asking for trouble
             targets = {cstep.lbcb{1}.command, cstep.lbcb{2}.command };
-            nstep = LbcbStep(cstep.simstep.nextStep(1),targets);            
+            nstep = LbcbStep('simstep',cstep.simstep.nextStep(1),'targets',targets);            
         end
     end
 end

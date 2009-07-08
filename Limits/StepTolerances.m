@@ -26,9 +26,9 @@ classdef StepTolerances < handle
             diff(1:6) = abs(command.disp - response.disp);
             diff(7:12) = abs(command.force - response.force);
             for l = 1:12
-                if(me.limits.used1(l))
-                    if diff(l) > me.limits.window1(l)
-                        me.within1(l) = 0;
+                if(used(l))
+                    if diff(l) > window(l)
+                        within(l) = 0;
                     end
                 end
             end
