@@ -78,6 +78,8 @@ classdef LbcbPluginActions < handle
         setLoggerLevels(me)
         startSimulation(me,notimer)
         toggleConnectOmButton(me)
+        colorConnectionButton(me,connection)
+        yes = errorsExist(me,connection)
     end
     methods (Static)
         colorFaultText(hndl,fault)

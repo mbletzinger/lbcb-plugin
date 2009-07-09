@@ -9,6 +9,10 @@ classdef FakeOmActions < handle
         derivedHandles1 = cell(12,1);
         derivedHandles2 = cell(12,1);
         derivedVal = [];
+        eDerivedHandles = cell(12,1);
+        eNameHandles = cell(12,1);
+        eScaleHandles = cell(12,1);
+        eOffsetHandles = cell(12,1);
     end
     methods
         function me = FakeOmActions(handle)

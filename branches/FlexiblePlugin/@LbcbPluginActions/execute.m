@@ -1,14 +1,15 @@
 function execute(obj, event,me)
-if me.running == 0  % in a hold state
-    return;
-end
+% if me.running == 0  % in a hold state
+%     return;
+% end
 a = me.currentAction.getState();
 me.log.debug(dbstack,sprintf('Executing action %s',a));
 switch a
     case  { 'OPEN CONNECTION', 'CLOSE CONNECTION' }
-        done = me.oc.isDone();
+        done = me.oc.isDone()
         if done
             me.currentAction.setState('READY');
+            me.colorConnectionButton(me.oc.connectionType.getState());
             stop(me.simTimer);
         end
     case'NEXT TARGET'
@@ -30,6 +31,7 @@ switch a
         if me.fakeOm == 0
             done = me.peOm.isDone();
             if done % execute response has been received from OM
+                me.colorConnectionButton('OperationsManager');
                 me.gcpOm.step = me.peOm.step;
                 me.gcpOm.start();
                 me.currentAction.setState('OM GET CONTROL POINTS');
@@ -45,6 +47,7 @@ switch a
         else
             done = me.gcpOm.isDone();
             if done
+                me.colorConnectionButton('OperationsManager');
                 me.nxtTgt.curStep = me.gcpOm.step;
                 me.currentAction.setState('NEXT TARGET');
             end
@@ -58,6 +61,7 @@ switch a
                 me.currentAction.setState('OM PROPOSE EXECUTE')
         else
             me.setRunButton(0); % Pause the simulation
+            stop(me.simTimer);
         end
     case 'READY'
         me.log.error(dbstack,'Someone forgot to stop the simulation timer');

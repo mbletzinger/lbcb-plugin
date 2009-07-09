@@ -1,4 +1,4 @@
 function setGui(ingui)
 global gui;
-gui = ingui
+gui = ingui;
 end

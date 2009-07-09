@@ -27,6 +27,9 @@ classdef  StateEnum < handle
         % Sets the state to the label in argument 'state'
         function setState(me,state)
             tmp = find(strcmp(me.states,state));
+            if isempty(tmp)
+                fprintf('ERROR: "%s" not found',state);
+            end
             me.idx = tmp(1);
         end
         % Returns 1 if label in 'state' is the current state.  Returns 0
