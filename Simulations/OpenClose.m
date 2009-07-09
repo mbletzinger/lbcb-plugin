@@ -5,9 +5,12 @@ classdef OpenClose < SimulationState
             'TriggerBroadcasting',...
             'SimCor'
             });
+        connectionStatus = zeros(3,1);
+        closeIt
     end
     methods
         function start(me, connection,closeIt)
+            me.closeIt = closeIt;
             switch connection
                 case 'OperationManager'
                     ml = SimulationState.getMdlLbcb();
@@ -35,6 +38,7 @@ classdef OpenClose < SimulationState
                     done = 1;
                     me.log.error(dbstack(),sprintf('%s not recognized',c));
             end
+            me.connectionStatus(me.connectionType.idx) = ~ me.closeIt;
         end
     end
 end

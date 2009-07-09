@@ -16,6 +16,7 @@ switch a
         if done % Next target is ready
             if me.nxtTgt.simCompleted  %  No more targets
                 me.setRunButton(0); % Pause the simulation
+                me.log.info(dbstack,'Simulation is Over');
                 me.currentAction.setState('READY');
             else % Execute next step
                 if me.fakeOm == 0

@@ -70,13 +70,14 @@ classdef LbcbPluginActions < handle
         updateStepTolerances(me)
         updateSteps(me)
         shutdown(me)
-        setRunButton(me,hndl,value)
+        setRunButton(me,value)
         setCommandLimit(me,dof,lbcb,isLower,str);
         setIncrementLimit(me,dof,lbcb,str);
         setStepTolerance(me,dof,lbcb,str);
         setInputFile(me,infile)
         setLoggerLevels(me)
         startSimulation(me,notimer)
+        toggleConnectOmButton(me)
     end
     methods (Static)
         colorFaultText(hndl,fault)
@@ -84,5 +85,6 @@ classdef LbcbPluginActions < handle
         execute(obj, event, me)
         updateGui(me)
         setGui(ingui)
+        setLimit(hndl,dof,used,limit)
     end
 end

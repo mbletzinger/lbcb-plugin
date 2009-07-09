@@ -58,26 +58,10 @@ me.commandLimitsHandles2{11,2} = me.handles.MyU2;
 me.commandLimitsHandles2{12,2} = me.handles.MzU2;
 
 for c = 1:12
-    low1 = me.cl.limits.lower1(c);
-    up1 =  me.cl.limits.upper1(c);
-    us1 = me.cl.limits.used1(c);
-    if us1
-        set(me.commandLimitsHandles1{c,1},'String',sprintf('%f',low1));
-        set(me.commandLimitsHandles1{c,2},'String',sprintf('%f',up1));
-    else
-        set(me.commandLimitsHandles1{c,1},'String','');
-        set(me.commandLimitsHandles1{c,2},'String','');
-    end
-    low2 = me.cl.limits.lower2(c);
-    up2 =  me.cl.limits.upper2(c);
-    us2 = me.cl.limits.used2(c);
-    if us2
-        set(me.commandLimitsHandles2{c,1},'String',sprintf('%f',low2));
-        set(me.commandLimitsHandles2{c,2},'String',sprintf('%f',up2));
-    else
-        set(me.commandLimitsHandles2{c,1},'String','');
-        set(me.commandLimitsHandles2{c,2},'String','');
-    end
+    LbcbPluginActions.setLimit(me.commandLimitsHandles1{c,1},c,me.cl.limits.used1,me.cl.limits.lower1);
+    LbcbPluginActions.setLimit(me.commandLimitsHandles1{c,2},c,me.cl.limits.used1,me.cl.limits.upper1);
+    LbcbPluginActions.setLimit(me.commandLimitsHandles2{c,1},c,me.cl.limits.used2,me.cl.limits.lower2);
+    LbcbPluginActions.setLimit(me.commandLimitsHandles2{c,2},c,me.cl.limits.used2,me.cl.limits.upper2);
 end
 
 me.commandCurrentValueHandles1 = cell(12,1);
@@ -139,20 +123,8 @@ me.commandTolerancesHandles2{11} = me.handles.MyT2;
 me.commandTolerancesHandles2{12} = me.handles.MzT2;
 
 for c = 1:12
-    w1 = me.st.limits.window1(c);
-    us1 = me.st.limits.used1(c);
-    if us1
-        set(me.commandTolerancesHandles1{c},'String',sprintf('%f',w1));
-    else
-        set(me.commandTolerancesHandles1{c},'String','');
-    end
-    w2 = me.st.limits.window2(c);
-    us2 = me.st.limits.used2(c);
-    if us2
-        set(me.commandTolerancesHandles2{c},'String',sprintf('%f',w2));
-    else
-        set(me.commandTolerancesHandles2{c},'String','');
-    end
+    LbcbPluginActions.setLimit(me.commandTolerancesHandles1{c},c,me.st.limits.used1,me.st.limits.window1);
+    LbcbPluginActions.setLimit(me.commandTolerancesHandles2{c},c,me.st.limits.used2,me.st.limits.window2);
 end
 
 me.toleranceCurrentValueHandles1 = cell(12,1);
@@ -214,20 +186,8 @@ me.incrementLimitsHandles2{11} = me.handles.MyI2;
 me.incrementLimitsHandles2{12} = me.handles.MzI2;
 
 for c = 1:12
-    w1 = me.il.limits.window1(c);
-    us1 = me.il.limits.used1(c);
-    if us1
-        set(me.incrementLimitsHandles1{c},'String',sprintf('%f',w1));
-    else
-        set(me.incrementLimitsHandles1{c},'String','');
-    end
-    w2 = me.il.limits.window2(c);
-    us2 = me.il.limits.used2(c);
-    if us2
-        set(me.incrementLimitsHandles2{c},'String',sprintf('%f',w2));
-    else
-        set(me.incrementLimitsHandles2{c},'String','');
-    end
+    LbcbPluginActions.setLimit(me.incrementLimitsHandles1{c},c,me.il.limits.used1,me.il.limits.window1);
+    LbcbPluginActions.setLimit(me.incrementLimitsHandles2{c},c,me.il.limits.used2,me.il.limits.window2);
 end
 
 me.incrementCurrentValueHandles1 = cell(12,1);

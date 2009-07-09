@@ -119,9 +119,7 @@ end
 
 % --- Executes on button press in Connect2Om.
 function Connect2Om_Callback(hObject, eventdata, handles)
-% hObject    handle to Connect2Om (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
+handles.actions.openCloseConnection('OperationManager',closeIt);
 
 
 % --- Executes on button press in ManualInput.
@@ -989,9 +987,6 @@ delete(handles.LbcbPlugin);
 
 % --- Executes on button press in InputFile.
 function InputFile_Callback(hObject, eventdata, handles)
-% hObject    handle to InputFile (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
 handles.actions.setInputFile({});
 
 

@@ -4,6 +4,7 @@ function startSimulation(me,notimer)
         me.fakeOm = ocfg.useFakeOm;
         LbcbStep.setMdlLbcb(SimulationState.getMdlLbcb()); % created when the connection was opened
         if me.currentAction.isState('READY')
+            me.log.info(dbstack,'Starting Simulation');
             me.nxtTgt.start();
             me.currentAction.setState('NEXT TARGET');
         end

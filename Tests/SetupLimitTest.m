@@ -19,7 +19,9 @@ classdef SetupLimitTest < handle
         function me = SetupLimitTest()
             me.cfg = Configuration;
             me.infile = InputFile;
-            Logger.setCmdLevel('DEBUG');
+            lcfg = LogLevelsDao(me.cfg);
+            lcfg.cmdLevel = 'DEBUG';
+            lcfg.msgLevel = 'INFO';
             
         end
         function setTest(me,test)
@@ -160,6 +162,7 @@ classdef SetupLimitTest < handle
                     me.tgts(s,i+12) = frc;
                     dsp = dsp + s*itv;
                     frc = frc + s*itv;
+%                    dsp - me.tgts(s,i)
                 end
             end
         end

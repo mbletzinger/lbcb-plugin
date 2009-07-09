@@ -37,7 +37,7 @@ classdef LogLevelsDao < handle
               end
         end
         function set.msgLevel(me,value)
-              me.cfg.props.setProperty('logger.msgLevel',value);
+              me.cfg.props.setProperty('logger.msgLevel',value)
         end
     end
 end
