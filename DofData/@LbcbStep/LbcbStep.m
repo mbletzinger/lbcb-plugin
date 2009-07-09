@@ -34,6 +34,11 @@ classdef LbcbStep < handle
                 end
             end
         end
+        function set.lbcb(me,value)
+%             dbstack
+%             lgth = length(value)
+            me.lbcb = value;
+        end
         function me = clone(istep)
             me.simstep = istep.simstep;
             me.lbcb = istep.lbcb;

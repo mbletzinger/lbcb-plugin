@@ -165,6 +165,8 @@ classdef MdlLbcb < handle
                 case 'TRANSACTION_DONE'
                     me.state.setState('READY');
                     me.action.setState('NONE');
+                case { 'READ_RESPONSE', 'WAIT_FOR_RESPONSE' }
+                % still busy
                 otherwise
                     me.log.error(dbstack,sprintf('"%s" not recognized',ts.getState()));
             end
