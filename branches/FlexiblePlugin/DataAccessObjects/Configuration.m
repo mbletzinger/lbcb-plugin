@@ -32,7 +32,7 @@ classdef Configuration < handle
         function import(me)
             done = 0;
             while done == false
-                name = uigetfile('','Import Configuration');
+                name = uigetfile('*.properties','Import Configuration');
                 if name == 0
                     return
                 end
@@ -46,7 +46,7 @@ classdef Configuration < handle
         function export(me)
             done = 0;
             while done == false
-                name = uigetfile('','Export Configuration');
+                name = uigetfile('*.properties','Export Configuration');
                 if name == 0
                     return
                 end
