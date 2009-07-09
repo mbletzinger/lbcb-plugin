@@ -71,7 +71,7 @@ end
 handles.dao = OmConfigDao(cfg);
 handles.cfg = cfg;
 handles.numTypes = StateEnum(get(handles.NumberOfLbcbsMenu,'String'));
-handles.appliedTypes = StateEnum(get(handles.Applied2Lbcb1,'String'));
+handles.appliedTypes = StateEnum({'LBCB1' 'LBCB2'});
 
 current = handles.dao.numLbcbs;
 if isempty(current) == 0
@@ -954,7 +954,7 @@ for m = 1:15
     if isempty(values{m})
         idx = 1;
     else
-        handles.appliedTypes.setState(values(m));
+        handles.appliedTypes.setState(values{m});
         idx = handles.appliedTypes.idx;
     end
     switch m

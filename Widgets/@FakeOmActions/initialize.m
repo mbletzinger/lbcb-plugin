@@ -160,21 +160,21 @@ me.eOffsetHandles{13} = me.handle.ExtO13;
 me.eOffsetHandles{14} = me.handle.ExtO14;
 me.eOffsetHandles{15} = me.handle.ExtO15;
 
-me.eDerivedHandles{1} = me.handles.ExtA1;
-me.eDerivedHandles{2} = me.handles.ExtA2;
-me.eDerivedHandles{3} = me.handles.ExtA3;
-me.eDerivedHandles{4} = me.handles.ExtA4;
-me.eDerivedHandles{5} = me.handles.ExtA5;
-me.eDerivedHandles{6} = me.handles.ExtA6;
-me.eDerivedHandles{7} = me.handles.ExtA7;
-me.eDerivedHandles{8} = me.handles.ExtA8;
-me.eDerivedHandles{9} = me.handles.ExtA9;
-me.eDerivedHandles{10} = me.handles.ExtA10;
-me.eDerivedHandles{11} = me.handles.ExtA11;
-me.eDerivedHandles{12} = me.handles.ExtA12;
-me.eDerivedHandles{13} = me.handles.ExtA13;
-me.eDerivedHandles{14} = me.handles.ExtA14;
-me.eDerivedHandles{15} = me.handles.ExtA15;
+me.eDerivedHandles{1} = me.handle.ExtA1;
+me.eDerivedHandles{2} = me.handle.ExtA2;
+me.eDerivedHandles{3} = me.handle.ExtA3;
+me.eDerivedHandles{4} = me.handle.ExtA4;
+me.eDerivedHandles{5} = me.handle.ExtA5;
+me.eDerivedHandles{6} = me.handle.ExtA6;
+me.eDerivedHandles{7} = me.handle.ExtA7;
+me.eDerivedHandles{8} = me.handle.ExtA8;
+me.eDerivedHandles{9} = me.handle.ExtA9;
+me.eDerivedHandles{10} = me.handle.ExtA10;
+me.eDerivedHandles{11} = me.handle.ExtA11;
+me.eDerivedHandles{12} = me.handle.ExtA12;
+me.eDerivedHandles{13} = me.handle.ExtA13;
+me.eDerivedHandles{14} = me.handle.ExtA14;
+me.eDerivedHandles{15} = me.handle.ExtA15;
 
 eScale = fcfg.eScale;
 eOffset = fcfg.eOffset;
@@ -183,14 +183,19 @@ eDerived = fcfg.eDerived;
 for d = 1:15
     set(me.eDerivedHandles{d},'String',options);
     
+    if isempty(eScale) == 0 && length(eScale) >= d
     set(me.eScaleHandles{d},'String', sprintf('%f',eScale(d)));
-    set(me.eOffsetHandles{d},'String', sprintf('%f',eOffset(d)));
-    if isempty(eDerived) == 0
+    end
+    if isempty(eOffset) == 0 && length(eOffset) >= d
+        set(me.eOffsetHandles{d},'String', sprintf('%f',eOffset(d)));
+    end
+    if isempty(eDerived) == 0 && length(eDerived) >= d
         me.derivedVal.setState(eDerived{d});
     else
         me.derivedVal.idx = d;
     end
     set(me.eDerivedHandles{d},'Value',me.derivedVal.idx);
 end
-
+    set(me.handle.ConvergenceSteps,'String',sprintf('%d',fcfg.convergeSteps));
+    set(me.handle.ConvergenceIncrement,'String',sprintf('%f',fcfg.convergeInc));
 end

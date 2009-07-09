@@ -1,6 +1,6 @@
 JavaTest
 s = SetupLimitTest;
-s.setDirection(0);
+s.setTest('UPPER');
 s.cfg.load;
 NetworkConfig('cfg',s.cfg);
 LbcbStep.setConfig(s.cfg);

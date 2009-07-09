@@ -57,7 +57,7 @@ classdef MdlLbcb < handle
                 otherwise
                     me.log.error(dbstack,sprintf('State %s not recognized',s));
             end
-            if me.state.isState('READY')
+            if me.state.isState('READY') || me.state.isState('ERRORS EXIST')
                 done = 1;
             end
         end
@@ -73,6 +73,9 @@ classdef MdlLbcb < handle
         
         % Start to close the connection to the operations manager
         function close(me)
+            if me.state.isState('ERRORS EXIST')
+                return
+            end
             cf = me.simcorTcp.getConnectionFactory();
             cf.closeConnection(me.connection);
             me.action.setState('CLOSE CONNECTION');
@@ -127,10 +130,10 @@ classdef MdlLbcb < handle
                 me.action.setState('NONE');
             end
             if cs.isState('IN_ERROR')
-                me.close();
+                me.log.error(dbstack,char(me.connection.getFromRemoteMsg().getError().getText()));
+%                me.close();
                 me.state.setState('ERRORS EXIST');
                 me.action.setState('NONE');
-                me.log.error(dbstack(),me.connection.getFromRemoteMsg().getError().getMsg());
             end
         end
         % process transaction
@@ -141,7 +144,7 @@ classdef MdlLbcb < handle
             if ts.isState('ERRORS_EXIST')
                 me.state.setState('ERRORS EXIST');
                 me.action.setState('NONE');
-                me.log.error(dbstack(),me.connection.getFromRemoteMsg().getError().getMsg());
+                me.log.error(dbstack(),char(me.connection.getFromRemoteMsg().getError().getText()));
             end
             if ts.isState('RESPONSE_AVAILABLE')
                 me.state.setState('READY');
@@ -165,7 +168,7 @@ classdef MdlLbcb < handle
             if cs.isState('IN_ERROR')
                 me.state.setState('ERRORS EXIST');
                 me.action.setState('NONE');
-                me.log.error(dbstack(),me.connection.getFromRemoteMsg().getError().getMsg());
+                me.log.error(dbstack(),char(me.connection.getFromRemoteMsg().getError().getText()));
             end
         end
     end
