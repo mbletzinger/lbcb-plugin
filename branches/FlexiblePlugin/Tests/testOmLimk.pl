@@ -27,6 +27,11 @@ my $socket = $lsocket->accept();
 print "Accepting connection from " . $socket->peerhost() . "\n"; 
 while ($running) {
   my($keyword, $trans, $mdl) = receiveCommand();
+	unless (defined $keyword) {
+		close $socket;
+		close $lsocket;
+		die "Aborting Connection\n";
+	}
   if ($keyword eq 'open-session') {
     sendResponse("OK 0\tOpen Session Succeeded");
     next;
