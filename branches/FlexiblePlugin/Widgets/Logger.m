@@ -42,7 +42,7 @@ classdef Logger < handle
                 if ischar(msgs)
                     nmsgs = {str};
                 else
-                    nmsgs = { msgs{:} str};
+                    nmsgs = [ msgs; {str}];
                 end
                 set(hnd,'String',nmsgs);
             end
