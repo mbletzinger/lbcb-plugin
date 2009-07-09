@@ -2,6 +2,11 @@ JavaTest
 s = SetupLimitTest;
 s.setTest('UPPER');
 s.cfg.load;
+lcfg = LogLevelsDao(s.cfg);
+lcfg.cmdLevel = 'DEBUG';
+lcfg.msgLevel = 'INFO';
+Logger.setCmdLevel(lcfg.cmdLevel);
+Logger.setMsgLevel(lcfg.msgLevel);
 NetworkConfig('cfg',s.cfg);
 LbcbStep.setConfig(s.cfg);
 stp = s.infile.steps{2};

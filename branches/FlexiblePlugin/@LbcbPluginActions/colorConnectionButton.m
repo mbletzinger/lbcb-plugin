@@ -6,11 +6,14 @@ errors = me.errorsExist(connection);
 
 if status
     set(hndls{me.oc.connectionType.idx},'BackgroundColor','g');
+    me.log.info(dbstack,sprintf('%s is connected', connection));
 else
     set(hndls{me.oc.connectionType.idx},'BackgroundColor','w');
+    me.log.info(dbstack,sprintf('%s is disconnected', connection));
 end
 
 if errors
     set(hndls{me.oc.connectionType.idx},'BackgroundColor','r');
+    me.log.info(dbstack,sprintf('%s connection failed', connection));
 end
 end

@@ -5,8 +5,15 @@ function execute(obj, event,me)
 a = me.currentAction.getState();
 me.log.debug(dbstack,sprintf('Executing action %s',a));
 switch a
-    case  { 'OPEN CONNECTION', 'CLOSE CONNECTION' }
-        done = me.oc.isDone()
+    case 'OPEN CONNECTION'
+        done = me.oc.isDone();
+        if done
+            me.currentAction.setState('READY');
+            me.colorConnectionButton(me.oc.connectionType.getState());
+            stop(me.simTimer);
+        end
+    case 'CLOSE CONNECTION'
+        done = me.oc.isDone();
         if done
             me.currentAction.setState('READY');
             me.colorConnectionButton(me.oc.connectionType.getState());
