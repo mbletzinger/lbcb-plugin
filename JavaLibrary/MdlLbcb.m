@@ -57,8 +57,15 @@ classdef MdlLbcb < handle
                 otherwise
                     me.log.error(dbstack,sprintf('State %s not recognized',s));
             end
-            if me.state.isState('READY') || me.state.isState('ERRORS EXIST')
-                done = 1;
+            ss = me.state.getState();
+            switch ss
+                case {'READY','ERRORS EXIST'}
+                    done = 1;
+                case 'BUSY'
+                    done = 0;
+                otherwise
+                    me.log.error(dbstack,sprintf('State %s not recognized',ss));
+                    
             end
         end
         
@@ -125,15 +132,18 @@ classdef MdlLbcb < handle
             s = InitStates();
             cs = StateEnum(s.connectionStates);
             cs.setState(me.connection.getConnectionState());
-            if cs.isState('READY')
-                me.state.setState('READY');
-                me.action.setState('NONE');
-            end
-            if cs.isState('IN_ERROR')
-                me.log.error(dbstack,char(me.connection.getFromRemoteMsg().getError().getText()));
-%                me.close();
-                me.state.setState('ERRORS EXIST');
-                me.action.setState('NONE');
+            csS = cs.getState();
+            switch csS
+                case 'READY'
+                    me.state.setState('READY');
+                    me.action.setState('NONE');
+                case 'IN_ERROR'
+                    me.log.error(dbstack,char(me.connection.getFromRemoteMsg().getError().getText()));
+                    me.state.setState('ERRORS EXIST');
+                    me.action.setState('NONE');
+                case 'BUSY'
+                otherwise
+                    me.log.error(dbstack,sprintf('"%s" not recognized',csS));
             end
         end
         % process transaction
@@ -141,34 +151,39 @@ classdef MdlLbcb < handle
             is = InitStates();
             ts = StateEnum(is.transactionStates);
             ts.setState(me.simcorTcp.isReady());
-            if ts.isState('ERRORS_EXIST')
-                me.state.setState('ERRORS EXIST');
-                me.action.setState('NONE');
-                me.log.error(dbstack(),char(me.connection.getFromRemoteMsg().getError().getText()));
-            end
-            if ts.isState('RESPONSE_AVAILABLE')
-                me.state.setState('READY');
-                transaction = me.simcorTcp.pickupTransaction();
-                jresponse = transaction.getResponse();
-                me.response = ResponseMessage(jresponse);
-            end
-            if ts.isState('TRANSACTION_DONE')
-                me.state.setState('READY');
-                me.action.setState('NONE');
+            switch ts.getState()
+                
+                case 'ERRORS_EXIST'
+                    me.state.setState('ERRORS EXIST');
+                    me.action.setState('NONE');
+                    me.log.error(dbstack(),char(me.connection.getFromRemoteMsg().getError().getText()));
+                case 'RESPONSE_AVAILABLE'
+                    me.state.setState('READY');
+                    transaction = me.simcorTcp.pickupTransaction();
+                    jresponse = transaction.getResponse();
+                    me.response = ResponseMessage(jresponse);
+                case 'TRANSACTION_DONE'
+                    me.state.setState('READY');
+                    me.action.setState('NONE');
+                otherwise
+                    me.log.error(dbstack,sprintf('"%s" not recognized',ts.getState()));
             end
         end
         function closeConnectionAction(me)
             s = InitStates();
             cs = StateEnum(s.connectionStates);
             cs.setState(me.connection.getConnectionState());
-            if cs.isState('READY')
-                me.state.setState('READY');
-                me.action.setState('NONE');
-            end
-            if cs.isState('IN_ERROR')
-                me.state.setState('ERRORS EXIST');
-                me.action.setState('NONE');
-                me.log.error(dbstack(),char(me.connection.getFromRemoteMsg().getError().getText()));
+            csS = cs.getState();
+            switch csS
+                case 'CLOSED'
+                    me.state.setState('READY');
+                    me.action.setState('NONE');
+                case 'IN_ERROR'
+                    me.state.setState('ERRORS EXIST');
+                    me.action.setState('NONE');
+                    me.log.error(dbstack(),char(me.connection.getFromRemoteMsg().getError().getText()));
+                otherwise
+                    me.log.error(dbstack,sprintf('"%s" not recognized',csS));
             end
         end
     end
