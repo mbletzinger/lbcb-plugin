@@ -31,6 +31,7 @@ classdef ProposeExecuteOm < SimulationState
     methods (Access=private)
         function startPropose(me)
             jmsg = me.step.generateProposeMsg();
+            me.log.debug(dbstack,sprintf('Sending %s',char(jmsg)));
             ml = SimulationState.getMdlLbcb();
             ml.start(jmsg,me.step.simstep,1);
             me.state.setState('BUSY');
@@ -40,6 +41,7 @@ classdef ProposeExecuteOm < SimulationState
             ml = SimulationState.getMdlLbcb();
             address = LbcbStep.getAddress();
             jmsg = ml.createCommand('execute',address,[],[]);
+            me.log.debug(dbstack,sprintf('Sending %s',char(jmsg)));
             ml.start(jmsg,me.step.simstep,0);
             me.state.setState('BUSY');
             me.action.setState('DONE');
