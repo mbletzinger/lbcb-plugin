@@ -38,6 +38,7 @@ classdef MdlLbcb < handle
             me.params.setRemotePort(sscanf(ncfg.omPort,'%d'));
             me.params.setTcpTimeout(sscanf(ncfg.timeout,'%d'));
             me.simcorTcp = org.nees.uiuc.simcor.UiSimCorTcp('SEND_COMMAND',me.params);
+            me.simcorTcp.setArchiveFilename(fullfile(pwd,'Logs','OmNetworkLog.txt'));
             me.state.setState('READY');
         end
         
@@ -46,10 +47,8 @@ classdef MdlLbcb < handle
             a = me.action.getState();
             done = 0;
             switch a
-                case 'OPEN CONNECTION'
-                    me.openConnectionAction();
-                case 'CLOSE CONNECTION'
-                    me.closeConnectionAction();
+                case { 'OPEN CONNECTION' 'CLOSE CONNECTION' }
+                    me.connectionAction();
                 case 'EXECUTING TRANSACTION'
                     me.executeTransactionAction();
                 case 'NONE'
@@ -71,9 +70,7 @@ classdef MdlLbcb < handle
         
         % Start to open a connection to the operations manager
         function open(me)
-            cf = me.simcorTcp.getConnectionFactory();
-            me.simcorTcp.setup();
-            me.connection = cf.getConnection();
+            me.simcorTcp.startup();
             me.action.setState('OPEN CONNECTION');
             me.state.setState('BUSY');
         end
@@ -83,8 +80,7 @@ classdef MdlLbcb < handle
             if me.state.isState('ERRORS EXIST')
                 return
             end
-            cf = me.simcorTcp.getConnectionFactory();
-            cf.closeConnection(me.connection);
+            me.simcorTcp.shutdown();
             me.action.setState('CLOSE CONNECTION');
             me.state.setState('BUSY');
         end
@@ -122,30 +118,6 @@ classdef MdlLbcb < handle
     end
     
     methods (Access=private)
-        %  Process open connection
-        function openConnectionAction(me)
-            if isempty(me.connection)
-                cf = me.simcorTcp.getConnectionFactory();
-                me.connection = cf.getConnection();
-                return;
-            end
-            s = InitStates();
-            cs = StateEnum(s.connectionStates);
-            cs.setState(me.connection.getConnectionState());
-            csS = cs.getState();
-            switch csS
-                case 'READY'
-                    me.state.setState('READY');
-                    me.action.setState('NONE');
-                case 'IN_ERROR'
-                    me.log.error(dbstack,char(me.connection.getFromRemoteMsg().getError().getText()));
-                    me.state.setState('ERRORS EXIST');
-                    me.action.setState('NONE');
-                case 'BUSY'
-                otherwise
-                    me.log.error(dbstack,sprintf('"%s" not recognized',csS));
-            end
-        end
         % process transaction
         function executeTransactionAction(me)
             is = InitStates();
@@ -157,33 +129,38 @@ classdef MdlLbcb < handle
                     me.state.setState('ERRORS EXIST');
                     me.action.setState('NONE');
                     me.log.error(dbstack(),char(me.connection.getFromRemoteMsg().getError().getText()));
+                    me.simcorTcp.isReady();
                 case 'RESPONSE_AVAILABLE'
-                    me.state.setState('READY');
+%                    me.state.setState('READY');
                     transaction = me.simcorTcp.pickupTransaction();
                     jresponse = transaction.getResponse();
                     me.response = ResponseMessage(jresponse);
                 case 'TRANSACTION_DONE'
                     me.state.setState('READY');
                     me.action.setState('NONE');
+                    me.simcorTcp.isReady();
                 case { 'READ_RESPONSE', 'WAIT_FOR_RESPONSE' }
                 % still busy
                 otherwise
                     me.log.error(dbstack,sprintf('"%s" not recognized',ts.getState()));
             end
         end
-        function closeConnectionAction(me)
-            s = InitStates();
-            cs = StateEnum(s.connectionStates);
-            cs.setState(me.connection.getConnectionState());
-            csS = cs.getState();
+        function connectionAction(me)
+            is = InitStates();
+            ts = StateEnum(is.transactionStates);
+            ts.setState(char(me.simcorTcp.isReady()));
+            csS = ts.getState();
             switch csS
-                case 'CLOSED'
+                case 'TRANSACTION_DONE'
                     me.state.setState('READY');
                     me.action.setState('NONE');
-                case 'IN_ERROR'
+                    me.simcorTcp.isReady();
+                case 'ERRORS_EXIST'
                     me.state.setState('ERRORS EXIST');
                     me.action.setState('NONE');
-                    me.log.error(dbstack(),char(me.connection.getFromRemoteMsg().getError().getText()));
+                    me.log.error(dbstack(),char(me.simcorTcp.getTransaction().getError().getText()));
+                    me.simcorTcp.isReady();
+                case {'CLOSING_CONNECTION' 'OPENING_CONNECTION' }
                 otherwise
                     me.log.error(dbstack,sprintf('"%s" not recognized',csS));
             end

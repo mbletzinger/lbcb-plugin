@@ -8,6 +8,7 @@ switch a
     case 'OPEN CONNECTION'
         done = me.oc.isDone();
         if done
+            me.log.debug(dbstack,'Open connection is done');
             me.currentAction.setState('READY');
             me.colorConnectionButton(me.oc.connectionType.getState());
             stop(me.simTimer);
@@ -44,7 +45,7 @@ switch a
                 me.currentAction.setState('OM GET CONTROL POINTS');
             end
         else
-                me.currentAction.setState('OM GET CONTROL POINTS');
+            me.currentAction.setState('OM GET CONTROL POINTS');
         end
     case 'OM GET CONTROL POINTS'
         if me.fakeOm
@@ -60,12 +61,16 @@ switch a
             end
         end
     case 'CHECK LIMITS'
-%        me.nxtTgt
+        %        me.nxtTgt
         done = me.nxtTgt.withinLimits();
         me.updateCommandLimits();
         me.updateStepTolerances();
         if done
-                me.currentAction.setState('OM PROPOSE EXECUTE')
+            me.currentAction.setState('OM PROPOSE EXECUTE');
+            if me.fakeOm == 0
+                me.peOm.step = me.nxtTgt.nextStep;
+                me.peOm.start();
+            end
         else
             me.setRunButton(0); % Pause the simulation
             stop(me.simTimer);
