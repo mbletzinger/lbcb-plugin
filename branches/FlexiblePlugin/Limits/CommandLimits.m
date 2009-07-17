@@ -1,6 +1,6 @@
 classdef CommandLimits < handle
     properties
-        faults1 = zeros(12,2);
+        faults1 = zeros(12,2); % 12 x 2 upper and lower limit faults.  Exceeded = 1
         faults2 = zeros(12,2);
         limits = [];
         commands1 = zeros(12,1);

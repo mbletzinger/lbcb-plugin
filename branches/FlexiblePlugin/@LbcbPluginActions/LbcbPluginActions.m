@@ -2,6 +2,7 @@ classdef LbcbPluginActions < handle
     properties
         handles = [];
         cfg = [];
+        %text box handles 1 = LBCB1, 2 = LBCB 2
         commandLimitsHandles1 = {};
         commandLimitsHandles2 = {};
         commandTolerancesHandles1 = {};
@@ -17,9 +18,9 @@ classdef LbcbPluginActions < handle
         incrementCurrentValueHandles2 = {};
         stepHandles = cell(2,1);
         
-        cl = [];
-        st = [];
-        il = [];
+        cl = []; % CommandLimits object
+        st = []; % StepTolerances object
+        il = []; % IncrementLimits object
         
         oc = OpenClose;
         peOm = ProposeExecuteOm;
@@ -40,7 +41,7 @@ classdef LbcbPluginActions < handle
         fakeOm = 0; % flag indicating fake OM
         fakeGcp = {}; % object used to generate fake control points
         running = 0;
-        simTimer = {};
+        simTimer = {}; % Timer which runs the execute function
         
     end
     methods
@@ -51,15 +52,18 @@ classdef LbcbPluginActions < handle
                 javaaddpath(fullfile(pwd,'JavaLibrary','log4j-1.2.15.jar'));
                 javaaddpath(fullfile(pwd,'JavaLibrary'));
             end
+            % Default configuration found in lbcb_plugin.properties
             if isempty(cfg)
                 me.cfg = Configuration;
                 me.cfg.load();
             else
+                %Used for software testing
                 me.cfg = cfg;
             end
             me.handles.log = me.log;
             me.handles.actions = me;
             me.currentAction.setState('READY');
+            % set up execute timer
             me.simTimer = timer('Period',0.05, 'TasksToExecute',1000000,'ExecutionMode','fixedSpacing','Name','SimulationTimer');
             me.simTimer.TimerFcn = { 'LbcbPluginActions.execute', me };
         end

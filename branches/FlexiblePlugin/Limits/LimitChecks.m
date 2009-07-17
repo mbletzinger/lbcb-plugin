@@ -1,7 +1,7 @@
 classdef LimitChecks < handle
     properties
-        cmd = {};
-        inc = {};
+        cmd = {}; % command limits object
+        inc = {}; % increment limits object
     end
     methods
         function yes = withinLimits(me, curStep, prevStep)
