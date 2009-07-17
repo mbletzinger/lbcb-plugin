@@ -108,6 +108,7 @@ function RunHold_Callback(hObject, eventdata, handles) %#ok<*INUSD,*DEFNU>
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 if handles.notimer
+    % Used for debugging the software
     disp('no timer execution');
     handles.actions.running = 1;
     handles.actions.startSimulation(1);

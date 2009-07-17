@@ -12,8 +12,8 @@
 classdef NextTarget < SimulationState
     properties
         inpF = [];
-        curStep = [];
-        nextStep = [];
+        curStep = []; % curStep to curStepData
+        nextStep = []; % nextStep to nextStepData
         simCompleted = 0;
     end
     methods
@@ -38,7 +38,7 @@ classdef NextTarget < SimulationState
                     me.simCompleted = me.inpF.endOfFile;
                 else
                     % get next derived dof step
-                    dd = NextTarget.getDD();
+                    dd = NextTarget.getDD();  % Derived DOF instance 
                     me.nextStep = dd.newStep(me.curStep);
                 end
             else % This must be the first step
