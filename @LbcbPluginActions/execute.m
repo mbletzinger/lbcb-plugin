@@ -29,7 +29,7 @@ switch a
                 me.currentAction.setState('READY');
             else % Execute next step
                 if me.fakeOm == 0
-                    me.peOm.step = me.nxtTgt.nextStep;
+                    me.peOm.step = me.nxtTgt.nextStepData;
                 end
                 me.updateSteps();
                 me.currentAction.setState('CHECK LIMITS');
@@ -49,14 +49,14 @@ switch a
         end
     case 'OM GET CONTROL POINTS'
         if me.fakeOm
-            me.fakeGcp.generateControlPoints(me.nxtTgt.nextStep);
-            me.nxtTgt.curStep = me.nxtTgt.nextStep;
+            me.fakeGcp.generateControlPoints(me.nxtTgt.nextStepData);
+            me.nxtTgt.curStepData = me.nxtTgt.nextStepData;
             me.currentAction.setState('NEXT TARGET');
         else
             done = me.gcpOm.isDone();
             if done
                 me.colorConnectionButton('OperationsManager');
-                me.nxtTgt.curStep = me.gcpOm.step;
+                me.nxtTgt.curStepData = me.gcpOm.step;
                 me.currentAction.setState('NEXT TARGET');
             end
         end
@@ -68,7 +68,7 @@ switch a
         if done
             me.currentAction.setState('OM PROPOSE EXECUTE');
             if me.fakeOm == 0
-                me.peOm.step = me.nxtTgt.nextStep;
+                me.peOm.step = me.nxtTgt.nextStepData;
                 me.peOm.start();
             end
         else

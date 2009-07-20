@@ -1,12 +1,12 @@
 function jmsg = generateProposeMsg(me)
-lgth = length(me.lbcb);
+lgth = length(me.lbcbCps);
 mdl = cell(lgth,1);
 cps = cell(lgth,1);
 contents = cell(lgth,1);
 cps = {'LBCB1','LBCB2'};
 for t = 1:lgth
-    mdl{t} = LbcbStep.getAddress();
-    contents{t} = me.lbcb{t}.command.createMsg();
+    mdl{t} = StepData.getAddress();
+    contents{t} = me.lbcbCps{t}.command.createMsg();
 end
-jmsg = LbcbStep.getMdlLbcb.createCompoundCommand('propose',mdl,cps,contents);
+jmsg = StepData.getMdlLbcb.createCompoundCommand('propose',mdl,cps,contents);
 end

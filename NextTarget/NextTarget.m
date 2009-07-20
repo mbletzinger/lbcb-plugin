@@ -12,43 +12,65 @@
 classdef NextTarget < SimulationState
     properties
         inpF = [];
+        curStepData = [];
+        nextStepData = [];
+        simCompleted = 0;
+    end
+    properties (Dependent)
         curStep = []; % curStep to curStepData
         nextStep = []; % nextStep to nextStepData
-        simCompleted = 0;
     end
     methods
         function start(me)
-            me.curStep = me.nextStep;
+            me.curStepData = me.nextStepData;
         end
         function done = isDone(me)
             done = 1;
             % Dumb MATLAB  double negative comparison to see if the current
             % step is not empty
-            if isempty(me.curStep) == 0 
+            if isempty(me.curStepData) == 0 
                 %calculate elastic deformations
-                for l = 1: length(me.curStep.lbcb)
+                for l = 1: length(me.curStepData.lbcbCps)
                     ed = NextTarget.getED(l == 1);
-                    ed.calculate(me.curStep.lbcb{l});
+                    ed.calculate(me.curStepData.lbcbCps{l});
                 end
                 % check tolerances
                 st = NextTarget.getST();
-                if st.withinTolerances(me.curStep)
+                if st.withinTolerances(me.curStepData)
                     % get next input step
-                    me.nextStep = me.inpF.next();
+                    me.nextStepData = me.inpF.next();
                     me.simCompleted = me.inpF.endOfFile;
                 else
                     % get next derived dof step
                     dd = NextTarget.getDD();  % Derived DOF instance 
-                    me.nextStep = dd.newStep(me.curStep);
+                    me.nextStepData = dd.newStep(me.curStepData);
                 end
             else % This must be the first step
-                me.nextStep = me.inpF.next();
+                me.nextStepData = me.inpF.next();
             end
         end
         % needs to be called immediately after isDone returns true.
         function yes = withinLimits(me)
             lc = NextTarget.getLC();
-            yes = lc.withinLimits(me.nextStep,me.curStep );
+            yes = lc.withinLimits(me.nextStepData,me.curStepData );
+        end
+    end
+    methods
+        function set.curStep(me,value)
+             dbstack
+             me.log.error(dbstack,'curStep has been renamed curStepData'); 
+        end
+        function value = get.curStep(me)
+             dbstack
+             me.log.error(dbstack,'curStep has been renamed curStepData'); 
+        end
+        function set.nextStep(me,value)
+             dbstack
+             me.log.error(dbstack,'nextStep has been renamed nextStepData'); 
+        end
+        function value = get.nextStep(me)
+             dbstack
+             me.log.error(dbstack,'nextStep has been renamed nextStepData'); 
         end
     end
     methods (Static)

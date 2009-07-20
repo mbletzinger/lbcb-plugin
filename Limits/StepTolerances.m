@@ -12,12 +12,12 @@ classdef StepTolerances < handle
         end
         function yes = withinTolerances(me,step)
             me.within2 = ones(12,1);
-            [me.within1 me.diffs1 ] = me.wL(step.lbcb{1}.command,...
-                step.lbcb{1}.response,me.limits.window1,me.limits.used1);
-            lt = length(step.lbcb);
+            [me.within1 me.diffs1 ] = me.wL(step.lbcbCps{1}.command,...
+                step.lbcbCps{1}.response,me.limits.window1,me.limits.used1);
+            lt = length(step.lbcbCps);
             if lt > 1
-                [me.within2 me.diffs2 ] = me.wL(step.lbcb{2}.command,...
-                    step.lbcb{2}.response,me.limits.window2,me.limits.used2);
+                [me.within2 me.diffs2 ] = me.wL(step.lbcbCps{2}.command,...
+                    step.lbcbCps{2}.response,me.limits.window2,me.limits.used2);
             end
             yes = (sum(me.within1) + sum(me.within2)) == 24;
         end

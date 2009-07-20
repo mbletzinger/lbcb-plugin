@@ -12,12 +12,12 @@ classdef IncrementLimits < handle
         end
         function yes = withinLimits(me,curStep,prevStep)
             me.faults2 = zeros(12,1);
-            [me.faults1 me.increments1 ] = me.wL(curStep.lbcb{1}.command,...
-                prevStep.lbcb{1}.command,me.limits.window1,me.limits.used1);
-            lt = length(curStep.lbcb);
+            [me.faults1 me.increments1 ] = me.wL(curStep.lbcbCps{1}.command,...
+                prevStep.lbcbCps{1}.command,me.limits.window1,me.limits.used1);
+            lt = length(curStep.lbcbCps);
             if lt > 1
-                [me.faults2 me.increments2 ] = me.wL(curStep.lbcb{2}.command,...
-                    prevStep.lbcb{2}.command,me.limits.window2,me.limits.used2);
+                [me.faults2 me.increments2 ] = me.wL(curStep.lbcbCps{2}.command,...
+                    prevStep.lbcbCps{2}.command,me.limits.window2,me.limits.used2);
             end
             yes = (sum(me.faults1) + sum(me.faults2)) == 0;
         end
