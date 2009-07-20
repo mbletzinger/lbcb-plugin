@@ -1,5 +1,5 @@
 function distributeExtSensorData(me,readings)
-[n se a] = LbcbStep.getExtSensors();
+[n se a] = StepData.getExtSensors();
 me.externalSensorsRaw = readings;
 el1 = zeros(length(readings));
 el1l = 1;
@@ -13,8 +13,8 @@ for s = 1:length(readings)
         el2(el2l) = r;
     end
 end
-me.lbcb{1}.externalSensors = el1(1:el1l - 1);
-if length(me.lbcb) > 1
-    me.lbcb{2}.externalSensors = el2(1:el2l - 1);
+me.lbcbCps{1}.externalSensors = el1(1:el1l - 1);
+if length(me.lbcbCps) > 1
+    me.lbcbCps{2}.externalSensors = el2(1:el2l - 1);
 end
 end

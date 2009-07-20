@@ -139,7 +139,7 @@ classdef MdlLbcb < handle
                     me.state.setState('READY');
                     me.action.setState('NONE');
                     me.simcorTcp.isReady();
-                case { 'READ_RESPONSE', 'WAIT_FOR_RESPONSE' }
+                case { 'READ_RESPONSE', 'WAIT_FOR_RESPONSE' 'SENDING_COMMAND'}
                 % still busy
                 otherwise
                     me.log.error(dbstack,sprintf('"%s" not recognized',ts.getState()));

@@ -12,7 +12,7 @@ classdef GetControlPointsOm < SimulationState
         function start(me)
             me.cpsMsg.setState('LBCB1');
             ml = SimulationState.getMdlLbcb();
-            address = LbcbStep.getAddress();
+            address = StepData.getAddress();
             jmsg = ml.createCommand('get-control-point',address,me.cpsMsg.getState(),[]);
             ml.start(jmsg,me.step.simstep,0);
             me.state.setState('BUSY');
@@ -21,11 +21,11 @@ classdef GetControlPointsOm < SimulationState
             c = me.cpsMsg.getState();
             done = 0;
             ml = SimulationState.getMdlLbcb();
-            address = LbcbStep.getAddress();
+            address = StepData.getAddress();
             if ml.isDone() == 0
                 return;
             end
-            lgth = length(me.step.lbcb);
+            lgth = length(me.step.lbcbCps);
             switch c
                 case 'LBCB1'
                     if lgth == 2

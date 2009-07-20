@@ -11,11 +11,11 @@ classdef FakeOm < handle
             me.drvO = StateEnum(fcfg.derivedOptions);
         end
         function generateControlPoints(me,istep)
-            lgt = length(istep.lbcb); %#ok<*MCNPN> Until LINT understands object properties
+            lgt = length(istep.lbcbCps); %#ok<*MCNPN> Until LINT understands object properties
             fcfg = FakeOmDao(me.cfg);
             error = me.calcConvergence(istep);
             for l = 1: lgt
-                cp = istep.lbcb{l};
+                cp = istep.lbcbCps{l};
                 cp.response = LbcbReading;
                 if l ==1
                     scl = fcfg.scale1;

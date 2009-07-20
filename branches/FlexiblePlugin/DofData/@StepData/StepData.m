@@ -1,13 +1,17 @@
-classdef LbcbStep < handle
+classdef StepData < handle
     properties
-        lbcb = {}; % Number of LBCBs Instances of LbcbControlPoint
+        lbcbCps = {}; % Instances of LbcbControlPoint
+        modelCps = {}; % Instances of model control points
         simstep = {}; % SimulationStep instance
         externalSensorsRaw = [];
         log = Logger;
         jid = {};
     end
+    properties (Dependent)
+        lbcb
+    end
     methods
-        function me = LbcbStep(varargin)
+        function me = StepData(varargin)
             if(nargin > 0)
                 for i = 1:2:nargin
                     if nargin==i, break, end
@@ -15,17 +19,18 @@ classdef LbcbStep < handle
                     switch label
                         case 'simstep'
                             me.simstep = varargin{i+ 1};
-                        case 'targets'
+                        case 'lbcb_tgts'
                             targets = varargin{i+ 1};
                             lgth = length(targets);
-                            me.lbcb = cell(lgth,1);
+                            me.lbcbCps = cell(lgth,1);
                             for t = 1:lgth
-                                me.lbcb{t} = LbcbControlPoint;
-                                me.lbcb{t}.command = targets{t};
+                                me.lbcbCps{t} = LbcbControlPoint;
+                                me.lbcbCps{t}.command = targets{t};
                             end
                         case 'istep'
                             istep = varargin{i+ 1};
-                            me.lbcb = istep.lbcb;
+                            me.lbcbCps = istep.lbcbCps;
+                            me.modelCps = istep.modelCps;
                             me.simstep = istep.simstep;
                             me.externalSensorsRaw = istep.externalSensorsRaw;
                         otherwise
@@ -34,10 +39,18 @@ classdef LbcbStep < handle
                 end
             end
         end
-        function set.lbcb(me,value)
+        function set.lbcbCps(me,value)
 %             dbstack
 %             lgth = length(value)
-            me.lbcb = value;
+            me.lbcbCps = value;
+        end
+        function set.lbcb(me,value)
+             dbstack
+             me.log.error(dbstack,'lbcb has been renamed lbsb_cps'); 
+        end
+        function value = get.lbcb(me)
+             dbstack
+             me.log.error(dbstack,'lbcb has been renamed lbsb_cps'); 
         end
         function me = clone(istep)
             me.simstep = istep.simstep;

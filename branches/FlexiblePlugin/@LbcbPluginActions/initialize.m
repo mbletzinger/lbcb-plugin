@@ -236,7 +236,7 @@ me.stepHandles{2} = me.handles.SubStep;
 me.fakeGcp = FakeOm(me.cfg);
 me.setRunButton(0);
 
-LbcbStep.setConfig(me.cfg);
+StepData.setConfig(me.cfg);
 
 Logger.setMsgHandle(me.handles.Messages);
 me.setLoggerLevels();

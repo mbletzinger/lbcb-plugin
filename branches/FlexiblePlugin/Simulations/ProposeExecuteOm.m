@@ -39,7 +39,7 @@ classdef ProposeExecuteOm < SimulationState
         end
         function startExecute(me)
             ml = SimulationState.getMdlLbcb();
-            address = LbcbStep.getAddress();
+            address = StepData.getAddress();
             jmsg = ml.createCommand('execute',address,[],[]);
             me.log.debug(dbstack,sprintf('Sending %s',char(jmsg)));
             ml.start(jmsg,me.step.simstep,0);
