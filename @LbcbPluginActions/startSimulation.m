@@ -15,6 +15,7 @@ function startSimulation(me,notimer)
             me.nxtTgt.start();
             me.currentAction.setState('NEXT TARGET');
         end
+        me.arch = Archiver();
         if notimer 
             return;
         end

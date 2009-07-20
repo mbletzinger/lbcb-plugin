@@ -42,6 +42,7 @@ classdef LbcbPluginActions < handle
         fakeGcp = {}; % object used to generate fake control points
         running = 0;
         simTimer = {}; % Timer which runs the execute function
+        arch = {}  % Archiver instance 
         
     end
     methods
