@@ -52,12 +52,14 @@ switch a
             me.fakeGcp.generateControlPoints(me.nxtTgt.nextStepData);
             me.nxtTgt.curStepData = me.nxtTgt.nextStepData;
             me.currentAction.setState('NEXT TARGET');
+            me.arch.archive(me.nxtTgt.curStepData);
         else
             done = me.gcpOm.isDone();
             if done
                 me.colorConnectionButton('OperationsManager');
                 me.nxtTgt.curStepData = me.gcpOm.step;
                 me.currentAction.setState('NEXT TARGET');
+                me.arch.archive(me.gcpOm.step);
             end
         end
     case 'CHECK LIMITS'

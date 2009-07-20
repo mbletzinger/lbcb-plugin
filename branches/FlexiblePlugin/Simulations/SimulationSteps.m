@@ -36,10 +36,13 @@ classdef SimulationSteps < handle
             end
             simstate = SimulationSteps(stp,sStp);
         end
+        function str = step2String(me)
+            str = sprintf('%d %d',me.step, me.subStep);
+        end
     end
     methods (Static, Access = private)
         function id = newId()
-            persistent idCounter;
+            global idCounter;
             idCounter = idCounter + 1;
             id = idCounter;
         end
