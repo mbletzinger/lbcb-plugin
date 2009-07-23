@@ -34,7 +34,7 @@ classdef StepData < handle
                             me.simstep = istep.simstep;
                             me.externalSensorsRaw = istep.externalSensorsRaw;
                         otherwise
-                            me.log.debug(dbstack,sprintf('%s not recognized',label));
+                            me.log.error(dbstack,sprintf('%s not recognized',label));
                     end
                 end
             end

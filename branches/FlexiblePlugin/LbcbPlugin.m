@@ -22,7 +22,7 @@ function varargout = LbcbPlugin(varargin)
 
 % Edit the above text to modify the response to help LbcbPlugin
 
-% Last Modified by GUIDE v2.5 08-Jul-2009 16:09:49
+% Last Modified by GUIDE v2.5 21-Jul-2009 16:28:20
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -82,8 +82,10 @@ if isempty(infile) == 0
     handles.actions.setInputFile(infile);
 end
 % Update handles structure
+set(handles.DataTable,'Checked','off');
 guidata(hObject, handles);
 LbcbPluginActions.setGui(hObject);
+DataDisplay.setMenuHandle(handles);
 
 % h = handles
 
@@ -922,20 +924,6 @@ function MzI2_Callback(hObject, eventdata, handles)
 handles.actions.setIncrementLimit(12,2,get(hObject,'String'));
 
 % --------------------------------------------------------------------
-function File_Callback(hObject, eventdata, handles)
-% hObject    handle to File (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-
-% --------------------------------------------------------------------
-function Edit_Callback(hObject, eventdata, handles)
-% hObject    handle to Edit (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-
-% --------------------------------------------------------------------
 function NetworkConfiguration_Callback(hObject, eventdata, handles)
 % hObject    handle to NetworkConfiguration (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -1005,3 +993,16 @@ function StartSimCor_Callback(hObject, eventdata, handles)
 % hObject    handle to StartSimCor (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+
+
+% --------------------------------------------------------------------
+function DataTable_Callback(hObject, eventdata, handles)
+% hObject    handle to DataTable (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+if strcmp(get(hObject,'Checked'),'on')
+    handles.actions.dd.stopDataTable();
+else 
+    handles.actions.dd.startDataTable();
+    set(hObject,'Checked','on');
+end

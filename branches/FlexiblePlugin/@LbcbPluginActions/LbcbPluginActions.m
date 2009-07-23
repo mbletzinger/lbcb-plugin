@@ -27,6 +27,8 @@ classdef LbcbPluginActions < handle
         gcpOm = GetControlPointsOm;
         nxtTgt = NextTarget;
 %        sndTrig = SendTrigger;
+
+        dd = DataDisplay;
         
         log = Logger;
         currentAction = StateEnum({...
