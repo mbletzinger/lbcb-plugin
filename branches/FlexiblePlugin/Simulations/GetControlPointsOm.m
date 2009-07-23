@@ -25,6 +25,12 @@ classdef GetControlPointsOm < SimulationState
             if ml.isDone() == 0
                 return;
             end
+            me.state.setState(ml.state.getState);
+            if me.state.isState('ERRORS EXIST')
+                done = 1;
+                return;
+            end
+
             lgth = length(me.step.lbcbCps);
             switch c
                 case 'LBCB1'

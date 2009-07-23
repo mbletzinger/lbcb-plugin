@@ -129,7 +129,7 @@ classdef MdlLbcb < handle
                 case 'ERRORS_EXIST'
                     me.state.setState('ERRORS EXIST');
                     me.action.setState('NONE');
-                    me.log.error(dbstack(),char(me.connection.getFromRemoteMsg().getError().getText()));
+                    me.log.error(dbstack(),char(me.simcorTcp.getTransaction().getError().getText()));
                     me.simcorTcp.isReady();
                 case 'RESPONSE_AVAILABLE'
 %                    me.state.setState('READY');
