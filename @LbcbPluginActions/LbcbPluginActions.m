@@ -40,6 +40,7 @@ classdef LbcbPluginActions < handle
             'CHECK LIMITS'...
             'READY'
             });
+        previousAction;
         fakeOm = 0; % flag indicating fake OM
         fakeGcp = {}; % object used to generate fake control points
         running = 0;
@@ -69,6 +70,7 @@ classdef LbcbPluginActions < handle
             % set up execute timer
             me.simTimer = timer('Period',0.05, 'TasksToExecute',1000000,'ExecutionMode','fixedSpacing','Name','SimulationTimer');
             me.simTimer.TimerFcn = { 'LbcbPluginActions.execute', me };
+            me.previousAction = StateEnum(me.currentAction.states);
         end
         openCloseConnection(me, connection,closeIt)
         runInputFile(me,inFile)

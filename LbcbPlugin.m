@@ -22,7 +22,7 @@ function varargout = LbcbPlugin(varargin)
 
 % Edit the above text to modify the response to help LbcbPlugin
 
-% Last Modified by GUIDE v2.5 21-Jul-2009 16:28:20
+% Last Modified by GUIDE v2.5 23-Jul-2009 05:35:41
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -1005,4 +1005,14 @@ if strcmp(get(hObject,'Checked'),'on')
 else 
     handles.actions.dd.startDataTable();
     set(hObject,'Checked','on');
+end
+
+
+% --- Executes during object deletion, before destroying properties.
+function LbcbPlugin_DeleteFcn(hObject, eventdata, handles)
+% hObject    handle to LbcbPlugin (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+if isempty(handles.actions) == 0
+handles.actions.shutdown();
 end

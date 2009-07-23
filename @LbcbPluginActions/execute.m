@@ -3,7 +3,10 @@ function execute(obj, event,me)
 %     return;
 % end
 a = me.currentAction.getState();
-me.log.debug(dbstack,sprintf('Executing action %s',a));
+if me.previousAction.isState(a) == 0
+    me.log.debug(dbstack,sprintf('Executing action %s',a));
+    me.previousAction.setState(a);
+end
 switch a
     case 'OPEN CONNECTION'
         done = me.oc.isDone();
@@ -40,6 +43,10 @@ switch a
             done = me.peOm.isDone();
             if done % execute response has been received from OM
                 me.colorConnectionButton('OperationsManager');
+                if me.peOm.state.isState('ERRORS EXIST')
+                    me.setRunButton(0); % Pause the simulation
+                    stop(me.simTimer);
+                end
                 me.gcpOm.step = me.peOm.step;
                 me.gcpOm.start();
                 me.currentAction.setState('OM GET CONTROL POINTS');
@@ -58,6 +65,10 @@ switch a
             done = me.gcpOm.isDone();
             if done
                 me.colorConnectionButton('OperationsManager');
+                if me.peOm.state.isState('ERRORS EXIST')
+                    me.setRunButton(0); % Pause the simulation
+                    stop(me.simTimer);
+                end
                 me.nxtTgt.curStepData = me.gcpOm.step;
                 me.currentAction.setState('NEXT TARGET');
                 me.arch.archive(me.gcpOm.step);

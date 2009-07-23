@@ -16,6 +16,11 @@ classdef ProposeExecuteOm < SimulationState
             if ml.isDone() == 0
                 return;
             end
+            me.state.setState(ml.state.getState);
+            if me.state.isState('ERRORS EXIST')
+                done = 1;
+                return;
+            end
             a = me.action.getState();
             switch a
                 case 'DONE'
