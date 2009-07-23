@@ -53,6 +53,7 @@ switch a
             me.nxtTgt.curStepData = me.nxtTgt.nextStepData;
             me.currentAction.setState('NEXT TARGET');
             me.arch.archive(me.nxtTgt.curStepData);
+            me.dd.update(me.nxtTgt.curStepData);
         else
             done = me.gcpOm.isDone();
             if done
@@ -60,6 +61,7 @@ switch a
                 me.nxtTgt.curStepData = me.gcpOm.step;
                 me.currentAction.setState('NEXT TARGET');
                 me.arch.archive(me.gcpOm.step);
+                me.dd.update(me.gcpOm.step);
             end
         end
     case 'CHECK LIMITS'
