@@ -15,6 +15,13 @@ classdef OmConfigDao < handle
         sensorNames
         apply2Lbcb
         sensitivities
+        baseX
+        baseY
+        baseZ
+        platX
+        platY
+        platZ
+        sensorErrorTol
         useFakeOm
     end
     properties
@@ -77,6 +84,90 @@ classdef OmConfigDao < handle
         function set.sensitivities(me,value)
             valS = me.su.da2sl(value);
               me.cfg.props.setPropertyList('om.sensitivities',valS);
+        end
+        function result = get.baseX(me)
+            resultSL = me.cfg.props.getPropertyList('om.sensor.location.base.x');
+            if isempty(resultSL)
+                result = zeros(15,1);
+                return;
+            end
+            result = me.su.sl2da(resultSL);
+        end
+        function set.baseX(me,value)
+            valS = me.su.da2sl(value);
+            me.cfg.props.setPropertyList('om.sensor.location.base.x',valS);
+        end
+        function result = get.baseY(me)
+            resultSL = me.cfg.props.getPropertyList('om.sensor.location.base.y');
+            if isempty(resultSL)
+                result = zeros(15,1);
+                return;
+            end
+            result = me.su.sl2da(resultSL);
+        end
+        function set.baseY(me,value)
+            valS = me.su.da2sl(value);
+            me.cfg.props.setPropertyList('om.sensor.location.base.y',valS);
+        end
+        function result = get.baseZ(me)
+            resultSL = me.cfg.props.getPropertyList('om.sensor.location.base.z');
+            if isempty(resultSL)
+                result = zeros(15,1);
+                return;
+            end
+            result = me.su.sl2da(resultSL);
+        end
+        function set.baseZ(me,value)
+            valS = me.su.da2sl(value);
+            me.cfg.props.setPropertyList('om.sensor.location.base.z',valS);
+        end
+        function result = get.platX(me)
+            resultSL = me.cfg.props.getPropertyList('om.sensor.location.plat.x');
+            if isempty(resultSL)
+                result = zeros(15,1);
+                return;
+            end
+            result = me.su.sl2da(resultSL);
+        end
+        function set.platX(me,value)
+            valS = me.su.da2sl(value);
+            me.cfg.props.setPropertyList('om.sensor.location.plat.x',valS);
+        end
+        function result = get.platY(me)
+            resultSL = me.cfg.props.getPropertyList('om.sensor.location.plat.y');
+            if isempty(resultSL)
+                result = zeros(15,1);
+                return;
+            end
+            result = me.su.sl2da(resultSL);
+        end
+        function set.platY(me,value)
+            valS = me.su.da2sl(value);
+            me.cfg.props.setPropertyList('om.sensor.location.plat.y',valS);
+        end
+        function result = get.platZ(me)
+            resultSL = me.cfg.props.getPropertyList('om.sensor.location.plat.z');
+            if isempty(resultSL)
+                result = zeros(15,1);
+                return;
+            end
+            result = me.su.sl2da(resultSL);
+        end
+        function set.platZ(me,value)
+            valS = me.su.da2sl(value);
+            me.cfg.props.setPropertyList('om.sensor.location.plat.z',valS);
+        end
+        function result = get.sensorErrorTol(me)
+            resultSL = me.cfg.props.getPropertyList('om.sensor.error.tol');
+            if isempty(resultSL)
+                result = zeros(15,1);
+                return;
+            end
+            result = me.su.sl2da(resultSL);
+        end
+        function set.sensorErrorTol(me,value)
+            valS = me.su.da2sl(value);
+            me.cfg.props.setPropertyList('om.sensor.error.tol',valS);
         end
     end
 end

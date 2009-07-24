@@ -11,7 +11,7 @@
 %   based on the perturbation applied.
 %
 %
-% $LastChangedDate: 2009-05-31 07:19:36 -0500 (Sun, 31 May 2009) $ 
+% $LastChangedDate: 2009-05-31 07:19:36 -0500 (Sun, 31 May 2009) $
 % $Author: mbletzin $
 % =====================================================================================================================
 classdef ElasticDeformationCalculations < handle
@@ -32,14 +32,14 @@ classdef ElasticDeformationCalculations < handle
             if isLbcb1
                 me.base = config.Lbcb1.Base;
                 me.plat = config.Lbcb1.Plat;
-%                 me.previousLengths = some math from base and plat
-%                 me.potTol = configs.Lbcb1.potTol;
-
+                %                 me.previousLengths = some math from base and plat
+                %                 me.potTol = configs.Lbcb1.potTol;
+                
             else
                 me.base = config.Lbcb2.Base;
                 me.plat = config.Lbcb2.Plat;
-%                 me.previousLengths = some math from base and plat
-%                 me.potTol = configs.Lbcb2.potTol;
+                %                 me.previousLengths = some math from base and plat
+                %                 me.potTol = configs.Lbcb2.potTol;
             end
             % Change to vector config.Params.pert
             me.perturbations = [config.Params.pertDx, config.Params.pertDz, config.Params.pertRy ];
@@ -48,6 +48,6 @@ classdef ElasticDeformationCalculations < handle
         % calculate LBCB position based on external sensor readings.
         calculate(me, curLbcbCP,prevLbcbCP)
         lengths = dof2act(me,deltas,v0,p0,q0)
-        end
+        loadConfig(me,cfg,isLbcb1)
     end
 end
