@@ -12,6 +12,7 @@
 classdef NextTarget < SimulationState
     properties
         inpF = [];
+        prevStepData = []
         curStepData = [];
         nextStepData = [];
         simCompleted = 0;
@@ -22,6 +23,7 @@ classdef NextTarget < SimulationState
     end
     methods
         function start(me)
+            me.prevStepData = me.curStepData;
             me.curStepData = me.nextStepData;
         end
         function done = isDone(me)
@@ -30,9 +32,9 @@ classdef NextTarget < SimulationState
             % step is not empty
             if isempty(me.curStepData) == 0 
                 %calculate elastic deformations
-                for l = 1: length(me.curStepData.lbcbCps)
+                for l = 1: length(me.prevStepData.lbcbCps)
                     ed = NextTarget.getED(l == 1);
-                    ed.calculate(me.curStepData.lbcbCps{l});
+                    ed.calculate(me.curStepData.lbcbCps{l},me.prevStepData.lbcbCps{l});
                 end
                 % check tolerances
                 st = NextTarget.getST();
