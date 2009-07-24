@@ -27,7 +27,7 @@ for i = 1:length(activeDOFs)
     % Updating temporary global delta to include pert in current DOF
     del(activeDOFs(i)) = del(activeDOFs(i)) + me.perturbations(i);
     
-    pertlength = dof2act(del,v0,me.plat,me.base); % Calc for expected SP lengths
+    pertlength = me.dof2act(del,v0,me.plat,me.base); % Calc for expected SP lengths
     dldDOF = (pertlength - actualLengths')/me.perturbations(i);% SP length change/pert size
     Jacobian(:,i) = dldDOF';   % Populating Jacobian column for current DOF
 end
@@ -43,7 +43,7 @@ for j = 1:length(activeDOFs)
 end
 
 % Calculating SP lengths based on first delta approximation
-lengthscalc = dof2act(delta,v0,me.plat,me.base);
+lengthscalc = me.dof2act(delta,v0,me.plat,me.base);
 
 % Calculating discrepancy between actual and expected SP lengths from delta
 errors = actualLengths - lengthscalc';
@@ -63,7 +63,7 @@ while pass == 0
         delta(activeDOFs(j)) = deltaest(j) + prevDisplacement(j);
     end
     
-    lengthscalc = dof2act(delta,v0,me.plat,me.base);
+    lengthscalc = me.dof2act(delta,v0,me.plat,me.base);
     errors = actualLengths - lengthscalc';
     n = n + 1;
     
