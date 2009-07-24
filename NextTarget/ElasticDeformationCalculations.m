@@ -18,12 +18,13 @@ classdef ElasticDeformationCalculations < handle
     properties
         base = [];
         plat = [];
-        initialLengths = [];
+        previousLengths = [];
         currentLengths = [];
         jacobian = [];
         calcPlatCtr = [];
         MeasPltCtr = [];
         perturbations = [];
+        potTol = [];
     end
     methods
         function me = ElasticDeformationCalculations(cfg,isLbcb1)
@@ -31,17 +32,25 @@ classdef ElasticDeformationCalculations < handle
             if isLbcb1
                 me.base = config.Lbcb1.Base;
                 me.plat = config.Lbcb1.Plat;
+%                 me.previousLengths = some math from base and plat
+%                 me.potTol = configs.Lbcb1.potTol;
+
             else
                 me.base = config.Lbcb2.Base;
                 me.plat = config.Lbcb2.Plat;
+%                 me.previousLengths = some math from base and plat
+%                 me.potTol = configs.Lbcb2.potTol;
             end
+            % Change to vector config.Params.pert
             me.perturbations = [config.Params.pertDx, config.Params.pertDz, config.Params.pertRy ];
         end
         
         % calculate LBCB position based on external sensor readings.
-        function calculate(me, lbcbCP)
+        function calculate(me, curLbcbCP,prevLbcbCP)
             lbcbR = lbcbCP.response;
-            extSensor = lbcbCP.externalSensors;
+            actualLengths = lbcbCP.externalSensors;
+            prevLengths = me.currentLengths;
+            prevDisplacement = prevLbcbCP.response.disp;
             lbcbR.ed.force = lbcbR.lbcb.force;
 
             % temp fix
@@ -49,7 +58,8 @@ classdef ElasticDeformationCalculations < handle
             
             %  Ken's work goes here
             
-            
+            % Store the resulting cartesian displacement
+            curLbcbCP.response.ed.disp = currentDisplacement;
         end
     end
 end
