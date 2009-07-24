@@ -1,5 +1,5 @@
 function parseControlPointMsg(me,rsp)
-[address contents] = rsp.getContents();
+[address contents] = rsp.getContents()
 mdl = StepData.getAddress();
 switch char(address.getSuffix())
     case 'LBCB1'
