@@ -22,7 +22,7 @@ function varargout = OmConfig(varargin)
 
 % Edit the above text to modify the response to help OmConfig
 
-% Last Modified by GUIDE v2.5 24-Jul-2009 17:08:21
+% Last Modified by GUIDE v2.5 25-Jul-2009 09:17:16
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -54,7 +54,23 @@ function OmConfig_OpeningFcn(hObject, eventdata, handles, varargin)
 
 % Choose default command line output for OmConfig
 handles.output = hObject;
-
+cfg = [];
+if(nargin > 3)
+    for index = 1:2:(nargin-3),
+        if nargin-3==index, break, end
+        label = lower(varargin{index});
+        switch label
+            case 'cfg'
+                cfg = varargin{index+1};
+            otherwise
+            str= sprintf('%s not recognized',label);
+            disp(str);
+        end
+    end
+end
+handles.cfg = cfg;
+handles.actions = OmConfigActions(cfg);
+handles.actions.initialize(handles);
 % Update handles structure
 guidata(hObject, handles);
 
@@ -81,27 +97,14 @@ function numLbcbs_Callback(hObject, eventdata, handles)
 
 % Hints: contents = get(hObject,'String') returns numLbcbs contents as cell array
 %        contents{get(hObject,'Value')} returns selected item from numLbcbs
-
-
-% --- Executes during object creation, after setting all properties.
-function numLbcbs_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to numLbcbs (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: popupmenu controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
-
+handles.actions.setNumLbcbs(get(hObject,'Value'));
 
 % --- Executes on button press in fakeOmProps.
 function fakeOmProps_Callback(hObject, eventdata, handles)
 % hObject    handle to fakeOmProps (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-
+FakeOmProperties('cfg',handles.cfg)
 
 % --- Executes on button press in useFakeOm.
 function useFakeOm_Callback(hObject, eventdata, handles)
@@ -110,10 +113,24 @@ function useFakeOm_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 % Hint: get(hObject,'Value') returns toggle state of useFakeOm
-
+handles.actions.setUseFakeOm(get(hObject,'Value'));
 
 % --- Executes on button press in ok.
-function ok_Callback(hObject, eventdata, handles)
+function ok_Callback(hObject, eventdata, handles) %#ok<*INUSL>
 % hObject    handle to ok (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+delete(handles.OmConfig);
+
+% --- Executes when entered data in editable cell(s) in sensorTable.
+function sensorTable_CellEditCallback(hObject, eventdata, handles) %#ok<INUSL,*DEFNU>
+% hObject    handle to sensorTable (see GCBO)
+% eventdata  structure with the following fields (see UITABLE)
+%	Indices: row and column indices of the cell(s) edited
+%	PreviousData: previous data for the cell(s) edited
+%	EditData: string(s) entered by the user
+%	NewData: EditData or its converted form set on the Data property. Empty if Data was not changed
+%	Error: error string when failed to convert EditData to appropriate value for Data
+% handles    structure with handles and user data (see GUIDATA)
+handles.actions.setCell(get(hObject,'Indices'),get(hObject,'NewData'),get(hObject,'Error'));
+

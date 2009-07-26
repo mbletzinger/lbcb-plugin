@@ -33,10 +33,15 @@ classdef OmConfigDao < handle
             me.cfg = cfg;
         end
         function result = get.numLbcbs(me)
-              result = me.cfg.props.getProperty('om.numLbcbs');
+              str = char(me.cfg.props.getProperty('om.numLbcbs'));
+              if isempty(str)
+                  result = 0;
+                  return;
+              end
+              result = sscanf(str,'%d');
         end
         function set.numLbcbs(me,value)
-              me.cfg.props.setProperty('om.numLbcbs',value);
+              me.cfg.props.setProperty('om.numLbcbs',sprintf('%d',value));
         end
         function result = get.useFakeOm(me)
               str = char(me.cfg.props.getProperty('om.useFakeOm'));
@@ -64,7 +69,10 @@ classdef OmConfigDao < handle
         function result = get.apply2Lbcb(me)
               resultSL = me.cfg.props.getPropertyList('om.apply2Lbcb');
               if isempty(resultSL)
-                  result = [];
+                  result = cell(15,1);
+                  for i = 1:15
+                      result{i} = 'LBCB1';
+                  end
                   return;
               end
               result = me.su.sl2ca(resultSL);
