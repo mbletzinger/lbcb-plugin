@@ -22,7 +22,7 @@ function varargout = OmConfig(varargin)
 
 % Edit the above text to modify the response to help OmConfig
 
-% Last Modified by GUIDE v2.5 26-Jul-2009 19:14:36
+% Last Modified by GUIDE v2.5 27-Jul-2009 09:50:30
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -133,4 +133,18 @@ function sensorTable_CellEditCallback(hObject, eventdata, handles) %#ok<INUSL,*D
 %	Error: error string when failed to convert EditData to appropriate value for Data
 % handles    structure with handles and user data (see GUIDATA)
 handles.actions.setCell(eventdata.Indices,eventdata.NewData,eventdata.Error);
+
+
+% --- Executes when entered data in editable cell(s) in pertTable.
+function pertTable_CellEditCallback(hObject, eventdata, handles)
+% hObject    handle to pertTable (see GCBO)
+% eventdata  structure with the following fields (see UITABLE)
+%	Indices: row and column indices of the cell(s) edited
+%	PreviousData: previous data for the cell(s) edited
+%	EditData: string(s) entered by the user
+%	NewData: EditData or its converted form set on the Data property. Empty if Data was not changed
+%	Error: error string when failed to convert EditData to appropriate value for Data
+% handles    structure with handles and user data (see GUIDATA)
+handles.actions.setPertCell(eventdata.Indices,eventdata.EditData);
+
 

@@ -23,6 +23,8 @@ classdef OmConfigDao < handle
         platZ
         sensorErrorTol
         useFakeOm
+        perturbationsL1
+        perturbationsL2
     end
     properties
         cfg = Configuration();
@@ -180,5 +182,56 @@ classdef OmConfigDao < handle
             valS = me.su.da2sl(value);
             me.cfg.props.setPropertyList('om.sensor.error.tol',valS);
         end
+        function result = get.perturbationsL1(me)
+            result = Target;
+            resultSL = me.cfg.props.getPropertyList('om.sensor.perturbations.lbcb1');
+            if isempty(resultSL)
+                return;
+            end
+            perts = me.su.sl2da(resultSL);
+            for i = 1:6
+                if perts(i) < 999
+                    result.setDispDof(i,perts(i));
+                end
+            end
+        end
+           function set.perturbationsL1(me,value)
+               perts = zeros(6,1);
+               for i = 1:6
+                   if value.dispDofs(i)
+                       perts(i) = value.disp(i);
+                   else
+                       perts(i) = 1000;
+                   end
+               end
+            valS = me.su.da2sl(perts);
+            me.cfg.props.setPropertyList('om.sensor.perturbations.lbcb1',valS);
+        end
+        function result = get.perturbationsL2(me)
+            result = Target;
+            resultSL = me.cfg.props.getPropertyList('om.sensor.perturbations.lbcb2');
+            if isempty(resultSL)
+                return;
+            end
+            perts = me.su.sl2da(resultSL);
+            for i = 1:6
+                if perts(i) < 999
+                    result.setDispDof(i,perts(i));
+                end
+            end
+        end
+           function set.perturbationsL2(me,value)
+               perts = zeros(6,1);
+               for i = 1:6
+                   if value.dispDofs(i)
+                       perts(i) = value.disp(i);
+                   else
+                       perts(i) = 1000;
+                   end
+               end
+            valS = me.su.da2sl(perts);
+            me.cfg.props.setPropertyList('om.sensor.perturbations.lbcb2',valS);
+        end
+     
     end
 end
