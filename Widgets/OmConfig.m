@@ -22,7 +22,7 @@ function varargout = OmConfig(varargin)
 
 % Edit the above text to modify the response to help OmConfig
 
-% Last Modified by GUIDE v2.5 25-Jul-2009 09:17:16
+% Last Modified by GUIDE v2.5 26-Jul-2009 19:14:36
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -75,7 +75,7 @@ handles.actions.initialize(handles);
 guidata(hObject, handles);
 
 % UIWAIT makes OmConfig wait for user response (see UIRESUME)
-% uiwait(handles.figure1);
+% uiwait(handles.OmConfig);
 
 
 % --- Outputs from this function are returned to the command line.
@@ -132,5 +132,5 @@ function sensorTable_CellEditCallback(hObject, eventdata, handles) %#ok<INUSL,*D
 %	NewData: EditData or its converted form set on the Data property. Empty if Data was not changed
 %	Error: error string when failed to convert EditData to appropriate value for Data
 % handles    structure with handles and user data (see GUIDATA)
-handles.actions.setCell(get(hObject,'Indices'),get(hObject,'NewData'),get(hObject,'Error'));
+handles.actions.setCell(eventdata.Indices,eventdata.NewData,eventdata.Error);
 
