@@ -35,7 +35,7 @@ classdef OmConfigDao < handle
         function result = get.numLbcbs(me)
               str = char(me.cfg.props.getProperty('om.numLbcbs'));
               if isempty(str)
-                  result = 0;
+                  result = 1;
                   return;
               end
               result = sscanf(str,'%d');
@@ -58,6 +58,9 @@ classdef OmConfigDao < handle
               resultSL = me.cfg.props.getPropertyList('om.sensorNames');
               if isempty(resultSL)
                   result = cell(15,1);
+                  for s = 1:15
+                      result{s} = '';
+                  end
                   return;
               end
               result = me.su.sl2ca(resultSL);
