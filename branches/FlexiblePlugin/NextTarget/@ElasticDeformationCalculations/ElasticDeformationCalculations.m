@@ -25,24 +25,11 @@ classdef ElasticDeformationCalculations < handle
         MeasPltCtr = [];
         perturbations = [];
         potTol = [];
+        activeDofs = [];
     end
     methods
         function me = ElasticDeformationCalculations(cfg,isLbcb1)
-            config = ConfigExternalSensors(cfg);
-            if isLbcb1
-                me.base = config.Lbcb1.Base;
-                me.plat = config.Lbcb1.Plat;
-                %                 me.previousLengths = some math from base and plat
-                %                 me.potTol = configs.Lbcb1.potTol;
-                
-            else
-                me.base = config.Lbcb2.Base;
-                me.plat = config.Lbcb2.Plat;
-                %                 me.previousLengths = some math from base and plat
-                %                 me.potTol = configs.Lbcb2.potTol;
-            end
-            % Change to vector config.Params.pert
-            me.perturbations = [config.Params.pertDx, config.Params.pertDz, config.Params.pertRy ];
+            me.loadConfig(cfg,isLbcb1);
         end
         
         % calculate LBCB position based on external sensor readings.

@@ -68,14 +68,19 @@ if(nargin > 3)
         end
     end
 end
+
 handles.cfg = cfg;
 handles.actions = OmConfigActions(cfg);
 handles.actions.initialize(handles);
+
+% Make the GUI modal
+set(handles.OmConfig,'WindowStyle','modal')
+
 % Update handles structure
 guidata(hObject, handles);
 
 % UIWAIT makes OmConfig wait for user response (see UIRESUME)
-% uiwait(handles.OmConfig);
+uiwait(handles.OmConfig);
 
 
 % --- Outputs from this function are returned to the command line.
@@ -86,7 +91,7 @@ function varargout = OmConfig_OutputFcn(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 % Get default command line output from handles structure
-varargout{1} = handles.output;
+varargout{1} = 1;
 
 
 % --- Executes on selection change in numLbcbs.
