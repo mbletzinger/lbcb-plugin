@@ -56,8 +56,6 @@ classdef Configuration < handle
                 end
             end
         end
-    end
-    methods (Access='private')
         function done = loadFile(me,name)
             result = me.props.load(name);
             if isempty(result)
