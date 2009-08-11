@@ -11,7 +11,9 @@ switch a
     case 'OPEN CONNECTION'
         done = me.oc.isDone();
         if done
-            me.log.debug(dbstack,'Open connection is done');
+            if me.oc.state.isState('ERRORS EXIST') == 0
+                me.log.debug(dbstack,'Open connection is done');
+            end
             me.currentAction.setState('READY');
             me.colorConnectionButton(me.oc.connectionType.getState());
             stop(me.simTimer);

@@ -13,7 +13,7 @@ classdef OpenClose < SimulationState
             'OPENING_SESSION',...
             'DONE',...
             });
-        closeIt
+        closeIt = 0;
     end
     methods
         function start(me, connection,cfg)
@@ -28,10 +28,15 @@ classdef OpenClose < SimulationState
                         SimulationState.setMdlLbcb(ml);
                     end
                     if me.closeIt
-                        address = StepData.getAddress();
-                        jmsg = ml.createCommand('close-session',address,[],[]);
-                        ml.start(jmsg,[],0);
-                        me.omActions.setState('CLOSING_SESSION');
+                        if ml.state.isState('ERRORS EXIST') == 0  % There are no errors
+                            address = StepData.getAddress();
+                            jmsg = ml.createCommand('close-session',address,[],[]);
+                            ml.start(jmsg,[],0);
+                            me.omActions.setState('CLOSING_SESSION');
+                        else
+                            ml.close();
+                            me.omActions.setState('DISCONNECTING');
+                        end
                     else
                         ml.open();
                         me.omActions.setState('CONNECTING');
@@ -55,6 +60,7 @@ classdef OpenClose < SimulationState
                     me.state.setState(ml.state.getState);
                     if me.state.isState('ERRORS EXIST')
                         done = 1;
+                        me.connectionStatus(me.connectionType.idx) = 0;
                         return;
                     end
                     a = me.omActions.getState();
@@ -102,6 +108,7 @@ classdef OpenClose < SimulationState
             me.omActions.setState('OPENING_SESSION');
         end
         function disconnectOm(me)
+            ml = SimulationState.getMdlLbcb();
             delete(ml)
             SimulationState.setMdlLbcb({});
             me.omActions.setState('DONE');            
