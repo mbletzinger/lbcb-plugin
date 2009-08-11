@@ -72,7 +72,7 @@ classdef LbcbPluginActions < handle
             me.simTimer.TimerFcn = { 'LbcbPluginActions.execute', me };
             me.previousAction = StateEnum(me.currentAction.states);
         end
-        openCloseConnection(me, connection,closeIt)
+        openCloseConnection(me, connection,value)
         runInputFile(me,inFile)
         initialize(me)
         updateCommandLimits(me)

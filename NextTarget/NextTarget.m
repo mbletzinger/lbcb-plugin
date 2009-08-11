@@ -32,9 +32,9 @@ classdef NextTarget < SimulationState
             % step is not empty
             if isempty(me.curStepData) == 0 
                 %calculate elastic deformations
-                for l = 1: length(me.prevStepData.lbcbCps)
+                for l = 1: length(me.curStepData.lbcbCps)
                     ed = NextTarget.getED(l == 1);
-                    ed.calculate(me.curStepData.lbcbCps{l},me.prevStepData.lbcbCps{l});
+%                    ed.calculate(me.curStepData.lbcbCps{l},me.prevStepData.lbcbCps{l});
                 end
                 % check tolerances
                 st = NextTarget.getST();
