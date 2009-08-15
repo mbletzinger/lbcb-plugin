@@ -46,6 +46,7 @@ classdef MdlLbcb < handle
         % Continue executing the current action
         function done = isDone(me)
             a = me.action.getState();
+            me.log.debug(dbstack,sprintf('mdlbcb action is %s',a));
             done = 0;
             switch a
                 case { 'OPEN CONNECTION' 'CLOSE CONNECTION' }
@@ -78,9 +79,6 @@ classdef MdlLbcb < handle
         
         % Start to close the connection to the operations manager
         function close(me)
-            if me.state.isState('ERRORS EXIST')
-                return
-            end
             me.simcorTcp.shutdown();
             me.action.setState('CLOSE CONNECTION');
             me.state.setState('BUSY');
@@ -124,13 +122,15 @@ classdef MdlLbcb < handle
             is = InitStates();
             ts = StateEnum(is.transactionStates);
             ts.setState(me.simcorTcp.isReady());
-            switch ts.getState()
-                
+            csS = ts.getState();
+            me.log.debug(dbstack,sprintf('Transaction state is %s',csS));
+            switch csS
                 case 'ERRORS_EXIST'
                     me.state.setState('ERRORS EXIST');
                     me.action.setState('NONE');
                     me.log.error(dbstack(),char(me.simcorTcp.getTransaction().getError().getText()));
                     me.simcorTcp.isReady();
+                    me.simcorTcp.shutdown();
                 case 'RESPONSE_AVAILABLE'
 %                    me.state.setState('READY');
                     transaction = me.simcorTcp.pickupTransaction();
@@ -151,16 +151,18 @@ classdef MdlLbcb < handle
             ts = StateEnum(is.transactionStates);
             ts.setState(char(me.simcorTcp.isReady()));
             csS = ts.getState();
+            me.log.debug(dbstack,sprintf('Transaction state is %s',csS));
             switch csS
                 case 'TRANSACTION_DONE'
                     me.state.setState('READY');
                     me.action.setState('NONE');
                     me.simcorTcp.isReady();
                 case 'ERRORS_EXIST'
+                    me.simcorTcp.isReady();
                     me.state.setState('ERRORS EXIST');
                     me.action.setState('NONE');
                     me.log.error(dbstack(),char(me.simcorTcp.getTransaction().getError().getText()));
-                    me.simcorTcp.isReady();
+                    me.simcorTcp.shutdown();
                 case {'CLOSING_CONNECTION' 'OPENING_CONNECTION' }
                 otherwise
                     me.log.error(dbstack,sprintf('"%s" not recognized',csS));

@@ -122,7 +122,7 @@ end
 
 % --- Executes on button press in Connect2Om.
 function Connect2Om_Callback(hObject, eventdata, handles)
-handles.actions.openCloseConnection('OperationsManager',get(hObject,'Value'));
+handles.actions.openCloseConnection('OperationsManager',get(hObject,'Value') == 0);
 
 
 % --- Executes on button press in ManualInput.
@@ -1013,6 +1013,7 @@ function LbcbPlugin_DeleteFcn(hObject, eventdata, handles)
 % hObject    handle to LbcbPlugin (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-if isempty(handles.actions) == 0
+if isfield(handles,'actions') == 0
+    disp('Shutting Down');
 handles.actions.shutdown();
 end
