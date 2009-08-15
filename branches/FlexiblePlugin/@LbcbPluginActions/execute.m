@@ -3,26 +3,34 @@ function execute(obj, event,me)
 %     return;
 % end
 a = me.currentAction.getState();
+
+% me.log.debug(dbstack,sprintf('Executing action %s',a));
+
 if me.previousAction.isState(a) == 0
     me.log.debug(dbstack,sprintf('Executing action %s',a));
     me.previousAction.setState(a);
 end
 switch a
     case 'OPEN CONNECTION'
-        done = me.oc.isDone();
+        done = me.ocOm.isDone();
+%         oc = me.ocOm
+%         state = me.ocOm.getState()
         if done
-            if me.oc.state.isState('ERRORS EXIST') == 0
+            if me.ocOm.state.isState('ERRORS EXIST') == 0
                 me.log.debug(dbstack,'Open connection is done');
+                me.colorConnectionButton(me.ocOm.connectionType.getState());
             end
             me.currentAction.setState('READY');
-            me.colorConnectionButton(me.oc.connectionType.getState());
+            me.colorConnectionButton(me.ocOm.connectionType.getState());
             stop(me.simTimer);
         end
     case 'CLOSE CONNECTION'
-        done = me.oc.isDone();
+%        ocOm = me.ocOm
+        done = me.ocOm.isDone();
         if done
+%            currentAction = me.currentAction
             me.currentAction.setState('READY');
-            me.colorConnectionButton(me.oc.connectionType.getState());
+            me.colorConnectionButton(me.ocOm.connectionType.getState());
             stop(me.simTimer);
         end
     case'NEXT TARGET'
@@ -98,4 +106,5 @@ switch a
         me.log.error(dbstack,sprintf('%s not recognized',a));
 end
 LbcbPluginActions.updateGui(me);
+me.log.debug(dbstack,'execute is done');
 end

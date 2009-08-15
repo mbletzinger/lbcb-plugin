@@ -1,23 +1,31 @@
 function colorConnectionButton(me,connection)
 hndls = {me.handles.Connect2Om; me.handles.StartTriggering; me.handles.StartSimCor};
-me.oc.connectionType.setState(connection);
-status = me.oc.connectionStatus(me.oc.connectionType.idx);
-errors = me.errorsExist(connection);
-val = get(hndls{me.oc.connectionType.idx},'Value');
-if status && val
-    set(hndls{me.oc.connectionType.idx},'BackgroundColor','g');
-    if me.currentAction.isState('READY')  && errors == false
-        me.log.info(dbstack,sprintf('%s is connected', connection));
-    end
-else
-    set(hndls{me.oc.connectionType.idx},'BackgroundColor','w');
-    if val
-    me.log.info(dbstack,sprintf('%s is disconnected', connection));
-    end
+val = get(hndls{1},'Value');
+status = me.ocOm.connectionStatus.getState();
+me.log.debug(dbstack,sprintf('val %d status %s ocOm actions %s',val,status, me.ocOm.omActions.getState()));
+if val == 0
+    set(hndls{1},'BackgroundColor','w');
+    return;
 end
 
-if errors && val
-    set(hndls{me.oc.connectionType.idx},'BackgroundColor','r');
-    me.log.info(dbstack,sprintf('%s connection failed', connection));
+if me.ocOm.omActions.isState('DONE') == 0
+    return;
+end
+
+status = me.ocOm.connectionStatus.getState();
+switch status
+    case 'CONNECTED'
+        set(hndls{1},'BackgroundColor','g');
+        if me.currentAction.isState('READY')
+            me.log.info(dbstack,sprintf('%s is connected', connection));
+        end
+    case 'DISCONNECTED'
+        set(hndls{1},'BackgroundColor','w');
+        me.log.info(dbstack,sprintf('%s is disconnected', connection));
+    case 'ERRORED'
+        set(hndls{1},'BackgroundColor','r');
+        me.log.info(dbstack,sprintf('%s connection failed', connection));
+    otherwise
+        me.log.error(dbstack, sprintf('%s not recognized',status));
 end
 end

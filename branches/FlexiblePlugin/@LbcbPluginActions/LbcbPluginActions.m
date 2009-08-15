@@ -22,7 +22,7 @@ classdef LbcbPluginActions < handle
         st = []; % StepTolerances object
         il = []; % IncrementLimits object
         
-        oc = OpenClose;
+        ocOm = OpenCloseOm;
         peOm = ProposeExecuteOm;
         gcpOm = GetControlPointsOm;
         nxtTgt = NextTarget;
@@ -71,8 +71,9 @@ classdef LbcbPluginActions < handle
             me.simTimer = timer('Period',0.05, 'TasksToExecute',1000000,'ExecutionMode','fixedSpacing','Name','SimulationTimer');
             me.simTimer.TimerFcn = { 'LbcbPluginActions.execute', me };
             me.previousAction = StateEnum(me.currentAction.states);
+            me.ocOm.cfg = me.cfg;
         end
-        openCloseConnection(me, connection,value)
+        openCloseConnection(me, connection,closeIt)
         runInputFile(me,inFile)
         initialize(me)
         updateCommandLimits(me)
