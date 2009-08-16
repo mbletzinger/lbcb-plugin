@@ -41,15 +41,18 @@ while ($running) {
     next;
   }
   if ($keyword eq 'propose') {
+    sleep 3;
     sendResponse("OK\t0\t$trans\tpropose accepted");
     next;
   }
   if ($keyword eq 'execute') {
+    sleep 5;
     sendResponse("OK\t0\t$trans\texecute done");
     next;
   }
   if ($keyword eq 'get-control-point') {
     my ($csp) = $mdl =~ m!:(.+)!;
+    sleep 3;
     if ($csp =~ m!LBCB!) {
       sendResponse("OK	0	dummy	$mdl	x	displacement	5.036049E-1	y	displacement	1.557691E-4	z	displacement	-7.850649E-4	x	rotation	3.829964E-5	y	rotation	-2.747683E-5	z	rotation	1.195688E-3	x	force	6.296413E+0	y	force	1.451685E-1	z	force	-1.252275E+0	x	moment	7.296673E-1	y	moment	-2.214440E+0	z	moment	3.522242E-2");
     } else {
@@ -71,7 +74,7 @@ close $lsocket;
 sub sendResponse {
 	my ($cmd) = @_;
 	print "Sending [$cmd]\n";
-	print $socket $cmd, "\n";
+	print $socket $cmd, "\015\012";
 
 }
 
