@@ -52,9 +52,10 @@ switch a
         if me.fakeOm == 0
             done = me.peOm.isDone();
             if done % execute response has been received from OM
-                me.colorConnectionButton('OperationsManager');
                 if me.peOm.state.isState('ERRORS EXIST')
                     me.setRunButton(0); % Pause the simulation
+                    me.ocOm.connectionStatus.setState('ERRORED');
+                    me.colorConnectionButton('OperationsManager');
                     stop(me.simTimer);
                 end
                 me.gcpOm.step = me.peOm.step;
@@ -74,10 +75,11 @@ switch a
         else
             done = me.gcpOm.isDone();
             if done
-                me.colorConnectionButton('OperationsManager');
                 if me.peOm.state.isState('ERRORS EXIST')
                     me.setRunButton(0); % Pause the simulation
-                    stop(me.simTimer);
+                    me.ocOm.connectionStatus.setState('ERRORED');
+                    me.colorConnectionButton('OperationsManager');
+                stop(me.simTimer);
                 end
                 me.nxtTgt.curStepData = me.gcpOm.step;
                 me.currentAction.setState('NEXT TARGET');
@@ -106,5 +108,5 @@ switch a
         me.log.error(dbstack,sprintf('%s not recognized',a));
 end
 LbcbPluginActions.updateGui(me);
-me.log.debug(dbstack,'execute is done');
+% me.log.debug(dbstack,'execute is done');
 end
