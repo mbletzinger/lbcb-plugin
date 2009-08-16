@@ -24,12 +24,14 @@ classdef MdlLbcb < handle
             'READY', ...
             'ERRORS EXIST' ...
             });
+        prevState;
         action = StateEnum({ ... 
             'OPEN CONNECTION', ...
             'CLOSE CONNECTION', ...
             'EXECUTING TRANSACTION',...
             'NONE'...
             });
+        prevAction;
     end
     methods
         function me = MdlLbcb(cfg)
@@ -41,12 +43,17 @@ classdef MdlLbcb < handle
             stamp = datestr(now,'_yyyy_mm_dd_HH_MM_SS');
             me.simcorTcp.setArchiveFilename(fullfile(pwd,'Logs',sprintf('OmNetworkLog%s.txt',stamp)));
             me.state.setState('READY');
+            me.prevState = StateEnum(me.state.states);
+            me.prevAction = StateEnum(me.action.states);
         end
         
         % Continue executing the current action
         function done = isDone(me)
             a = me.action.getState();
-            me.log.debug(dbstack,sprintf('mdlbcb action is %s',a));
+            if me.prevAction.isState(a) == 0
+                me.log.debug(dbstack,sprintf('mdlbcb action is %s',a));
+                me.prevAction.setState(a);
+            end
             done = 0;
             switch a
                 case { 'OPEN CONNECTION' 'CLOSE CONNECTION' }
@@ -59,6 +66,10 @@ classdef MdlLbcb < handle
                     me.log.error(dbstack,sprintf('State %s not recognized',s));
             end
             ss = me.state.getState();
+            if me.prevState.isState(ss) == 0
+                me.log.debug(dbstack,sprintf('mdlbcb state is %s',ss));
+                me.prevState.setState(ss);
+            end
             switch ss
                 case {'READY','ERRORS EXIST'}
                     done = 1;
@@ -123,7 +134,7 @@ classdef MdlLbcb < handle
             ts = StateEnum(is.transactionStates);
             ts.setState(me.simcorTcp.isReady());
             csS = ts.getState();
-            me.log.debug(dbstack,sprintf('Transaction state is %s',csS));
+%            me.log.debug(dbstack,sprintf('Transaction state is %s',csS));
             switch csS
                 case 'ERRORS_EXIST'
                     me.state.setState('ERRORS EXIST');
@@ -151,7 +162,7 @@ classdef MdlLbcb < handle
             ts = StateEnum(is.transactionStates);
             ts.setState(char(me.simcorTcp.isReady()));
             csS = ts.getState();
-            me.log.debug(dbstack,sprintf('Transaction state is %s',csS));
+ %           me.log.debug(dbstack,sprintf('Transaction state is %s',csS));
             switch csS
                 case 'TRANSACTION_DONE'
                     me.state.setState('READY');
