@@ -18,6 +18,14 @@ classdef SimulationState < handle
             global mdlLbcb;
             mdlLbcb = mlIn;
         end
+        function cfg = getCfg()
+            global ssCfg;
+            cfg = ssCfg;
+        end
+        function setCfg(cfg)
+            global ssCfg;
+            ssCfg = cfg;
+        end
     end
     
 end
