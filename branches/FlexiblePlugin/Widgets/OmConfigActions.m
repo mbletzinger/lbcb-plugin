@@ -103,6 +103,10 @@ classdef OmConfigActions < handle
              set(me.handles.numLbcbs,'String',{'1','2'});
             set(me.handles.numLbcbs,'Value',me.ocfg.numLbcbs);
             set(me.handles.useFakeOm,'Value',me.ocfg.useFakeOm);
+            set(me.handles.EdCalculations,'Value',me.ocfg.doEdCalculations);
+            set(me.handles.EdCorrection,'Value',me.ocfg.doEdCorrection);
+            set(me.handles.DdCalculation,'Value',me.ocfg.doDdofCalculations);
+            set(me.handles.DdCorrection,'Value',me.ocfg.doDdofCorrection);
             set(me.handles.pertTable,'Data',me.pertTable);
         
         end
@@ -111,6 +115,18 @@ classdef OmConfigActions < handle
         end
         function setUseFakeOm(me,value)
             me.ocfg.useFakeOm = value;
+        end
+        function setDoEdCalculations(me,value)
+            me.ocfg.doEdCalculations = value;
+        end
+        function setDoEdCorrection(me,value)
+            me.ocfg.doEdCorrection = value;
+        end
+        function setDoDdofCalculations(me,value)
+            me.ocfg.doDdofCalculations = value;
+        end
+        function setDoDdofCorrection(me,value)
+            me.ocfg.doDdofCorrection = value;
         end
         function setPertCell(me,indices,str)
             if indices(2) == 1

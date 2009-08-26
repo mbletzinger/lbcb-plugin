@@ -16,6 +16,9 @@ classdef NextTarget < SimulationState
         curStepData = [];
         nextStepData = [];
         simCompleted = 0;
+        doEdCalculations = 1;
+        doEdCorrections = 1;
+        doDerivedDofCorrections = 1;
     end
     properties (Dependent)
         curStep = []; % curStep to curStepData
@@ -30,22 +33,16 @@ classdef NextTarget < SimulationState
             done = 1;
             % Dumb MATLAB  double negative comparison to see if the current
             % step is not empty
-            if isempty(me.curStepData) == 0 
-                %calculate elastic deformations
-                for l = 1: length(me.curStepData.lbcbCps)
-                    ed = NextTarget.getED(l == 1);
-%                    ed.calculate(me.curStepData.lbcbCps{l},me.prevStepData.lbcbCps{l});
-                end
+            if isempty(me.curStepData) == 0
                 % check tolerances
-                st = NextTarget.getST();
-                if st.withinTolerances(me.curStepData)
+                me.edCalculate();
+                me.derivedDofCalculate();
+                if me.edCorrect()
+                    me.nextStepData = me.derivedDofCorrect();
+                else
                     % get next input step
                     me.nextStepData = me.inpF.next();
                     me.simCompleted = me.inpF.endOfFile;
-                else
-                    % get next derived dof step
-                    dd = NextTarget.getDD();  % Derived DOF instance 
-                    me.nextStepData = dd.newStep(me.curStepData);
                 end
             else % This must be the first step
                 me.nextStepData = me.inpF.next();
@@ -73,6 +70,57 @@ classdef NextTarget < SimulationState
         function value = get.nextStep(me)
              dbstack
              me.log.error(dbstack,'nextStep has been renamed nextStepData'); 
+        end
+    end
+    methods (Access='private')
+        function edCalculate(me)
+            cfg = SimulationState.getCfg();
+            ocfg = OmConfigDao(cfg);
+            if ocfg.doEdCalculations
+                %calculate elastic deformations
+                for l = 1: length(me.curStepData.lbcbCps)
+                    ed = NextTarget.getED(l == 1);
+                    ccps = me.curStepData.lbcbCps{l};
+                    pcps = [];
+                    if isempty(me.prevStepData) == 0
+                        pcps = me.prevStepData.lbcbCps{l};
+                    end                
+                    ed.calculate(ccps,pcps);
+                end
+            end
+        end
+        function needsCorrection = edCorrect(me)
+            cfg = SimulationState.getCfg();
+            ocfg = OmConfigDao(cfg);
+            needsCorrection = 0;
+            st = NextTarget.getST();
+            if ocfg.doEdCorrection
+                if st.withinTolerances(me.curStepData)
+                    needsCorrection = 1;
+                end
+            end
+        end
+        function derivedDofCalculate(me)
+            cfg = SimulationState.getCfg();
+            ocfg = OmConfigDao(cfg);
+            if ocfg.doDdofCalculations
+                dd = NextTarget.getDD();  % Derived DOF instance
+                dd.calculate(me.curStepData);
+            end
+        end
+        function nstep = derivedDofCorrect(me)
+            cfg = SimulationState.getCfg();
+            ocfg = OmConfigDao(cfg);
+            if ocfg.doDdofCorrection
+                % get next derived dof step
+                dd = NextTarget.getDD();  % Derived DOF instance
+                nstep = dd.newStep(me.curStepData);
+            else
+                % get next input step
+                me.nextStepData = me.inpF.next();
+                me.simCompleted = me.inpF.endOfFile;
+            end
+            
         end
     end
     methods (Static)

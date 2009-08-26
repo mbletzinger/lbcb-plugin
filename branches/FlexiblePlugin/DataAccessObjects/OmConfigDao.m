@@ -23,6 +23,10 @@ classdef OmConfigDao < handle
         platZ
         sensorErrorTol
         useFakeOm
+        doEdCalculations
+        doEdCorrection
+        doDdofCalculations
+        doDdofCorrection
         perturbationsL1
         perturbationsL2
     end
@@ -231,7 +235,53 @@ classdef OmConfigDao < handle
                end
             valS = me.su.da2sl(perts);
             me.cfg.props.setPropertyList('om.sensor.perturbations.lbcb2',valS);
+           end
+        
+        
+             
+        function result = get.doEdCalculations(me)
+              str = char(me.cfg.props.getProperty('om.ed.calculations'));
+              if isempty(str)
+                  result = 0;
+                  return;
+              end
+              result = sscanf(str,'%d');
         end
-     
+        function set.doEdCalculations(me,value)
+              me.cfg.props.setProperty('om.ed.calculations',sprintf('%d',value));
+        end
+        function result = get.doEdCorrection(me)
+              str = char(me.cfg.props.getProperty('om.ed.correction'));
+              if isempty(str)
+                  result = 0;
+                  return;
+              end
+              result = sscanf(str,'%d');
+        end
+        function set.doEdCorrection(me,value)
+              me.cfg.props.setProperty('om.ed.correction',sprintf('%d',value));
+        end
+        function result = get.doDdofCalculations(me)
+              str = char(me.cfg.props.getProperty('om.derivedDof.calculations'));
+              if isempty(str)
+                  result = 0;
+                  return;
+              end
+              result = sscanf(str,'%d');
+        end
+        function set.doDdofCalculations(me,value)
+              me.cfg.props.setProperty('om.derivedDof.calculations',sprintf('%d',value));
+        end
+        function result = get.doDdofCorrection(me)
+              str = char(me.cfg.props.getProperty('om.derivedDof.correction'));
+              if isempty(str)
+                  result = 0;
+                  return;
+              end
+              result = sscanf(str,'%d');
+        end
+        function set.doDdofCorrection(me,value)
+              me.cfg.props.setProperty('om.derivedDof.correction',sprintf('%d',value));
+        end
     end
 end

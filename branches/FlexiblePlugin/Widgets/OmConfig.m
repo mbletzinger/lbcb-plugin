@@ -22,7 +22,7 @@ function varargout = OmConfig(varargin)
 
 % Edit the above text to modify the response to help OmConfig
 
-% Last Modified by GUIDE v2.5 27-Jul-2009 09:50:30
+% Last Modified by GUIDE v2.5 26-Aug-2009 10:36:44
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -153,3 +153,39 @@ function pertTable_CellEditCallback(hObject, eventdata, handles)
 handles.actions.setPertCell(eventdata.Indices,eventdata.EditData);
 
 
+% --- Executes on button press in EdCalculations.
+function EdCalculations_Callback(hObject, eventdata, handles)
+% hObject    handle to EdCalculations (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of EdCalculations
+handles.actions.setDoEdCalculations(get(hObject,'Value'));
+
+
+% --- Executes on button press in EdCorrection.
+function EdCorrection_Callback(hObject, eventdata, handles)
+% hObject    handle to EdCorrection (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of EdCorrection
+handles.actions.setDoEdCorrection(get(hObject,'Value'));
+
+% --- Executes on button press in DdCalculation.
+function DdCalculation_Callback(hObject, eventdata, handles)
+% hObject    handle to DdCalculation (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of DdCalculation
+handles.actions.setDoDdofCalculations(get(hObject,'Value'));
+
+% --- Executes on button press in DdCorrection.
+function DdCorrection_Callback(hObject, eventdata, handles)
+% hObject    handle to DdCorrection (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of DdCorrection
+handles.actions.setDoDdofCorrection(get(hObject,'Value'));
