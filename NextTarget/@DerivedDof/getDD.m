@@ -1,11 +1,13 @@
 function dd = getDD(me) 
-% Varibles to be loaded at beginning; will never change during test:
+% Variables to be loaded at beginning; will never change during test:
 dxlbcb1 = 5.5;      % Distance from wall center to right pier center
 dxlbcb2 = -5.5;     % Distance from wall center to left pier center
 
-% Varibles to read in from interface; may change during test:
+% Variables to read in from interface; may change during test:
 % % kfactor
 % % Fztarget
+
+% DerivedDOF Config
 kfactor = -25;  % temporary hard-coded values
 Fztarget = 250; % temporary hard-coded values
 
@@ -18,9 +20,12 @@ lbcb2Fz = me.nextStepData.lbcbCps{2}.response.force(3);
 lbcb1My = me.nextStepData.lbcbCps{1}.response.force(5);
 lbcb2My = me.nextStepData.lbcbCps{2}.response.force(5);
 
-% Calculating target moment
+% Calculating target moment move to calculate function
 Fxtot = lbcb1Fx + lbcb2Fx;
 Mytar = Fxtot*kfactor;
+
+
+% The rest is new step
 
 % Calculating Fz error
 Fzerr = Fztarget - lbcb1Fz - lbcb2Fz;

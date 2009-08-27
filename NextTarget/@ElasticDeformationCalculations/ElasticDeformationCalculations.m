@@ -26,6 +26,7 @@ classdef ElasticDeformationCalculations < handle
         perturbations = [];
         potTol = [];
         activeDofs = [];
+        correctionDeltas = zeros(6,1);
     end
     methods
         function me = ElasticDeformationCalculations(cfg,isLbcb1)
@@ -36,5 +37,6 @@ classdef ElasticDeformationCalculations < handle
         calculate(me, curLbcbCP,prevLbcbCP)
         lengths = dof2act(me,deltas,v0,p0,q0)
         loadConfig(me,cfg,isLbcb1)
+        newStep(me)
     end
 end
