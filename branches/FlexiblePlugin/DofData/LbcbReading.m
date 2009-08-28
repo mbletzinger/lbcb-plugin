@@ -48,12 +48,13 @@ classdef LbcbReading < handle
     methods (Static)
         % static DerivedDof instance
         function yes = useEd()
-            global useEd;
-            yes = useEd;
+            global cfg;
+            ocfg = OmConfigDao(cfg);
+            yes = ocfg.doEdCalculations;
         end
-        function setUseEd(yes)
-            global useEd;
-            useEd = yes;
+        function setCfg(cCfg)
+            global cfg;
+            cfg = cCfg;
         end
     end
 end

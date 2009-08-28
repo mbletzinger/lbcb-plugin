@@ -238,6 +238,7 @@ me.fakeGcp = FakeOm(me.cfg);
 me.setRunButton(0);
 
 StepData.setConfig(me.cfg);
+LbcbReading.setCfg(me.cfg);
 
 Logger.setMsgHandle(me.handles.Messages);
 me.setLoggerLevels();
