@@ -14,7 +14,7 @@
 % $LastChangedDate: 2009-05-31 07:19:36 -0500 (Sun, 31 May 2009) $
 % $Author: mbletzin $
 % =====================================================================================================================
-classdef ElasticDeformationCalculations < handle
+classdef ElasticDeformation < handle
     properties
         base = [];
         plat = [];
@@ -27,16 +27,22 @@ classdef ElasticDeformationCalculations < handle
         potTol = [];
         activeDofs = [];
         correctionDeltas = zeros(6,1);
+        cfg
     end
     methods
-        function me = ElasticDeformationCalculations(cfg,isLbcb1)
+        function me = ElasticDeformation(cfg,isLbcb1)
             me.loadConfig(cfg,isLbcb1);
+            me.cfg = cfg
         end
-        
+        function deltaDiff(me,curLbcbCp)
+            me.correctionDeltas = curLbcbCp.target.disp - curLbcbCp.response.disp;
+        end
+        function adjustStep(me,curLbcbCp)
+            curLbcbCp.target.disp = curLbcbCp.target.disp + me.correctiveDeltas;
+        end
         % calculate LBCB position based on external sensor readings.
-        calculate(me, curLbcbCP,prevLbcbCP)
+        calculate(me, curLbcbCp,prevLbcbCp)
         lengths = dof2act(me,deltas,v0,p0,q0)
         loadConfig(me,cfg,isLbcb1)
-        newStep(me)
     end
 end
