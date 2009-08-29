@@ -34,7 +34,7 @@ classdef NextTarget < SimulationState
             % Dumb MATLAB  double negative comparison to see if the current
             % step is not empty
             if isempty(me.curStepData) == 0
-                % check tolerances
+                % perform calculations
                 me.edCalculate();
                 me.derivedDofCalculate();
                 if me.edCorrect()
@@ -73,6 +73,13 @@ classdef NextTarget < SimulationState
         end
     end
     methods (Access='private')
+        function needsCorrection = needsCorrection(me)
+            needsCorrection = 0;
+            st = NextTarget.getST();
+            if st.withinTolerances(me.curStepData)
+                needsCorrection = 1;
+            end
+        end
         function edCalculate(me)
             cfg = SimulationState.getCfg();
             ocfg = OmConfigDao(cfg);
@@ -89,14 +96,13 @@ classdef NextTarget < SimulationState
                 end
             end
         end
-        function needsCorrection = edCorrect(me)
+        function edAdjust(me,step)
             cfg = SimulationState.getCfg();
             ocfg = OmConfigDao(cfg);
-            needsCorrection = 0;
-            st = NextTarget.getST();
             if ocfg.doEdCorrection
-                if st.withinTolerances(me.curStepData)
-                    needsCorrection = 1;
+                for l = 1: length(step.lbcbCps)
+                    ed = NextTarget.getED(l == 1);
+                    ed.adjustTarget(step.lbcbCps{l});
                 end
             end
         end
@@ -108,17 +114,14 @@ classdef NextTarget < SimulationState
                 dd.calculate(me.curStepData);
             end
         end
-        function nstep = derivedDofCorrect(me)
+        function derivedDofAdjust(me,step)
             cfg = SimulationState.getCfg();
             ocfg = OmConfigDao(cfg);
             if ocfg.doDdofCorrection
                 % get next derived dof step
                 dd = NextTarget.getDD();  % Derived DOF instance
-                nstep = dd.newStep(me.curStepData);
+                dd.adjustTarget(step);
             else
-                % get next input step
-                me.nextStepData = me.inpF.next();
-                me.simCompleted = me.inpF.endOfFile;
             end
             
         end

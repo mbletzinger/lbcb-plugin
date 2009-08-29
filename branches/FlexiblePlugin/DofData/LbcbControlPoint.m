@@ -15,7 +15,13 @@ classdef LbcbControlPoint < handle
         response = LbcbReading;
         command = Target;
         externalSensors = [];
+        correctionDeltas = zeros(6,1);
     end
     methods
+        function clone = clone(me)
+            clone.command = me.command.clone();
+            clone.correctionDeltas = me.correctionDeltas;
+            clone.externalSensors = me.externalSensors;
+        end
     end
 end

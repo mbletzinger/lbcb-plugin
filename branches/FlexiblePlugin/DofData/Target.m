@@ -34,6 +34,25 @@ classdef Target < DofData
             me.force(index) = value;
             me.forceDofs(index) = 1;
         end
+        function clearNonControlDofs(me)
+            for i=1:6
+                if me.dispDofs(i) == 0
+                    me.disp(i) = 0;
+                end
+                if me.forceDofs(i) == 0
+                    me.forces(i) = 0;
+                end
+            end
+        end
+        function clone = clone(me)
+            clone = Target;
+            clone.dispDofs = me.dispDofs;
+            clone.forceDofs = me.forceDofs;
+            clone.disp = me.disp;
+            clone.force = me.force;
+            clone.node = me.node;
+            clone.cps = me.cps;
+        end
         % Exports the target data as an LBCB reading
         function reading = target2Reading(me)
             reading = lbcbReading();
