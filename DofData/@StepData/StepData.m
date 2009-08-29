@@ -4,6 +4,7 @@ classdef StepData < handle
         modelCps = {}; % Instances of model control points
         simstep = {}; % SimulationStep instance
         externalSensorsRaw = [];
+        dData = DerivedData;
         log = Logger;
         jid = {};
     end
@@ -29,10 +30,12 @@ classdef StepData < handle
                             end
                         case 'istep'
                             istep = varargin{i+ 1};
-                            me.lbcbCps = istep.lbcbCps;
-                            me.modelCps = istep.modelCps;
-                            me.simstep = istep.simstep;
-                            me.externalSensorsRaw = istep.externalSensorsRaw;
+                            for l = 1: length(istep.lbcbCps)
+                                me.lbcbCps{l} = istep.lbcbCps{l};
+                                me.modelCps = istep.modelCps;
+                                me.simstep = istep.simstep;
+                                me.externalSensorsRaw = istep.externalSensorsRaw;
+                            end
                         otherwise
                             me.log.error(dbstack,sprintf('%s not recognized',label));
                     end

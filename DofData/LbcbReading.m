@@ -44,6 +44,14 @@ classdef LbcbReading < handle
             me.lbcb.force = targets{1}.force;
             me.ed.force = me.lbcb.force;
         end
+        function clone = clone(me)
+            clone = LbcbReading;
+            clone.lbcb.disp = me.lbcb.disp;
+            clone.lbcb.force = me.lbcb.force;
+            clone.ed.disp = me.ed.disp;
+            clone.ed.force = me.ed.force;
+            clone.node = me.node;
+        end
     end
     methods (Static)
         % static DerivedDof instance

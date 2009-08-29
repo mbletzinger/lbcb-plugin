@@ -16,9 +16,11 @@ classdef DerivedDof < handle
         % % Fztarget
         kfactor = -25;  % temporary hard-coded values
         Fztarget = 250; % temporary hard-coded values
+        Fz1tar = 0;
+        Fz2tar = 0;
     end
     methods
         calculate(me,cstep)
-        nstep = newStep(me,cstep)
+        adjustTarget(me,step)
     end
 end
