@@ -36,8 +36,8 @@ classdef SimulationSteps < handle
             end
             simstate = SimulationSteps(stp,sStp);
         end
-        function str = step2String(me)
-            str = sprintf('%d %d',me.step, me.subStep);
+        function str = toString(me)
+            str = sprintf('%d\t%d',me.step, me.subStep);
         end
     end
     methods (Static, Access = private)

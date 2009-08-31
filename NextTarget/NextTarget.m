@@ -20,10 +20,6 @@ classdef NextTarget < SimulationState
         doEdCorrections = 1;
         doDerivedDofCorrections = 1;
     end
-    properties (Dependent)
-        curStep = []; % curStep to curStepData
-        nextStep = []; % nextStep to nextStepData
-    end
     methods
         function start(me)
             me.prevStepData = me.curStepData;
@@ -37,8 +33,11 @@ classdef NextTarget < SimulationState
                 % perform calculations
                 me.edCalculate();
                 me.derivedDofCalculate();
-                if me.edCorrect()
-                    me.nextStepData = me.derivedDofCorrect();
+                if me.needsCorrection()
+                    me.nextStepData = me.curStepData.clone();
+                    me.nextStepData.simstep = me.curStepData.simstep.NextStep(1);
+                    me.edAdjust();
+                    me.derivedDofAdjust();
                 else
                     % get next input step
                     me.nextStepData = me.inpF.next();
@@ -47,6 +46,21 @@ classdef NextTarget < SimulationState
             else % This must be the first step
                 me.nextStepData = me.inpF.next();
             end
+            if isempty(me.prevStepData)
+                me.log.debug(dbstack,'PrevStep=none');
+            else
+                me.log.debug(dbstack,sprintf('PrevStep=%s',me.prevStepData.toString()));
+            end
+            if isempty(me.curStepData)
+                me.log.debug(dbstack,'CurStep=none');
+            else
+                me.log.debug(dbstack,sprintf('CurStep=%s',me.curStepData.toString()));
+            end
+            if isempty(me.nextStepData)
+                me.log.debug(dbstack,'NextStep=none');
+            else
+                me.log.debug(dbstack,sprintf('NextStep=%s',me.nextStepData.toString()));
+            end
         end
         % needs to be called immediately after isDone returns true.
         function yes = withinLimits(me)
@@ -54,27 +68,14 @@ classdef NextTarget < SimulationState
             yes = lc.withinLimits(me.nextStepData,me.curStepData );
         end
     end
-    methods
-        function set.curStep(me,value)
-             dbstack
-             me.log.error(dbstack,'curStep has been renamed curStepData'); 
-        end
-        function value = get.curStep(me)
-             dbstack
-             me.log.error(dbstack,'curStep has been renamed curStepData'); 
-        end
-        function set.nextStep(me,value)
-             dbstack
-             me.log.error(dbstack,'nextStep has been renamed nextStepData'); 
-        end
-        function value = get.nextStep(me)
-             dbstack
-             me.log.error(dbstack,'nextStep has been renamed nextStepData'); 
-        end
-    end
     methods (Access='private')
         function needsCorrection = needsCorrection(me)
             needsCorrection = 0;
+            cfg = SimulationState.getCfg();
+            ocfg = OmConfigDao(cfg);
+            if ocfg.doEdCorrection == 0
+                return;
+            end
             st = NextTarget.getST();
             if st.withinTolerances(me.curStepData)
                 needsCorrection = 1;
@@ -85,7 +86,7 @@ classdef NextTarget < SimulationState
             ocfg = OmConfigDao(cfg);
             if ocfg.doEdCalculations
                 %calculate elastic deformations
-                for l = 1: length(me.curStepData.lbcbCps)
+                for l = 1: StepData.numLbcbs()
                     ed = NextTarget.getED(l == 1);
                     ccps = me.curStepData.lbcbCps{l};
                     pcps = [];
@@ -96,13 +97,13 @@ classdef NextTarget < SimulationState
                 end
             end
         end
-        function edAdjust(me,step)
+        function edAdjust(me)
             cfg = SimulationState.getCfg();
             ocfg = OmConfigDao(cfg);
             if ocfg.doEdCorrection
-                for l = 1: length(step.lbcbCps)
+                for l = 1: StepData.numLbcbs()
                     ed = NextTarget.getED(l == 1);
-                    ed.adjustTarget(step.lbcbCps{l});
+                    ed.adjustTarget(me.nextStepData.lbcbCps{l});
                 end
             end
         end
@@ -114,13 +115,13 @@ classdef NextTarget < SimulationState
                 dd.calculate(me.curStepData);
             end
         end
-        function derivedDofAdjust(me,step)
+        function derivedDofAdjust(me)
             cfg = SimulationState.getCfg();
             ocfg = OmConfigDao(cfg);
             if ocfg.doDdofCorrection
                 % get next derived dof step
                 dd = NextTarget.getDD();  % Derived DOF instance
-                dd.adjustTarget(step);
+                dd.adjustTarget(me.nextStepData);
             else
             end
             

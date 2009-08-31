@@ -226,9 +226,10 @@ lc.inc = me.il;
 
 me.nxtTgt.setLC(lc);
 me.nxtTgt.setDD(DerivedDof);
-me.nxtTgt.setED(ElasticDeformationCalculations(me.cfg,0),0);
-me.nxtTgt.setED(ElasticDeformationCalculations(me.cfg,1),1);
+me.nxtTgt.setED(ElasticDeformation(me.cfg,0),0);
+me.nxtTgt.setED(ElasticDeformation(me.cfg,1),1);
 me.nxtTgt.setST(me.st);
+
 SimulationState.setCfg(me.cfg);
 
 me.stepHandles{1} = me.handles.Step;
@@ -236,9 +237,6 @@ me.stepHandles{2} = me.handles.SubStep;
 
 me.fakeGcp = FakeOm(me.cfg);
 me.setRunButton(0);
-
-StepData.setConfig(me.cfg);
-LbcbReading.setCfg(me.cfg);
 
 Logger.setMsgHandle(me.handles.Messages);
 me.setLoggerLevels();

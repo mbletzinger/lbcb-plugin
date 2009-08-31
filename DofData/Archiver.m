@@ -26,20 +26,20 @@ classdef Archiver < handle
             if length(step.lbcbCps) > 1
                 values = [ values step.lbcbCps{2}.command.disp' step.lbcbCps{2}.command.force' ];
             end
-            me.commandA.write(step.simstep.step2String(),values,'');
+            me.commandA.write(step.simstep.toString(),values,'');
 
             values = [ step.lbcbCps{1}.response.lbcb.disp' step.lbcbCps{1}.response.lbcb.force' ];
             if length(step.lbcbCps) > 1
                 values = [ values step.lbcbCps{2}.response.lbcb.disp' step.lbcbCps{2}.response.lbcb.force' ];
             end
-            me.lbcbReadA.write(step.simstep.step2String(),values,'');
+            me.lbcbReadA.write(step.simstep.toString(),values,'');
 
             values = [ step.lbcbCps{1}.response.ed.disp' step.lbcbCps{1}.response.ed.force' ];
             if length(step.lbcbCps) > 1
                 values = [ values step.lbcbCps{2}.response.ed.disp' step.lbcbCps{2}.response.ed.force' ];
             end
-            me.lbcbReadA.write(step.simstep.step2String(),values,'');
-            me.extSensA.write(step.simstep.step2String(),step.externalSensorsRaw,'');
+            me.lbcbReadA.write(step.simstep.toString(),values,'');
+            me.extSensA.write(step.simstep.toString(),step.externalSensorsRaw,'');
         end
     end
 end

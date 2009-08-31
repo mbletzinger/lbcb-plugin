@@ -19,9 +19,23 @@ classdef LbcbControlPoint < handle
     end
     methods
         function clone = clone(me)
+            clone = LbcbControlPoint;
             clone.command = me.command.clone();
+            clone.response = me.response.clone();
             clone.correctionDeltas = me.correctionDeltas;
             clone.externalSensors = me.externalSensors;
+        end
+        function str = toString(me)
+            str = sprintf('/command=%s',me.command.toString());
+            str = sprintf('%s\n\t/response=%s\n\t/externalSensors',str,me.response.toString());
+            for s = 1: length(me.externalSensors)
+                str = sprintf('%s,%f',str,me.externalSensors(s));
+            end
+            str = sprintf('%s\n\t/deltas',str);
+            labels = {'dx' 'dy' 'dz' 'rx' 'ry' 'rz'};
+            for v = 1:length(me.correctionDeltas)
+                str = sprintf('%s/%s=%f',str,labels{v},me.correctionDeltas(v));
+            end
         end
     end
 end
