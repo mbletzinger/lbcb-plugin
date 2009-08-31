@@ -52,17 +52,16 @@ classdef LbcbReading < handle
             clone.ed.force = me.ed.force;
             clone.node = me.node;
         end
+        function str = toString(me)
+            str = sprintf('/lbcb%s\n\t',me.lbcb.toString());
+            str = sprintf('%s/ed%s',str,me.ed.toString());
+        end
     end
     methods (Static)
-        % static DerivedDof instance
         function yes = useEd()
-            global cfg;
+            cfg = SimulationState.getCfg();
             ocfg = OmConfigDao(cfg);
             yes = ocfg.doEdCalculations;
-        end
-        function setCfg(cCfg)
-            global cfg;
-            cfg = cCfg;
         end
     end
 end

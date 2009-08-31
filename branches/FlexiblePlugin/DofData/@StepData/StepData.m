@@ -8,9 +8,6 @@ classdef StepData < handle
         log = Logger;
         jid = {};
     end
-    properties (Dependent)
-        lbcb
-    end
     methods
         function me = StepData(varargin)
             if(nargin > 0)
@@ -22,19 +19,14 @@ classdef StepData < handle
                             me.simstep = varargin{i+ 1};
                         case 'lbcb_tgts'
                             targets = varargin{i+ 1};
-                            lgth = length(targets);
+                            lgth = StepData.numLbcbs();
                             me.lbcbCps = cell(lgth,1);
-                            for t = 1:lgth
-                                me.lbcbCps{t} = LbcbControlPoint;
-                                me.lbcbCps{t}.command = targets{t};
+                            for l = 1 : lgth
+                                me.lbcbCps{l} = LbcbControlPoint;
                             end
-                        case 'istep'
-                            istep = varargin{i+ 1};
-                            for l = 1: length(istep.lbcbCps)
-                                me.lbcbCps{l} = istep.lbcbCps{l};
-                                me.modelCps = istep.modelCps;
-                                me.simstep = istep.simstep;
-                                me.externalSensorsRaw = istep.externalSensorsRaw;
+                            lgth = length(targets);
+                            for t = 1:lgth
+                                me.lbcbCps{t}.command = targets{t};
                             end
                         otherwise
                             me.log.error(dbstack,sprintf('%s not recognized',label));
@@ -42,23 +34,17 @@ classdef StepData < handle
                 end
             end
         end
-        function set.lbcbCps(me,value)
-%             dbstack
-%             lgth = length(value)
-            me.lbcbCps = value;
+        function clone = clone(me)
+            clone = StepData;
+            num = StepData.numLbcbs();
+            clone.lbcb = cell(num,1);
+            for l = 1: num
+                clone.lbcb{l} = me.lbcb{l}.clone();
+            end
+            clone.externalSensorsRaw = me.externalSensorsRaw;
+            clone.simstep = me.simstep;
         end
-        function set.lbcb(me,value)
-             dbstack
-             me.log.error(dbstack,'lbcb has been renamed lbsb_cps'); 
-        end
-        function value = get.lbcb(me)
-             dbstack
-             me.log.error(dbstack,'lbcb has been renamed lbsb_cps'); 
-        end
-        function me = clone(istep)
-            me.simstep = istep.simstep;
-            me.lbcb = istep.lbcb;
-        end
+        str = toString(me)
         jmsg = generateProposeMsg(me)
         parseControlPointMsg(me,rsp)
         values = parseExternalSensorsMsg(me,names,msg)
@@ -68,7 +54,7 @@ classdef StepData < handle
         ml = getMdlLbcb()
         setMdlLbcb(ml)
         [n s a] = getExtSensors()
-        setConfig(cfg)
+        num = numLbcbs()
         a = getAddress()
     end
 end

@@ -1,6 +1,6 @@
 function calculate(me, curLbcbCP,prevLbcbCP)
-lbcbR = lbcbCP.response;
-actualLengths = lbcbCP.externalSensors; % was lengths
+lbcbR = curLbcbCP.response;
+actualLengths = curLbcbCP.externalSensors; % was lengths
 prevLengths = me.currentLengths;        % was lengths0
 prevDisplacement = prevLbcbCP.response.disp; % was deltas0
 lbcbR.ed.force = lbcbR.lbcb.force;
