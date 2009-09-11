@@ -78,15 +78,15 @@ classdef OmConfigActions < handle
                     bz(indices(1)) = data;
                     me.ocfg.baseZ = bz;
                 case 7
-                    px = me.ocfg.baseX;
+                    px = me.ocfg.platX;
                     px(indices(1)) = data;
                     me.ocfg.platX = px;
                 case 8
-                    py = me.ocfg.baseY;
+                    py = me.ocfg.platY;
                     py(indices(1)) = data;
                     me.ocfg.platY = py;
                 case 9
-                    pz = me.ocfg.baseZ;
+                    pz = me.ocfg.platZ;
                     pz(indices(1)) = data;
                     me.ocfg.platZ = pz;
                 case 10
