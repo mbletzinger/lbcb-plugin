@@ -21,8 +21,8 @@ for s = 1:length(applied)
         continue;
     end
     if strcmp(applied{s},lb)
-      mbase(:,i) = base(s);  
-      mplat(:,i) = plat(s);  
+      mbase(i,:) = [ocfg.baseX(s) ocfg.baseY(s) ocfg.baseZ(s)]; %[base(s) base(s+15) base(s+30)];  % Really quick fix
+      mplat(i,:) = [ocfg.platX(s) ocfg.platY(s) ocfg.platZ(s)];%[plat(s) plat(s+15) plat(s+30)];  % Really quick fix
       mpotTol(i) = sensorErrorTol(s);
       i = i + 1;
     end
