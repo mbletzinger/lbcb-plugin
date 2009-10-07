@@ -7,8 +7,7 @@ v0 = [0 0 0]';
 % Input checker for first step
 if isempty(prevLbcbCP)
     % firstStep is nested function found below for getting first SP disps
-    [prevLengths, prevDisplacement] = firstStep(me,actualLengths,...
-        activeDOFs,v0);
+    [prevLengths, prevDisplacement] = firstStep(me,actualLengths);
 else
     prevLengths = me.currentLengths;        % was lengths0
     prevDisplacement = prevLbcbCP.response.disp; % was deltas0
@@ -99,13 +98,14 @@ end
        
        prevLengths = actualLengths;
        prevDisplacement = zeros(6,1);
-       activeDOFs = [1 3 5];
-       v0 = [0 0 0]';
+%        activeDOFs = [1 3 5];
+%        v0 = [0 0 0]';
        
        %% Calculating displacement Jacobian for unknown startup position
        % Setting delta(i) to zeros since nothing is known at startup
        delta = [0 0 0 0 0 0]';
-              
+       me.plat
+       me.base       
        % Looping through disp-controlled DOFs to populate columns of disp Jacobian
        for i = 1:length(activeDOFs)
            

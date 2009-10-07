@@ -1,4 +1,4 @@
-function lengths = dof2act(deltas,v0,p0,q0)
+function lengths = dof2act(me,deltas,v0,p0,q0)
 % Note: deltas must be a vector of displacements: [dx,dy,dz,rx,ry,rz]
 
 %% Defining displacements calculating rotational matrix
