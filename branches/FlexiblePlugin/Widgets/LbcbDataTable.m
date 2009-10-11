@@ -6,6 +6,7 @@ classdef LbcbDataTable < handle
         cnames = { 'Dx','Dy','Dz','Rx','Ry','Rz','Fx','Fy','Fz','Mx','My','Mz'};
         rnames = {'LBCB1 Command','LBCB1 Response',...
             'LBCB2 Command','LBCB2 Response','LBCB1 Readings','LBCB2 Readings'};
+        isDisplayed = 0;
     end
     methods
         function me = LbcbDataTable(name)
@@ -13,6 +14,7 @@ classdef LbcbDataTable < handle
             me.fig = figure('Position',[100 100 1080 150], 'Name', me.name,'DeleteFcn','DataDisplay.deleteDataTable');
             me.table = uitable('ColumnName',me.cnames,'RowName',me.rnames,...
                 'Parent',me.fig,'Position',[5 5 1050 140],'ColumnFormat',repmat({'numeric'},1,length(me.cnames)));
+            me.isDisplayed = 1;
         end
         function update(me,step)
             data = zeros(length(me.rnames),length(me.cnames));
@@ -25,6 +27,11 @@ classdef LbcbDataTable < handle
                 data(6,:) = [ step.lbcbCps{2}.response.ed.disp' step.lbcbCps{2}.response.ed.force' ];
             end
             set(me.table,'Data',data);
+        end
+        function delete(me)
+            if me.isDisplayed
+                delete(me.fig);
+            end 
         end
     end
 end
