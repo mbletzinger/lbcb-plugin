@@ -10,7 +10,7 @@ lbcb2My = cstep.lbcbCps{2}.response.force(5);
 
 % Calculating target moment move to calculate function
 Fxtot = lbcb1Fx + lbcb2Fx;
-Mytar = Fxtot*kfactor;
+Mytar = Fxtot*me.kfactor;
 
 % Calculating Fz error
 Fzerr = me.Fztarget - lbcb1Fz - lbcb2Fz;
@@ -31,4 +31,5 @@ me.Fz2tar = me.Fz1tar + Myerr/(2*dxlbcb2);
 cstep.dData.labels = {'Fx total', 'My target'};
 cstep.dData.values(1) = Fxtot;
 cstep.dData.values(2) = Mytar;
+me.log.debug(dbstack, sprintf('Step after derived DOF calculation %s\n',cstep.toString));
 end
