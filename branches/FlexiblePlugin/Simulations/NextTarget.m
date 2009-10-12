@@ -11,7 +11,7 @@
 % =====================================================================================================================
 classdef NextTarget < SimulationState
     properties
-        inpF = [];
+         inpF = [];
         prevStepData = []
         curStepData = [];
         nextStepData = [];
