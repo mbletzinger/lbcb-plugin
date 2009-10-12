@@ -12,20 +12,18 @@
 classdef NextTarget < SimulationState
     properties
         inpF = [];
-        prevStepData = []
-        curStepData = [];
-        nextStepData = [];
         simCompleted = 0;
-        doEdCalculations = 1;
         doEdCorrections = 1;
         doDerivedDofCorrections = 1;
     end
     methods
         function start(me)
-            me.prevStepData = me.curStepData;
-            me.curStepData = me.nextStepData;
+            dat = SimulationState.getSd();
+            dat.prevStepData = dat.curStepData;
+            dat.curStepData = dat.nextStepData;
         end
         function done = isDone(me)
+            dat = SimulationState.getSd();
             done = 1;
             % Dumb MATLAB  double negative comparison to see if the current
             % step is not empty
@@ -34,32 +32,17 @@ classdef NextTarget < SimulationState
                 me.edCalculate();
                 me.derivedDofCalculate();
                 if me.needsCorrection()
-                    me.nextStepData = me.curStepData.clone();
-                    me.nextStepData.simstep = me.curStepData.simstep.NextStep(1);
+                    dat.nextStepData = me.datStepData.clone();
+                    dat.nextStepData.simstep = me.datStepData.simstep.NextStep(1);
                     me.edAdjust();
                     me.derivedDofAdjust();
                 else
                     % get next input step
-                    me.nextStepData = me.inpF.next();
+                    dat.nextStepData = me.inpF.next();
                     me.simCompleted = me.inpF.endOfFile;
                 end
             else % This must be the first step
-                me.nextStepData = me.inpF.next();
-            end
-            if isempty(me.prevStepData)
-                me.log.debug(dbstack,'PrevStep=none');
-            else
-                me.log.debug(dbstack,sprintf('PrevStep=%s',me.prevStepData.toString()));
-            end
-            if isempty(me.curStepData)
-                me.log.debug(dbstack,'CurStep=none');
-            else
-                me.log.debug(dbstack,sprintf('CurStep=%s',me.curStepData.toString()));
-            end
-            if isempty(me.nextStepData)
-                me.log.debug(dbstack,'NextStep=none');
-            else
-                me.log.debug(dbstack,sprintf('NextStep=%s',me.nextStepData.toString()));
+                dat.nextStepData = me.inpF.next();
             end
         end
         % needs to be called immediately after isDone returns true.
@@ -87,7 +70,7 @@ classdef NextTarget < SimulationState
             if ocfg.doEdCalculations
                 %calculate elastic deformations
                 for l = 1: StepData.numLbcbs()
-                    ed = NextTarget.getED(l == 1);
+                    ed = SimulationState.getED(l == 1);
                     ccps = me.curStepData.lbcbCps{l};
                     pcps = [];
                     if isempty(me.prevStepData) == 0
@@ -102,7 +85,7 @@ classdef NextTarget < SimulationState
             ocfg = OmConfigDao(cfg);
             if ocfg.doEdCorrection
                 for l = 1: StepData.numLbcbs()
-                    ed = NextTarget.getED(l == 1);
+                    ed = SimulationState.getED(l == 1);
                     ed.adjustTarget(me.nextStepData.lbcbCps{l});
                 end
             end
@@ -111,7 +94,7 @@ classdef NextTarget < SimulationState
             cfg = SimulationState.getCfg();
             ocfg = OmConfigDao(cfg);
             if ocfg.doDdofCalculations
-                dd = NextTarget.getDD();  % Derived DOF instance
+                dd = SimulationState.getDD();  % Derived DOF instance
                 dd.calculate(me.curStepData);
             end
         end
@@ -120,7 +103,7 @@ classdef NextTarget < SimulationState
             ocfg = OmConfigDao(cfg);
             if ocfg.doDdofCorrection
                 % get next derived dof step
-                dd = NextTarget.getDD();  % Derived DOF instance
+                dd = SimulationState.getDD();  % Derived DOF instance
                 dd.adjustTarget(me.nextStepData);
             else
             end
@@ -128,34 +111,6 @@ classdef NextTarget < SimulationState
         end
     end
     methods (Static)
-        % static DerivedDof instance
-        function dd = getDD()
-            global gdd;
-            dd = gdd;
-        end
-        function setDD(dd)
-            global gdd;
-            gdd = dd;
-        end
-        % static ElasticDeformationCalculations instance
-        function ed = getED(isLbcb1)
-            global ged1;
-            global ged2;
-            if isLbcb1
-                ed = ged1;
-            else
-                ed = ged2;
-            end
-        end
-        function setED(ed,isLbcb1)
-            global ged1;
-            global ged2;
-            if isLbcb1
-                ged1 = ed;
-            else
-                ged2 = ed;
-            end
-        end
         % static StepTolerances  instance
         function st = getST()
             global gst;
