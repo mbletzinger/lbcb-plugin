@@ -22,7 +22,7 @@ function varargout = LbcbPlugin(varargin)
 
 % Edit the above text to modify the response to help LbcbPlugin
 
-% Last Modified by GUIDE v2.5 09-Oct-2009 15:53:03
+% Last Modified by GUIDE v2.5 13-Oct-2009 08:21:27
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -1043,3 +1043,23 @@ else
     handles.actions.dd.startTotalFxVsLbcbDx(0);
     set(hObject,'Checked','on');
 end
+
+% --- Executes on button press in AutoAccept.
+function AutoAccept_Callback(hObject, eventdata, handles)
+% hObject    handle to AutoAccept (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --- Executes on button press in Accept.
+function Accept_Callback(hObject, eventdata, handles)
+% hObject    handle to Accept (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --- Executes on button press in Decline.
+function Decline_Callback(hObject, eventdata, handles)
+% hObject    handle to Decline (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
