@@ -1,8 +1,8 @@
-function updateStepTolerances(me)
-within1 = me.st.within1;
-within2 = me.st.within2;
-diffs1 = me.st.diffs1;
-diffs2 = me.st.diffs2;
+function updateStepTolerances(me,st)
+within1 = st.within1;
+within2 = st.within2;
+diffs1 = st.diffs1;
+diffs2 = st.diffs2;
 
 for f = 1:12
     set(me.toleranceCurrentValueHandles1{f},'String',sprintf('%f',diffs1(f)));

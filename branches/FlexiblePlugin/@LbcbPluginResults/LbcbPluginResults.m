@@ -18,6 +18,8 @@ classdef LbcbPluginResults < handle
         incrementCurrentValueHandles2 = {};
 
         stepHandles = cell(2,1);
+        msgHandle = [];
+        cmdTableHandle = [];
         
         log = Logger;
         buttonStatus = StateEnum({...
@@ -25,21 +27,30 @@ classdef LbcbPluginResults < handle
             'OFF',...
             'BROKEN'...
             });
+        buttonName = StateEnum({...
+            'RUN',...
+            'CONNECT OM',...
+            'CONNECT SIMCOR',...
+            'TRIGGER'...
+            });
         
     end
     methods
-        function me  = LbcbPluginActions(handles)
+        function me  = LbcbPluginActions(handles,cfg)
             me.handles = handles;
+            me.cfg = cfg;
         end
         initialize(me)
-        updateCommandLimits(me,cl)
+        updateCommandLimits(me,cl,il)
         updateStepTolerances(me,st)
         updateStepsDisplay(me,simStep)
-        colorRunButton(me,bs)
-        colorConnectionButton(me,bs)
+        colorButton(me,buttonName,bs)
         addMessage(me,msg)
         updateGui(me)
         setGui(me,ingui)
+        updateCommands(me,ssd)
+        blinkAcceptButton(me,on)
+        
     end
     methods (Access=private)
         colorFaultText(me,hndl,fault)

@@ -196,10 +196,13 @@ me.incrementCurrentValueHandles2{10} = me.handles.MxICV2;
 me.incrementCurrentValueHandles2{11} = me.handles.MyICV2;
 me.incrementCurrentValueHandles2{12} = me.handles.MzICV2;
 
-me.stepHandles{1} = me.handles.Step;
-me.stepHandles{2} = me.handles.SubStep;
 
-me.setRunButton('OFF');
+me.setButton('RUN','OFF');
 
 Logger.setMsgHandle(me.handles.Messages);
+
+me.stepHandles{1} = me.handles.Step;
+me.stepHandles{2} = me.handles.SubStep;
+me.msgHandle = me.handles.Messages;
+me.cmdTableHandle = me.handles.CommandTable;
 end
