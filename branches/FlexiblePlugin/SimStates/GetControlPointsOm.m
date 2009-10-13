@@ -1,4 +1,4 @@
-classdef GetControlPointsOm < SimulationState
+classdef GetControlPointsOm < SimState
     properties
         cpsMsg = StateEnum({...
             'LBCB1',...
@@ -11,7 +11,7 @@ classdef GetControlPointsOm < SimulationState
     methods
         function start(me)
             me.cpsMsg.setState('LBCB1');
-            ml = SimulationState.getMdlLbcb();
+            ml = SimState.getMdlLbcb();
             address = StepData.getAddress();
             jmsg = ml.createCommand('get-control-point',address,me.cpsMsg.getState(),[]);
             ml.start(jmsg,me.step.simstep,0);
@@ -20,7 +20,7 @@ classdef GetControlPointsOm < SimulationState
         function done = isDone(me)
             c = me.cpsMsg.getState();
             done = 0;
-            ml = SimulationState.getMdlLbcb();
+            ml = SimState.getMdlLbcb();
             address = StepData.getAddress();
             if ml.isDone() == 0
                 return;

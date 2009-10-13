@@ -1,4 +1,4 @@
-classdef ProposeExecuteOm < SimulationState
+classdef ProposeExecuteOm < SimState
     properties
         action = StateEnum({ ...
             'DONE'...
@@ -12,7 +12,7 @@ classdef ProposeExecuteOm < SimulationState
         end
         function done = isDone(me)
             done = 0;
-            ml = SimulationState.getMdlLbcb();
+            ml = SimState.getMdlLbcb();
             if ml.isDone() == 0
                 return;
             end
@@ -37,13 +37,13 @@ classdef ProposeExecuteOm < SimulationState
         function startPropose(me)
             jmsg = me.step.generateProposeMsg();
             me.log.debug(dbstack,sprintf('Sending %s',char(jmsg)));
-            ml = SimulationState.getMdlLbcb();
+            ml = SimState.getMdlLbcb();
             ml.start(jmsg,me.step.simstep,1);
             me.state.setState('BUSY');
             me.action.setState('PROPOSE');
         end
         function startExecute(me)
-            ml = SimulationState.getMdlLbcb();
+            ml = SimState.getMdlLbcb();
             address = StepData.getAddress();
             jmsg = ml.createCommand('execute',address,[],[]);
             me.log.debug(dbstack,sprintf('Sending %s',char(jmsg)));

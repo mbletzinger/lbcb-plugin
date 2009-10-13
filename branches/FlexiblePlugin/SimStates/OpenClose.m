@@ -1,4 +1,4 @@
-classdef OpenClose < SimulationState
+classdef OpenClose < SimState
     properties
         connectionType = StateEnum({
             'OperationsManager',....
