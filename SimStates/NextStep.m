@@ -9,7 +9,7 @@
 % $LastChangedDate: 2009-06-01 15:30:46 -0500 (Mon, 01 Jun 2009) $ 
 % $Author: mbletzin $
 % =====================================================================================================================
-classdef NextTarget < SimulationState
+classdef NextStep < SimState
     properties
         inpF = [];
         simCompleted = 0;
@@ -18,12 +18,12 @@ classdef NextTarget < SimulationState
     end
     methods
         function start(me)
-            dat = SimulationState.getSd();
+            dat = SimState.getSd();
             dat.prevStepData = dat.curStepData;
             dat.curStepData = dat.nextStepData;
         end
         function done = isDone(me)
-            dat = SimulationState.getSd();
+            dat = SimState.getSd();
             done = 1;
             % Dumb MATLAB  double negative comparison to see if the current
             % step is not empty
@@ -54,7 +54,7 @@ classdef NextTarget < SimulationState
     methods (Access='private')
         function needsCorrection = needsCorrection(me)
             needsCorrection = 0;
-            cfg = SimulationState.getCfg();
+            cfg = SimState.getCfg();
             ocfg = OmConfigDao(cfg);
             if ocfg.doEdCorrection == 0
                 return;
@@ -65,12 +65,12 @@ classdef NextTarget < SimulationState
             end
         end
         function edCalculate(me)
-            cfg = SimulationState.getCfg();
+            cfg = SimState.getCfg();
             ocfg = OmConfigDao(cfg);
             if ocfg.doEdCalculations
                 %calculate elastic deformations
                 for l = 1: StepData.numLbcbs()
-                    ed = SimulationState.getED(l == 1);
+                    ed = SimState.getED(l == 1);
                     ccps = me.curStepData.lbcbCps{l};
                     pcps = [];
                     if isempty(me.prevStepData) == 0
@@ -81,29 +81,29 @@ classdef NextTarget < SimulationState
             end
         end
         function edAdjust(me)
-            cfg = SimulationState.getCfg();
+            cfg = SimState.getCfg();
             ocfg = OmConfigDao(cfg);
             if ocfg.doEdCorrection
                 for l = 1: StepData.numLbcbs()
-                    ed = SimulationState.getED(l == 1);
+                    ed = SimState.getED(l == 1);
                     ed.adjustTarget(me.nextStepData.lbcbCps{l});
                 end
             end
         end
         function derivedDofCalculate(me)
-            cfg = SimulationState.getCfg();
+            cfg = SimState.getCfg();
             ocfg = OmConfigDao(cfg);
             if ocfg.doDdofCalculations
-                dd = SimulationState.getDD();  % Derived DOF instance
+                dd = SimState.getDD();  % Derived DOF instance
                 dd.calculate(me.curStepData);
             end
         end
         function derivedDofAdjust(me)
-            cfg = SimulationState.getCfg();
+            cfg = SimState.getCfg();
             ocfg = OmConfigDao(cfg);
             if ocfg.doDdofCorrection
                 % get next derived dof step
-                dd = SimulationState.getDD();  % Derived DOF instance
+                dd = SimState.getDD();  % Derived DOF instance
                 dd.adjustTarget(me.nextStepData);
             else
             end

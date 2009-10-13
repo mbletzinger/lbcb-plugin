@@ -6,8 +6,5 @@ if (closeIt)
 else
     action = 'OPEN CONNECTION';
 end
-me.ocOm.start(closeIt);
-me.currentAction.setState(action);
-start(me.simTimer);
 me.colorConnectionButton(connection);
 end
