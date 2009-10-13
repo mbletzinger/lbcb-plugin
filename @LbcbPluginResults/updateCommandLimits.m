@@ -1,12 +1,12 @@
-function updateCommandLimits(me)
-faults1 = me.cl.faults1;
-faults2 = me.cl.faults2;
-commands1 = me.cl.commands1;
-commands2 = me.cl.commands2;
-ifaults1 = me.il.faults1;
-ifaults2 = me.il.faults2;
-inc1 = me.il.increments1;
-inc2 = me.il.increments2;
+function updateCommandLimits(me,cl,il)
+faults1 = cl.faults1;
+faults2 = cl.faults2;
+commands1 = cl.commands1;
+commands2 = cl.commands2;
+ifaults1 = il.faults1;
+ifaults2 = il.faults2;
+inc1 = il.increments1;
+inc2 = il.increments2;
 
 for f = 1:12
     set(me.commandCurrentValueHandles1{f},'String',sprintf('%f',commands1(f)));

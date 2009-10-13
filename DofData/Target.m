@@ -44,6 +44,13 @@ classdef Target < DofData
                 end
             end
         end
+        function num = numDofs(me)
+            num = 0;
+            for d = 1:6
+                num = num + me.dispDofs(d);
+                num = num + me.forceDofs(d);
+            end
+        end
         function clone = clone(me)
             clone = Target;
             clone.dispDofs = me.dispDofs;

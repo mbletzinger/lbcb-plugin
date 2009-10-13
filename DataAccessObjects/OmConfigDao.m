@@ -284,4 +284,10 @@ classdef OmConfigDao < handle
               me.cfg.props.setProperty('om.derivedDof.correction',sprintf('%d',value));
         end
     end
+    methods (Static)
+        function yes = hasLbcb2(cfg)
+            ocfg = OmConfig(cfg);
+            yes = ocfg.numLbcbs > 1;
+        end
+    end
 end
