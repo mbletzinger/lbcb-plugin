@@ -3,10 +3,10 @@
 %
 % Members:
 %   cfg - a Configuration instance
-%   numLbcbs, sensorNames, apply2Lbcb are all
+%   numLbcbs, sensorNames, apply2Lbcb are all 
 %   dependent properties whose values reside in a java properties object.
 %
-% $LastChangedDate: 2009-05-31 07:19:36 -0500 (Sun, 31 May 2009) $
+% $LastChangedDate: 2009-05-31 07:19:36 -0500 (Sun, 31 May 2009) $ 
 % $Author: mbletzin $
 % =====================================================================================================================
 classdef OmConfigDao < handle
@@ -23,6 +23,10 @@ classdef OmConfigDao < handle
         platZ
         sensorErrorTol
         useFakeOm
+        doEdCalculations
+        doEdCorrection
+        doDdofCalculations
+        doDdofCorrection
         perturbationsL1
         perturbationsL2
     end
@@ -35,68 +39,68 @@ classdef OmConfigDao < handle
             me.cfg = cfg;
         end
         function result = get.numLbcbs(me)
-            str = char(me.cfg.props.getProperty('om.numLbcbs'));
-            if isempty(str)
-                result = 1;
-                return;
-            end
-            result = sscanf(str,'%d');
+              str = char(me.cfg.props.getProperty('om.numLbcbs'));
+              if isempty(str)
+                  result = 1;
+                  return;
+              end
+              result = sscanf(str,'%d');
         end
         function set.numLbcbs(me,value)
-            me.cfg.props.setProperty('om.numLbcbs',sprintf('%d',value));
+              me.cfg.props.setProperty('om.numLbcbs',sprintf('%d',value));
         end
         function result = get.useFakeOm(me)
-            str = char(me.cfg.props.getProperty('om.useFakeOm'));
-            if isempty(str)
-                result = 0;
-                return;
-            end
-            result = sscanf(str,'%d');
+              str = char(me.cfg.props.getProperty('om.useFakeOm'));
+              if isempty(str)
+                  result = 0;
+                  return;
+              end
+              result = sscanf(str,'%d');
         end
         function set.useFakeOm(me,value)
-            me.cfg.props.setProperty('om.useFakeOm',sprintf('%d',value));
+              me.cfg.props.setProperty('om.useFakeOm',sprintf('%d',value));
         end
         function result = get.sensorNames(me)
-            resultSL = me.cfg.props.getPropertyList('om.sensorNames');
-            if isempty(resultSL)
-                result = cell(15,1);
-                for s = 1:15
-                    result{s} = '';
-                end
-                return;
-            end
-            result = me.su.sl2ca(resultSL);
+              resultSL = me.cfg.props.getPropertyList('om.sensorNames');
+              if isempty(resultSL)
+                  result = cell(15,1);
+                  for s = 1:15
+                      result{s} = '';
+                  end
+                  return;
+              end
+              result = me.su.sl2ca(resultSL);
         end
         function set.sensorNames(me,value)
             valS = me.su.ca2sl(value);
-            me.cfg.props.setPropertyList('om.sensorNames',valS);
+              me.cfg.props.setPropertyList('om.sensorNames',valS);
         end
         function result = get.apply2Lbcb(me)
-            resultSL = me.cfg.props.getPropertyList('om.apply2Lbcb');
-            if isempty(resultSL)
-                result = cell(15,1);
-                for i = 1:15
-                    result{i} = 'LBCB1';
-                end
-                return;
-            end
-            result = me.su.sl2ca(resultSL);
+              resultSL = me.cfg.props.getPropertyList('om.apply2Lbcb');
+              if isempty(resultSL)
+                  result = cell(15,1);
+                  for i = 1:15
+                      result{i} = 'LBCB1';
+                  end
+                  return;
+              end
+              result = me.su.sl2ca(resultSL);
         end
         function set.apply2Lbcb(me,value)
             valS = me.su.ca2sl(value);
-            me.cfg.props.setPropertyList('om.apply2Lbcb',valS);
+              me.cfg.props.setPropertyList('om.apply2Lbcb',valS);
         end
         function result = get.sensitivities(me)
-            resultSL = me.cfg.props.getPropertyList('om.sensitivities');
-            if isempty(resultSL)
-                result = ones(15,1);
-                return;
-            end
-            result = me.su.sl2da(resultSL);
+              resultSL = me.cfg.props.getPropertyList('om.sensitivities');
+              if isempty(resultSL)
+                  result = ones(15,1);
+                  return;
+              end
+              result = me.su.sl2da(resultSL);
         end
         function set.sensitivities(me,value)
             valS = me.su.da2sl(value);
-            me.cfg.props.setPropertyList('om.sensitivities',valS);
+              me.cfg.props.setPropertyList('om.sensitivities',valS);
         end
         function result = get.baseX(me)
             resultSL = me.cfg.props.getPropertyList('om.sensor.location.base.x');
@@ -195,15 +199,15 @@ classdef OmConfigDao < handle
                 end
             end
         end
-        function set.perturbationsL1(me,value)
-            perts = zeros(6,1);
-            for i = 1:6
-                if value.dispDofs(i)
-                    perts(i) = value.disp(i);
-                else
-                    perts(i) = 1000;
-                end
-            end
+           function set.perturbationsL1(me,value)
+               perts = zeros(6,1);
+               for i = 1:6
+                   if value.dispDofs(i)
+                       perts(i) = value.disp(i);
+                   else
+                       perts(i) = 1000;
+                   end
+               end
             valS = me.su.da2sl(perts);
             me.cfg.props.setPropertyList('om.sensor.perturbations.lbcb1',valS);
         end
@@ -220,17 +224,64 @@ classdef OmConfigDao < handle
                 end
             end
         end
-        function set.perturbationsL2(me,value)
-            perts = zeros(6,1);
-            for i = 1:6
-                if value.dispDofs(i)
-                    perts(i) = value.disp(i);
-                else
-                    perts(i) = 1000;
-                end
-            end
+           function set.perturbationsL2(me,value)
+               perts = zeros(6,1);
+               for i = 1:6
+                   if value.dispDofs(i)
+                       perts(i) = value.disp(i);
+                   else
+                       perts(i) = 1000;
+                   end
+               end
             valS = me.su.da2sl(perts);
             me.cfg.props.setPropertyList('om.sensor.perturbations.lbcb2',valS);
+           end
+        
+        
+             
+        function result = get.doEdCalculations(me)
+              str = char(me.cfg.props.getProperty('om.ed.calculations'));
+              if isempty(str)
+                  result = 0;
+                  return;
+              end
+              result = sscanf(str,'%d');
+        end
+        function set.doEdCalculations(me,value)
+              me.cfg.props.setProperty('om.ed.calculations',sprintf('%d',value));
+        end
+        function result = get.doEdCorrection(me)
+              str = char(me.cfg.props.getProperty('om.ed.correction'));
+              if isempty(str)
+                  result = 0;
+                  return;
+              end
+              result = sscanf(str,'%d');
+        end
+        function set.doEdCorrection(me,value)
+              me.cfg.props.setProperty('om.ed.correction',sprintf('%d',value));
+        end
+        function result = get.doDdofCalculations(me)
+              str = char(me.cfg.props.getProperty('om.derivedDof.calculations'));
+              if isempty(str)
+                  result = 0;
+                  return;
+              end
+              result = sscanf(str,'%d');
+        end
+        function set.doDdofCalculations(me,value)
+              me.cfg.props.setProperty('om.derivedDof.calculations',sprintf('%d',value));
+        end
+        function result = get.doDdofCorrection(me)
+              str = char(me.cfg.props.getProperty('om.derivedDof.correction'));
+              if isempty(str)
+                  result = 0;
+                  return;
+              end
+              result = sscanf(str,'%d');
+        end
+        function set.doDdofCorrection(me,value)
+              me.cfg.props.setProperty('om.derivedDof.correction',sprintf('%d',value));
         end
     end
     methods (Static)
