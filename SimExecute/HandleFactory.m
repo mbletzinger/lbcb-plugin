@@ -1,4 +1,4 @@
-classdef HndlFctry <  handle
+classdef HandleFactory <  handle
     properties
         % MDL instances
         mdlLbcb = {};
@@ -8,11 +8,6 @@ classdef HndlFctry <  handle
         st = []; % StepTolerances object
         il = []; % IncrementLimits object
         
-        % Simulation states
-        ocOm = [];
-        peOm = [];
-        gcpOm = [];
-        nxtStep = [];
         
         % Configuration Instance
         cfg = [];
@@ -20,63 +15,113 @@ classdef HndlFctry <  handle
         % Corrections
         ed = cell(2,1);
         dd = [];
+        
+        % Simulation States and Executors
+        simStates = cell(5,1);
+        simExec = cell(3,1);
+        
+        %Display update instance
+        gui = [];
+    end
+    properties (Dependent = true)
+        % Simulation states
+        ocOm;
+        peOm;
+        gcpOm;
+        nxtStep;
+        pResp;
+        
+        %Simulation Execution
+        cnEx;
+        stpEx;
+        tgtEx;
+        
     end
     methods
-        function me = HndlFctry(cfg)
+        function me = HndlFctry(handles,cfg)
             
             me.cfg = cfg;
             
             
-            me.ocOm = OpenCloseOm;
-            me.peOm = ProposeExecuteOm;
-            me.gcpOm = GetControlPointsOm;
-            me.nxtStep = NextStep;
+            me.simStates{1} = OpenCloseOm;
+            me.simStates{2} = ProposeExecuteOm;
+            me.simStates{3} = GetControlPointsOm;
+            me.simStates{4} = NextStep;
+            me.simStates{5} = ProcessResponse;
             
-            me.ocOm.cfg = cfg;
-            me.peOm.cfg = cfg;
-            me.gcpOm.cfg = cfg;
-            me.nxtStep.cfg = cfg;
-            
+            me.simExec{1} = ConnectionExecute;
+            me.simExec{2} = StepExecute;
+            me.simExec{3} = TargetExecute;
+
             lc = LimitChecks;
             
             lc.cmd = me.cl;
             lc.inc = me.il;
-            me.nxtStep.lc = lc;
+            me.gui = LbcbPluginResults(handles,cfg);
+            
+            me.simStates{4}.lc = me.lc;
+            me.simStates{4}.st = me.st;
             
             me.ed{1} = ElasticDeformation(cfg,0);
             me.ed{2} = ElasticDeformation(cfg,1);
-            
-            me.ocOm.ed = me.ed;
-            me.peOm.ed = me.ed;
-            me.gcpOm.ed = me.ed;
-            me.nxtStep.ed = me.ed;
-            
             me.dd = DerivedDof;
-            me.ocOm.dd = me.dd;
-            me.peOm.dd = me.dd;
-            me.gcpOm.dd = me.dd;
-            me.nxtStep.dd = me.dd;
-            
             me.st = StepTolerances(me.cfg);
-            me.nxtStep.st = me.st;
+
+            
+            for c =1:length(me.simStates)
+                me.simStates{c}.cfg = cfg;
+                me.simStates{c}.dd = me.dd;
+                me.simStates{c}.ed = me.ed;
+                me.simStates{c}.gui = me.gui;                
+                me.simStates{c}.sd = me.sd;
+            end
+            for c =1:length(me.simExec)
+                me.simExec{c}.cfg = cfg;
+                me.simExec{c}.gui = me.gui;
+            end
+            
+            
         end
         function mdl = createMdlLbcb(me)
             mdl = MdlLbcb(me.cfg);
             me.mdlLbcb = mdl;
-            me.ocOm.mdlLbcb = me.mdlLbcb;
-            me.peOm.mdlLbcb = me.mdlLbcb;
-            me.gcpOm.mdlLbcb = me.mdlLbcb;
-            me.nxtStep.mdlLbcb = me.mdlLbcb;
             StepData.setMdlLbcb(me.mdlLbcb);
+            for c =1:length(me.simStates)
+                me.simStates{c}.mdlLbcb = mdl;
+            end
             
 
         end
         function destroyMdlLbcb(me)
             me.mdlLbcb = [];
-            me.ocOm.mdlLbcb = me.mdlLbcb;
-            me.peOm.mdlLbcb = me.mdlLbcb;
-            me.gcpOm.mdlLbcb = me.mdlLbcb;
-            me.nxtStep.mdlLbcb = me.mdlLbcb;
+            for c =1:length(me.simStates)
+                me.simStates{c}.mdlLbcb = [];
+            end
         end
-    end
+        
+        function c = get.ocOm(me)
+            c= me.simStates{1};
+        end
+        function c = get.peOm(me)
+            c= me.simStates{2};
+        end
+        function c = get.gcpOm(me)
+            c= me.simStates{3};
+        end
+        function c = get.nxtStep(me)
+            c= me.simStates{4};
+        end
+        function c = get.pResp(me)
+            c= me.simStates{5};
+        end
+        function c = get.cnEx(me)
+            c= me.simExec{1};
+        end
+        function c = get.stpEx(me)
+            c= me.simExec{2};
+        end
+        function c = get.tgtEx(me)
+            c= me.simExec{3};
+        end
+   end
 end

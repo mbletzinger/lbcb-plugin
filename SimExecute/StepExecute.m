@@ -1,6 +1,14 @@
-classdef StepExecute < handle
+classdef StepExecute < SimExecute
     properties
-        ocOm = [];
+        fakeOm = [];
+        nxtStep = [];
+        peOm = [];
+        pResp = [];
+        gcpOm = [];
+        fakeGcp = [];
+        arch = [];
+        dd = [];
+        
         currentStepAction = StateEnum({...
             'NEXT STEP',...
             'CHECK LIMITS'...
@@ -18,34 +26,82 @@ classdef StepExecute < handle
         log = Logger;
     end
     methods
-        function start(me,action)
-            switch action
-                case 'OPEN OM CONNECTION'
-                    me.ocOm.start(0);
-                    start(me.simTimer);
-                case 'CLOSE OM CONNECTION'
-                    me.ocOm.start(1);
-                    start(me.simTimer);
-                case 'OPEN SIMCOR CONNECTION'
-                case 'CLOSE SIMCOR CONNECTION'
-                otherwise
-                    me.log.error(dbstack,sprintf('%s action not recognized',action));
-            end
-            me.currentAction.setState(action);
+        function start(me,steps)
+            me.nxtStep.steps = steps;
+            me.currentAction.setState('NEXT STEP');                
         end
         function done = isDone(me)
             switch me.currentAction.getState()
-                case { 'OPEN OM CONNECTION' 'CLOSE OM CONNECTION'}
-                    done = me.ocOm.isDone();
+    case'NEXT STEP'
+        done = me.nxtStep.isDone();
+        if done % Next target is ready
+            if me.nxtStep.simCompleted  %  No more targets
+                me.setRunButton(0); % Pause the simulation
+                me.log.info(dbstack,'Simulation is Over');
+                me.currentAction.setState('READY');
+            else % Execute next step
+                if me.fakeOm == 0
+                    me.peOm.step = me.nxtStep.nextStepData;
+                end
+                me.updateSteps();
+                me.currentAction.setState('CHECK LIMITS');
+            end
+        end
+    case 'OM PROPOSE EXECUTE'
+        if me.fakeOm == 0
+            done = me.peOm.isDone();
+            if done % execute response has been received from OM
+                if me.peOm.state.isState('ERRORS EXIST')
+                    me.ocOm.connectionError();
+                end
+                me.gcpOm.step = me.peOm.step;
+                me.gcpOm.start();
+                me.currentAction.setState('OM GET CONTROL POINTS');
+            end
+        else
+            me.currentAction.setState('OM GET CONTROL POINTS');
+        end
+    case 'OM GET CONTROL POINTS'
+        if me.fakeOm
+            me.fakeGcp.generateControlPoints(me.nxtStep.nextStepData);
+            me.nxtStep.curStepData = me.nxtStep.nextStepData;
+            me.currentAction.setState('NEXT TARGET');
+            me.arch.archive(me.nxtStep.curStepData);
+            me.dd.update(me.nxtStep.curStepData);
+        else
+            done = me.gcpOm.isDone();
+            if done
+                if me.peOm.state.isState('ERRORS EXIST')
+                    me.ocOm.connectionError();
+                end
+                me.nxtStep.curStepData = me.gcpOm.step;
+                me.currentAction.setState('PROCESS OM RESPONSE');
+                me.arch.archive(me.gcpOm.step);
+                me.dd.update(me.gcpOm.step);
+                me.pResp.start();
+            end
+        end
+                case 'PROCESS OM RESPONSE'
+                    done = me.pResp.isDone();
                     if done
-                        if me.ocOm.state.isState('ERRORS EXIST') == 0
-                            me.log.debug(dbstack,'Open connection has errors');
-                            me.state.setState('ERRORS EXIST');
-                        end
-                        me.state.setState('COMPLETED');
+                       me.currentAction.setState('NEXT STEP');                
                     end
-                case 'OPEN SIMCOR CONNECTION'
-                case 'CLOSE SIMCOR CONNECTION'
+                    
+    case 'CHECK LIMITS'
+        %        me.nxtStep
+        done = me.nxtStep.withinLimits();
+        me.updateCommandLimits();
+        me.updateStepTolerances();
+        if done
+            me.currentAction.setState('OM PROPOSE EXECUTE');
+            if me.fakeOm == 0
+                me.peOm.step = me.nxtStep.nextStepData;
+                me.peOm.start();
+            end
+        else
+            me.setRunButton(0); % Pause the simulation
+            stop(me.simTimer);
+        end
                 otherwise
                     me.log.error(dbstack,sprintf('%s action not recognized',action));
             end

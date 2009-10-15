@@ -13,5 +13,6 @@ classdef SimState < handle
         cfg = [];
         dd = [];
         ed = cell(2,1);
+        gui = [];
     end
 end
