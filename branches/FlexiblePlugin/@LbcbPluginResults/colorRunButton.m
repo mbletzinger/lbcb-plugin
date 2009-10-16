@@ -1,4 +1,9 @@
 function  colorRunButton(me,bs)
+if isempty(me.handles)
+    me.log.info(dbstack,sprintf('Run Hold Button is %s',bs));
+    return;
+end
+
     hndl = me.handles.RunHold;
     switch bs
         case 'ON'

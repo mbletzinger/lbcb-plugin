@@ -1,4 +1,4 @@
-classdef SimulationExecute < handle
+classdef SimulationExecute < SimExecute
     properties
         ocOm = [];
         state = StateEnum({...

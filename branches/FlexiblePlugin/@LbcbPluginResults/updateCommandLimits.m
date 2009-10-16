@@ -9,6 +9,13 @@ inc1 = il.increments1;
 inc2 = il.increments2;
 
 for f = 1:12
+    if isempty(me.commandCurrentValueHandles1{f})
+        me.log.info(dbstack,sprintf('LBCB 1 %s command %f & increment %f',...
+            me.dofLabel{f},commands1(f),inc1(f)));
+        me.log.info(dbstack,sprintf('LBCB 2 %s command %f & increment %f',...
+            me.dofLabel{f},commands2(f),inc2(f)));
+        continue;
+    end
     set(me.commandCurrentValueHandles1{f},'String',sprintf('%f',commands1(f)));
     set(me.commandCurrentValueHandles2{f},'String',sprintf('%f',commands2(f)));
     set(me.incrementCurrentValueHandles1{f},'String',sprintf('%f',inc1(f)));
