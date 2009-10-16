@@ -7,6 +7,7 @@ classdef OpenClose < SimState
             });
         connectionStatus = StateEnum({'CONNECTED','DISCONNECTED','ERRORED'});
         closeIt = 0;
+        hndlfact = [];
     end
     methods
         function me = OpenClose()

@@ -22,31 +22,27 @@ classdef OpenCloseOm < OpenClose
                 me.log.error(dbstack,'OM Connection already connected');
                 return;
             end
-            if me.closeIt
-                ml = SimulationState.getMdlLbcb();
-            else
-                ml = MdlLbcb(me.cfg);
-                SimulationState.setMdlLbcb(ml);
+            if me.closeIt == 0
+                me.hndlfact.createMdlLbcb();
             end
             if me.closeIt
                 if me.connectionStatus.isState('CONNECTED')  % There are no errors
-                    address = StepData.getAddress();
-                    jmsg = ml.createCommand('close-session',address,[],[]);
-                    ml.start(jmsg,[],0);
+                    address = me.getAddress();
+                    jmsg = me.mdlLbcb.createCommand('close-session',address,[],[]);
+                    me.mdlLbcb.start(jmsg,[],0);
                     me.omActions.setState('CLOSING_SESSION');
                 else
-                    ml.close();
+                    me.mdlLbcb.close();
                     me.omActions.setState('DISCONNECTING');
                 end
             else
-                ml.open();
+                me.mdlLbcb.open();
                 me.omActions.setState('CONNECTING');
             end
         end
         function done = isDone(me)
             done = 0;
-            ml = SimulationState.getMdlLbcb();
-            if isempty(ml)
+            if isempty(me.mdlLbcb)
                 if me.omActions.isState('DONE')
                     done = 1;
                 else
@@ -54,11 +50,11 @@ classdef OpenCloseOm < OpenClose
                 end
                 return;
             end
-            mlDone = ml.isDone();
+            mlDone = me.mdlLbcb.isDone();
             if mlDone == 0
                 return;
             end
-            me.state.setState(ml.state.getState());
+            me.state.setState(me.mdlLbcb.state.getState());
             me.log.debug(dbstack,sprintf('OpenClose state is %s',me.state.getState()));
 
             if me.state.isState('ERRORS EXIST')
@@ -92,30 +88,30 @@ classdef OpenCloseOm < OpenClose
             me.omActions.setState('DONE');            
         end
         function closingSession(me)
-            ml = SimulationState.getMdlLbcb();
-            ml.close();
+            me.mdlLbcb.close();
             me.omActions.setState('DISCONNECTING');            
         end
         function connect(me)
-            ml = SimulationState.getMdlLbcb();
-            address = StepData.getAddress();
+            address = me.getAddress();
             if isempty(address)
                 me.log.error(dbstack,'SimCor Address is not set in the OM Configuration');
                 me.connectionStatus.setState('ERRORED');
                 me.omActions.setState('DONE');
                 return;
             end
-            jmsg = ml.createCommand('open-session',address,[],[]);
-            ml.start(jmsg,[],0);
+            jmsg = me.mdlLbcb.createCommand('open-session',address,[],[]);
+            me.mdlLbcb.start(jmsg,[],0);
             me.omActions.setState('OPENING_SESSION');
         end
         function disconnect(me)
-            ml = SimulationState.getMdlLbcb();
-            delete(ml);
-%            omActions = me.omActions
-            SimulationState.setMdlLbcb({});
+            me.hndlfact.destroyMdLbcb();
             me.connectionStatus.setState('DISCONNECTED');
             me.omActions.setState('DONE');            
+        end
+        function a = getAddress(me)
+            ncfg = NetworkConfigDao(me.cfg);
+            address = ncfg.address;
+            a = address;
         end
     end
 end
