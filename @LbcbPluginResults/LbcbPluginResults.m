@@ -28,15 +28,16 @@ classdef LbcbPluginResults < handle
             'BROKEN'...
             });
         buttonName = StateEnum({...
-            'RUN',...
             'CONNECT OM',...
             'CONNECT SIMCOR',...
             'TRIGGER'...
             });
-        
+        lLabel = {'LBCB1' 'LBCB2'};
+        dofLabel = {'Dx' 'Dy' 'Dz' 'Rx' 'Ry' 'Rz' 'Fx' 'Fy' 'Fz' 'Mx' 'My' 'Mz' };
+
     end
     methods
-        function me  = LbcbPluginActions(handles,cfg)
+        function me  = LbcbPluginResults(handles,cfg)
             me.handles = handles;
             me.cfg = cfg;
         end

@@ -22,6 +22,9 @@ classdef HandleFactory <  handle
         
         %Display update instance
         gui = [];
+        
+        %Step Data
+        dat = [];
     end
     properties (Dependent = true)
         % Simulation states
@@ -38,7 +41,7 @@ classdef HandleFactory <  handle
         
     end
     methods
-        function me = HndlFctry(handles,cfg)
+        function me = HandleFactory(handles,cfg)
             
             me.cfg = cfg;
             
@@ -54,26 +57,29 @@ classdef HandleFactory <  handle
             me.simExec{3} = TargetExecute;
 
             lc = LimitChecks;
-            
+            me.il = IncrementLimits(me.cfg);
+            me.cl = CommandLimits(me.cfg);
             lc.cmd = me.cl;
             lc.inc = me.il;
             me.gui = LbcbPluginResults(handles,cfg);
             
-            me.simStates{4}.lc = me.lc;
-            me.simStates{4}.st = me.st;
             
             me.ed{1} = ElasticDeformation(cfg,0);
             me.ed{2} = ElasticDeformation(cfg,1);
             me.dd = DerivedDof;
             me.st = StepTolerances(me.cfg);
+            me.dat = SimSharedData;
 
-            
+
+            me.simStates{4}.lc = lc;
+            me.simStates{4}.st = me.st;
+
             for c =1:length(me.simStates)
                 me.simStates{c}.cfg = cfg;
                 me.simStates{c}.dd = me.dd;
                 me.simStates{c}.ed = me.ed;
                 me.simStates{c}.gui = me.gui;                
-                me.simStates{c}.sd = me.sd;
+                me.simStates{c}.dat = me.dat;
             end
             for c =1:length(me.simExec)
                 me.simExec{c}.cfg = cfg;

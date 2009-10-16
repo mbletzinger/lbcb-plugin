@@ -3,5 +3,7 @@ global gui
 % Update handles structure
 h = me.handles;
 g = gui;
-guidata(g, me.handles);
+if isempty(h) == 0
+guidata(g, h);
+end
 end

@@ -1,7 +1,5 @@
 classdef SimState < handle
     properties
-        step = {};
-        errors = '';
         state = StateEnum({ ...
             'BUSY', ...
             'READY', ...
@@ -9,10 +7,10 @@ classdef SimState < handle
             });
         log = Logger;
         mdlLbcb = [];
-        sd = [];
         cfg = [];
         dd = [];
         ed = cell(2,1);
         gui = [];
+        dat = [];
     end
 end

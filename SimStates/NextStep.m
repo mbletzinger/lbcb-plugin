@@ -13,6 +13,8 @@ classdef NextStep < SimState
     properties
         steps = [];
         simCompleted = 0;
+        lc = [];
+        st = [];
     end
     methods
         function start(me)
