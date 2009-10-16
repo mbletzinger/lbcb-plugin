@@ -25,6 +25,9 @@ classdef HandleFactory <  handle
         
         %Step Data
         dat = [];
+        
+        %Step Data Factory
+        sdf = [];
     end
     properties (Dependent = true)
         % Simulation states
@@ -69,7 +72,8 @@ classdef HandleFactory <  handle
             me.dd = DerivedDof;
             me.st = StepTolerances(me.cfg);
             me.dat = SimSharedData;
-
+            me.sdf = StepDataFactory;
+            me.sdf.cfg = me.cfg;
 
             me.simStates{4}.lc = lc;
             me.simStates{4}.st = me.st;
@@ -85,24 +89,25 @@ classdef HandleFactory <  handle
                 me.simExec{c}.cfg = cfg;
                 me.simExec{c}.gui = me.gui;
             end
-            
+            me.simStates{1}.hndlfact = me;
             
         end
         function mdl = createMdlLbcb(me)
             mdl = MdlLbcb(me.cfg);
             me.mdlLbcb = mdl;
-            StepData.setMdlLbcb(me.mdlLbcb);
             for c =1:length(me.simStates)
                 me.simStates{c}.mdlLbcb = mdl;
             end
-            
+            me.sdf.mdlLbcb = mdl;
 
         end
         function destroyMdlLbcb(me)
+            delete (me.mdlLbcb);
             me.mdlLbcb = [];
             for c =1:length(me.simStates)
                 me.simStates{c}.mdlLbcb = [];
             end
+            me.sdf.mdlLbcb = [];
         end
         
         function c = get.ocOm(me)

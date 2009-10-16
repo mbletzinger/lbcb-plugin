@@ -15,6 +15,7 @@ classdef NextStep < SimState
         simCompleted = 0;
         lc = [];
         st = [];
+        
     end
     methods
         function start(me)
@@ -22,14 +23,13 @@ classdef NextStep < SimState
             me.dat.curStepData = me.dat.nextStepData;
         end
         function done = isDone(me)
-            dat = SimState.getSd();
             done = 1;
             % Dumb MATLAB  double negative comparison to see if the current
             % step is not empty
             if isempty(me.dat.curStepData) == 0
                 if me.needsCorrection()
-                    me.dat.nextStepData = me.datStepData.clone();
-                    me.dat.nextStepData.simstep = me.datStepData.simstep.NextStep(1);
+                    me.dat.nextStepData = me.sdf.clone(me.dat.curStepData);
+                    me.dat.nextStepData.simstep = me.dat.curStepData.simstep.NextStep(1);
                     me.edAdjust();
                     me.derivedDofAdjust();
                 else

@@ -1,5 +1,4 @@
-function num = numLbcbs()
-cfg = SimulationState.getCfg();
-ocfg = OmConfigDao(cfg);
+function num = numLbcbs(me)
+ocfg = OmConfigDao(me.cfg);
 num = ocfg.numLbcbs;
 end

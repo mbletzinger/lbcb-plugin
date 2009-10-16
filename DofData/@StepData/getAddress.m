@@ -1,6 +1,5 @@
-function a = getAddress()
-cfg = SimulationState.getCfg();
-ncfg = NetworkConfigDao(cfg);
+function a = getAddress(me)
+ncfg = NetworkConfigDao(me.cfg);
 address = ncfg.address;
 a = address;
 end

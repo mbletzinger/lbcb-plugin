@@ -1,6 +1,5 @@
-function [n s a] = getExtSensors()
-cfg = SimulationState.getCfg();
-ocfg = OmConfigDao(cfg);
+function [n s a] = getExtSensors(me)
+ocfg = OmConfigDao(me.cfg);
 names = ocfg.sensorNames;
 sensitivities = ocfg.sensitivities;
 applied = ocfg.apply2Lbcb;
