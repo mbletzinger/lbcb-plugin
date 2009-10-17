@@ -1,14 +1,15 @@
-classdef  InputFile < handle
+classdef  InputFile < Substeps
     properties
-    steps = {};
     filename = '';
     specfilename = '';
-    sIdx = 1;
     commandDofs = [];
-    endOfFile = 0;
     log = Logger;
+    sdf = [];
     end
     methods
+        function me = InputFile(sdf)
+            me.sdf = sdf;
+        end
         function done = load(me,path)
             me.endOfFile = 0;
             tgts= load(path);
@@ -22,15 +23,6 @@ classdef  InputFile < handle
             end
             me.loadSteps(tgts)
             done = 1;
-        end
-        function step = next(me)
-            if me.sIdx > length(me.steps)
-                step = [];
-                me.endOfFile = 1;
-                return;
-            end
-            step = me.steps{me.sIdx};
-            me.sIdx = me.sIdx + 1;
         end
         function readSpecfile(me,path)
             me.commandDofs = zeros(1,24);
@@ -78,7 +70,8 @@ classdef  InputFile < handle
                 else
                     targets = {tgt1};
                 end
-                me.steps{t} = StepData('simstep',SimulationSteps(t,0),'lbcb_tgts',targets);
+                me.steps{t} = me.sdf.target2StepData(targets);
+                me.steps{t}.simstep = SimulationSteps(t,0);
 %                me.log.debug(dbstack,sprintf('Created step=%s',me.steps{t}.toString()));
             end
         end
