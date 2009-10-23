@@ -1,6 +1,7 @@
 classdef SetupLimitTest < handle
     properties
-        cfg = {};
+        cfg = [];
+        hfact = {}
         infile = {};
         maxV = 5.0;
         minV = -2.0;
@@ -16,9 +17,10 @@ classdef SetupLimitTest < handle
             });
     end
     methods
-        function me = SetupLimitTest()
-            me.cfg = Configuration;
-            me.infile = InputFile;
+        function me = SetupLimitTest(hfact)
+            me.hfact = hfact;
+            me.cfg = hfact.cfg;
+            me.infile = me.hfact.inF;
             lcfg = LogLevelsDao(me.cfg);
             lcfg.cmdLevel = 'DEBUG';
             lcfg.msgLevel = 'INFO';

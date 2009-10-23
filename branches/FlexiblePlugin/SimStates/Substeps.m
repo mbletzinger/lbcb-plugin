@@ -3,7 +3,6 @@ classdef  Substeps < handle
     steps = {};
     sIdx = 1;
     endOfFile = 0;
-    log = Logger;
     end
     methods
         function step = next(me)

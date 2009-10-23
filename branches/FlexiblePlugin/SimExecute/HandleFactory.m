@@ -28,6 +28,10 @@ classdef HandleFactory <  handle
         
         %Step Data Factory
         sdf = [];
+        
+        % Input File Loader
+        inF = [];
+      
     end
     properties (Dependent = true)
         % Simulation states
@@ -48,7 +52,7 @@ classdef HandleFactory <  handle
             
             me.cfg = cfg;
             
-            
+            me.mdlLbcb = MdlLbcb(me.cfg);
             me.simStates{1} = OpenCloseOm;
             me.simStates{2} = ProposeExecuteOm;
             me.simStates{3} = GetControlPointsOm;
@@ -74,6 +78,8 @@ classdef HandleFactory <  handle
             me.dat = SimSharedData;
             me.sdf = StepDataFactory;
             me.sdf.cfg = me.cfg;
+            me.sdf.mdlLbcb = me.mdlLbcb;
+            me.inF = InputFile(me.sdf);
 
             me.simStates{4}.lc = lc;
             me.simStates{4}.st = me.st;
@@ -85,6 +91,8 @@ classdef HandleFactory <  handle
                 me.simStates{c}.gui = me.gui;                
                 me.simStates{c}.dat = me.dat;
                 me.simStates{c}.sdf = me.sdf;
+                me.simStates{c}.mdlLbcb = me.mdlLbcb;
+                
             end
             for c =1:length(me.simExec)
                 me.simExec{c}.cfg = cfg;
@@ -92,23 +100,6 @@ classdef HandleFactory <  handle
             end
             me.simStates{1}.hndlfact = me;
             
-        end
-        function mdl = createMdlLbcb(me)
-            mdl = MdlLbcb(me.cfg);
-            me.mdlLbcb = mdl;
-            for c =1:length(me.simStates)
-                me.simStates{c}.mdlLbcb = mdl;
-            end
-            me.sdf.mdlLbcb = mdl;
-
-        end
-        function destroyMdlLbcb(me)
-            delete (me.mdlLbcb);
-            me.mdlLbcb = [];
-            for c =1:length(me.simStates)
-                me.simStates{c}.mdlLbcb = [];
-            end
-            me.sdf.mdlLbcb = [];
         end
         
         function c = get.ocOm(me)

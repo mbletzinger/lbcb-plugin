@@ -49,8 +49,7 @@ classdef NextStep < SimState
     methods (Access='private')
         function needsCorrection = needsCorrection(me)
             needsCorrection = 0;
-            cfg = SimState.getCfg();
-            ocfg = OmConfigDao(cfg);
+            ocfg = OmConfigDao(me.cfg);
             if ocfg.doEdCorrection == 0
                 return;
             end
@@ -59,8 +58,7 @@ classdef NextStep < SimState
             end
         end
         function edAdjust(me)
-            cfg = SimState.getCfg();
-            ocfg = OmConfigDao(cfg);
+            ocfg = OmConfigDao(me.cfg);
             if ocfg.doEdCorrection
                 for l = 1: StepData.numLbcbs()
                     me.ed{l}.adjustTarget(me.dat.nextStepData.lbcbCps{l});
@@ -68,8 +66,7 @@ classdef NextStep < SimState
             end
         end
         function derivedDofAdjust(me)
-            cfg = SimState.getCfg();
-            ocfg = OmConfigDao(cfg);
+            ocfg = OmConfigDao(me.cfg);
             if ocfg.doDdofCorrection
                 me.dd.adjustTarget(me.dat.nextStepData);
             else

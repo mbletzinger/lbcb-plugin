@@ -10,7 +10,7 @@
 % $LastChangedDate: 2009-10-12 10:40:20 -0500 (Mon, 12 Oct 2009) $ 
 % $Author: mbletzin $
 % =====================================================================================================================
-classdef SimulationSteps < handle
+classdef SimStep < handle
     properties
         step = 0;
         subStep = 0;
@@ -21,11 +21,11 @@ classdef SimulationSteps < handle
         function me = SimulationSteps(step, subStep)
             me.step = step;
             me.subStep = subStep;
-            me.id = SimulationSteps.newId();
+            me.id = SimStep.newId();
             me.log.debug(dbstack,sprintf('created /step=%d/substep=%d/id=%d',me.step,me.subStep,me.id));
         end
         % increment the step or substep and return in a new instance
-        function simstate = nextStep(me,useSubStep)
+        function simstate = SimStep(me,useSubStep)
             stp = me.step;
             sStp = me.subStep;
             if(useSubStep)
@@ -34,7 +34,7 @@ classdef SimulationSteps < handle
                 stp = stp + 1;
                 sStp = 0;
             end
-            simstate = SimulationSteps(stp,sStp);
+            simstate = SimSteps(stp,sStp);
         end
         function str = toString(me)
             str = sprintf('%d\t%d',me.step, me.subStep);

@@ -13,4 +13,15 @@ classdef SimState < handle
         gui = [];
         dat = [];
     end
+    methods
+        function a = getAddress(me)
+            ncfg = NetworkConfigDao(me.cfg);
+            address = ncfg.address;
+            a = address;
+        end
+        function num = numLbcbs(me)
+            ocfg = OmConfigDao(me.cfg);
+            num = ocfg.numLbcbs;
+        end
+    end
 end
