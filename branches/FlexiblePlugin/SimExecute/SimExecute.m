@@ -3,6 +3,7 @@ classdef SimExecute < handle
         gui = [];
         cfg = [];
         ocOm = [];
+        log = Logger;
     end
     methods
     end
