@@ -12,11 +12,11 @@ classdef ProposeExecuteOm < SimState
         end
         function done = isDone(me)
             done = 0;
-            ml = SimState.getMdlLbcb();
-            if ml.isDone() == 0
+            me.mlLbcb = SimState.getMdlLbcb();
+            if me.mlLbcb.isDone() == 0
                 return;
             end
-            me.state.setState(ml.state.getState);
+            me.state.setState(me.mlLbcb.state.getState);
             if me.state.isState('ERRORS EXIST')
                 done = 1;
                 return;
@@ -35,19 +35,17 @@ classdef ProposeExecuteOm < SimState
     end
     methods (Access=private)
         function startPropose(me)
-            jmsg = me.step.generateProposeMsg();
+            jmsg = me.dat.nextStep.generateProposeMsg();
             me.log.debug(dbstack,sprintf('Sending %s',char(jmsg)));
-            ml = SimState.getMdlLbcb();
-            ml.start(jmsg,me.step.simstep,1);
+            me.mlLbcb.start(jmsg,me.step.simstep,1);
             me.state.setState('BUSY');
             me.action.setState('PROPOSE');
         end
         function startExecute(me)
-            ml = SimState.getMdlLbcb();
-            address = StepData.getAddress();
-            jmsg = ml.createCommand('execute',address,[],[]);
+            address = me.getAddress();
+            jmsg = me.mlLbcb.createCommand('execute',address,[],[]);
             me.log.debug(dbstack,sprintf('Sending %s',char(jmsg)));
-            ml.start(jmsg,me.step.simstep,0);
+            me.mlLbcb.start(jmsg,me.step.simstep,0);
             me.state.setState('BUSY');
             me.action.setState('DONE');
         end

@@ -27,7 +27,7 @@ classdef ProcessResponse < SimState
             ocfg = OmConfigDao(cfg);
             if ocfg.doEdCalculations
                 %calculate elastic deformations
-                for l = 1: StepData.numLbcbs()
+                for l = 1: me.numLbcbs()
                     ccps = me.dat.curStepData.lbcbCps{l};
                     pcps = [];
                     if isempty(me.dat.prevStepData) == 0

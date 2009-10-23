@@ -22,9 +22,6 @@ classdef OpenCloseOm < OpenClose
                 me.log.error(dbstack,'OM Connection already connected');
                 return;
             end
-            if me.closeIt == 0
-                me.hndlfact.createMdlLbcb();
-            end
             if me.closeIt
                 if me.connectionStatus.isState('CONNECTED')  % There are no errors
                     address = me.getAddress();
@@ -42,14 +39,6 @@ classdef OpenCloseOm < OpenClose
         end
         function done = isDone(me)
             done = 0;
-            if isempty(me.mdlLbcb)
-                if me.omActions.isState('DONE')
-                    done = 1;
-                else
-                    me.log.error(dbstack,fprintf('Empty mdlbcb at action %s state %s',a,me.state.getState()));
-                end
-                return;
-            end
             mlDone = me.mdlLbcb.isDone();
             if mlDone == 0
                 return;
@@ -104,14 +93,8 @@ classdef OpenCloseOm < OpenClose
             me.omActions.setState('OPENING_SESSION');
         end
         function disconnect(me)
-            me.hndlfact.destroyMdLbcb();
             me.connectionStatus.setState('DISCONNECTED');
             me.omActions.setState('DONE');            
-        end
-        function a = getAddress(me)
-            ncfg = NetworkConfigDao(me.cfg);
-            address = ncfg.address;
-            a = address;
         end
     end
 end

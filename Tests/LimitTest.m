@@ -1,5 +1,5 @@
-JavaTest
-s = SetupLimitTest;
+HandleTest
+s = SetupLimitTest(hfact);
 s.setTest('INCREMENT');
 LbcbPlugin('cfg',s.cfg,'infile',s.infile,'notimer',0);
 s = SetupLimitTest;
