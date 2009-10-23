@@ -2,6 +2,7 @@ classdef SimSharedData < handle
     properties
         prevTarget = [];
         curTarget = [];
+        correctionTarget = [];
         prevStepData = [];
         curStepData = [];
         nextStepData = [];

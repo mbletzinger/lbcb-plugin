@@ -9,6 +9,7 @@ classdef StepData < handle
         jid = {};
         mdlLbcb = [];
         cfg = [];
+        needsCorrection = 0;
     end
     methods
         str = toString(me)

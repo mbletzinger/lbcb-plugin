@@ -117,7 +117,7 @@ classdef MdlLbcb < handle
         function start(me,jmsg, simsteps,createId)
             tf = me.simcorTcp.getTransactionFactory();
             if createId
-                id = tf.createTransactionId(simsteps.step, simsteps.subStep);
+                id = tf.createTransactionId(simsteps.step, simsteps.subStep, simsteps.correctionStep);
                 tf.setId(id);
             end
             transaction = tf.createTransaction(jmsg);
