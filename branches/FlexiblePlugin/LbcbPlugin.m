@@ -54,8 +54,7 @@ function LbcbPlugin_OpeningFcn(hObject, eventdata, handles, varargin) %#ok<*INUS
 
 % Choose default command line output for LbcbPlugin
 handles.output = hObject;
-cfg = {};
-infile = {};
+hfact = {};
 handles.notimer = 0;
 
 if(nargin > 3)
@@ -63,10 +62,8 @@ if(nargin > 3)
         if nargin-3==index, break, end
         label = lower(varargin{index});
         switch label
-            case 'cfg'
-                cfg = varargin{index+1};
-            case 'infile'
-                infile = varargin{index+1};
+            case 'hfact'
+                hfact = varargin{index+1};
             case 'notimer'
                 handles.notimer = varargin{index+1};
             otherwise
@@ -76,7 +73,7 @@ if(nargin > 3)
     end
 end
 
-handles.actions = LbcbPluginActions(handles,cfg);
+handles.actions = LbcbPluginActions(handles,hfact);
 handles.actions.initialize();
 if isempty(infile) == 0
     handles.actions.setInputFile(infile);

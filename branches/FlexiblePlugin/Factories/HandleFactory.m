@@ -31,6 +31,10 @@ classdef HandleFactory <  handle
         
         % Input File Loader
         inF = [];
+        
+        %Fake OM classes
+        
+        fakeGcp = [];
       
     end
     properties (Dependent = true)
@@ -48,7 +52,7 @@ classdef HandleFactory <  handle
         
     end
     methods
-        function me = HandleFactory(handles,cfg)
+        function me = HandleFactory(handle,cfg)
             
             me.cfg = cfg;
             
@@ -68,7 +72,7 @@ classdef HandleFactory <  handle
             me.cl = CommandLimits(me.cfg);
             lc.cmd = me.cl;
             lc.inc = me.il;
-            me.gui = LbcbPluginResults(handles,cfg);
+            me.gui = LbcbPluginResults(handle,cfg);
             
             
             me.ed{1} = ElasticDeformation(cfg,0);
@@ -94,12 +98,30 @@ classdef HandleFactory <  handle
                 me.simStates{c}.mdlLbcb = me.mdlLbcb;
                 
             end
+            me.simStates{1}.hndlfact = me;
+            
+            me.fakeGcp = FakeOm(me.cfg);
+            
             for c =1:length(me.simExec)
                 me.simExec{c}.cfg = cfg;
                 me.simExec{c}.gui = me.gui;
+                me.simExec{c}.ocOm = me.ocOm;
             end
-            me.simStates{1}.hndlfact = me;
+            me.simExec{2}.fakeGcp = me.fakeGcp;
+            me.simExec{2}.nxtStep = me.nxtStep;
+            me.simExec{2}.peOm = me.peOm;
+            me.simExec{2}.gcpOm = me.gcpOm;
+            me.simExec{2}.pResp = me.pResp;
             
+        end
+        function setGuiHandle(me, handle)
+            me.gui = LbcbPluginResults(handle,me.cfg);
+            for c =1:length(me.simStates)
+                me.simStates{c}.gui = me.gui;                                
+            end
+            for c =1:length(me.simExec)
+                me.simExec{c}.gui = me.gui;
+            end
         end
         
         function c = get.ocOm(me)

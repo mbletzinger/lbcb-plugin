@@ -18,8 +18,8 @@ classdef SetupLimitTest < handle
     end
     methods
         function me = SetupLimitTest(hfact)
-            me.hfact = hfact;
             me.cfg = hfact.cfg;
+            me.hfact = hfact;
             me.infile = me.hfact.inF;
             lcfg = LogLevelsDao(me.cfg);
             lcfg.cmdLevel = 'DEBUG';

@@ -1,8 +1,7 @@
 classdef LbcbPluginActions < handle
     properties
         simTimer = [];
-        gui = [];
-        hndlF = [];
+        hfact = [];
         currentExecute = StateEnum({...
             'OPEN OM CONNECTION',...
             'CLOSE OM CONNECTION',...
@@ -16,19 +15,21 @@ classdef LbcbPluginActions < handle
             });
     end
     methods
-        function me  = LbcbPluginActions(handles,cfg)
+        function me  = LbcbPluginActions(handles,hfact)
             if isempty(javaclasspath('-dynamic'))
                 javaaddpath(fullfile(pwd,'JavaLibrary','UiSimCorJava-0.0.1-SNAPSHOT.jar'));
                 javaaddpath(fullfile(pwd,'JavaLibrary','log4j-1.2.15.jar'));
                 javaaddpath(fullfile(pwd,'JavaLibrary'));
             end
             % Default configuration found in lbcb_plugin.properties
-            if isempty(cfg)
+            if isempty(hfact)
                 cfg = Configuration;
                 cfg.load();
+                me.hfact = HandleFactory(handle,cfg);
+            else
+                me.hfact = hfact;
+                me.hfact.setGuiHandle(handles);                
             end
-            me.gui = LbcbPluginResults(handle,cfg);
-            me.hndlF = HandleFactory(cfg);
             handles.log = me.log;
             handles.actions = me;
             % set up execute timer
