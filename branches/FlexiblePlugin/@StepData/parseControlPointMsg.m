@@ -1,6 +1,6 @@
 function parseControlPointMsg(me,rsp)
 [address contents] = rsp.getContents()
-mdl = StepData.getAddress();
+mdl = me.getAddress();
 switch char(address.getSuffix())
     case 'LBCB1'
         lbcbR = LbcbReading;
@@ -11,7 +11,7 @@ switch char(address.getSuffix())
         lbcbR.parse(contents,mdl);
         me.lbcbCps{2}.response = lbcbR;
     case 'ExternalSensors'
-        [n se a ] = StepData.getExtSensors();
+        [n se a ] = me.getExtSensors();
         readings = me.parseExternalSensorsMsg(n,contents);
         me.distributeExtSensorData(readings);
 end

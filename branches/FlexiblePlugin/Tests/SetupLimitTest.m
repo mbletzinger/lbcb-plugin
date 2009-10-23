@@ -61,7 +61,7 @@ classdef SetupLimitTest < handle
             apply2Lbcb(1:6,1) = {'LBCB2' 'LBCB2' 'LBCB2' 'LBCB1' 'LBCB1' 'LBCB1'}';
             ocfg.sensorNames = sensorNames;
             ocfg.apply2Lbcb = apply2Lbcb;
-            ocfg.numLbcbs = '2';
+            ocfg.numLbcbs = 2;
         end
         function m = getMultiplier(me, d)
             if d <=3
