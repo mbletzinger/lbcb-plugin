@@ -84,6 +84,7 @@ classdef HandleFactory <  handle
                 me.simStates{c}.ed = me.ed;
                 me.simStates{c}.gui = me.gui;                
                 me.simStates{c}.dat = me.dat;
+                me.simStates{c}.sdf = me.sdf;
             end
             for c =1:length(me.simExec)
                 me.simExec{c}.cfg = cfg;
