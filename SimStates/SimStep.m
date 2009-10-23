@@ -18,14 +18,14 @@ classdef SimStep < handle
         log = Logger;
     end
     methods
-        function me = SimulationSteps(step, subStep)
+        function me = SimStep(step, subStep)
             me.step = step;
             me.subStep = subStep;
             me.id = SimStep.newId();
             me.log.debug(dbstack,sprintf('created /step=%d/substep=%d/id=%d',me.step,me.subStep,me.id));
         end
         % increment the step or substep and return in a new instance
-        function simstate = SimStep(me,useSubStep)
+        function simstate = next(me,useSubStep)
             stp = me.step;
             sStp = me.subStep;
             if(useSubStep)

@@ -12,6 +12,7 @@ classdef SimState < handle
         ed = cell(2,1);
         gui = [];
         dat = [];
+        sdf = [];
     end
     methods
         function a = getAddress(me)

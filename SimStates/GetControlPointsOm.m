@@ -10,20 +10,21 @@ classdef GetControlPointsOm < SimState
     end
     methods
         function start(me)
+            me.dat.stepShift(); % next is the new current :)
             me.cpsMsg.setState('LBCB1');
             address = me.getAddress();
-            jmsg = me.mlLbcb.createCommand('get-control-point',address,me.cpsMsg.getState(),[]);
-            me.mlLbcb.start(jmsg,me.dat.nextStep.simstep,0);
+            jmsg = me.mdlLbcb.createCommand('get-control-point',address,me.cpsMsg.getState(),[]);
+            me.mdlLbcb.start(jmsg,me.dat.curStepData.simstep,0);
             me.state.setState('BUSY');
         end
         function done = isDone(me)
             c = me.cpsMsg.getState();
             done = 0;
             address = me.getAddress();
-            if me.mlLbcb.isDone() == 0
+            if me.mdlLbcb.isDone() == 0
                 return;
             end
-            me.state.setState(me.mlLbcb.state.getState);
+            me.state.setState(me.mdlLbcb.state.getState);
             if me.state.isState('ERRORS EXIST')
                 done = 1;
                 return;
@@ -37,18 +38,18 @@ classdef GetControlPointsOm < SimState
                     else
                         me.cpsMsg.setState('ExternalSensors');
                     end
-                    me.dat.nextStep.parseControlPointMsg(me.mlLbcb.response)
-                    jmsg = me.mlLbcb.createCommand('get-control-point',address,me.cpsMsg.getState(),[]);
-                    me.mlLbcb.start(jmsg,me.dat.nextStep.simstep,0);
+                    me.dat.curStepData.parseControlPointMsg(me.mdlLbcb.response)
+                    jmsg = me.mdlLbcb.createCommand('get-control-point',address,me.cpsMsg.getState(),[]);
+                    me.mdlLbcb.start(jmsg,me.dat.curStepData.simstep,0);
                     me.state.setState('BUSY');
                 case 'LBCB2'
-                    me.dat.nextStep.parseControlPointMsg(me.mlLbcb.response)
+                    me.dat.curStepData.parseControlPointMsg(me.mdlLbcb.response)
                     me.cpsMsg.setState('ExternalSensors');
-                    jmsg = me.mlLbcb.createCommand('get-control-point',address,me.cpsMsg.getState(),[]);
-                    me.mlLbcb.start(jmsg,me.dat.nextStep.simstep,0);
+                    jmsg = me.mdlLbcb.createCommand('get-control-point',address,me.cpsMsg.getState(),[]);
+                    me.mdlLbcb.start(jmsg,me.dat.curStepData.simstep,0);
                     me.state.setState('BUSY');
                 case 'ExternalSensors'
-                    me.dat.nextStep.parseControlPointMsg(me.mlLbcb.response)
+                    me.dat.curStepData.parseControlPointMsg(me.mdlLbcb.response)
                     me.cpsMsg.setState('DONE');
                     me.state.setState('READY');
                 case 'DONE'

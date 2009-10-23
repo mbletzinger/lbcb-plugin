@@ -4,7 +4,7 @@ classdef StepDataFactory < handle
         cfg = [];
     end
     methods
-         function clone = clone(step)
+         function clone = clone(me,step)
             clone = StepData;
             num = StepData.numLbcbs();
             clone.lbcb = cell(num,1);
@@ -15,12 +15,12 @@ classdef StepDataFactory < handle
             clone.simstep = step.simstep;
             me.addProtocol(clone);
          end
-         function simStep2StepData(simstep)
+         function clone = simStep2StepData(me,simstep)
              clone = StepData;
              clone.simstep = simstep;
              me.addProtocol(clone);
          end
-         function target2StepData(targets)
+         function clone = target2StepData(me,targets)
              clone = StepData;
              me.addProtocol(clone);
              lgth = clone.numLbcbs();
@@ -34,7 +34,7 @@ classdef StepDataFactory < handle
              end
              
          end
-         function addProtocol(step)
+         function addProtocol(me,step)
              step.mdlLbcb = me.mdlLbcb;
              step.cfg = me.cfg;
          end

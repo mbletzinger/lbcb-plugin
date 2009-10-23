@@ -19,8 +19,6 @@ classdef NextStep < SimState
     end
     methods
         function start(me)
-            me.dat.prevStepData = me.dat.curStepData;
-            me.dat.curStepData = me.dat.nextStepData;
         end
         function done = isDone(me)
             done = 1;
