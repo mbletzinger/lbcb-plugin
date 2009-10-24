@@ -4,6 +4,7 @@ classdef SimExecute < handle
         cfg = [];
         ocOm = [];
         log = Logger;
+        dat = [];
     end
     methods
     end
