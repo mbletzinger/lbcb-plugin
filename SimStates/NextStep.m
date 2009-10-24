@@ -27,7 +27,7 @@ classdef NextStep < SimState
             if isempty(me.dat.curStepData) == 0
                 if me.needsCorrection()
                     me.dat.nextStepData = me.sdf.clone(me.dat.curStepData);
-                    me.dat.nextStepData.simstep = me.dat.curStepData.simstep.NextStep(1);
+                    me.dat.nextStepData.simstep = me.dat.curStepData.simstep.NextStep(2);
                     me.edAdjust();
                     me.derivedDofAdjust();
                 else
@@ -51,9 +51,14 @@ classdef NextStep < SimState
             if ocfg.doEdCorrection == 0
                 return;
             end
-            if me.st.withinTolerances(me.dat.curStepData)
-                needsCorrection = 1;
+            wt1 = me.st{1}.withinTolerances(me.dat.correctionTarget.lbcbCps{1}.command,...
+                me.dat.curStepData.lcbCps{1}.response);
+            wt2 = 1;
+            if me.numLbcbs() == 2
+                wt2 = me.st{2}.withinTolerances(me.dat.correctionTarget.lbcbCps{2}.command,...
+                    me.dat.curStepData.lcbCps{2}.response);
             end
+            needsCorrection = wt1 && wt2 == 0;
         end
         function edAdjust(me)
             ocfg = OmConfigDao(me.cfg);

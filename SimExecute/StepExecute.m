@@ -39,9 +39,6 @@ classdef StepExecute < SimExecute
                             me.log.info(dbstack,'Simulation is Over');
                             me.currentAction.setState('READY');
                         else % Execute next step
-                            if me.isFake() == 0
-                                me.peOm.step = me.nxtStep.nextStepData;
-                            end
                             me.updateSteps();
                             me.currentAction.setState('CHECK LIMITS');
                         end
@@ -63,28 +60,25 @@ classdef StepExecute < SimExecute
                 case 'OM GET CONTROL POINTS'
                     if me.isFake()
                         me.fakeGcp.generateControlPoints(me.nxtStep.nextStepData);
-                        me.nxtStep.curStepData = me.nxtStep.nextStepData;
-                        me.currentAction.setState('NEXT TARGET');
-                        me.arch.archive(me.nxtStep.curStepData);
-                        me.dd.update(me.nxtStep.curStepData);
+                        me.currentAction.setState('PROCESS OM RESPONSE');
                     else
                         done = me.gcpOm.isDone();
                         if done
                             if me.peOm.state.isState('ERRORS EXIST')
                                 me.ocOm.connectionError();
                             end
-                            me.nxtStep.curStepData = me.gcpOm.step;
-                            me.currentAction.setState('PROCESS OM RESPONSE');
-                            me.arch.archive(me.gcpOm.step);
-                            me.dd.update(me.gcpOm.step);
                             me.pResp.start();
                         end
+                    me.currentAction.setState('PROCESS OM RESPONSE');
                     end
                 case 'PROCESS OM RESPONSE'
+                    me.dat.shiftSubSteps();
                     done = me.pResp.isDone();
-                    if done
-                        me.currentAction.setState('NEXT STEP');
-                    end
+                    me.arch.archive(me.dat.curStepData);
+                    me.dd.update(me.dat.curStepData);
+                    me.currentAction.setState('BROADCAST TRIGGER');
+                case 'BROADCAST TRIGGER'
+                    me.currentAction.setState('NEXT STEP');
                     
                 case 'CHECK LIMITS'
                     %        me.nxtStep

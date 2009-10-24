@@ -5,7 +5,7 @@ classdef HandleFactory <  handle
         
         % Limit instances
         cl = []; % CommandLimits object
-        st = []; % StepTolerances object
+        st = cell(2,1); % StepTolerances objects
         il = []; % IncrementLimits object
         
         
@@ -78,7 +78,8 @@ classdef HandleFactory <  handle
             me.ed{1} = ElasticDeformation(cfg,0);
             me.ed{2} = ElasticDeformation(cfg,1);
             me.dd = DerivedDof;
-            me.st = StepTolerances(me.cfg);
+            me.st{1} = StepTolerances(me.cfg,1);
+            me.st{2} = StepTolerances(me.cfg,0);
             me.dat = SimSharedData;
             me.sdf = StepDataFactory;
             me.sdf.cfg = me.cfg;
@@ -106,6 +107,7 @@ classdef HandleFactory <  handle
                 me.simExec{c}.cfg = cfg;
                 me.simExec{c}.gui = me.gui;
                 me.simExec{c}.ocOm = me.ocOm;
+                me.simExec{c}.dat = me.dat;
             end
             me.simExec{2}.fakeGcp = me.fakeGcp;
             me.simExec{2}.nxtStep = me.nxtStep;
