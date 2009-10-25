@@ -5,10 +5,10 @@ classdef StepStates < SimStates
         pResp = [];
         gcpOm = [];
         fakeGcp = [];
-        arch = Archiver;
+        arch = [];
         dd = DataDisplay;
         
-        currentStepAction = StateEnum({...
+        currentAction = StateEnum({...
             'NEXT STEP',...
             'CHECK LIMITS'...
             'OM PROPOSE EXECUTE',...
@@ -22,7 +22,6 @@ classdef StepStates < SimStates
             'COMPLETED',...
             'ERRORS EXIST'...
             });
-        log = Logger;
     end
     methods
         function start(me,steps)
@@ -31,27 +30,30 @@ classdef StepStates < SimStates
             me.state.setState('BUSY');
         end
         function done = isDone(me)
+            done = 0;
+            me.log.debug(dbstack,sprintf('Executing %s',me.currentAction.getState()));
             switch me.currentAction.getState()
                 case'NEXT STEP'
-                    done = me.nxtStep.isDone();
-                    if done % Next target is ready
+                    odone = me.nxtStep.isDone();
+                    if odone % Next target is ready
                         if me.nxtStep.simCompleted  %  No more targets
                             me.log.info(dbstack,'Steps are done');
                             me.state.setState('COMPLETED');
                             me.currentAction.setState('DONE');
+                            done = 1;
                         else % Execute next step
-                            me.updateSteps();
                             me.currentAction.setState('CHECK LIMITS');
                         end
                     end
                 case 'OM PROPOSE EXECUTE'
                     if me.isFake() == 0
-                        done = me.peOm.isDone();
-                        if done % execute response has been received from OM
+                        odone = me.peOm.isDone();
+                        if odone % execute response has been received from OM
                             if me.peOm.state.isState('ERRORS EXIST')
                                 me.ocOm.connectionError();
                                 me.state.setState('ERRORS EXIST');
                                 me.currentAction.setState('DONE');
+                                done = 1;
                             end
                             me.gcpOm.step = me.peOm.step;
                             me.gcpOm.start();
@@ -62,23 +64,24 @@ classdef StepStates < SimStates
                     end
                 case 'OM GET CONTROL POINTS'
                     if me.isFake()
-                        me.fakeGcp.generateControlPoints(me.nxtStep.nextStepData);
+                        me.fakeGcp.generateControlPoints(me.dat.nextStepData);
                         me.currentAction.setState('PROCESS OM RESPONSE');
                     else
-                        done = me.gcpOm.isDone();
-                        if done
+                        odone = me.gcpOm.isDone();
+                        if odone
                             if me.peOm.state.isState('ERRORS EXIST')
                                 me.ocOm.connectionError();
                                 me.state.setState('ERRORS EXIST');
                                 me.currentAction.setState('DONE');
+                                done = 1;
                             end
                             me.pResp.start();
                         end
-                    me.currentAction.setState('PROCESS OM RESPONSE');
+                        me.currentAction.setState('PROCESS OM RESPONSE');
                     end
                 case 'PROCESS OM RESPONSE'
                     me.dat.stepShift();
-                    done = me.pResp.isDone();
+                    me.pResp.start();
                     me.arch.archive(me.dat.curStepData);
                     me.dd.update(me.dat.curStepData);
                     me.currentAction.setState('BROADCAST TRIGGER');
@@ -87,24 +90,25 @@ classdef StepStates < SimStates
                     
                 case 'CHECK LIMITS'
                     %        me.nxtStep
-                    done = me.nxtStep.withinLimits();
+                    odone = me.nxtStep.withinLimits();
                     me.gui.updateCommandLimits(me.nxtStep.lc);
                     me.gui.updateStepTolerances(me.nxtStep.st);
-                    if done
+                    if odone
                         me.currentAction.setState('OM PROPOSE EXECUTE');
                         if me.isFake() == 0
                             me.peOm.start();
                         end
                     else
                         me.state.setState('ERRORS EXIST');
+                        done = 1;
                     end
                 otherwise
                     me.log.error(dbstack,sprintf('%s action not recognized',action));
             end
         end
         function yes = isFake(me)
-           ocfg = OmConfigDao(me.cfg);
-           yes = ocfg.useFakeOm;
+            ocfg = OmConfigDao(me.cdp.cfg);
+            yes = ocfg.useFakeOm;
         end
     end
 end

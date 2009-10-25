@@ -1,7 +1,7 @@
 classdef SimStates < handle
     properties
         gui = [];
-        cfg = [];
+        cdp = [];
         ocOm = [];
         log = Logger;
         dat = [];

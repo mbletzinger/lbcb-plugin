@@ -47,30 +47,30 @@ classdef NextStep < OmState
     methods (Access='private')
         function needsCorrection = needsCorrection(me)
             needsCorrection = 0;
-            ocfg = OmConfigDao(me.cfg);
-            if ocfg.doEdCorrection == 0
+            scfg = StepConfigDao(me.cdp.cfg);
+            if scfg.doEdCorrection == 0
                 return;
             end
             wt1 = me.st{1}.withinTolerances(me.dat.correctionTarget.lbcbCps{1}.command,...
                 me.dat.curStepData.lcbCps{1}.response);
             wt2 = 1;
-            if me.numLbcbs() == 2
+            if me.cdp.numLbcbs() == 2
                 wt2 = me.st{2}.withinTolerances(me.dat.correctionTarget.lbcbCps{2}.command,...
                     me.dat.curStepData.lcbCps{2}.response);
             end
             needsCorrection = wt1 && wt2 == 0;
         end
         function edAdjust(me)
-            ocfg = OmConfigDao(me.cfg);
-            if ocfg.doEdCorrection
-                for l = 1: StepData.numLbcbs()
+            scfg = StepConfigDao(me.cdp.cfg);
+            if scfg.doEdCorrection
+                for l = 1: me.cdp.numLbcbs()
                     me.ed{l}.adjustTarget(me.dat.nextStepData.lbcbCps{l});
                 end
             end
         end
         function derivedDofAdjust(me)
-            ocfg = OmConfigDao(me.cfg);
-            if ocfg.doDdofCorrection
+            scfg = StepConfigDao(me.cdp.cfg);
+            if scfg.doDdofCorrection
                 me.dd.adjustTarget(me.dat.nextStepData);
             else
             end

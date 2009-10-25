@@ -1,4 +1,4 @@
-function colorFaultText(hndl,fault,isLbcb1,f)
+function colorFaultText(me,hndl,fault,isLbcb1,f)
 if isempty(hndl)
     if fault
         me.log.info(dbstack,sprintf('%s dof %s is at fault',...

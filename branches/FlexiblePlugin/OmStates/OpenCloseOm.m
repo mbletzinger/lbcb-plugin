@@ -26,7 +26,7 @@ classdef OpenCloseOm < OmState
             end
             if me.closeIt
                 if me.connectionStatus.isState('CONNECTED')  % There are no errors
-                    address = me.getAddress();
+                    address = me.cdp.getAddress();
                     jmsg = me.mdlLbcb.createCommand('close-session',address,[],[]);
                     me.mdlLbcb.start(jmsg,[],0);
                     me.omActions.setState('CLOSING_SESSION');
@@ -90,7 +90,7 @@ classdef OpenCloseOm < OmState
             me.omActions.setState('DISCONNECTING');            
         end
         function connect(me)
-            address = me.getAddress();
+            address = me.cdp.getAddress();
             if isempty(address)
                 me.log.error(dbstack,'SimCor Address is not set in the OM Configuration');
                 me.connectionStatus.setState('ERRORED');

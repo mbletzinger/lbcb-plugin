@@ -23,9 +23,8 @@ classdef ProcessResponse < OmState
     end
     methods (Access='private')
         function edCalculate(me)
-            cfg = SimState.getCfg();
-            ocfg = OmConfigDao(cfg);
-            if ocfg.doEdCalculations
+            scfg = StepConfigDao(me.cdp.cfg);
+            if scfg.doEdCalculations
                 %calculate elastic deformations
                 for l = 1: me.numLbcbs()
                     ccps = me.dat.curStepData.lbcbCps{l};
@@ -38,11 +37,7 @@ classdef ProcessResponse < OmState
             end
         end
         function derivedDofCalculate(me)
-            cfg = SimState.getCfg();
-            ocfg = OmConfigDao(cfg);
-            if ocfg.doDdofCalculations
-                me.dd.calculate(me.dat.curStepData);
-            end
+            me.dd.calculate(me.dat.curStepData);
         end
     end
 end

@@ -3,7 +3,6 @@ switch test
     case { 'UPPER' 'LOWER' 'INCREMENT' 'RAMP'}
         me.genFakeParameters(0);
     case  'STEP'
-        me.genTargets(1,0);
         me.genFakeParameters(1);
     otherwise
         me.log.error(dbstack, sprintf('%s not recognized',test));

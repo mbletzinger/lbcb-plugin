@@ -12,7 +12,7 @@ classdef GetControlPointsOm < OmState
         function start(me)
             me.dat.stepShift(); % next is the new current :)
             me.cpsMsg.setState('LBCB1');
-            address = me.getAddress();
+            address = me.cdp.getAddress();
             jmsg = me.mdlLbcb.createCommand('get-control-point',address,me.cpsMsg.getState(),[]);
             me.mdlLbcb.start(jmsg,me.dat.curStepData.stepNum,0);
             me.state.setState('BUSY');
@@ -20,7 +20,7 @@ classdef GetControlPointsOm < OmState
         function done = isDone(me)
             c = me.cpsMsg.getState();
             done = 0;
-            address = me.getAddress();
+            address = me.cdp.getAddress();
             if me.mdlLbcb.isDone() == 0
                 return;
             end

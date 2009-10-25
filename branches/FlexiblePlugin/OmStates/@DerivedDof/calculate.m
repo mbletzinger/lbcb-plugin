@@ -21,12 +21,12 @@ me.Fz2tar = lbcb2Fz + Fzerr/2;
 
 % Calculating My error
 MyMy = lbcb1My + lbcb2My;   % Moment from individual pier bending
-MyFz = -dxlbcb1*me.Fz1tar - dxlbcb2*me.Fz2tar;    % Moment from axial loading
+MyFz = -me.dxlbcb1*me.Fz1tar - me.dxlbcb2*me.Fz2tar;    % Moment from axial loading
 Myerr = Mytar - MyMy - MyFz;
 
 % Correcting My error
-me.Fz1tar = me.Fz1tar + Myerr/(2*dxlbcb1);
-me.Fz2tar = me.Fz1tar + Myerr/(2*dxlbcb2);
+me.Fz1tar = me.Fz1tar + Myerr/(2*me.dxlbcb1);
+me.Fz2tar = me.Fz1tar + Myerr/(2*me.dxlbcb2);
 
 cstep.dData.labels = {'Fx total', 'My target'};
 cstep.dData.values(1) = Fxtot;

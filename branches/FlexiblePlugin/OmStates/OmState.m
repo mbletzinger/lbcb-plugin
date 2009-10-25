@@ -7,7 +7,7 @@ classdef OmState < handle
             });
         log = Logger;
         mdlLbcb = [];
-        cfg = [];
+        cdp = [];
         dd = [];
         ed = cell(2,1);
         gui = [];
@@ -15,14 +15,5 @@ classdef OmState < handle
         sdf = [];
     end
     methods
-        function a = getAddress(me)
-            ncfg = NetworkConfigDao(me.cfg);
-            address = ncfg.address;
-            a = address;
-        end
-        function num = numLbcbs(me)
-            ocfg = OmConfigDao(me.cfg);
-            num = ocfg.numLbcbs;
-        end
     end
 end

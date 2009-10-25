@@ -15,7 +15,6 @@ classdef TargetStates < SimStates
             'COMPLETED',...
             'ERRORS EXIST'...
             });
-        log = Logger;
     end
     methods
         function start(me,action)

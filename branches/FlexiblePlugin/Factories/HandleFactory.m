@@ -35,6 +35,10 @@ classdef HandleFactory <  handle
         %Fake OM classes
         
         fakeGcp = [];
+        
+        %Archiver
+        
+        arch = [];
       
     end
     properties (Dependent = true)
@@ -55,6 +59,7 @@ classdef HandleFactory <  handle
         function me = HandleFactory(handle,cfg)
             
             me.cfg = cfg;
+            cdp = ConfigDaoProvider(cfg);
             
             me.mdlLbcb = MdlLbcb(me.cfg);
             me.omStates{1} = OpenCloseOm;
@@ -82,15 +87,17 @@ classdef HandleFactory <  handle
             me.st{2} = StepTolerances(me.cfg,0);
             me.dat = SimSharedData;
             me.sdf = StepDataFactory;
-            me.sdf.cfg = me.cfg;
+            me.sdf.cdp = cdp;
             me.sdf.mdlLbcb = me.mdlLbcb;
             me.inF = InputFile(me.sdf);
+            
+            me.arch = Archiver(cdp);
 
             me.omStates{4}.lc = lc;
             me.omStates{4}.st = me.st;
 
             for c =1:length(me.omStates)
-                me.omStates{c}.cfg = cfg;
+                me.omStates{c}.cdp = cdp;
                 me.omStates{c}.dd = me.dd;
                 me.omStates{c}.ed = me.ed;
                 me.omStates{c}.gui = me.gui;                
@@ -99,12 +106,11 @@ classdef HandleFactory <  handle
                 me.omStates{c}.mdlLbcb = me.mdlLbcb;
                 
             end
-            me.omStates{1}.hndlfact = me;
             
             me.fakeGcp = GetControlPointsFake(me.cfg);
             
             for c =1:length(me.simStates)
-                me.simStates{c}.cfg = cfg;
+                me.simStates{c}.cdp = cdp;
                 me.simStates{c}.gui = me.gui;
                 me.simStates{c}.ocOm = me.ocOm;
                 me.simStates{c}.dat = me.dat;
@@ -114,6 +120,7 @@ classdef HandleFactory <  handle
             me.simStates{2}.peOm = me.peOm;
             me.simStates{2}.gcpOm = me.gcpOm;
             me.simStates{2}.pResp = me.pResp;
+            me.simStates{2}.arch = me.arch;
             
         end
         function setGuiHandle(me, handle)
