@@ -1,4 +1,4 @@
-classdef OpenCloseOm < OpenClose
+classdef OpenCloseOm < OmState
     properties
         omActions = StateEnum({...
             'CONNECTING',...
@@ -7,10 +7,12 @@ classdef OpenCloseOm < OpenClose
             'OPENING_SESSION',...
             'DONE',...
             });
-    end
+         connectionStatus = StateEnum({'CONNECTED','DISCONNECTED','ERRORED'});
+        closeIt = 0;
+   end
     methods
         function me = OpenCloseOm()
-            me.connectionType.setState('OperationsManager');
+            me.connectionStatus.setState('DISCONNECTED');
         end
         function start(me, closeIt)
             me.closeIt = closeIt;
@@ -69,6 +71,13 @@ classdef OpenCloseOm < OpenClose
                     done = 1;
                     me.log.error(dbstack(),sprintf('%s not recognized',a));
             end
+        end
+        function connectionError(me)
+            me.ocOm.connectionStatus.setState('ERRORED');
+            me.gui.colorRunButton('BROKEN'); % Pause the simulation
+            me.gui.colorColorButton('CONNECT OM','BROKEN');
+            me.log.error(dbstack, sprintf('%s link has been disconnected due to errors',...
+                me.connectionType.getState())); 
         end
     end
     methods (Access=private)
