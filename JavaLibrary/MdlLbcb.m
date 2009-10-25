@@ -114,10 +114,10 @@ classdef MdlLbcb < handle
         % Start a transaction with the operations manager.  A transaction
         % consists of a command sent to the OM and the response returned by
         % the OM.
-        function start(me,jmsg, simsteps,createId)
+        function start(me,jmsg, stepNums,createId)
             tf = me.simcorTcp.getTransactionFactory();
             if createId
-                id = tf.createTransactionId(simsteps.step, simsteps.subStep, simsteps.correctionStep);
+                id = tf.createTransactionId(stepNums.step, stepNums.subStep, stepNums.correctionStep);
                 tf.setId(id);
             end
             transaction = tf.createTransaction(jmsg);

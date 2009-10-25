@@ -1,5 +1,5 @@
 function str = toString(me)
-str = sprintf('Step=%s\n',me.simstep.toString());
+str = sprintf('Step=%s\n',me.stepNum.toString());
 if isempty(me.lbcbCps)
     str = sprintf('%s/LBCB readings=',str,'none');
 else

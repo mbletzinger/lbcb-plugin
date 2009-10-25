@@ -12,12 +12,12 @@ classdef StepDataFactory < handle
                 clone.lbcb{l} = step.lbcb{l}.clone();
             end
             clone.externalSensorsRaw = step.externalSensorsRaw;
-            clone.simstep = step.simstep;
+            clone.StepNumber = step.StepNumber;
             me.addProtocol(clone);
          end
-         function clone = simStep2StepData(me,simstep)
+         function clone = StepNumber2StepData(me,StepNumber)
              clone = StepData;
-             clone.simstep = simstep;
+             clone.StepNumber = StepNumber;
              me.addProtocol(clone);
          end
          function clone = target2StepData(me,targets)

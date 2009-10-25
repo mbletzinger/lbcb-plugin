@@ -1,11 +1,11 @@
-classdef FakeOm < handle
+classdef GetControlPointsFake < handle
     properties
         cfg = {};
         drvO = {};
         log = Logger;
     end
     methods
-        function me = FakeOm(cfg)
+        function me = GetControlPointsFake(cfg)
             me.cfg = cfg;
             fcfg = FakeOmDao(cfg);
             me.drvO = StateEnum(fcfg.derivedOptions);
@@ -58,7 +58,7 @@ classdef FakeOm < handle
             fcfg = FakeOmDao(me.cfg);
             cstp = fcfg.convergeSteps;
             cinc = fcfg.convergeInc;
-            stp = istep.simstep.subStep;
+            stp = istep.stepNum.subStep;
             if stp >= cstp
                 error = 0;
                 return;

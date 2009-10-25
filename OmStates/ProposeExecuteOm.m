@@ -34,19 +34,19 @@ classdef ProposeExecuteOm < OmState
     end
     methods (Access=private)
         function startPropose(me)
-            simstep = me.dat.nextStepData.simstep;
+            stepNum = me.dat.nextStepData.stepNum;
             jmsg = me.dat.nextStepData.generateProposeMsg();
             me.log.debug(dbstack,sprintf('Sending %s',char(jmsg)));
-            me.mdlLbcb.start(jmsg,simstep,1);
+            me.mdlLbcb.start(jmsg,stepNum,1);
             me.state.setState('BUSY');
             me.action.setState('PROPOSE');
         end
         function startExecute(me)
             address = me.getAddress();
-            simstep = me.dat.nextStepData.simstep;
+            stepNum = me.dat.nextStepData.stepNum;
             jmsg = me.mdlLbcb.createCommand('execute',address,[],[]);
             me.log.debug(dbstack,sprintf('Sending %s',char(jmsg)));
-            me.mdlLbcb.start(jmsg,simstep,0);
+            me.mdlLbcb.start(jmsg,stepNum,0);
             me.state.setState('BUSY');
             me.action.setState('DONE');
         end

@@ -1,4 +1,4 @@
-classdef PluginExecute < SimState
+classdef PluginStates < SimStates
     properties
         ocOm = [];
         currentAction = StateEnum({...

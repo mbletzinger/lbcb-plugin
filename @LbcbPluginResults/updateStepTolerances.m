@@ -1,8 +1,8 @@
 function updateStepTolerances(me,st)
-within1 = st.within1;
-within2 = st.within2;
-diffs1 = st.diffs1;
-diffs2 = st.diffs2;
+within1 = st{1}.within;
+within2 = st{1}.within2;
+diffs1 = st{2}.diffs1;
+diffs2 = st{2}.diffs2;
 
 for f = 1:12
     if isempty(me.toleranceCurrentValueHandles1{f})

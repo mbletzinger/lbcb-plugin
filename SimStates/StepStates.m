@@ -1,4 +1,4 @@
-classdef StepStates < SimState
+classdef StepStates < SimStates
     properties
         nxtStep = [];
         peOm = [];
@@ -28,6 +28,7 @@ classdef StepStates < SimState
         function start(me,steps)
             me.nxtStep.steps = steps;
             me.currentAction.setState('NEXT STEP');
+            me.state.setState('BUSY');
         end
         function done = isDone(me)
             switch me.currentAction.getState()
@@ -35,9 +36,9 @@ classdef StepStates < SimState
                     done = me.nxtStep.isDone();
                     if done % Next target is ready
                         if me.nxtStep.simCompleted  %  No more targets
-                            me.setRunButton(0); % Pause the simulation
-                            me.log.info(dbstack,'Simulation is Over');
-                            me.currentAction.setState('READY');
+                            me.log.info(dbstack,'Steps are done');
+                            me.state.setState('COMPLETED');
+                            me.currentAction.setState('DONE');
                         else % Execute next step
                             me.updateSteps();
                             me.currentAction.setState('CHECK LIMITS');
@@ -49,6 +50,8 @@ classdef StepStates < SimState
                         if done % execute response has been received from OM
                             if me.peOm.state.isState('ERRORS EXIST')
                                 me.ocOm.connectionError();
+                                me.state.setState('ERRORS EXIST');
+                                me.currentAction.setState('DONE');
                             end
                             me.gcpOm.step = me.peOm.step;
                             me.gcpOm.start();
@@ -66,13 +69,15 @@ classdef StepStates < SimState
                         if done
                             if me.peOm.state.isState('ERRORS EXIST')
                                 me.ocOm.connectionError();
+                                me.state.setState('ERRORS EXIST');
+                                me.currentAction.setState('DONE');
                             end
                             me.pResp.start();
                         end
                     me.currentAction.setState('PROCESS OM RESPONSE');
                     end
                 case 'PROCESS OM RESPONSE'
-                    me.dat.shiftSubSteps();
+                    me.dat.stepShift();
                     done = me.pResp.isDone();
                     me.arch.archive(me.dat.curStepData);
                     me.dd.update(me.dat.curStepData);
@@ -83,17 +88,15 @@ classdef StepStates < SimState
                 case 'CHECK LIMITS'
                     %        me.nxtStep
                     done = me.nxtStep.withinLimits();
-                    me.updateCommandLimits();
-                    me.updateStepTolerances();
+                    me.gui.updateCommandLimits(me.nxtStep.lc);
+                    me.gui.updateStepTolerances(me.nxtStep.st);
                     if done
                         me.currentAction.setState('OM PROPOSE EXECUTE');
                         if me.isFake() == 0
-                            me.peOm.step = me.nxtStep.nextStepData;
                             me.peOm.start();
                         end
                     else
-                        me.setRunButton(0); % Pause the simulation
-                        stop(me.simTimer);
+                        me.state.setState('ERRORS EXIST');
                     end
                 otherwise
                     me.log.error(dbstack,sprintf('%s action not recognized',action));
