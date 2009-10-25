@@ -17,6 +17,7 @@ classdef LbcbReading < handle
         ed = DofData();
         m2d = Msg2DofData();
         node = '';
+        cdp = [];
     end
     properties (Dependent = true)
         disp;
@@ -28,7 +29,7 @@ classdef LbcbReading < handle
         % is not provided because the values must be set according to the
         % source
         function dof = get.disp(me)
-            if LbcbReading.useEd()
+            if me.cdp.useEd()
                 dof = me.ed.disp;
             else
                 dof = me.lbcb.disp;
@@ -55,13 +56,6 @@ classdef LbcbReading < handle
         function str = toString(me)
             str = sprintf('/lbcb%s\n\t',me.lbcb.toString());
             str = sprintf('%s/ed%s',str,me.ed.toString());
-        end
-    end
-    methods (Static)
-        function yes = useEd()
-            cfg = SimulationState.getCfg();
-            ocfg = OmConfigDao(cfg);
-            yes = ocfg.doEdCalculations;
         end
     end
 end

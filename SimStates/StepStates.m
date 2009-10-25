@@ -42,6 +42,7 @@ classdef StepStates < SimStates
                             me.currentAction.setState('DONE');
                             done = 1;
                         else % Execute next step
+                            me.log.debug(dbstack,sprintf('Next Step is %s',me.dat.nextStepData.toString()));
                             me.currentAction.setState('CHECK LIMITS');
                         end
                     end

@@ -28,12 +28,12 @@ classdef SetupTest < handle
         end
         setTest(me,test)
         m = getMultiplier(me, d)
-        genFakeParameters(me,needsConverge)
-        genStepConfigSettings(me)
+        genFakeParameters(me,idx,needsConverge)
+        genStepConfigSettings(me,requireCorrection)
         genTargets(me,isUpper,needsIncrement)
         genLimitTargets(me, idx, isUpper,numSteps)
         genIncrementTargets(me, idx,numSteps)
-        genRampTargets(me, halfSteps)
+        genRampTargets(me, idx, halfSteps)
         setLimits(me,d,test)
         clearAll(me)
     end

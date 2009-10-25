@@ -1,9 +1,11 @@
 function setTest(me,test)
 switch test
-    case { 'UPPER' 'LOWER' 'INCREMENT' 'RAMP'}
-        me.genFakeParameters(0);
-    case  'STEP'
-        me.genFakeParameters(1);
+    case { 'UPPER' 'LOWER' 'INCREMENT'}
+        me.genStepConfigSettings(0);
+        me.genFakeParameters(1,0);
+    case  { 'STEP' 'RAMP'}
+        me.genStepConfigSettings(1);
+        me.genFakeParameters(1,1);
     otherwise
         me.log.error(dbstack, sprintf('%s not recognized',test));
 end
@@ -27,5 +29,4 @@ apply2Lbcb(1:6,1) = {'LBCB2' 'LBCB2' 'LBCB2' 'LBCB1' 'LBCB1' 'LBCB1'}';
 ocfg.sensorNames = sensorNames;
 ocfg.apply2Lbcb = apply2Lbcb;
 ocfg.numLbcbs = 2;
-me.genStepConfigSettings();
 end
