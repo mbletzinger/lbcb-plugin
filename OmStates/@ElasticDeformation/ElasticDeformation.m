@@ -27,12 +27,14 @@ classdef ElasticDeformation < handle
         potTol = [];
         activeDofs = [];
         correctionDeltas = zeros(6,1);
-        cfg
+        cdp = [];
+        log = Logger;
+        isLbcb1 = 0;
     end
     methods
-        function me = ElasticDeformation(cfg,isLbcb1)
-            me.loadConfig(cfg,isLbcb1);
-            me.cfg = cfg;
+        function me = ElasticDeformation(cdp,isLbcb1)
+            me.cdp = cdp;
+            me.isLbcb1 = isLbcb1;
         end
         function deltaDiff(me,curLbcbCp)
             me.correctionDeltas = curLbcbCp.target.disp - curLbcbCp.response.disp;
@@ -45,6 +47,6 @@ classdef ElasticDeformation < handle
         % calculate LBCB position based on external sensor readings.
         calculate(me, curLbcbCp,prevLbcbCp)
         lengths = dof2act(me,deltas,v0,p0,q0)
-        loadConfig(me,cfg,isLbcb1)
+        loadConfig(me)
     end
 end
