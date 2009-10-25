@@ -1,4 +1,4 @@
-classdef StepExecute < SimExecute
+classdef StepStates < SimState
     properties
         nxtStep = [];
         peOm = [];

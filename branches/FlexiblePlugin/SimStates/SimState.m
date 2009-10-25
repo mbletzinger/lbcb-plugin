@@ -1,4 +1,4 @@
-classdef SimExecute < handle
+classdef SimState < handle
     properties
         gui = [];
         cfg = [];

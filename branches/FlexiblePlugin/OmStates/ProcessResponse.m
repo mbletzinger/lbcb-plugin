@@ -9,7 +9,7 @@
 % $LastChangedDate: 2009-06-01 15:30:46 -0500 (Mon, 01 Jun 2009) $ 
 % $Author: mbletzin $
 % =====================================================================================================================
-classdef ProcessResponse < SimState
+classdef ProcessResponse < OmState
     properties
     end
     methods
