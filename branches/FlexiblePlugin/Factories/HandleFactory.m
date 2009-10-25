@@ -80,8 +80,8 @@ classdef HandleFactory <  handle
             me.gui = LbcbPluginResults(handle,cfg);
             
             
-            me.ed{1} = ElasticDeformation(cfg,0);
-            me.ed{2} = ElasticDeformation(cfg,1);
+            me.ed{1} = ElasticDeformation(cdp,0);
+            me.ed{2} = ElasticDeformation(cdp,1);
             me.dd = DerivedDof;
             me.st{1} = StepTolerances(me.cfg,1);
             me.st{2} = StepTolerances(me.cfg,0);

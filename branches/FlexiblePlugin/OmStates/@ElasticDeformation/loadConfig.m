@@ -1,13 +1,13 @@
-function loadConfig(me,cdp,isLbcb1)
-ocfg = OmConfigDao(cdp.cfg);
-[names se applied ] = cdp.getExtSensors();
+function loadConfig(me)
+ocfg = OmConfigDao(me.cdp.cfg);
+[names se applied ] = me.cdp.getExtSensors();
 lt = length(applied);
 base = [ ocfg.baseX(1:lt)'; ocfg.baseY(1:lt)'; ocfg.baseZ(1:lt)' ];
 plat = [ ocfg.platX(1:lt)'; ocfg.platY(1:lt)'; ocfg.platZ(1:lt)' ];
 perts = ocfg.perturbationsL2;
 sensorErrorTol = ocfg.sensorErrorTol;
 lb = 'LBCB2';
-if isLbcb1
+if me.isLbcb1
     lb = 'LBCB1';
     perts = ocfg.perturbationsL1;
 end

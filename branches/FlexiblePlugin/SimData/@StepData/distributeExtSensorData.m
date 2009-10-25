@@ -1,11 +1,11 @@
 function distributeExtSensorData(me,readings)
 [n se a] = me.cdp.getExtSensors();
 me.externalSensorsRaw = readings;
-el1 = zeros(length(readings));
+el1 = zeros(length(se));
 el1l = 1;
-el2 = zeros(length(readings));
+el2 = zeros(length(se));
 el2l = 1;
-for s = 1:length(readings)
+for s = 1:length(se)
     r = readings(s) * se(s);
     if strcmp(a{s},'LBCB1')
         el1(el1l) = r;
