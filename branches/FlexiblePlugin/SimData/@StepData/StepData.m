@@ -2,7 +2,7 @@ classdef StepData < handle
     properties
         lbcbCps = {}; % Instances of LbcbControlPoint
         modelCps = {}; % Instances of model control points
-        simstep = {}; % SimulationStep instance
+        stepNum = {}; % StepNumber instance
         externalSensorsRaw = [];
         dData = DerivedData;
         log = Logger;

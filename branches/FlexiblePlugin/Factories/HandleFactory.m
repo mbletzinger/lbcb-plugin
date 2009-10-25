@@ -17,8 +17,8 @@ classdef HandleFactory <  handle
         dd = [];
         
         % Simulation States and Executors
-        simStates = cell(5,1);
-        simExec = cell(3,1);
+        omStates = cell(5,1);
+        simStates = cell(3,1);
         
         %Display update instance
         gui = [];
@@ -57,21 +57,21 @@ classdef HandleFactory <  handle
             me.cfg = cfg;
             
             me.mdlLbcb = MdlLbcb(me.cfg);
-            me.simStates{1} = OpenCloseOm;
-            me.simStates{2} = ProposeExecuteOm;
-            me.simStates{3} = GetControlPointsOm;
-            me.simStates{4} = NextStep;
-            me.simStates{5} = ProcessResponse;
+            me.omStates{1} = OpenCloseOm;
+            me.omStates{2} = ProposeExecuteOm;
+            me.omStates{3} = GetControlPointsOm;
+            me.omStates{4} = NextStep;
+            me.omStates{5} = ProcessResponse;
             
-            me.simExec{1} = ConnectionExecute;
-            me.simExec{2} = StepExecute;
-            me.simExec{3} = TargetExecute;
+            me.simStates{1} = ConnectStates;
+            me.simStates{2} = StepStates;
+            me.simStates{3} = TargetStates;
 
             lc = LimitChecks;
             me.il = IncrementLimits(me.cfg);
             me.cl = CommandLimits(me.cfg);
-            lc.cmd = me.cl;
-            lc.inc = me.il;
+            lc.cl = me.cl;
+            lc.il = me.il;
             me.gui = LbcbPluginResults(handle,cfg);
             
             
@@ -86,69 +86,69 @@ classdef HandleFactory <  handle
             me.sdf.mdlLbcb = me.mdlLbcb;
             me.inF = InputFile(me.sdf);
 
-            me.simStates{4}.lc = lc;
-            me.simStates{4}.st = me.st;
+            me.omStates{4}.lc = lc;
+            me.omStates{4}.st = me.st;
 
-            for c =1:length(me.simStates)
-                me.simStates{c}.cfg = cfg;
-                me.simStates{c}.dd = me.dd;
-                me.simStates{c}.ed = me.ed;
-                me.simStates{c}.gui = me.gui;                
-                me.simStates{c}.dat = me.dat;
-                me.simStates{c}.sdf = me.sdf;
-                me.simStates{c}.mdlLbcb = me.mdlLbcb;
+            for c =1:length(me.omStates)
+                me.omStates{c}.cfg = cfg;
+                me.omStates{c}.dd = me.dd;
+                me.omStates{c}.ed = me.ed;
+                me.omStates{c}.gui = me.gui;                
+                me.omStates{c}.dat = me.dat;
+                me.omStates{c}.sdf = me.sdf;
+                me.omStates{c}.mdlLbcb = me.mdlLbcb;
                 
             end
-            me.simStates{1}.hndlfact = me;
+            me.omStates{1}.hndlfact = me;
             
-            me.fakeGcp = FakeOm(me.cfg);
+            me.fakeGcp = GetControlPointsFake(me.cfg);
             
-            for c =1:length(me.simExec)
-                me.simExec{c}.cfg = cfg;
-                me.simExec{c}.gui = me.gui;
-                me.simExec{c}.ocOm = me.ocOm;
-                me.simExec{c}.dat = me.dat;
+            for c =1:length(me.simStates)
+                me.simStates{c}.cfg = cfg;
+                me.simStates{c}.gui = me.gui;
+                me.simStates{c}.ocOm = me.ocOm;
+                me.simStates{c}.dat = me.dat;
             end
-            me.simExec{2}.fakeGcp = me.fakeGcp;
-            me.simExec{2}.nxtStep = me.nxtStep;
-            me.simExec{2}.peOm = me.peOm;
-            me.simExec{2}.gcpOm = me.gcpOm;
-            me.simExec{2}.pResp = me.pResp;
+            me.simStates{2}.fakeGcp = me.fakeGcp;
+            me.simStates{2}.nxtStep = me.nxtStep;
+            me.simStates{2}.peOm = me.peOm;
+            me.simStates{2}.gcpOm = me.gcpOm;
+            me.simStates{2}.pResp = me.pResp;
             
         end
         function setGuiHandle(me, handle)
             me.gui = LbcbPluginResults(handle,me.cfg);
-            for c =1:length(me.simStates)
-                me.simStates{c}.gui = me.gui;                                
+            for c =1:length(me.omStates)
+                me.omStates{c}.gui = me.gui;                                
             end
-            for c =1:length(me.simExec)
-                me.simExec{c}.gui = me.gui;
+            for c =1:length(me.simStates)
+                me.simStates{c}.gui = me.gui;
             end
         end
         
         function c = get.ocOm(me)
-            c= me.simStates{1};
+            c= me.omStates{1};
         end
         function c = get.peOm(me)
-            c= me.simStates{2};
+            c= me.omStates{2};
         end
         function c = get.gcpOm(me)
-            c= me.simStates{3};
+            c= me.omStates{3};
         end
         function c = get.nxtStep(me)
-            c= me.simStates{4};
+            c= me.omStates{4};
         end
         function c = get.pResp(me)
-            c= me.simStates{5};
+            c= me.omStates{5};
         end
         function c = get.cnEx(me)
-            c= me.simExec{1};
+            c= me.simStates{1};
         end
         function c = get.stpEx(me)
-            c= me.simExec{2};
+            c= me.simStates{2};
         end
         function c = get.tgtEx(me)
-            c= me.simExec{3};
+            c= me.simStates{3};
         end
    end
 end

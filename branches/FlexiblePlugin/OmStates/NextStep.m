@@ -27,7 +27,7 @@ classdef NextStep < OmState
             if isempty(me.dat.curStepData) == 0
                 if me.needsCorrection()
                     me.dat.nextStepData = me.sdf.clone(me.dat.curStepData);
-                    me.dat.nextStepData.simstep = me.dat.curStepData.simstep.NextStep(2);
+                    me.dat.nextStepData.stepNum = me.dat.curStepData.stepNum.NextStep(2);
                     me.edAdjust();
                     me.derivedDofAdjust();
                 else

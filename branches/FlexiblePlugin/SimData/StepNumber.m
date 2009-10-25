@@ -10,7 +10,7 @@
 % $LastChangedDate: 2009-10-12 10:40:20 -0500 (Mon, 12 Oct 2009) $ 
 % $Author: mbletzin $
 % =====================================================================================================================
-classdef SimStep < handle
+classdef StepNumber < handle
     properties
         step = 0;
         subStep = 0;
@@ -19,11 +19,11 @@ classdef SimStep < handle
         log = Logger;
     end
     methods
-        function me = SimStep(step, subStep, cStep)
+        function me = StepNumber(step, subStep, cStep)
             me.step = step;
             me.subStep = subStep;
             me.correctionStep = cStep;
-            me.id = SimStep.newId();
+            me.id = StepNumber.newId();
             me.log.debug(dbstack,sprintf('created step %s',me.toString()));
         end
         % increment the step or substep and return in a new instance
@@ -44,7 +44,7 @@ classdef SimStep < handle
                 otherwise
                     me.log.error(dbstack, sprintf('%d not recognized',stepType));
             end
-            simstate = SimStep(stp,sStp,cStp);
+            simstate = StepNumber(stp,sStp,cStp);
         end
         function str = toString(me)
             str = sprintf('%d\t%d\t%d',me.step, me.subStep,me.correctionStep);

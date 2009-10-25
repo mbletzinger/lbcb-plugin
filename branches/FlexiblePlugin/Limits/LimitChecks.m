@@ -1,15 +1,15 @@
 classdef LimitChecks < handle
     properties
-        cmd = {}; % command limits object
-        inc = {}; % increment limits object
+        cl = {}; % command limits object
+        il = {}; % increment limits object
     end
     methods
         function yes = withinLimits(me, curStep, prevStep)
-            yes1 = me.cmd.withinLimits(curStep);
+            yes1 = me.cl.withinLimits(curStep);
             if isempty(prevStep)
                 yes2 = 1;
             else
-                yes2 = me.inc.withinLimits(curStep,prevStep);
+                yes2 = me.il.withinLimits(curStep,prevStep);
             end
             yes = and(yes1 , yes2);
         end
