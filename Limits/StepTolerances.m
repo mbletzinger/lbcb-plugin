@@ -1,6 +1,6 @@
 classdef StepTolerances < handle
     properties
-        within = zeros(12,1);
+        within = ones(12,1);
         diffs = zeros(12,1);
         window = [];
         used = [];

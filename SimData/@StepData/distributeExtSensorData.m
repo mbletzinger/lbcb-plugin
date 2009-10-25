@@ -1,5 +1,5 @@
 function distributeExtSensorData(me,readings)
-[n se a] = me.getExtSensors();
+[n se a] = me.cdp.getExtSensors();
 me.externalSensorsRaw = readings;
 el1 = zeros(length(readings));
 el1l = 1;

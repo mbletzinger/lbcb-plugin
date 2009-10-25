@@ -42,7 +42,7 @@ classdef ProposeExecuteOm < OmState
             me.action.setState('PROPOSE');
         end
         function startExecute(me)
-            address = me.getAddress();
+            address = me.cdp.getAddress();
             stepNum = me.dat.nextStepData.stepNum;
             jmsg = me.mdlLbcb.createCommand('execute',address,[],[]);
             me.log.debug(dbstack,sprintf('Sending %s',char(jmsg)));

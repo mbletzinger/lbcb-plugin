@@ -6,6 +6,6 @@ scfg.doDdofCalculations = 0;
 scfg.doDdofCorrection = 0;
 scfg.doStepSplitting = 0;
 scfg.correctEverySubstep = 0;
-scfg.substepIncL1 = 0;
-scfg.substepIncL2 = 0;
+scfg.substepIncL1 = Target;
+scfg.substepIncL2 = Target;
 end

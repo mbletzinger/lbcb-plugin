@@ -1,7 +1,7 @@
 classdef StepDataFactory < handle
     properties
         mdlLbcb = [];
-        cfg = [];
+        cdp = [];
     end
     methods
          function clone = clone(me,step)
@@ -23,7 +23,7 @@ classdef StepDataFactory < handle
          function clone = target2StepData(me,targets)
              clone = StepData;
              me.addProtocol(clone);
-             lgth = clone.numLbcbs();
+             lgth = clone.cdp.numLbcbs();
              clone.lbcbCps = cell(lgth,1);
              for l = 1 : lgth
                  clone.lbcbCps{l} = LbcbControlPoint;
@@ -36,7 +36,7 @@ classdef StepDataFactory < handle
          end
          function addProtocol(me,step)
              step.mdlLbcb = me.mdlLbcb;
-             step.cfg = me.cfg;
+             step.cdp = me.cdp;
          end
    end
 end

@@ -8,7 +8,7 @@ classdef StepData < handle
         log = Logger;
         jid = {};
         mdlLbcb = [];
-        cfg = [];
+        cdp = [];
         needsCorrection = 0;
     end
     methods
@@ -17,8 +17,5 @@ classdef StepData < handle
         parseControlPointMsg(me,rsp)
         values = parseExternalSensorsMsg(me,names,msg)
         distributeExtSensorData(me,readings)
-        [n s a] = getExtSensors(me)
-        num = numLbcbs(me)
-        a = getAddress(me)
     end
 end

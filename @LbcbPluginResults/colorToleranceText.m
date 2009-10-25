@@ -1,4 +1,4 @@
-function colorToleranceText(hndl,within,isLbcb1,f)
+function colorToleranceText(me,hndl,within,isLbcb1,f)
 if isempty(hndl)
     if within == 0
         me.log.info(dbstack,sprintf('%s dof %s is out of tolerance',...

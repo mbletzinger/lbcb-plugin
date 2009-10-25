@@ -11,7 +11,7 @@ switch char(address.getSuffix())
         lbcbR.parse(contents,mdl);
         me.lbcbCps{2}.response = lbcbR;
     case 'ExternalSensors'
-        [n se a ] = me.getExtSensors();
+        [n se a ] = me.cdp.getExtSensors();
         readings = me.parseExternalSensorsMsg(n,contents);
         me.distributeExtSensorData(readings);
 end
