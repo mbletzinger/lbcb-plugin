@@ -1,5 +1,5 @@
 HandleTest
-s = SetupLimitTest(hfact);
+s = SetupTest(hfact);
 s.setTest('UPPER');
 lcfg = LogLevelsDao(s.cfg);
 lcfg.cmdLevel = 'DEBUG';
