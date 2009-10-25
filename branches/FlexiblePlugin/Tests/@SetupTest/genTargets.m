@@ -12,7 +12,9 @@ switch test
             me.genIncrementTargets(idx,numSteps);
         end
     case 'RAMP'
-        me.genRampTargets(numSteps / 2);
+        for idx = 1:4
+            me.genRampTargets(idx,numSteps / 2);
+        end
     otherwise
         me.log.error(dbstack, sprintf('%s not recognized',test));
 end

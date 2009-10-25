@@ -1,4 +1,4 @@
-function genStepConfigSettings(me,requireCorrection)
+function genEdConfigSettings(me,requireCorrection)
 scfg = StepConfigDao(me.cfg);
 scfg.doEdCalculations = requireCorrection;
 scfg.doEdCorrection = requireCorrection;

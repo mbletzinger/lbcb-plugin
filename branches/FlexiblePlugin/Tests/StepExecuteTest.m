@@ -1,7 +1,8 @@
 HandleTest
 s = SetupTest(hfact);
 s.setTest('RAMP');
-lcfg = LogLevelsDao(s.cfg);
+% FakeOmProperties('cfg',hfact.cfg);
+lcfg = LogLevelsDao(hfact.cfg);
 lcfg.cmdLevel = 'DEBUG';
 lcfg.msgLevel = 'INFO';
 Logger.setCmdLevel(lcfg.cmdLevel);

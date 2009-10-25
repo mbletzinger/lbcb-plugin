@@ -1,9 +1,9 @@
-function loadConfig(me,cfg,isLbcb1)
-ocfg = OmConfigDao(cfg);
-applied = ocfg.apply2Lbcb;
-names = ocfg.sensorNames;
-base = [ ocfg.baseX; ocfg.baseY; ocfg.baseZ ]';
-plat = [ ocfg.platX; ocfg.platY; ocfg.platZ ]';
+function loadConfig(me,cdp,isLbcb1)
+ocfg = OmConfigDao(cdp.cfg);
+[names se applied ] = cdp.getExtSensors();
+lt = length(applied);
+base = [ ocfg.baseX(1:lt)'; ocfg.baseY(1:lt)'; ocfg.baseZ(1:lt)' ];
+plat = [ ocfg.platX(1:lt)'; ocfg.platY(1:lt)'; ocfg.platZ(1:lt)' ];
 perts = ocfg.perturbationsL2;
 sensorErrorTol = ocfg.sensorErrorTol;
 lb = 'LBCB2';
@@ -13,16 +13,13 @@ if isLbcb1
 end
 i = 1;
 
-mbase = zeros(length(applied),3);
-mplat = zeros(length(applied),3);
-mpotTol = zeros(length(applied));
-for s = 1:length(applied)
-    if isempty(names{s})
-        continue;
-    end
+mbase = zeros(lt,3);
+mplat = zeros(lt,3);
+mpotTol = zeros(lt);
+for s = 1:lt
     if strcmp(applied{s},lb)
-      mbase(i,:) = [ocfg.baseX(s) ocfg.baseY(s) ocfg.baseZ(s)]; %[base(s) base(s+15) base(s+30)];  % Really quick fix
-      mplat(i,:) = [ocfg.platX(s) ocfg.platY(s) ocfg.platZ(s)];%[plat(s) plat(s+15) plat(s+30)];  % Really quick fix
+      mbase(i,:) = base(:,s); %[base(s) base(s+15) base(s+30)];  % Really quick fix
+      mplat(i,:) = plat(:,s);%[plat(s) plat(s+15) plat(s+30)];  % Really quick fix
       mpotTol(i) = sensorErrorTol(s);
       i = i + 1;
     end

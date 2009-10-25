@@ -36,7 +36,7 @@ for i = 1:length(activeDOFs)
     del(activeDOFs(i)) = del(activeDOFs(i)) + me.perturbations(i);
     
     pertlength = me.dof2act(del,v0,me.plat,me.base); % Calc for expected SP lengths
-    dldDOF = (pertlength - actualLengths')/me.perturbations(i);% SP length change/pert size
+    dldDOF = (pertlength - actualLengths)/me.perturbations(i);% SP length change/pert size
     Jacobian(:,i) = dldDOF';   % Populating Jacobian column for current DOF
 end
 

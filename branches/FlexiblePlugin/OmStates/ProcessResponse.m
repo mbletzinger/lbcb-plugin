@@ -26,7 +26,7 @@ classdef ProcessResponse < OmState
             scfg = StepConfigDao(me.cdp.cfg);
             if scfg.doEdCalculations
                 %calculate elastic deformations
-                for l = 1: me.numLbcbs()
+                for l = 1: me.cdp.numLbcbs()
                     ccps = me.dat.curStepData.lbcbCps{l};
                     pcps = [];
                     if isempty(me.dat.prevStepData) == 0

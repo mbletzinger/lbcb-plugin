@@ -75,7 +75,7 @@ handles.actions.initialize(cfg);
 guidata(hObject, handles);
 
 % UIWAIT makes FakeOmProperties wait for user response (see UIRESUME)
-% uiwait(handles.FakeOmProperties);
+uiwait(handles.FakeOmProperties);
 
 
 % --- Outputs from this function are returned to the command line.
@@ -86,7 +86,9 @@ function varargout = FakeOmProperties_OutputFcn(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 % Get default command line output from handles structure
+if isempty(handles) == 0
 varargout{1} = handles.output;
+end
 
 
 % --- Executes on button press in Ok.

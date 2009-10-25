@@ -58,7 +58,7 @@ classdef GetControlPointsFake < handle
             fcfg = FakeOmDao(me.cfg);
             cstp = fcfg.convergeSteps;
             cinc = fcfg.convergeInc;
-            stp = istep.stepNum.subStep;
+            stp = istep.stepNum.correctionStep;
             if stp >= cstp
                 error = 0;
                 return;
