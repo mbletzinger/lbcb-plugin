@@ -41,7 +41,7 @@ classdef GetControlPointsFake < handle
                 istep.externalSensorsRaw = readings;
                 istep.distributeExtSensorData(readings);
             end
-            me.log.debug(dbstack,sprintf('Generated fake response: %s',istep.toString));
+%            me.log.debug(dbstack,sprintf('Generated fake response: %s',istep.toString));
         end
         function dof = getDof(me,cmd,drv)
             me.drvO.setState(drv);
