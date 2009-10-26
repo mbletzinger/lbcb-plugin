@@ -16,7 +16,7 @@ classdef StepTolerances < handle
 
         function yes = withinTolerances(me,target,response)
             me.getWindow();
-            me.log.debug(dbstack, sprintf('Comparing %s \nto %s',target.toString(),response.toString()));
+%            me.log.debug(dbstack, sprintf('Comparing %s \nto %s',target.toString(),response.toString()));
             me.within = ones(12,1);
             me.diffs(1:6) = abs(target.disp - response.disp);
             me.diffs(7:12) = abs(target.force - response.force);

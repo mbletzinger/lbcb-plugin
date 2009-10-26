@@ -1,4 +1,4 @@
-JavaTest
+
 cfg = Configuration;
 cfg.load;
 loops = {'INCREMENT' 'UPPER' 'LOWER' 'STEP'};

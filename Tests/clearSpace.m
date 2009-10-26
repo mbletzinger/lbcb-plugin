@@ -18,3 +18,4 @@ jp = javaclasspath;
 if isempty(jp)
     jp{:}
 end
+JavaTest
