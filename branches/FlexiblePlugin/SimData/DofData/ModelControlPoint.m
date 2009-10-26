@@ -12,9 +12,28 @@
 % =====================================================================================================================
 classdef ModelControlPoint < handle
     properties
-        response = Target;
-        command = Target;
+        response = [];
+        command = [];
+        address = [];
+        m2d = Msg2DofData();
     end
     methods
+        function me = ModelControlPoint()
+            me.response = Target;
+            me.command = Target;
+        end
+        function clone = clone(me)
+            clone = ModelControlPoint;
+            clone.command = me.command.clone();
+            clone.response = me.response.clone();
+        end
+        function str = toString(me)
+            str = sprintf('/command=%s',me.command.toString());
+            str = sprintf('%s\n\t/response=%s',str,me.response.toString());
+        end
+        function parse(me,msg,address)
+            targets = me.m2d.parse(msg,address);
+            me.command = targets{1};
+        end
     end
 end
