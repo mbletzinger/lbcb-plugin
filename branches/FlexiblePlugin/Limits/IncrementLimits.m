@@ -5,12 +5,14 @@ classdef IncrementLimits < handle
         increments1 = zeros(12,1);
         increments2 = zeros(12,1);
         limits = [];
+        cfg = [];
     end
     methods
         function me = IncrementLimits(cfg)
-            me.limits = WindowLimitsDao('increment.limits',cfg);
+            me.cfg = cfg;
         end
         function yes = withinLimits(me,curStep,prevStep)
+            me.getLimits();
             me.faults2 = zeros(12,1);
             [me.faults1 me.increments1 ] = me.wL(curStep.lbcbCps{1}.command,...
                 prevStep.lbcbCps{1}.command,me.limits.window1,me.limits.used1);
@@ -33,5 +35,9 @@ classdef IncrementLimits < handle
                 end
             end
         end
+        function getLimits(me)
+            me.limits = WindowLimitsDao('increment.limits',me.cfg);
+        end
+
     end
 end

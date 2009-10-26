@@ -3,9 +3,14 @@ classdef SetupTest < handle
         cfg = [];
         hfact = {}
         infile = {};
-        maxV = 5.0;
-        minV = -2.0;
-        maxW = 0.5;
+        
+        % The following define the limit settings used by the test
+        % programs.  These are expressed in DOF neutral units.  The
+        % getMultiplier function is used to 'size' the limit to the correct
+        % range for a DOF type.
+        maxV = 5.0;  % maximum limit
+        minV = -2.0; % minimum limit 
+        maxW = 0.005; % step tolerance window size
         tgts = [];
         cDofs = [];
         log = Logger;

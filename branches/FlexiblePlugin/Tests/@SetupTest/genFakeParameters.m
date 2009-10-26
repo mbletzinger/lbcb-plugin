@@ -11,7 +11,7 @@ for d = 1:6
 end
 if needsConverge
     fcfg.convergeSteps = 5;
-    fcfg.convergeInc = .0004 * m;
+    fcfg.convergeInc = me.maxW * (m + .5);
     for d = 1:12
         s = me.getMultiplier(d);
         fcfg.derived1{d} = derived.getState();

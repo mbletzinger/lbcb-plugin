@@ -37,12 +37,12 @@ classdef ElasticDeformation < handle
             me.isLbcb1 = isLbcb1;
         end
         function deltaDiff(me,curLbcbCp)
-            me.correctionDeltas = curLbcbCp.target.disp - curLbcbCp.response.disp;
+            me.correctionDeltas = curLbcbCp.command.disp - curLbcbCp.response.disp;
         end
         function adjustTarget(me,curLbcbCp)
-            curLbcbCp.target.disp = curLbcbCp.target.disp + me.correctionDeltas;
+            curLbcbCp.command.disp = curLbcbCp.command.disp + me.correctionDeltas;
             curLbcbCp.correctionDeltas = me.correctionDeltas;
-            curLbcbCp.target.clearNonControlDofs();
+            curLbcbCp.command.clearNonControlDofs();
         end
         % calculate LBCB position based on external sensor readings.
         calculate(me, curLbcbCp,prevLbcbCp)

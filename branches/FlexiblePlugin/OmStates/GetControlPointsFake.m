@@ -16,7 +16,6 @@ classdef GetControlPointsFake < handle
             error = me.calcConvergence(istep);
             for l = 1: lgt
                 cp = istep.lbcbCps{l};
-                cp.response = LbcbReading;
                 if l ==1
                     scl = fcfg.scale1;
                     ofst = fcfg.offset1;
@@ -32,18 +31,17 @@ classdef GetControlPointsFake < handle
                     cp.response.lbcb.disp(d) = ddof * scl(d) + ofst(d) - error;
                     cp.response.lbcb.force(d) = fddof * scl(d + 6) + ofst(d + 6) - error;
                 end
-                ocfg = OmConfigDao(me.cfg);
-                names = ocfg.sensorNames;
-                readings = zeros(15,1);
-                for e = 1:15
-                    if isempty(names{e})
-                        break;
-                    end
+                cdp = ConfigDaoProvider(me.cfg);
+                [ names s a] = cdp.getExtSensors();
+                readings = zeros(length(names),1);
+                for e = 1:length(names)
                     ddof = me.getDof(cp.command,drv(e));
                     readings(e) = ddof * scl(e) + ofst(e) - error;
                 end
+                istep.externalSensorsRaw = readings;
                 istep.distributeExtSensorData(readings);
             end
+            me.log.debug(dbstack,sprintf('Generated fake response: %s',istep.toString));
         end
         function dof = getDof(me,cmd,drv)
             me.drvO.setState(drv);

@@ -7,10 +7,12 @@ else
         str = sprintf('%s/LBCB%d=%s\n',str,l,me.lbcbCps{l}.toString());
     end
 end
-[n s a] = me.cdp.getExtSensors(); %#ok<NASGU>
 str = sprintf('%s\nexternalSensorsRaw=',str);
-for s = 1:length(me.externalSensorsRaw)
-    str = sprintf('%s/%s=%f',str,n{s},me.externalSensorsRaw(s));
+if isempty(me.externalSensorsRaw) == 0
+    [n s a] = me.cdp.getExtSensors(); %#ok<NASGU>
+    for s = 1:length(n)
+        str = sprintf('%s/%s=%f',str,n{s},me.externalSensorsRaw(s));
+    end
 end
 str = sprintf('%s\nderivedData=%s',str,me.dData.toString());
 end
