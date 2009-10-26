@@ -13,8 +13,8 @@
 % =====================================================================================================================
 classdef LbcbReading < handle
     properties
-        lbcb = DofData();
-        ed = DofData();
+        lbcb = [];
+        ed = [];
         m2d = Msg2DofData();
         node = '';
         cdp = [];
