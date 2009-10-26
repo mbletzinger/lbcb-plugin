@@ -44,6 +44,7 @@ classdef StepStates < SimStates
                         else % Execute next step
                             me.log.debug(dbstack,sprintf('Next Step is %s',me.dat.nextStepData.toString()));
                             me.currentAction.setState('CHECK LIMITS');
+                            me.gui.updateStepTolerances(me.nxtStep.st);
                         end
                     end
                 case 'OM PROPOSE EXECUTE'
@@ -65,7 +66,8 @@ classdef StepStates < SimStates
                     end
                 case 'OM GET CONTROL POINTS'
                     if me.isFake()
-                        me.fakeGcp.generateControlPoints(me.dat.nextStepData);
+                        me.dat.stepShift();
+                        me.fakeGcp.generateControlPoints(me.dat.curStepData);
                         me.currentAction.setState('PROCESS OM RESPONSE');
                     else
                         odone = me.gcpOm.isDone();
@@ -81,7 +83,6 @@ classdef StepStates < SimStates
                         me.currentAction.setState('PROCESS OM RESPONSE');
                     end
                 case 'PROCESS OM RESPONSE'
-                    me.dat.stepShift();
                     me.pResp.start();
                     me.arch.archive(me.dat.curStepData);
                     me.dd.update(me.dat.curStepData);
@@ -93,7 +94,6 @@ classdef StepStates < SimStates
                     %        me.nxtStep
                     odone = me.nxtStep.withinLimits();
                     me.gui.updateCommandLimits(me.nxtStep.lc);
-                    me.gui.updateStepTolerances(me.nxtStep.st);
                     if odone
                         me.currentAction.setState('OM PROPOSE EXECUTE');
                         if me.isFake() == 0

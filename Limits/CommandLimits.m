@@ -6,12 +6,14 @@ classdef CommandLimits < handle
         commands1 = zeros(12,1);
         commands2 = zeros(12,1);
         log = Logger;
+        cfg = [];
     end
     methods
         function me = CommandLimits(cfg)
-            me.limits = LimitsDao('command.limits',cfg);
+            me.cfg = cfg;
         end
         function yes = withinLimits(me,step)
+            me.getLimits();
             me.faults1 = zeros(12,2);
             me.faults2 = zeros(12,2);
             [me.faults1 me.commands1 ] = me.wL(step.lbcbCps{1}.command,...
@@ -43,6 +45,9 @@ classdef CommandLimits < handle
 %                 me.log.debug(dbstack,sprintf('%d cmd %f < low %f',...
 %                     l,commands(l),lower(1))); 
             end
+        end
+        function getLimits(me)
+            me.limits = LimitsDao('command.limits',me.cfg);
         end
     end
 end

@@ -26,17 +26,20 @@ classdef NextStep < OmState
             % step is not empty
             if isempty(me.dat.curStepData) == 0
                 if me.needsCorrection()
-                    me.dat.nextStepData = me.sdf.clone(me.dat.curStepData);
-                    me.dat.nextStepData.stepNum = me.dat.curStepData.stepNum.NextStep(2);
+                    me.dat.nextStepData = me.sdf.target2StepData({ me.dat.curStepData.lbcbCps{1}.command ...
+                        me.dat.curStepData.lbcbCps{2}.command });
+                    me.dat.nextStepData.stepNum = me.dat.curStepData.stepNum.next(2);
                     me.edAdjust();
                     me.derivedDofAdjust();
                 else
                     % get next input step
                     me.dat.nextStepData = me.steps.next();
+                    me.dat.correctionTarget = me.dat.nextStepData;
                     me.simCompleted = me.steps.endOfFile;
                 end
             else % This must be the first step
                 me.dat.nextStepData = me.steps.next();
+                me.dat.correctionTarget = me.dat.nextStepData;
             end
         end
         % needs to be called immediately after isDone returns true.
@@ -52,13 +55,13 @@ classdef NextStep < OmState
                 return;
             end
             wt1 = me.st{1}.withinTolerances(me.dat.correctionTarget.lbcbCps{1}.command,...
-                me.dat.curStepData.lcbCps{1}.response);
+                me.dat.curStepData.lbcbCps{1}.response);
             wt2 = 1;
             if me.cdp.numLbcbs() == 2
                 wt2 = me.st{2}.withinTolerances(me.dat.correctionTarget.lbcbCps{2}.command,...
-                    me.dat.curStepData.lcbCps{2}.response);
+                    me.dat.curStepData.lbcbCps{2}.response);
             end
-            needsCorrection = wt1 && wt2 == 0;
+            needsCorrection = (wt1 && wt2) == 0;
         end
         function edAdjust(me)
             scfg = StepConfigDao(me.cdp.cfg);
