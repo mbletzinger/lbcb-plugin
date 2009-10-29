@@ -8,19 +8,19 @@ classdef XyPlots < handle
         fig = {};
     end
     methods
-        function me = display(me,turnOn)
+        function displayPlot(me,turnOn)
             if turnOn
-            me.fig = figure;
-            xys = plot(0,0,'k',0,0,'b',0,0,'r',0,0,'g',0,0,'m',0,0,':k',0,0,':b',0,0,':r');
-            me.lineSeries = xys;
-            legend(series,me.legends);
-            me.isDisplayed = 1;
+                me.fig = figure;
+                xys = plot(0,0,'k',0,0,'b',0,0,'r',0,0,'g',0,0,'m',0,0,':k',0,0,':b',0,0,':r');
+                me.lineSeries = xys;
+                legend(series,me.legends);
+                me.isDisplayed = 1;
             else
                 close(me.fig);
                 me.isDisplayed = 0;
             end
         end
-        function me = update(me,d,idx)
+        function update(me,d,idx)
             me.ydata{idx} = d(2,:);
             me.xdata{idx} = d(1,:);
             if me.isDisplayed

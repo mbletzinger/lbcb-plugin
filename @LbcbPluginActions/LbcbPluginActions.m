@@ -13,6 +13,7 @@ classdef LbcbPluginActions < handle
             'EXIT APPLICATION',...
             'READY'...
             });
+        log = Logger;
     end
     methods
         function me  = LbcbPluginActions(handles,hfact)
@@ -25,7 +26,7 @@ classdef LbcbPluginActions < handle
             if isempty(hfact)
                 cfg = Configuration;
                 cfg.load();
-                me.hfact = HandleFactory(handle,cfg);
+                me.hfact = HandleFactory(handles,cfg);
             else
                 me.hfact = hfact;
                 me.hfact.setGuiHandle(handles);                
