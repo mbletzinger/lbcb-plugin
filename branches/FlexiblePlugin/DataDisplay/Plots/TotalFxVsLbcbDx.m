@@ -12,12 +12,8 @@ classdef TotalFxVsLbcbDx < handle
             me.plot = XyPlots();
             me.isLbcb1 = isLbcb1;
         end
-        function display(isOn)
-            if isOn
-                me.plot.display();
-            else
-                close(me.plot.fig);
-            end
+        function displayPlot(me,turnOn)
+                me.plot.displayPlot(turnOn);
         end
         function update(me,step)
             cpsidx = 2;

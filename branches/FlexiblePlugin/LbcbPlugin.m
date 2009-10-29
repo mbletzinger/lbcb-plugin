@@ -22,7 +22,7 @@ function varargout = LbcbPlugin(varargin)
 
 % Edit the above text to modify the response to help LbcbPlugin
 
-% Last Modified by GUIDE v2.5 13-Oct-2009 08:21:27
+% Last Modified by GUIDE v2.5 26-Oct-2009 05:13:21
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -74,14 +74,9 @@ if(nargin > 3)
 end
 
 handles.actions = LbcbPluginActions(handles,hfact);
-handles.actions.initialize();
-if isempty(infile) == 0
-    handles.actions.setInputFile(infile);
-end
 % Update handles structure
 set(handles.DataTable,'Checked','off');
 guidata(hObject, handles);
-LbcbPluginActions.setGui(hObject);
 DataDisplay.setMenuHandle(handles);
 
 % h = handles
@@ -1060,3 +1055,26 @@ function Decline_Callback(hObject, eventdata, handles)
 % hObject    handle to Decline (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+
+
+
+function SubStep_Callback(hObject, eventdata, handles)
+% hObject    handle to SubStep (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of SubStep as text
+%        str2double(get(hObject,'String')) returns contents of SubStep as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function SubStep_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to SubStep (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
