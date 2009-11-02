@@ -31,6 +31,7 @@ classdef OpenCloseUiSimCor < UiSimCorState
             else
                 me.mdlUiSimCor.open();
                 me.simCorActions.setState('CONNECTING');
+                me.connectionStatus.setState('CONNECTED');
             end
         end
         function done = isDone(me)
@@ -65,7 +66,7 @@ classdef OpenCloseUiSimCor < UiSimCorState
             end
         end
         function connectionError(me)
-            me.ocOm.connectionStatus.setState('ERRORED');
+            me.connectionStatus.setState('ERRORED');
             me.gui.colorRunButton('BROKEN'); % Pause the simulation
             me.gui.colorColorButton('CONNECT SIMCOR','BROKEN');
             me.log.error(dbstack, sprintf('%s link has been disconnected due to errors',...
@@ -74,7 +75,6 @@ classdef OpenCloseUiSimCor < UiSimCorState
     end
     methods (Access=private)
         function openingSession(me)
-            me.connectionStatus.setState('CONNECTED');
             me.simCorActions.setState('DONE');            
         end
         function connect(me)
@@ -85,8 +85,8 @@ classdef OpenCloseUiSimCor < UiSimCorState
                 me.simCorActions.setState('DONE');
                 return;
             end
-            jmsg = me.mdlUiSimCor.createResponse('open-session',[],[]);
-            me.mdlUiSimCor.start(jmsg,[],0);
+            jmsg = me.mdlUiSimCor.createResponse([],[],'Open Session Suceeded');
+            me.mdlUiSimCor.respond(jmsg,[],0);
             me.simCorActions.setState('WAIT FOR_OPEN_SESSION');
         end
         function disconnect(me)
