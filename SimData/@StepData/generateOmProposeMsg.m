@@ -1,10 +1,10 @@
-function jmsg = generateProposeMsg(me)
+function jmsg = generateOmProposeMsg(me)
 lgth = me.cdp.numLbcbs();
 mdl = cell(lgth,1);
 contents = cell(lgth,1);
 for t = 1:lgth
     mdl{t} = me.cdp.getAddress();
-    contents{t} = me.lbcbCps{t}.command.createMsg();
+    contents{t} = me.lbcbCps{t}.command.createMsg(me.lbcbCps{t}.command);
 end
 cps = {'LBCB1' 'LBCB2' };
 jmsg = me.mdlLbcb.createCompoundCommand('propose',mdl,cps,contents);

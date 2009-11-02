@@ -2,7 +2,7 @@ classdef HandleFactory <  handle
     properties
         % MDL instances
         mdlLbcb = {};
-        
+        mdlUiSimCor = {};
         % Limit instances
         cl = []; % CommandLimits object
         st = cell(2,1); % StepTolerances objects
@@ -19,6 +19,7 @@ classdef HandleFactory <  handle
         % Simulation States and Executors
         omStates = cell(5,1);
         simStates = cell(3,1);
+        simCorStates = cell(2,1);
         
         %Display update instance
         gui = [];
@@ -54,6 +55,11 @@ classdef HandleFactory <  handle
         stpEx;
         tgtEx;
         
+        % UiSimCor States
+        ocSimCor
+        tgtRsp
+        
+        
     end
     methods
         function me = HandleFactory(handle,cfg)
@@ -72,6 +78,8 @@ classdef HandleFactory <  handle
             me.simStates{2} = StepStates;
             me.simStates{3} = TargetStates;
 
+            me.simCorStates{1} = OpenCloseUiSimCor;
+            me.simCorStates{2} = TargetResponse;
             lc = LimitChecks;
             me.il = IncrementLimits(me.cfg);
             me.cl = CommandLimits(me.cfg);
@@ -123,6 +131,14 @@ classdef HandleFactory <  handle
             me.simStates{2}.arch = me.arch;
             me.simStates{3}.stpEx = me.simStates{2};
             me.simStates{3}.inF = me.inF;
+
+            for c =1:length(me.simCorStates)
+                me.simCorStates{c}.cdp = cdp;
+                me.simCorStates{c}.gui = me.gui;
+                me.simCorStates{c}.mdlUiSimCor = me.mdlUiSimCor;
+                me.simCorStates{c}.dat = me.dat;
+                me.simCorStates{c}.sdf = me.sdf;
+            end
             
         end
         function setGuiHandle(me, handle)
@@ -132,6 +148,9 @@ classdef HandleFactory <  handle
             end
             for c =1:length(me.simStates)
                 me.simStates{c}.gui = me.gui;
+            end
+            for c =1:length(me.simCorStates)
+                me.simCorStates{c}.gui = me.gui;
             end
         end
         

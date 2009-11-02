@@ -24,7 +24,7 @@ classdef TargetConfigDao < handle
         su = StringListUtils();
     end
     methods
-        function me = OmConfigDao(cfg)
+        function me = TargetConfigDao(cfg)
             me.cfg = cfg;
         end
         function result = get.numControlPoints(me)

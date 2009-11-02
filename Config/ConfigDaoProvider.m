@@ -15,6 +15,10 @@ classdef ConfigDaoProvider < handle
             ocfg = OmConfigDao(me.cfg);
             num = ocfg.numLbcbs;
         end
+        function num = numModelCps(me)
+            ocfg = TargetConfigDao(me.cfg);
+            num = ocfg.numControlPoints;
+        end
         function [n s a] = getExtSensors(me)
             ocfg = OmConfigDao(me.cfg);
             names = ocfg.sensorNames;

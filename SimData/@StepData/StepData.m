@@ -13,8 +13,10 @@ classdef StepData < handle
     end
     methods
         str = toString(me)
-        jmsg = generateProposeMsg(me)
-        parseControlPointMsg(me,rsp)
+        jmsg = generateOmProposeMsg(me)
+        jmsg = generateSimCorResponseMsg(me)
+        parseOmControlPointMsg(me,rsp)
+        parseSimCorControlPointMsg(me,rsp)
         values = parseExternalSensorsMsg(me,names,msg)
         distributeExtSensorData(me,readings)
     end
