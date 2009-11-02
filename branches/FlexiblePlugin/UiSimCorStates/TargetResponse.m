@@ -12,7 +12,7 @@ classdef TargetResponse < UiSimCorState
 			me.mdlUiSimCor.start();	
         end
 		function respond(me)
-            jmsg = me.dat.curTarget.generateSimCorProposeMsg();
+            jmsg = me.dat.curTarget.generateSimCorResponseMsg();
             me.log.debug(dbstack,sprintf('Sending %s',char(jmsg)));
             me.mdlUiSimCor.respond(jmsg);
             me.state.setState('BUSY');

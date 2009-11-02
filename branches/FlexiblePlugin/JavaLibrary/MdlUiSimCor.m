@@ -99,17 +99,17 @@ classdef MdlUiSimCor < handle
         % Create a compound command (command with multiple MDL addresses)
         % the mdl, cps, and content arguments have to be cell arrays.
         % The return is a Java object containing the message.
-        function jmsg = createCompoundResponse(me,cmd, mdl, cps, content)
+        function jmsg = createCompoundResponse(me,mdl, cps, content)
             tf = me.simcorTcp.getTransactionFactory();
-            jmsg = tf.createCompoundResponse(cmd, mdl, cps, content,0);
+            jmsg = tf.createCompoundResponse(mdl, cps, content,0);
         end
         
         % Create a simple command  all arguments are strings.  Any argument
         % that is not used should be passed in as an empty matrix [].
         % The return is a Java object containing the message.
-        function jmsg = createResponse(me,cmd, mdl, cps, content)
+        function jmsg = createResponse(me,mdl, cps, content)
             tf = me.simcorTcp.getTransactionFactory();
-            jmsg = tf.createResponse(cmd, mdl, cps, content,0);
+            jmsg = tf.createResponse(mdl, cps, content,0);
         end
         
         % Start a transaction with the operations manager.  A transaction
