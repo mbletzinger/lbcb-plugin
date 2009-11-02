@@ -35,7 +35,7 @@ classdef ProposeExecuteOm < OmState
     methods (Access=private)
         function startPropose(me)
             stepNum = me.dat.nextStepData.stepNum;
-            jmsg = me.dat.nextStepData.generateProposeMsg();
+            jmsg = me.dat.nextStepData.generateOmProposeMsg();
             me.log.debug(dbstack,sprintf('Sending %s',char(jmsg)));
             me.mdlLbcb.start(jmsg,stepNum,1);
             me.state.setState('BUSY');

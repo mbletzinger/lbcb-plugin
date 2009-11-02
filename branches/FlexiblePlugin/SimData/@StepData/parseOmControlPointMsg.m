@@ -1,4 +1,4 @@
-function parseControlPointMsg(me,rsp)
+function parseOmControlPointMsg(me,rsp)
 [address contents] = rsp.getContents()
 mdl = me.getAddress();
 switch char(address.getSuffix())

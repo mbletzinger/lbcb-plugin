@@ -12,12 +12,12 @@ classdef StepDataFactory < handle
                 clone.lbcbCps{l} = step.lbcbCps{l}.clone();
             end
             clone.externalSensorsRaw = step.externalSensorsRaw;
-            clone.StepNumber = step.StepNumber;
+            clone.stepNum = step.StepNum;
             
          end
-         function clone = StepNumber2StepData(me,stepNum)
+         function clone = stepNumber2StepData(me,stepNum)
              clone = StepData;
-             clone.StepNumber = stepNum;
+             clone.stepNum = stepNum;
              me.addProtocol(clone);
          end
          function clone = target2StepData(me,targets)
@@ -33,9 +33,16 @@ classdef StepDataFactory < handle
              step.mdlLbcb = me.mdlLbcb;
              step.cdp = me.cdp;
              lgth = me.cdp.numLbcbs();
+             step.lbcbCps = cell(lgth,1);
              for l = 1 : lgth
                  step.lbcbCps{l} = LbcbControlPoint;
                  step.lbcbCps{l}.response.cdp = me.cdp;
+             end
+             if me.cdp.numModelCps > 0
+                 step.modelCps = cell(me.cdp.numModelCps,1);
+                 for m = 1:me.cdp.numModelCps
+                     step.modelCps{m} = ModelControlPoint;
+                 end
              end
          end
    end

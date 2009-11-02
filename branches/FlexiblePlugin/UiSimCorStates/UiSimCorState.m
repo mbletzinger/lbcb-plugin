@@ -1,4 +1,4 @@
-classdef OmState < handle
+classdef UiSimCorState < handle
     properties
         state = StateEnum({ ...
             'BUSY', ...
@@ -6,10 +6,8 @@ classdef OmState < handle
             'ERRORS EXIST' ...
             });
         log = Logger;
-        mdlLbcb = [];
+        mdlUiSimCor = [];
         cdp = [];
-        dd = [];
-        ed = cell(2,1);
         gui = [];
         dat = [];
         sdf = [];

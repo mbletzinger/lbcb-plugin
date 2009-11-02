@@ -14,6 +14,7 @@ classdef Target < DofData
     properties
         dispDofs = zeros(6,1); % true if controlled dof displacement
         forceDofs = zeros(6,1);% true if controlled dof force
+        m2d = Msg2DofData();
         dofLabels = {'x','y','z'};
         node = '';
         cps = '';
@@ -31,6 +32,7 @@ classdef Target < DofData
         clone = clone(me)
         str = toString(me)
         reading = target2Reading(me)
-        msg = createMsg(me)
+        msg = createMsg(me,values)
+        parse(me,msg,node)
     end
 end
