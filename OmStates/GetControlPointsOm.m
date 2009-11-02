@@ -30,7 +30,7 @@ classdef GetControlPointsOm < OmState
                 return;
             end
 
-            lgth = me.numLbcbs();
+            lgth = me.cdp.numLbcbs();
             switch c
                 case 'LBCB1'
                     if lgth == 2
@@ -43,13 +43,13 @@ classdef GetControlPointsOm < OmState
                     me.mdlLbcb.start(jmsg,me.dat.curStepData.stepNum,0);
                     me.state.setState('BUSY');
                 case 'LBCB2'
-                    me.dat.curStepData.OmparseControlPointMsg(me.mdlLbcb.response)
+                    me.dat.curStepData.parseOmControlPointMsg(me.mdlLbcb.response)
                     me.cpsMsg.setState('ExternalSensors');
                     jmsg = me.mdlLbcb.createCommand('get-control-point',address,me.cpsMsg.getState(),[]);
                     me.mdlLbcb.start(jmsg,me.dat.curStepData.stepNum,0);
                     me.state.setState('BUSY');
                 case 'ExternalSensors'
-                    me.dat.curStepData.OmparseControlPointMsg(me.mdlLbcb.response)
+                    me.dat.curStepData.parseOmControlPointMsg(me.mdlLbcb.response)
                     me.cpsMsg.setState('DONE');
                     me.state.setState('READY');
                 case 'DONE'

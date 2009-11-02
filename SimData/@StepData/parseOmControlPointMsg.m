@@ -1,6 +1,6 @@
 function parseOmControlPointMsg(me,rsp)
 [address contents] = rsp.getContents()
-mdl = me.getAddress();
+mdl = me.cdp.getAddress();
 switch char(address.getSuffix())
     case 'LBCB1'
         lbcbR = LbcbReading;

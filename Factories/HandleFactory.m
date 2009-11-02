@@ -78,6 +78,7 @@ classdef HandleFactory <  handle
             me.simStates{2} = StepStates;
             me.simStates{3} = TargetStates;
 
+            me.mdlUiSimCor = MdlUiSimCor(me.cfg);
             me.simCorStates{1} = OpenCloseUiSimCor;
             me.simCorStates{2} = TargetResponse;
             lc = LimitChecks;
@@ -177,6 +178,12 @@ classdef HandleFactory <  handle
         end
         function c = get.tgtEx(me)
             c= me.simStates{3};
+        end
+        function c = get.ocSimCor(me)
+            c= me.simCorStates{1};
+        end
+        function c = get.tgtRsp(me)
+            c= me.simCorStates{1};
         end
    end
 end
