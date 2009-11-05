@@ -85,7 +85,7 @@ classdef OpenCloseUiSimCor < UiSimCorState
                 me.simCorActions.setState('DONE');
                 return;
             end
-            jmsg = me.mdlUiSimCor.createResponse([],[],'Open Session Suceeded');
+            jmsg = me.mdlUiSimCor.createResponse(address,[],'Open Session Succeeded');
             me.mdlUiSimCor.respond(jmsg,[],0);
             me.simCorActions.setState('WAIT FOR_OPEN_SESSION');
         end

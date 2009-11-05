@@ -22,7 +22,7 @@ function varargout = TargetConfig(varargin)
 
 % Edit the above text to modify the response to help TargetConfig
 
-% Last Modified by GUIDE v2.5 26-Oct-2009 02:34:21
+% Last Modified by GUIDE v2.5 03-Nov-2009 13:11:41
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -45,7 +45,7 @@ end
 
 
 % --- Executes just before TargetConfig is made visible.
-function TargetConfig_OpeningFcn(hObject, eventdata, handles, varargin) 
+function TargetConfig_OpeningFcn(hObject, eventdata, handles, varargin)
 % This function has no output args, see OutputFcn.
 % hObject    handle to figure
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -53,94 +53,83 @@ function TargetConfig_OpeningFcn(hObject, eventdata, handles, varargin)
 % varargin   command line arguments to TargetConfig (see VARARGIN)
 
 % Choose default command line output for TargetConfig
+cfg = [];
+idx = 1;
+if(nargin > 3)
+    for index = 1:2:(nargin-3),
+        if nargin-3==index, break, end
+        label = lower(varargin{index});
+        switch label
+            case 'cfg'
+                cfg = varargin{index+1};
+            case 'idx'
+                cfg = varargin{index+1};
+            otherwise
+            str= sprintf('%s not recognized',label);
+            disp(str);
+        end
+    end
+end
+
+handles.cfg = cfg;
+handles.actions = TargetConfigActions(cfg);
+handles.actions.init(handles);
+
 handles.output = hObject;
+% Make the GUI modal
+set(handles.TargetConfig,'WindowStyle','modal')
+
 
 % Update handles structure
 guidata(hObject, handles);
 
 % UIWAIT makes TargetConfig wait for user response (see UIRESUME)
-% uiwait(handles.TargetConfig);
+uiwait(handles.TargetConfig);
 
 
 % --- Outputs from this function are returned to the command line.
-function varargout = TargetConfig_OutputFcn(hObject, eventdata, handles)  %#ok<*INUSL>
+function varargout = TargetConfig_OutputFcn(hObject, eventdata, handles) 
 % varargout  cell array for returning output args (see VARARGOUT);
 % hObject    handle to figure
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
 % Get default command line output from handles structure
-varargout{1} = handles.output;
-
-
-
-function OffsetDx_Callback(hObject, eventdata, handles) %#ok<*INUSD,*DEFNU>
-% hObject    handle to OffsetDx (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of OffsetDx as text
-%        str2double(get(hObject,'String')) returns contents of OffsetDx as a double
-
-
-
-function OffsetDy_Callback(hObject, eventdata, handles)
-% hObject    handle to OffsetDy (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of OffsetDy as text
-%        str2double(get(hObject,'String')) returns contents of OffsetDy as a double
-
-
-function OffsetDz_Callback(hObject, eventdata, handles)
-% hObject    handle to OffsetDz (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of OffsetDz as text
-%        str2double(get(hObject,'String')) returns contents of OffsetDz as a double
-
-
-function Address_Callback(hObject, eventdata, handles)
-% hObject    handle to Address (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of Address as text
-%        str2double(get(hObject,'String')) returns contents of Address as a double
-
-
-% --- Executes on button press in backB.
-function backB_Callback(hObject, eventdata, handles)
-% hObject    handle to backB (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-
-% --- Executes on button press in forwardB.
-function forwardB_Callback(hObject, eventdata, handles)
-% hObject    handle to forwardB (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-
-% --- Executes on button press in deleteB.
-function deleteB_Callback(hObject, eventdata, handles)
-% hObject    handle to deleteB (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-
-% --- Executes on button press in newB.
-function newB_Callback(hObject, eventdata, handles)
-% hObject    handle to newB (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
+varargout{1} = 1;
 
 
 % --- Executes on button press in ok.
 function ok_Callback(hObject, eventdata, handles)
 % hObject    handle to ok (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+handles.actions.save();
+delete(handles.TargetConfig);
+
+
+% --- Executes when entered data in editable cell(s) in modelControlPoints.
+function modelControlPoints_CellEditCallback(hObject, eventdata, handles)
+% hObject    handle to modelControlPoints (see GCBO)
+% eventdata  structure with the following fields (see UITABLE)
+%	Indices: row and column indices of the cell(s) edited
+%	PreviousData: previous data for the cell(s) edited
+%	EditData: string(s) entered by the user
+%	NewData: EditData or its converted form set on the Data property. Empty if Data was not changed
+%	Error: error string when failed to convert EditData to appropriate value for Data
+% handles    structure with handles and user data (see GUIDATA)
+handles.actions.setCell(eventdata.Indices,eventdata.EditData,eventdata.Error);
+
+
+% --- Executes on button press in advanced.
+function advanced_Callback(hObject, eventdata, handles)
+% hObject    handle to advanced (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --- Executes when selected cell(s) is changed in modelControlPoints.
+function modelControlPoints_CellSelectionCallback(hObject, eventdata, handles)
+% hObject    handle to modelControlPoints (see GCBO)
+% eventdata  structure with the following fields (see UITABLE)
+%	Indices: row and column indices of the cell(s) currently selecteds
 % handles    structure with handles and user data (see GUIDATA)

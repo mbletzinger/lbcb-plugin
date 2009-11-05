@@ -7,12 +7,20 @@ el2 = zeros(length(se));
 el2l = 1;
 for s = 1:length(se)
     r = readings(s) * se(s);
-    if strcmp(a{s},'LBCB1')
-        el1(el1l) = r;
-        el1l = el1l + 1;
-    else
-        el2(el2l) = r;
-        el2l = el2l + 1;
+    switch a{s}
+        case 'LBCB1'
+            el1(el1l) = r;
+            el1l = el1l + 1;
+        case 'LBCB2'
+            el2(el2l) = r;
+            el2l = el2l + 1;
+        case 'BOTH'
+            el1(el1l) = r;
+            el1l = el1l + 1;
+            el2(el2l) = r;
+            el2l = el2l + 1;
+        otherwise
+            me.log.error(dbstack,sprintf('%s not recognized',a{s}));
     end
 end
 me.lbcbCps{1}.externalSensors = el1(1:el1l - 1);
