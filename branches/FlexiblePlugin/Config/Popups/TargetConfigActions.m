@@ -3,31 +3,36 @@ classdef TargetConfigActions < handle
         handles = [];
         tcfg
         log = Logger
-        xformTable = eye(6);
-        offsets = zeros(3,1);
-        address
-        cpidx = 1;
+        mcpTable = cell(15,2);
         numCps
+        aps
     end
     methods
         function me = TargetConfigActions(cfg)
             me.tcfg = TargetConfigDao(cfg);
+            me.aps = StateEnum({'LBCB1','LBCB2','BOTH'});
             me.numCps = me.tcfg.numControlPoints;
-            [alAddr alOf alXf ] = me.getConfig();
-            me.xformTable = alXf{1};
-            me.offsets = alOf{1};
-            me.address = alAddr{1};
+            [alAddr alAp] = me.getConfig();
+            for cps = 1: length(alAddr)
+                me.mcpTable{cps,1} = alAddr{cps};
+                me.mcpTable{cps,2} = alAp{cps};
+            end
         end
-        function initialize(me,handles)
+        function init(me,handles)
             me.handles = handles;
-            set(me.handles.Xform,'Data',me.xformTable);
+            format = {'char',me.aps.states};
+            set(me.handles.modelControlPoints,'ColumnFormat',format)
+            set(me.handles.modelControlPoints,'Data',me.mcpTable);
         end
         function setCell(me,indices,data,errString)
+            mydata = data
             if isempty(data)
                 me.log.error(dbstack,errString);
                 return;
             end
-            me.xformsTable(indices(1),indices(2)) = data;
+            me.mcpTable{indices(1),indices(2)} = data;
+            table = me.mcpTable
+            set(me.handles.modelControlPoints,'Data',me.mcpTable);
         end
         function setAddress(me,addr)
             me.address = addr;
@@ -35,47 +40,20 @@ classdef TargetConfigActions < handle
         function setOffset(me,dof,data)
             me.offsets(dof) = data;
         end
-        function [alAddr alOf alXf ] = getConfig(me)
+        function [alAddr alAp ] = getConfig(me)
             alAddr = me.tcfg.addresses;
-            alOf = me.tcfg.offsets;
-            alXf = me.tcfg.xforms;
-        end
-        function switchCps(me,isForward)
-            me.save();
-            if isForward
-                if me.cpidx < me.numCps
-                    me.cpidx = me.cpidx + 1;
-                end
-            else
-                if me.cpidx > 1
-                    me.cpidx = me.cpidx - 1;
-                end
-            end
-            [alAddr alOf alXf ] = me.getConfig();
-            me.xformTable = alXf{me.cpidx};
-            me.offsets = alOf{me.cpidx};
-            me.address = alAddr{me.cpidx};
-            me.update();
-        end
-        function update(me)
-            set(me.handles.Address,'String',me.address);
-            set(me.handles.OffsetDx,'String',sprintf('%f',me.offsets(1)));
-            set(me.handles.OffsetDy,'String',sprintf('%f',me.offsets(2)));
-            set(me.handles.OffsetDz,'String',sprintf('%f',me.offsets(3)));
+            alAp = me.tcfg.apply2Lbcb;
         end
         function save(me)
-            [alAddr alOf alXf ] = me.getConfig();
-            alAddr{me.cpidx} = me.address;
-            alOf{me.cpidx} = me.offsets;
-            alXf{me.cpidx} = me.xformTable;
+            lg = length(me.mcpTable{:,1});
+            alAddr = cell(lg + 1,1);
+            alAp = cell(lg + 1,1);
+            for cps = 1 : lg
+                alAddr{cps} = me.mcpTable{cps,1};
+                alAp{cps} = me.mcpTable{cps,2};
+            end
             me.tcfg.addresses = alAddr;
-            me.tcfg.offsets = alOf;
-            me.tcfg.xforms = alXf;
-        end
-        function new(me)
-            me.save();
-            [alAddr alOf alXf ] = me.getConfig();
-            
+            me.tcfg.apply2Lbcb = alAp;
         end
     end
 end

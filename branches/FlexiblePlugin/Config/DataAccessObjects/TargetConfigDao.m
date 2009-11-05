@@ -11,10 +11,11 @@
 % =====================================================================================================================
 classdef TargetConfigDao < handle
     properties
-        dofL = {'dx' 'dy' 'dz' 'rx' 'ry' 'rz'}; 
+        dofL = {'dx' 'dy' 'dz' 'rx' 'ry' 'rz'};
     end
     properties (Dependent = true)
         numControlPoints
+        apply2Lbcb
         addresses
         offsets
         xforms
@@ -28,18 +29,30 @@ classdef TargetConfigDao < handle
             me.cfg = cfg;
         end
         function result = get.numControlPoints(me)
-              str = char(me.cfg.props.getProperty('uisimcor.numControlPoints'));
-              if isempty(str)
-                  result = 1;
-                  return;
-              end
-              result = sscanf(str,'%d');
+            str = char(me.cfg.props.getProperty('uisimcor.numControlPoints'));
+            if isempty(str)
+                result = 0;
+                return;
+            end
+            result = sscanf(str,'%d');
         end
         function set.numControlPoints(me,value)
-              me.cfg.props.setProperty('uisimcor.numControlPoints',sprintf('%d',value));
+            me.cfg.props.setProperty('uisimcor.numControlPoints',sprintf('%d',value));
+        end
+        function result = get.apply2Lbcb(me)
+            resultSL = me.cfg.props.getPropertyList('uisimcor.apply2Lbcb');
+            if isempty(resultSL)
+                result = cell(me.numControlPoints + 1,1);
+                return;
+            end
+            result = me.su.sl2ca(resultSL);
+        end
+        function set.apply2Lbcb(me,value)
+            valS = me.su.ca2sl(value);
+            me.cfg.props.setPropertyList('uisimcor.apply2Lbcb',valS);
         end
         function result = get.offsets(me)
-            result = cell(me.numControlPoints,1);
+            result = cell(me.numControlPoints + 1,1);
             for cp = 1: me.numControlPoints
                 result{cp} = zeros(3,1);
                 resultSL = me.cfg.props.getPropertyList(sprintf('uisimcor.offsets.cp%d',cp));
@@ -55,7 +68,7 @@ classdef TargetConfigDao < handle
             end
         end
         function result = get.xforms(me)
-            result = cell(me.numControlPoints,1);
+            result = cell(me.numControlPoints + 1,1);
             for cp = 1: me.numControlPoints
                 rslt = eye(6);
                 for d = 1:6
@@ -76,13 +89,10 @@ classdef TargetConfigDao < handle
                 end
             end
         end
-       function result = get.addresses(me)
+        function result = get.addresses(me)
             resultSL = me.cfg.props.getPropertyList('uisimcor.addresses');
             if isempty(resultSL)
-                result = cell(15,1);
-                for s = 1:15
-                    result{s} = '';
-                end
+                result = cell(me.numControlPoints + 1,1);
                 return;
             end
             result = me.su.sl2ca(resultSL);

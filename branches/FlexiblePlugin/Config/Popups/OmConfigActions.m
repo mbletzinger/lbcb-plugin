@@ -9,7 +9,7 @@ classdef OmConfigActions < handle
     end
     methods
         function me = OmConfigActions(cfg)
-            me.aps = StateEnum({'LBCB1','LBCB2'});
+            me.aps = StateEnum({'LBCB1','LBCB2','BOTH'});
             me.ocfg = OmConfigDao(cfg);
             names = me.ocfg.sensorNames; 
             apply = me.ocfg.apply2Lbcb;
@@ -97,7 +97,7 @@ classdef OmConfigActions < handle
         end
         function initialize(me,handles)
             me.handles = handles;
-            format = {'char',{'LBCB1','LBCB2'},'numeric','numeric','numeric','numeric','numeric','numeric','numeric','numeric'};
+            format = {'char',me.aps.states,'numeric','numeric','numeric','numeric','numeric','numeric','numeric','numeric'};
             set(me.handles.sensorTable,'ColumnFormat',format);
             set(me.handles.sensorTable,'Data',me.table);
              set(me.handles.numLbcbs,'String',{'1','2'});
