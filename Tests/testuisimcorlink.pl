@@ -7,7 +7,7 @@ use strict;
 
 #my ( $host, $port ) = ( "localhost", "6342" );
 
-my ($host, $port) = ("10.211.53.3","6445");
+my ($host, $port) = ("128.174.15.184","6445");
 my $cwd     = cwd();
 my @dirs    = File::Spec->splitdir($cwd);
 my $dropped = pop @dirs;
