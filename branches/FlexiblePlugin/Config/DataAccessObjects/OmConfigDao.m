@@ -27,168 +27,97 @@ classdef OmConfigDao < handle
         perturbationsL2
     end
     properties
-        cfg = Configuration();
-        su = StringListUtils();
+        dt;
+        defAp;
     end
     methods
         function me = OmConfigDao(cfg)
-            me.cfg = cfg;
+        me.dt = Datatypes(cfg);
+                me.defSn = cell(15,1);
+                for s = 1:15
+                    me.defSn{s} = '';
+                end
+                me.defAp = cell(15,1);
+                for s = 1:15
+                    me.defAp{s} = 'LBCB1';
+                end
         end
         function result = get.numLbcbs(me)
-            str = char(me.cfg.props.getProperty('om.numLbcbs'));
-            if isempty(str)
-                result = 1;
-                return;
-            end
-            result = sscanf(str,'%d');
+            result = me.dt.getInt('om.numLbcbs',1);
         end
         function set.numLbcbs(me,value)
-            me.cfg.props.setProperty('om.numLbcbs',sprintf('%d',value));
+            me.dt.getInt('om.numLbcbs',value);
         end
         function result = get.useFakeOm(me)
-            str = char(me.cfg.props.getProperty('om.useFakeOm'));
-            if isempty(str)
-                result = 0;
-                return;
-            end
-            result = sscanf(str,'%d');
+            result = me.dt.getBool('om.useFakeOm',0);
         end
         function set.useFakeOm(me,value)
-            me.cfg.props.setProperty('om.useFakeOm',sprintf('%d',value));
+            me.dt.setBool('om.useFakeOm',value);
         end
         function result = get.sensorNames(me)
-            resultSL = me.cfg.props.getPropertyList('om.sensorNames');
-            if isempty(resultSL)
-                result = cell(15,1);
-                for s = 1:15
-                    result{s} = '';
-                end
-                return;
-            end
-            result = me.su.sl2ca(resultSL);
+            result = me.dt.getStringVector('om.sensorNames',me.defSn);
         end
         function set.sensorNames(me,value)
-            valS = me.su.ca2sl(value);
-            me.cfg.props.setPropertyList('om.sensorNames',valS);
+            me.dt.setStringVector('om.sensorNames',value);
         end
         function result = get.apply2Lbcb(me)
-            resultSL = me.cfg.props.getPropertyList('om.apply2Lbcb');
-            if isempty(resultSL)
-                result = cell(15,1);
-                for i = 1:15
-                    result{i} = 'LBCB1';
-                end
-                return;
-            end
-            result = me.su.sl2ca(resultSL);
+            result = me.dt.getStringVector('om.apply2Lbcb',me.defAp);
         end
         function set.apply2Lbcb(me,value)
-            valS = me.su.ca2sl(value);
-            me.cfg.props.setPropertyList('om.apply2Lbcb',valS);
+            me.dt.setStringVector('om.apply2Lbcb',value);
         end
         function result = get.sensitivities(me)
-            resultSL = me.cfg.props.getPropertyList('om.sensitivities');
-            if isempty(resultSL)
-                result = ones(15,1);
-                return;
-            end
-            result = me.su.sl2da(resultSL);
+            result = me.dt.getDoubleVector('om.sensitivities',ones(15,1));
         end
         function set.sensitivities(me,value)
-            valS = me.su.da2sl(value);
-            me.cfg.props.setPropertyList('om.sensitivities',valS);
+            me.dt.setDoubleVector('om.sensitivities',value);
         end
         function result = get.baseX(me)
-            resultSL = me.cfg.props.getPropertyList('om.sensor.location.base.x');
-            if isempty(resultSL)
-                result = zeros(15,1);
-                return;
-            end
-            result = me.su.sl2da(resultSL);
+            result = me.dt.getDoubleVector('om.location.base.x',zeros(15,1));
         end
         function set.baseX(me,value)
-            valS = me.su.da2sl(value);
-            me.cfg.props.setPropertyList('om.sensor.location.base.x',valS);
+            me.dt.setDoubleVector('om.location.base.x',value);
         end
         function result = get.baseY(me)
-            resultSL = me.cfg.props.getPropertyList('om.sensor.location.base.y');
-            if isempty(resultSL)
-                result = zeros(15,1);
-                return;
-            end
-            result = me.su.sl2da(resultSL);
+            result = me.dt.getDoubleVector('om.location.base.y',zeros(15,1));
         end
         function set.baseY(me,value)
-            valS = me.su.da2sl(value);
-            me.cfg.props.setPropertyList('om.sensor.location.base.y',valS);
+            me.dt.setDoubleVector('om.location.base.y',value);
         end
         function result = get.baseZ(me)
-            resultSL = me.cfg.props.getPropertyList('om.sensor.location.base.z');
-            if isempty(resultSL)
-                result = zeros(15,1);
-                return;
-            end
-            result = me.su.sl2da(resultSL);
+            result = me.dt.getDoubleVector('om.location.base.z',zeros(15,1));
         end
         function set.baseZ(me,value)
-            valS = me.su.da2sl(value);
-            me.cfg.props.setPropertyList('om.sensor.location.base.z',valS);
+            me.dt.setDoubleVector('om.location.base.z',value);
         end
         function result = get.platX(me)
-            resultSL = me.cfg.props.getPropertyList('om.sensor.location.plat.x');
-            if isempty(resultSL)
-                result = zeros(15,1);
-                return;
-            end
-            result = me.su.sl2da(resultSL);
+            result = me.dt.getDoubleVector('om.location.plat.x',zeros(15,1));
         end
         function set.platX(me,value)
-            valS = me.su.da2sl(value);
-            me.cfg.props.setPropertyList('om.sensor.location.plat.x',valS);
+            me.dt.setDoubleVector('om.location.plat.x',value);
         end
         function result = get.platY(me)
-            resultSL = me.cfg.props.getPropertyList('om.sensor.location.plat.y');
-            if isempty(resultSL)
-                result = zeros(15,1);
-                return;
-            end
-            result = me.su.sl2da(resultSL);
+            result = me.dt.getDoubleVector('om.location.plat.y',zeros(15,1));
         end
         function set.platY(me,value)
-            valS = me.su.da2sl(value);
-            me.cfg.props.setPropertyList('om.sensor.location.plat.y',valS);
+            me.dt.setDoubleVector('om.location.plat.y',value);
         end
         function result = get.platZ(me)
-            resultSL = me.cfg.props.getPropertyList('om.sensor.location.plat.z');
-            if isempty(resultSL)
-                result = zeros(15,1);
-                return;
-            end
-            result = me.su.sl2da(resultSL);
+            result = me.dt.getDoubleVector('om.location.plat.z',zeros(15,1));
         end
         function set.platZ(me,value)
-            valS = me.su.da2sl(value);
-            me.cfg.props.setPropertyList('om.sensor.location.plat.z',valS);
+            me.dt.setDoubleVector('om.location.plat.z',value);
         end
         function result = get.sensorErrorTol(me)
-            resultSL = me.cfg.props.getPropertyList('om.sensor.error.tol');
-            if isempty(resultSL)
-                result = zeros(15,1);
-                return;
-            end
-            result = me.su.sl2da(resultSL);
+            result = me.dt.getDoubleVector('om.sensor.error.tol',zeros(15,1));
         end
         function set.sensorErrorTol(me,value)
-            valS = me.su.da2sl(value);
-            me.cfg.props.setPropertyList('om.sensor.error.tol',valS);
+            me.dt.setDoubleVector('om.sensor.error.tol',value);
         end
         function result = get.perturbationsL1(me)
             result = Target;
-            resultSL = me.cfg.props.getPropertyList('om.sensor.perturbations.lbcb1');
-            if isempty(resultSL)
-                return;
-            end
-            perts = me.su.sl2da(resultSL);
+            perts = me.dt.getDoubleVector('om.sensor.perturbations.lbcb1',ones(6,1) * 999);
+
             for i = 1:6
                 if perts(i) < 999
                     result.setDispDof(i,perts(i));
@@ -204,7 +133,6 @@ classdef OmConfigDao < handle
                     perts(i) = 1000;
                 end
             end
-            valS = me.su.da2sl(perts);
             me.cfg.props.setPropertyList('om.sensor.perturbations.lbcb1',valS);
         end
         function result = get.perturbationsL2(me)
