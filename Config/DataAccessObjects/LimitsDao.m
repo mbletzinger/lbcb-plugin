@@ -20,88 +20,50 @@ classdef LimitsDao < handle
     end
     properties
         label = 'limits';
-        cfg = Configuration();
-        su = StringListUtils();
+        dt;
     end
     methods
         function me = LimitsDao(label, cfg)
-            me.cfg = cfg;
+            me.dt = DataTypes(cfg);
             me.label = label;
         end
         function result = get.upper1(me)
-            resultSL = me.cfg.props.getPropertyList(sprintf('%s.upper1',me.label));
-            if isempty(resultSL)
-                result = zeros(12,1);
-                return;
-            end
-            result = me.su.sl2da(resultSL);
+            result = me.dt.getDoubleVector(sprintf('%s.upper1',me.label),zeros(12,1));
         end
         function set.upper1(me,value)
-            valS = me.su.da2sl(value);
-            me.cfg.props.setPropertyList(sprintf('%s.upper1',me.label),valS);
+            me.dt.setDoubleVector(sprintf('%s.upper1',me.label),value);
         end
         function result = get.upper2(me)
-            resultSL = me.cfg.props.getPropertyList(sprintf('%s.upper2',me.label));
-            if isempty(resultSL)
-                result = zeros(12,1);
-                return;
-            end
-            result = me.su.sl2da(resultSL);
+            result = me.dt.getDoubleVector(sprintf('%s.upper2',me.label),zeros(12,1));
         end
         function set.upper2(me,value)
-            valS = me.su.da2sl(value);
-            me.cfg.props.setPropertyList(sprintf('%s.upper2',me.label),valS);
+            me.dt.setDoubleVector(sprintf('%s.upper2',me.label),value);
         end
         
         function result = get.lower1(me)
-            resultSL = me.cfg.props.getPropertyList(sprintf('%s.lower1',me.label));
-            if isempty(resultSL)
-                result = zeros(12,1);
-                return;
-            end
-            result = me.su.sl2da(resultSL);
+            result = me.dt.getDoubleVector(sprintf('%s.lower1',me.label),zeros(12,1));
         end
         function set.lower1(me,value)
-            valS = me.su.da2sl(value);
-            me.cfg.props.setPropertyList(sprintf('%s.lower1',me.label),valS);
+            me.dt.setDoubleVector(sprintf('%s.lower1',me.label),value);
         end
         function result = get.lower2(me)
-            resultSL = me.cfg.props.getPropertyList(sprintf('%s.lower2',me.label));
-            if isempty(resultSL)
-                result = zeros(12,1);
-                return;
-            end
-            result = me.su.sl2da(resultSL);
+            result = me.dt.getDoubleVector(sprintf('%s.lower2',me.label),zeros(12,1));
         end
         function set.lower2(me,value)
-            valS = me.su.da2sl(value);
-            me.cfg.props.setPropertyList(sprintf('%s.lower2',me.label),valS);
+            me.dt.setDoubleVector(sprintf('%s.lower2',me.label),value);
         end
         
         function result = get.used1(me)
-            resultSL = me.cfg.props.getPropertyList(sprintf('%s.used1',me.label));
-            if isempty(resultSL)
-                result = zeros(12,1);
-                return;
-            end
-            result = me.su.sl2ia(resultSL);
+            result = me.dt.getIntVector(sprintf('%s.used1',me.label),zeros(12,1));
         end
         function set.used1(me,value)
-            valS = me.su.ia2sl(value);
-            me.cfg.props.setPropertyList(sprintf('%s.used1',me.label),valS);
+            me.dt.setDoubleVector(sprintf('%s.used1',me.label),value);
         end
-        
         function result = get.used2(me)
-            resultSL = me.cfg.props.getPropertyList(sprintf('%s.used2',me.label));
-            if isempty(resultSL)
-                result = zeros(12,1);
-                return;
-            end
-            result = me.su.sl2ia(resultSL);
+            result = me.dt.getIntVector(sprintf('%s.used2',me.label),zeros(12,1));
         end
         function set.used2(me,value)
-            valS = me.su.ia2sl(value);
-            me.cfg.props.setPropertyList(sprintf('%s.used2',me.label),valS);
+            me.dt.setIntVector(sprintf('%s.used2',me.label),value);
         end
     end
     

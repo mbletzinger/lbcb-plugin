@@ -29,10 +29,11 @@ classdef OmConfigDao < handle
     properties
         dt;
         defAp;
+        defSn;
     end
     methods
         function me = OmConfigDao(cfg)
-        me.dt = Datatypes(cfg);
+        me.dt = DataTypes(cfg);
                 me.defSn = cell(15,1);
                 for s = 1:15
                     me.defSn{s} = '';
@@ -46,7 +47,7 @@ classdef OmConfigDao < handle
             result = me.dt.getInt('om.numLbcbs',1);
         end
         function set.numLbcbs(me,value)
-            me.dt.getInt('om.numLbcbs',value);
+            me.dt.setInt('om.numLbcbs',value);
         end
         function result = get.useFakeOm(me)
             result = me.dt.getBool('om.useFakeOm',0);
@@ -115,56 +116,16 @@ classdef OmConfigDao < handle
             me.dt.setDoubleVector('om.sensor.error.tol',value);
         end
         function result = get.perturbationsL1(me)
-            result = Target;
-            perts = me.dt.getDoubleVector('om.sensor.perturbations.lbcb1',ones(6,1) * 999);
-
-            for i = 1:6
-                if perts(i) < 999
-                    result.setDispDof(i,perts(i));
-                end
-            end
+            result = me.dt.getTarget('om.sensor.perturbations.lbcb1');
         end
         function set.perturbationsL1(me,value)
-            perts = zeros(6,1);
-            for i = 1:6
-                if value.dispDofs(i)
-                    perts(i) = value.disp(i);
-                else
-                    perts(i) = 1000;
-                end
-            end
-            me.cfg.props.setPropertyList('om.sensor.perturbations.lbcb1',valS);
+            me.dt.setTarget('om.sensor.perturbations.lbcb1',value);
         end
         function result = get.perturbationsL2(me)
-            result = Target;
-            resultSL = me.cfg.props.getPropertyList('om.sensor.perturbations.lbcb2');
-            if isempty(resultSL)
-                return;
-            end
-            perts = me.su.sl2da(resultSL);
-            for i = 1:6
-                if perts(i) < 999
-                    result.setDispDof(i,perts(i));
-                end
-            end
+            result = me.dt.getTarget('om.sensor.perturbations.lbcb2');
         end
         function set.perturbationsL2(me,value)
-            perts = zeros(6,1);
-            for i = 1:6
-                if value.dispDofs(i)
-                    perts(i) = value.disp(i);
-                else
-                    perts(i) = 1000;
-                end
-            end
-            valS = me.su.da2sl(perts);
-            me.cfg.props.setPropertyList('om.sensor.perturbations.lbcb2',valS);
-        end
-    end
-    methods (Static)
-        function yes = hasLbcb2(cfg)
-            ocfg = OmConfig(cfg);
-            yes = ocfg.numLbcbs > 1;
+            me.dt.setTarget('om.sensor.perturbations.lbcb2',value);
         end
     end
 end

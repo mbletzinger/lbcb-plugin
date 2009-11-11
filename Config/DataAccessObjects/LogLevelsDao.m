@@ -15,29 +15,23 @@ classdef LogLevelsDao < handle
         msgLevel
     end
     properties
-        cfg = Configuration();
+        dt;
     end
     methods
         function me = LogLevelsDao(cfg)
-            me.cfg = cfg;
+            me.dt = DataTypes(cfg);
         end
         function result = get.cmdLevel(me)
-              result = char(me.cfg.props.getProperty('logger.cmdLevel'));
-              if strcmp(result,'')
-                  result = 'ERROR';
-              end
+            result = me.dt.getString('logger.cmdLevel','ERROR');
         end
         function set.cmdLevel(me,value)
-              me.cfg.props.setProperty('logger.cmdLevel',value);
+            me.dt.setString('logger.cmdLevel',value);
         end
         function result = get.msgLevel(me)
-              result = char(me.cfg.props.getProperty('logger.msgLevel'));
-              if strcmp(result,'')
-                  result = 'ERROR';
-              end
+            result = me.dt.getString('logger.msgLevel','ERROR');
         end
         function set.msgLevel(me,value)
-              me.cfg.props.setProperty('logger.msgLevel',value)
+            me.dt.setString('logger.msgLevel',value);
         end
     end
 end

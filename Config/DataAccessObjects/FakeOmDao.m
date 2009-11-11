@@ -24,8 +24,7 @@ classdef FakeOmDao < handle
         convergeInc
     end
     properties
-        cfg = Configuration();
-        su = StringListUtils();
+        dt;
         derivedOptions = {'Dx L1', 'Dy L1', 'Dz L1', 'Rx L1',  'Ry L1',  'Rz L1',...
             'Fx L1',   'Fy L1',   'Fz L1',   'Mx L1',   'My L1',   'Mz L1',...
             'Dx L2', 'Dy L2', 'Dz L2', 'Rx L2',  'Ry L2',  'Rz L2',...
@@ -33,145 +32,81 @@ classdef FakeOmDao < handle
     end
     methods
         function me = FakeOmDao(cfg)
-            me.cfg = cfg;
+            me.dt = DataTypes(cfg);
         end
         function result = get.derived1(me)
-              resultSL = me.cfg.props.getPropertyList('fake.om.derived1');
-              if isempty(resultSL)
-                  result = [];
-                  return;
-              end
-              result = me.su.sl2ca(resultSL);
+            result = me.dt.getStringVector('fake.om.derived1',[]);
         end
         function set.derived1(me,value)
-            valS = me.su.ca2sl(value);
-              me.cfg.props.setPropertyList('fake.om.derived1',valS);
+            me.dt.setStringVector('fake.om.derived1',value);
         end
         
         function result = get.derived2(me)
-            resultSL = me.cfg.props.getPropertyList('fake.om.derived2');
-            if isempty(resultSL)
-                result = [];
-                return;
-            end
-            result = me.su.sl2ca(resultSL);
+            result = me.dt.getStringVector('fake.om.derived2',[]);
         end
         function set.derived2(me,value)
-            valS = me.su.ca2sl(value);
-            me.cfg.props.setPropertyList('fake.om.derived2',valS);
+            me.dt.setStringVector('fake.om.derived2',value);
         end
         
         function result = get.scale1(me)
-              resultSL = me.cfg.props.getPropertyList('fake.om.scale1');
-              if isempty(resultSL)
-                  result = ones(12,1);
-                  return;
-              end
-              result = me.su.sl2da(resultSL);
+             result = me.dt.getDoubleVector('fake.om.scale1',ones(12,1));
         end
         function set.scale1(me,value)
-            valS = me.su.da2sl(value);
-              me.cfg.props.setPropertyList('fake.om.scale1',valS);
+            me.dt.setDoubleVector('fake.om.scale1',value);
         end
         
         function result = get.scale2(me)
-              resultSL = me.cfg.props.getPropertyList('fake.om.scale2');
-              if isempty(resultSL)
-                  result = ones(12,1);
-                  return;
-              end
-              result = me.su.sl2da(resultSL);
+             result = me.dt.getDoubleVector('fake.om.scale2',ones(12,1));
         end
         function set.scale2(me,value)
-            valS = me.su.da2sl(value);
-              me.cfg.props.setPropertyList('fake.om.scale2',valS);
+            me.dt.setDoubleVector('fake.om.scale2',value);
         end
         
         function result = get.offset1(me)
-              resultSL = me.cfg.props.getPropertyList('fake.om.offset1');
-              if isempty(resultSL)
-                  result = zeros(12,1);
-                  return;
-              end
-              result = me.su.sl2da(resultSL);
+             result = me.dt.getDoubleVector('fake.om.offset1',ones(12,1));
         end
         function set.offset1(me,value)
-            valS = me.su.da2sl(value);
-              me.cfg.props.setPropertyList('fake.om.offset1',valS);
+            me.dt.setDoubleVector('fake.om.offset1',value);
         end
         
         function result = get.offset2(me)
-              resultSL = me.cfg.props.getPropertyList('fake.om.offset2');
-              if isempty(resultSL)
-                  result = zeros(12,1);
-                  return;
-              end
-              result = me.su.sl2da(resultSL);
+             result = me.dt.getDoubleVector('fake.om.offset2',ones(12,1));
         end
         function set.offset2(me,value)
-            valS = me.su.da2sl(value);
-              me.cfg.props.setPropertyList('fake.om.offset2',valS);
+            me.dt.setDoubleVector('fake.om.offset2',value);
         end
         
         function result = get.eDerived(me)
-              resultSL = me.cfg.props.getPropertyList('fake.om.eDerived');
-              if isempty(resultSL)
-                  result = [];
-                  return;
-              end
-              result = me.su.sl2ca(resultSL);
+            result = me.dt.getStringVector('fake.om.eDerived',[]);
         end
         function set.eDerived(me,value)
-            valS = me.su.ca2sl(value);
-              me.cfg.props.setPropertyList('fake.om.eDerived',valS);
+            me.dt.setStringVector('fake.om.eDerived',value);
         end
                 
         function result = get.eScale(me)
-              resultSL = me.cfg.props.getPropertyList('fake.om.eScale');
-              if isempty(resultSL)
-                  result = ones(12,1);
-                  return;
-              end
-              result = me.su.sl2da(resultSL);
+             result = me.dt.getDoubleVector('fake.om.eScale',ones(12,1));
         end
         function set.eScale(me,value)
-            valS = me.su.da2sl(value);
-              me.cfg.props.setPropertyList('fake.om.eScale',valS);
+            me.dt.setDoubleVector('fake.om.eScale',value);
         end
                 
         function result = get.eOffset(me)
-              resultSL = me.cfg.props.getPropertyList('fake.om.eOffset');
-              if isempty(resultSL)
-                  result = zeros(12,1);
-                  return;
-              end
-              result = me.su.sl2da(resultSL);
+             result = me.dt.getDoubleVector('fake.om.eOffset',ones(12,1));
         end
         function set.eOffset(me,value)
-            valS = me.su.da2sl(value);
-              me.cfg.props.setPropertyList('fake.om.eOffset',valS);
+            me.dt.setDoubleVector('fake.om.eOffset',value);
         end
          function result = get.convergeSteps(me)
-              resultS = char(me.cfg.props.getProperty('fake.om.converge.steps'));
-              if isempty(resultS)
-                  result = 0;
-                  return;
-              end
-              result = sscanf(resultS,'%d');
+            result = me.dt.getInt('fake.om.converge.steps',0);
         end
         function set.convergeSteps(me,value)
-              me.cfg.props.setProperty('fake.om.converge.steps',sprintf('%d',value));
-        end
+             me.dt.setInt('fake.om.converge.steps',value);
+       end
         function result = get.convergeInc(me)
-              resultS = char(me.cfg.props.getProperty('fake.om.converge.increment'));
-              if isempty(resultS)
-                  result = 0.0;
-                  return;
-              end
-              result = sscanf(resultS,'%f');
+             result = me.dt.getDouble('fake.om.converge.increment',ones(12,1));
         end
         function set.convergeInc(me,value)
-              me.cfg.props.setProperty('fake.om.converge.increment',sprintf('%f',value));
+             me.dt.setDouble('fake.om.converge.increment',value);
         end
        
     end
