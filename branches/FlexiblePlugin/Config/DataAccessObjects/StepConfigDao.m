@@ -21,131 +21,60 @@ classdef StepConfigDao < handle
         substepIncL2
     end
     properties
-        cfg = Configuration();
-        su = StringListUtils();
+        dt;
     end
     methods
         function me = StepConfigDao(cfg)
-            me.cfg = cfg;
+        me.dt = DataTypes(cfg);
         end
         function result = get.substepIncL1(me)
-            result = Target;
-            resultSL = me.cfg.props.getPropertyList('step.sensor.substepInc.lbcb1');
-            if isempty(resultSL)
-                return;
-            end
-            perts = me.su.sl2da(resultSL);
-            for i = 1:6
-                if perts(i) < 999
-                    result.setDispDof(i,perts(i));
-                end
-            end
+            result = me.dt.getTarget('step.sensor.substepInc.lbcb1');
         end
-           function set.substepIncL1(me,value)
-               perts = zeros(6,1);
-               for i = 1:6
-                   if value.dispDofs(i)
-                       perts(i) = value.disp(i);
-                   else
-                       perts(i) = 1000;
-                   end
-               end
-            valS = me.su.da2sl(perts);
-            me.cfg.props.setPropertyList('step.sensor.substepInc.lbcb1',valS);
+        function set.substepIncL1(me,value)
+            me.dt.setTarget('step.sensor.substepInc.lbcb1',value);
         end
         function result = get.substepIncL2(me)
-            result = Target;
-            resultSL = me.cfg.props.getPropertyList('step.sensor.substepInc.lbcb2');
-            if isempty(resultSL)
-                return;
-            end
-            perts = me.su.sl2da(resultSL);
-            for i = 1:6
-                if perts(i) < 999
-                    result.setDispDof(i,perts(i));
-                end
-            end
+            result = me.dt.getTarget('step.sensor.substepInc.lbcb2');
         end
-           function set.substepIncL2(me,value)
-               perts = zeros(6,1);
-               for i = 1:6
-                   if value.dispDofs(i)
-                       perts(i) = value.disp(i);
-                   else
-                       perts(i) = 1000;
-                   end
-               end
-            valS = me.su.da2sl(perts);
-            me.cfg.props.setPropertyList('step.sensor.substepInc.lbcb2',valS);
-           end
+        function set.substepIncL2(me,value)
+            me.dt.setTarget('step.sensor.substepInc.lbcb2',value);
+        end
         
-        
-             
         function result = get.doEdCalculations(me)
-              str = char(me.cfg.props.getProperty('step.ed.calculations'));
-              if isempty(str)
-                  result = 0;
-                  return;
-              end
-              result = sscanf(str,'%d');
+            result = me.dt.getBool('step.ed.calculations',0);
         end
         function set.doEdCalculations(me,value)
-              me.cfg.props.setProperty('step.ed.calculations',sprintf('%d',value));
+            me.dt.setBool('step.ed.calculations',value);
         end
         function result = get.doEdCorrection(me)
-              str = char(me.cfg.props.getProperty('step.ed.correction'));
-              if isempty(str)
-                  result = 0;
-                  return;
-              end
-              result = sscanf(str,'%d');
+            result = me.dt.getBool('step.ed.correction',0);
         end
         function set.doEdCorrection(me,value)
-              me.cfg.props.setProperty('step.ed.correction',sprintf('%d',value));
+            me.dt.setBool('step.ed.correction',value);
         end
         function result = get.doDdofCalculations(me)
-              str = char(me.cfg.props.getProperty('step.derivedDof.calculations'));
-              if isempty(str)
-                  result = 0;
-                  return;
-              end
-              result = sscanf(str,'%d');
+            result = me.dt.getBool('step.derivedDof.calculations',0);
         end
         function set.doDdofCalculations(me,value)
-              me.cfg.props.setProperty('step.derivedDof.calculations',sprintf('%d',value));
+            me.dt.setBool('step.derivedDof.calculations',value);
         end
         function result = get.doDdofCorrection(me)
-              str = char(me.cfg.props.getProperty('step.derivedDof.correction'));
-              if isempty(str)
-                  result = 0;
-                  return;
-              end
-              result = sscanf(str,'%d');
+            result = me.dt.getBool('step.derivedDof.correction',0);
         end
         function set.doDdofCorrection(me,value)
-              me.cfg.props.setProperty('step.derivedDof.correction',sprintf('%d',value));
+            me.dt.setBool('ostep.derivedDof.correction',value);
         end
         function result = get.doStepSplitting(me)
-              str = char(me.cfg.props.getProperty('step.stepSplitting'));
-              if isempty(str)
-                  result = 0;
-                  return;
-              end
-              result = sscanf(str,'%d');
+            result = me.dt.getBool('step.stepSplitting',0);
         end
         function set.doStepSplitting(me,value)
-              me.cfg.props.setProperty('step.stepSplitting',sprintf('%d',value));
+            me.dt.setBool('step.stepSplitting',value);
         end
         function result = get.correctEverySubstep(me)
-              str = char(me.cfg.props.getProperty('step.correctEveryStep'));
-              if isempty(str)
-                  result = 0;
-                  return;
-              end
-              result = sscanf(str,'%d');
+             result = me.dt.getInt('step.correctEveryStep',0);
         end
         function set.correctEverySubstep(me,value)
-              me.cfg.props.setProperty('step.correctEveryStep',sprintf('%d',value));
+            me.dt.setInt('step.correctEveryStep',value);
         end
     end
 end

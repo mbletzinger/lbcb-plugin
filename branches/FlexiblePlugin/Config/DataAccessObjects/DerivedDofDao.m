@@ -15,34 +15,23 @@ classdef DerivedDofDao < handle
     Fztarget
     end
     properties
-        cfg = Configuration();
-        su = StringListUtils();
+        dt;
     end
     methods
         function me = DerivedDofDao(cfg)
-            me.cfg = cfg;
+            me.dt = DataTypes(cfg);
         end
         function result = get.kfactor(me)
-              str = char(me.cfg.props.getProperty('derivedDofs.kfactor'));
-              if isempty(str)
-                  result = 1;
-                  return;
-              end
-              result = sscanf(str,'%f');
+             result = me.dt.getDouble('derivedDofs.kfactor',1);
         end
         function set.kfactor(me,value)
-              me.cfg.props.setProperty('derivedDofs.kfactor',sprintf('%f',value));
+            me.dt.setDouble('derivedDofs.kfactors',value);
         end
         function result = get.Fztarget(me)
-              str = char(me.cfg.props.getProperty('derivedDofs.Fztarget'));
-              if isempty(str)
-                  result = 1;
-                  return;
-              end
-              result = sscanf(str,'%f');
+             result = me.dt.getDouble('derivedDofs.Fztarget',1);
         end
         function set.Fztarget(me,value)
-              me.cfg.props.setProperty('derivedDofs.Fztarget',sprintf('%f',value));
+            me.dt.setDouble('derivedDofs.Fztarget',value);
         end
     end
 end

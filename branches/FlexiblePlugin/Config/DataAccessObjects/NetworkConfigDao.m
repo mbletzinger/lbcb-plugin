@@ -19,47 +19,47 @@ classdef NetworkConfigDao < handle
         address
     end
     properties
-        cfg = Configuration();
+        dt;
     end
     methods
         function me = NetworkConfigDao(cfg)
-            me.cfg = cfg;
+            me.dt = DataTypes(cfg);
         end
         function result = get.omHost(me)
-              result = char(me.cfg.props.getProperty('network.omHost'));
+            result = me.dt.getString('network.omHost','localhost');
         end
         function set.omHost(me,value)
-              me.cfg.props.setProperty('network.omHost',value);
+            me.dt.setString('network.omHost',value);
         end
         function result = get.omPort(me)
-              result = char(me.cfg.props.getProperty('network.omPort'));
+            result = me.dt.getString('network.omPort','localhost');
         end
         function set.omPort(me,value)
-              me.cfg.props.setProperty('network.omPort',value);
+            me.dt.setString('network.omPort',value);
         end
         function result = get.triggerPort(me)
-              result = char(me.cfg.props.getProperty('network.triggerPort'));
+            result = me.dt.getString('network.triggerPort','localhost');
         end
         function set.triggerPort(me,value)
-              me.cfg.props.setProperty('network.triggerPort',value);
+            me.dt.setString('network.triggerPort',value);
         end
         function result = get.simcorPort(me)
-              result = char(me.cfg.props.getProperty('network.simcorPort'));
+            result = me.dt.getString('network.simcorPort','localhost');
         end
         function set.simcorPort(me,value)
-              me.cfg.props.setProperty('network.simcorPort',value);
+            me.dt.setString('network.simcorPort',value);
         end
         function result = get.timeout(me)
-              result = char(me.cfg.props.getProperty('network.timeout'));
+            result = me.dt.getString('network.timeout','localhost');
         end
         function set.timeout(me,value)
-              me.cfg.props.setProperty('network.timeout',value);
+            me.dt.setString('network.timeout',value);
         end
         function result = get.address(me)
-              result = char(me.cfg.props.getProperty('network.address'));
+            result = me.dt.getString('network.address','localhost');
         end
         function set.address(me,value)
-              me.cfg.props.setProperty('network.address',value);
+            me.dt.setString('network.address',value);
         end
     end
 end
