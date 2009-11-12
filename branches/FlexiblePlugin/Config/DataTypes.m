@@ -11,6 +11,7 @@
 % =====================================================================================================================
 classdef DataTypes < handle
     properties
+        dofL = {'dx' 'dy' 'dz' 'rx' 'ry' 'rz'};
         cfg;
         su = StringListUtils();
     end
@@ -72,6 +73,9 @@ classdef DataTypes < handle
             result = me.su.sl2ca(resultSL);
         end
         function setStringVector(me,key,value)
+            if isempty(value)
+                return
+            end
             valS = me.su.ca2sl(value);
             me.cfg.props.setPropertyList(key,valS);
         end
@@ -84,6 +88,9 @@ classdef DataTypes < handle
             result = me.su.sl2da(resultSL);
         end
         function setDoubleVector(me,key,value)
+            if isempty(value)
+                return
+            end
             valS = me.su.da2sl(value);
             me.cfg.props.setPropertyList(key,valS);
         end
@@ -96,6 +103,9 @@ classdef DataTypes < handle
             result = me.su.sl2ia(resultSL);
         end
         function setIntVector(me,key,value)
+            if isempty(value)
+                return
+            end
             valS = me.su.ia2sl(value);
             me.cfg.props.setPropertyList(key,valS);
         end
@@ -119,5 +129,54 @@ classdef DataTypes < handle
             end
             me.dt.setDoubleVector(key,perts);
         end
+        function result = getTransVector(me,key,itemkey,itemSize)
+            result = cell(itemSize,1);
+            for i = 1: itemSize
+                resultSL = me.cfg.props.getPropertyList(sprintf('%s.%s%d',key,itemkey,i));
+                if isempty(resultSL) == 0
+                    result{i} = me.su.sl2da(resultSL);
+                end
+            end
+        end
+        function setTransVector(me,key,itemkey,itemSize,value)
+            if isempty(value)
+                return
+            end
+            for i = 1: itemSize;
+                if isempty(value{i})
+                    continue
+                end
+                valS = me.su.da2sl(value{i});
+                me.cfg.props.setPropertyList(sprintf('%s.%s%d',key,itemkey,i),valS);
+            end
+        end
+        function result = getDofMatrix(me,key,itemkey,itemSize)
+            result = cell(itemSize,1);
+            for i = 1: itemSize
+                rslt = eye(6);
+                for d = 1:6
+                    resultSL = me.cfg.props.getPropertyList(sprintf('%s.%s%d.%s',key,itemkey,i,me.dofL{d}));
+                    if isempty(resultSL) == false
+                        rslt(d,:) = me.su.sl2da(resultSL);
+                    end
+                end
+                result{i} = rslt;
+            end
+        end
+        function setDofMatrix(me,key,itemkey,itemSize,value)
+            if isempty(value)
+                return
+            end
+            for i = 1:itemSize
+                if isempty(value{i})
+                    continue
+                end
+                for d = 1:6
+                    valS = me.su.da2sl(value{i}(d,:));
+                    me.cfg.props.setPropertyList(sprintf('%s.%s%d.%s',key,itemkey,i,me.dofL{d}),valS);
+                end
+            end
+        end
+
     end
 end

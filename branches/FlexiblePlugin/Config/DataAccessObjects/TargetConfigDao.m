@@ -11,7 +11,7 @@
 % =====================================================================================================================
 classdef TargetConfigDao < handle
     properties
-        dofL = {'dx' 'dy' 'dz' 'rx' 'ry' 'rz'};
+        dt;
     end
     properties (Dependent = true)
         numControlPoints
@@ -20,92 +20,60 @@ classdef TargetConfigDao < handle
         offsets
         xforms
     end
-    properties
-        cfg = Configuration();
-        su = StringListUtils();
-    end
     methods
         function me = TargetConfigDao(cfg)
-            me.cfg = cfg;
+            me.dt = DataTypes(cfg);
         end
         function result = get.numControlPoints(me)
-            str = char(me.cfg.props.getProperty('uisimcor.numControlPoints'));
-            if isempty(str)
-                result = 0;
-                return;
-            end
-            result = sscanf(str,'%d');
+            result = me.dt.getInt('uisimcor.numControlPoints',1);
         end
         function set.numControlPoints(me,value)
-            me.cfg.props.setProperty('uisimcor.numControlPoints',sprintf('%d',value));
+            me.dt.setInt('uisimcor.numControlPoints',value);
         end
         function result = get.apply2Lbcb(me)
-            resultSL = me.cfg.props.getPropertyList('uisimcor.apply2Lbcb');
-            if isempty(resultSL)
-                result = cell(me.numControlPoints + 1,1);
-                return;
-            end
-            result = me.su.sl2ca(resultSL);
+            result = me.dt.getStringVector('uisimcor.apply2Lbcb',cell(1,1));
         end
         function set.apply2Lbcb(me,value)
-            valS = me.su.ca2sl(value);
-            me.cfg.props.setPropertyList('uisimcor.apply2Lbcb',valS);
+            me.dt.setStringVector('uisimcor.apply2Lbcb',value);
         end
         function result = get.offsets(me)
-            result = cell(me.numControlPoints + 1,1);
-            for cp = 1: me.numControlPoints
-                result{cp} = zeros(3,1);
-                resultSL = me.cfg.props.getPropertyList(sprintf('uisimcor.offsets.cp%d',cp));
-                if isempty(resultSL) == 0
-                    result = me.su.sl2da(resultSL);
-                end
-            end
+            sz = me.numControlPoints;
+            result = me.dt.getTransVector('uisimcor.offsets','cp',sz);
         end
         function set.offsets(me,value)
-            for cp = 1: me.numControlPoints
-                valS = me.su.da2sl(value{cp});
-                me.cfg.props.setPropertyList(sprintf('uisimcor.offsets.cp%d',cp),valS);
-            end
+            sz = me.numControlPoints;
+            me.dt.setTransVector('uisimcor.offsets','cp',sz,value);
         end
         function result = get.xforms(me)
-            result = cell(me.numControlPoints + 1,1);
-            for cp = 1: me.numControlPoints
-                rslt = eye(6);
-                for d = 1:6
-                    resultSL = me.cfg.props.getPropertyList(sprintf('uisimcor.xforms.cp%d.%s',cp,me.dofL{d}));
-                    if isempty(resultSL) == 0
-                        rslt(d,:) = me.su.sl2da(resultSL);
-                    end
-                end
-                result{cp} = rslt;
-            end
+            sz = me.numControlPoints;
+            result = me.dt.getDofMatrix('uisimcor.xforms','cp',sz);
         end
         function set.xforms(me,value)
-            for cp = 1: me.numControlPoints
-                vl = value{cp};
-                for d = 1:6
-                    valS = me.su.da2sl(vl(d,:));
-                    me.cfg.props.setPropertyList(sprintf('uisimcor.xforms.cp%d.%s',cp,me.dofL{d}),valS);
-                end
-            end
+            sz = me.numControlPoints;
+            me.dt.setDofMatrix('uisimcor.xforms','cp',sz,value);
         end
         function result = get.addresses(me)
-            resultSL = me.cfg.props.getPropertyList('uisimcor.addresses');
-            if isempty(resultSL)
-                result = cell(me.numControlPoints + 1,1);
-                return;
-            end
-            result = me.su.sl2ca(resultSL);
+            result = me.dt.getStringVector('uisimcor.addresses',cell(1,1));
         end
         function set.addresses(me,value)
-            valS = me.su.ca2sl(value);
-            me.cfg.props.setPropertyList('uisimcor.addresses',valS);
+            me.dt.setStringVector('uisimcor.addresses',value);
         end
-    end
-    methods (Static)
-        function yes = hasLbcb2(cfg)
-            ocfg = OmConfig(cfg);
-            yes = ocfg.numControlPoints > 1;
+        function addControlPoint(me)
+            n = me.numControlPoints;
+            me.numControlPoints = n+1;
+            addr = cell(me.numControlPoints,1);
+            ap = cell(me.numControlPoints,1);
+            of = cell(me.numControlPoints,1);
+            xf = cell(me.numControlPoints,1);
+            addr(1:n) = me.addresses(1:n);
+            ap(1:n) = me.apply2Lbcb(1:n);
+            of(1:n) = me.offsets(1:n);
+            xf(1:n) = me.xforms(1:n);
+            me.addresses = addr;
+            me.apply2Lbcb = ap;
+            me.offsets = of;
+            me.xforms = xf;
+            
         end
     end
 end

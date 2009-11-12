@@ -48,6 +48,10 @@ classdef StringListUtils < handle
         % converts a doubles array to a java string list
         function result = da2sl(me,array)
             lgth = length(array);
+            if lgth == 0
+                result = me.strUtil.a2sl(javaArray('java.lang.String',1));
+                return;
+            end
             stringA= javaArray('java.lang.String',lgth);
             for i=1:lgth
                     str = sprintf('%f',array(i));
