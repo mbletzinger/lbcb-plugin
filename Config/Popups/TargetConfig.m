@@ -22,7 +22,7 @@ function varargout = TargetConfig(varargin)
 
 % Edit the above text to modify the response to help TargetConfig
 
-% Last Modified by GUIDE v2.5 03-Nov-2009 13:11:41
+% Last Modified by GUIDE v2.5 13-Nov-2009 04:36:00
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -54,15 +54,12 @@ function TargetConfig_OpeningFcn(hObject, eventdata, handles, varargin)
 
 % Choose default command line output for TargetConfig
 cfg = [];
-idx = 1;
 if(nargin > 3)
     for index = 1:2:(nargin-3),
         if nargin-3==index, break, end
         label = lower(varargin{index});
         switch label
             case 'cfg'
-                cfg = varargin{index+1};
-            case 'idx'
                 cfg = varargin{index+1};
             otherwise
             str= sprintf('%s not recognized',label);
@@ -99,11 +96,10 @@ varargout{1} = 1;
 
 
 % --- Executes on button press in ok.
-function ok_Callback(hObject, eventdata, handles)
+function ok_Callback(hObject, eventdata, handles) %#ok<*INUSL,*DEFNU>
 % hObject    handle to ok (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-handles.actions.save();
 delete(handles.TargetConfig);
 
 
@@ -125,7 +121,7 @@ function advanced_Callback(hObject, eventdata, handles)
 % hObject    handle to advanced (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-
+AdvancedTargetConfig('cfg',handles.cfg,'idx',handles.actions.selected);
 
 % --- Executes when selected cell(s) is changed in modelControlPoints.
 function modelControlPoints_CellSelectionCallback(hObject, eventdata, handles)
@@ -133,3 +129,18 @@ function modelControlPoints_CellSelectionCallback(hObject, eventdata, handles)
 % eventdata  structure with the following fields (see UITABLE)
 %	Indices: row and column indices of the cell(s) currently selecteds
 % handles    structure with handles and user data (see GUIDATA)
+handles.actions.selectedRow(eventdata.Indices);
+
+% --- Executes on button press in addCps.
+function addCps_Callback(hObject, eventdata, handles)
+% hObject    handle to addCps (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+handles.actions.addControlPoint(1);
+
+% --- Executes on button press in removeCps.
+function removeCps_Callback(hObject, eventdata, handles)
+% hObject    handle to removeCps (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+handles.actions.removeControlPoint(1);

@@ -158,7 +158,7 @@ function addSensor_Callback(hObject, eventdata, handles)
 % hObject    handle to addSensor (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-handles.actions.addSensor();
+handles.actions.addSensor(1);
 
 
 % --- Executes on button press in removeSensor.
@@ -166,7 +166,7 @@ function removeSensor_Callback(hObject, eventdata, handles)
 % hObject    handle to removeSensor (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-handles.actions.removeSensor();
+handles.actions.removeSensor(1);
 
 % --- Executes when selected cell(s) is changed in sensorTable.
 function sensorTable_CellSelectionCallback(hObject, eventdata, handles)
