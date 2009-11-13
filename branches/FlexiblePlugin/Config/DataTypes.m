@@ -142,7 +142,7 @@ classdef DataTypes < handle
             if isempty(value)
                 return
             end
-            val = value
+%            val = value
             for i = 1: itemSize;
                 if isempty(value{i})
                     continue

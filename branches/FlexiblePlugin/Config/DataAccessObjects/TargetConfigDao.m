@@ -12,6 +12,7 @@
 classdef TargetConfigDao < handle
     properties
         dt;
+        empty;
     end
     properties (Dependent = true)
         numControlPoints
@@ -23,6 +24,7 @@ classdef TargetConfigDao < handle
     methods
         function me = TargetConfigDao(cfg)
             me.dt = DataTypes(cfg);
+            me.empty = true;
         end
         function result = get.numControlPoints(me)
             result = me.dt.getInt('uisimcor.numControlPoints',1);
@@ -60,7 +62,11 @@ classdef TargetConfigDao < handle
         end
         function addControlPoint(me)
             n = me.numControlPoints;
-            me.numControlPoints = n+1;
+            if me.empty
+                me.empty = false;
+            else
+                me.numControlPoints = n+1;
+            end
             addr = cell(me.numControlPoints,1);
             ap = cell(me.numControlPoints,1);
             of = cell(me.numControlPoints,1);
@@ -69,11 +75,34 @@ classdef TargetConfigDao < handle
             ap(1:n) = me.apply2Lbcb(1:n);
             of(1:n) = me.offsets(1:n);
             xf(1:n) = me.xforms(1:n);
+            addr{me.numControlPoints} = ' ';
+            ap{me.numControlPoints} = 'BOTH';
+            of{me.numControlPoints} = zeros(3,1);
+            xf{me.numControlPoints} = eye(6);
             me.addresses = addr;
             me.apply2Lbcb = ap;
             me.offsets = of;
             me.xforms = xf;
-            
+        end
+        function removeControlPoint(me,s)
+            addr = me.addresses;
+            ap = cell(me.numControlPoints,1);
+            of = me.offsets;
+            xf = me.xforms;
+            addr(s) = [];
+            ap(s) = [];
+            of(s) = [];
+            xf(s) = [];
+            n = me.numControlPoints;
+            if n == 1
+                me.empty = true;
+            else
+                me.numControlPoints = n-1;
+            end
+            me.addresses = addr;
+            me.apply2Lbcb = ap;
+            me.offsets = of;
+            me.xforms = xf;
         end
     end
 end

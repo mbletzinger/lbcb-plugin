@@ -14,30 +14,12 @@ classdef OmConfigActions < handle
             me.ocfg = OmConfigDao(cfg);
             me.selected = 1;
             if me.ocfg.empty
-                me.ocfg.addSensor();
+                me.addSensor(0);
+            else
+                me.uDisplay(0);
             end
-            names = me.ocfg.sensorNames;
-            apply = me.ocfg.apply2Lbcb;
-            sens = me.ocfg.sensitivities;
             pert1 = me.ocfg.perturbationsL1;
-            pert2 = me.ocfg.perturbationsL2;
-            bs = me.ocfg.base;
-            pl = me.ocfg.plat;
-            err = me.ocfg.sensorErrorTol;
-            me.table = cell(me.ocfg.numExtSensors,10);
-            for s = 1:me.ocfg.numExtSensors
-                me.table{s,1} = names{s};
-                me.table{s,2} = apply{s};
-                me.table{s,3} = sens(s);
-                me.table{s,4} = bs{s}(1);
-                me.table{s,5} = bs{s}(2);
-                me.table{s,6} = bs{s}(3);
-                me.table{s,7} = pl{s}(1);
-                me.table{s,8} = pl{s}(2);
-                me.table{s,9} = pl{s}(3);
-                me.table{s,10} = err(s);
-            end
-            
+            pert2 = me.ocfg.perturbationsL2;            
             me.pertTable = cell(6,2);
             for i = 1:6
                 if pert1.dispDofs(i)
@@ -81,8 +63,10 @@ classdef OmConfigActions < handle
                 case 10
                     err(indices(1)) = data;
                     me.ocfg.sensorErrorTol = err;
+                otherwise
+                    me.log.error(dbstack,sprintf('Cannot handle column %d',indices(2)));
             end
-            me.display();
+            me.uDisplay(1);
         end
         function initialize(me,handles)
             me.handles = handles;
@@ -129,19 +113,19 @@ classdef OmConfigActions < handle
             end
             me.selected = indices(1);
         end
-        function addSensor(me)
+        function addSensor(me,haveHandle)
             me.ocfg.addSensor();
-            me.display();
+            me.uDisplay(haveHandle);
         end
-        function removeSensor(me)
+        function removeSensor(me,haveHandle)
             me.table(me.selected,:) = [];
             me.ocfg.removeSensor(me.selected);
             if me.selected > me.ocfg.numExtSensors
                 me.selected = me.ocfg.numExtSensors;
             end
-            me.display();
+            me.uDisplay(haveHandle);
         end
-        function display(me)
+        function uDisplay(me,haveHandle)
             names = me.ocfg.sensorNames;
             apply = me.ocfg.apply2Lbcb;
             sens = me.ocfg.sensitivities;
@@ -161,7 +145,9 @@ classdef OmConfigActions < handle
                 me.table{s,9} = pl{s}(3);
                 me.table{s,10} = err(s);
             end
+            if haveHandle
             set(me.handles.sensorTable,'Data',me.table);
+            end
         end
     end
 end

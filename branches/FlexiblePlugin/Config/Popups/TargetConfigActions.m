@@ -3,19 +3,19 @@ classdef TargetConfigActions < handle
         handles = [];
         tcfg
         log = Logger
-        mcpTable = cell(15,2);
-        numCps
+        mcpTable
         aps
+        selected
     end
     methods
         function me = TargetConfigActions(cfg)
             me.tcfg = TargetConfigDao(cfg);
             me.aps = StateEnum({'LBCB1','LBCB2','BOTH'});
-            me.numCps = me.tcfg.numControlPoints;
-            [alAddr alAp] = me.getConfig();
-            for cps = 1: length(alAddr)
-                me.mcpTable{cps,1} = alAddr{cps};
-                me.mcpTable{cps,2} = alAp{cps};
+            me.selected = 1;
+            if me.tcfg.empty
+                me.addControlPoint(0);
+            else
+                me.uDisplay(0);
             end
         end
         function init(me,handles)
@@ -25,35 +25,59 @@ classdef TargetConfigActions < handle
             set(me.handles.modelControlPoints,'Data',me.mcpTable);
         end
         function setCell(me,indices,data,errString)
-            mydata = data
             if isempty(data)
                 me.log.error(dbstack,errString);
                 return;
             end
-            me.mcpTable{indices(1),indices(2)} = data;
-            table = me.mcpTable
-            set(me.handles.modelControlPoints,'Data',me.mcpTable);
+
+            [alAddr alAp of xf] = me.getConfig();
+            switch indices(2)
+                case 1
+                    alAddr{indices(1)} = data;
+                    me.tcfg.addresses = alAddr;
+                case 2
+                    alAp{indices(1)} = data;
+                    me.tcfg.apply2Lbcb = alAp;
+                 otherwise
+                    me.log.error(dbstack,sprintf('Cannot handle column %d',indices(2)));
+            end
+            me.uDisplay(1);
         end
-        function setAddress(me,addr)
-            me.address = addr;
-        end
-        function setOffset(me,dof,data)
-            me.offsets(dof) = data;
-        end
-        function [alAddr alAp ] = getConfig(me)
+        function [alAddr alAp of xf] = getConfig(me)
             alAddr = me.tcfg.addresses;
             alAp = me.tcfg.apply2Lbcb;
+            of = me.tcfg.offsets;
+            xf = me.tcfg.xforms;
         end
-        function save(me)
-            lg = length(me.mcpTable{:,1});
-            alAddr = cell(lg + 1,1);
-            alAp = cell(lg + 1,1);
-            for cps = 1 : lg
-                alAddr{cps} = me.mcpTable{cps,1};
-                alAp{cps} = me.mcpTable{cps,2};
+        function addControlPoint(me,haveHandle)
+            me.tcfg.addControlPoint();
+            me.uDisplay(haveHandle);
+        end
+        function selectedRow(me,indices)
+            if isempty(indices)
+                return;
             end
-            me.tcfg.addresses = alAddr;
-            me.tcfg.apply2Lbcb = alAp;
+            me.selected = indices(1);
+        end        
+        function removeControlPoint(me,haveHandle)
+            me.mcpTable(me.selected,:) = [];
+            me.ocfg.removeControlPoint(me.selected);
+            if me.selected > me.ocfg.numExtSensors
+                me.selected = me.ocfg.numExtSensors;
+            end
+            me.uDisplay(haveHandle);
         end
+        function uDisplay(me,haveHandle)
+            [alAddr alAp of xf] = me.getConfig();
+            me.mcpTable = cell(me.tcfg.numControlPoints,2);
+            for cps = 1:me.tcfg.numControlPoints
+                me.mcpTable{cps,1} = alAddr{cps};
+                me.mcpTable{cps,2} = alAp{cps};
+            end
+            if haveHandle
+                set(me.handles.modelControlPoints,'Data',me.mcpTable);
+            end
+        end
+
     end
 end

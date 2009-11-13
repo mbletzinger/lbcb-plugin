@@ -64,7 +64,7 @@ if(nargin > 3)
             case 'cfg'
                 cfg = varargin{index+1};
             case 'idx'
-                cfg = varargin{index+1};
+                idx = varargin{index+1};
             otherwise
             str= sprintf('%s not recognized',label);
             disp(str);
@@ -73,7 +73,7 @@ if(nargin > 3)
 end
 
 handles.cfg = cfg;
-handles.actions = AdvancedTargetConfigActions(cfg,idx);
+handles.actions = AdvancedTargetConfigActions(cfg);
 handles.actions.init(handles);
 
 % Make the GUI modal
@@ -143,7 +143,6 @@ function ok_Callback(hObject, eventdata, handles)
 % hObject    handle to ok (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-handles.actions.save();
 delete(handles.AdvancedTargetConfig);
 
 
