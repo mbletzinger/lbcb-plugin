@@ -18,8 +18,7 @@ classdef WindowLimitsDao < handle
     end
     properties
         label = 'limits';
-        cfg = Configuration();
-        su = StringListUtils();
+        dt;
     end
     methods
         function me = WindowLimitsDao(label, cfg)
@@ -27,55 +26,28 @@ classdef WindowLimitsDao < handle
             me.label = label;
         end
         function result = get.window1(me)
-            resultSL = me.cfg.props.getPropertyList(sprintf('%s.window1',me.label));
-            if isempty(resultSL)
-                result = zeros(12,1);
-                return;
-            end
-            result = me.su.sl2da(resultSL);
+            result = me.dt.getDoubleVector(sprintf('%s.window1',me.label),zeros(12,1));
         end
         function set.window1(me,value)
-            valS = me.su.da2sl(value);
-            me.cfg.props.setPropertyList(sprintf('%s.window1',me.label),valS);
+            me.dt.setDoubleVector(sprintf('%s.window1',me.label),value);
         end
         function result = get.window2(me)
-            resultSL = me.cfg.props.getPropertyList(sprintf('%s.window2',me.label));
-            if isempty(resultSL)
-                result = zeros(12,1);
-                return;
-            end
-            result = me.su.sl2da(resultSL);
+            result = me.dt.getDoubleVector(sprintf('%s.window2',me.label),zeros(12,1));
         end
         function set.window2(me,value)
-            valS = me.su.da2sl(value);
-            me.cfg.props.setPropertyList(sprintf('%s.window2',me.label),valS);
+            me.dt.setDoubleVector(sprintf('%s.window2',me.label),value);
         end
-        
         function result = get.used1(me)
-            resultSL = me.cfg.props.getPropertyList(sprintf('%s.used1',me.label));
-            if isempty(resultSL)
-                result = zeros(12,1);
-                return;
-            end
-            result = me.su.sl2ia(resultSL);
+            result = me.dt.getIntVector(sprintf('%s.used1',me.label),zeros(12,1));
         end
         function set.used1(me,value)
-            valS = me.su.ia2sl(value);
-            me.cfg.props.setPropertyList(sprintf('%s.used1',me.label),valS);
+            me.dt.setDoubleVector(sprintf('%s.used1',me.label),value);
         end
-        
         function result = get.used2(me)
-            resultSL = me.cfg.props.getPropertyList(sprintf('%s.used2',me.label));
-            if isempty(resultSL)
-                result = zeros(12,1);
-                return;
-            end
-            result = me.su.sl2ia(resultSL);
+            result = me.dt.getIntVector(sprintf('%s.used2',me.label),zeros(12,1));
         end
         function set.used2(me,value)
-            valS = me.su.ia2sl(value);
-            me.cfg.props.setPropertyList(sprintf('%s.used2',me.label),valS);
+            me.dt.setIntVector(sprintf('%s.used2',me.label),value);
         end
-    end
-    
+    end    
 end

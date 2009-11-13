@@ -22,7 +22,7 @@ function varargout = OmConfig(varargin)
 
 % Edit the above text to modify the response to help OmConfig
 
-% Last Modified by GUIDE v2.5 28-Aug-2009 08:38:36
+% Last Modified by GUIDE v2.5 12-Nov-2009 21:50:11
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -151,3 +151,27 @@ function pertTable_CellEditCallback(hObject, eventdata, handles)
 %	Error: error string when failed to convert EditData to appropriate value for Data
 % handles    structure with handles and user data (see GUIDATA)
 handles.actions.setPertCell(eventdata.Indices,eventdata.EditData);
+
+
+% --- Executes on button press in addSensor.
+function addSensor_Callback(hObject, eventdata, handles)
+% hObject    handle to addSensor (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+handles.actions.addSensor();
+
+
+% --- Executes on button press in removeSensor.
+function removeSensor_Callback(hObject, eventdata, handles)
+% hObject    handle to removeSensor (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+handles.actions.removeSensor();
+
+% --- Executes when selected cell(s) is changed in sensorTable.
+function sensorTable_CellSelectionCallback(hObject, eventdata, handles)
+% hObject    handle to sensorTable (see GCBO)
+% eventdata  structure with the following fields (see UITABLE)
+%	Indices: row and column indices of the cell(s) currently selecteds
+% handles    structure with handles and user data (see GUIDATA)
+handles.actions.selectedRow(eventdata.Indices);
