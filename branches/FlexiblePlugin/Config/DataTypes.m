@@ -111,7 +111,7 @@ classdef DataTypes < handle
         end
         function result = getTarget(me,key)
             result = Target;
-            perts = me.dt.getDoubleVector(key,ones(6,1) * 1000);
+            perts = me.getDoubleVector(key,ones(6,1) * 1000);
             for i = 1:6
                 if perts(i) < 999
                     result.setDispDof(i,perts(i));
@@ -127,7 +127,7 @@ classdef DataTypes < handle
                     perts(i) = 1000;
                 end
             end
-            me.dt.setDoubleVector(key,perts);
+            me.setDoubleVector(key,perts);
         end
         function result = getTransVector(me,key,itemkey,itemSize)
             result = cell(itemSize,1);
@@ -142,6 +142,7 @@ classdef DataTypes < handle
             if isempty(value)
                 return
             end
+            val = value
             for i = 1: itemSize;
                 if isempty(value{i})
                     continue
