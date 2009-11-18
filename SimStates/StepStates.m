@@ -1,6 +1,5 @@
 classdef StepStates < SimStates
     properties
-        nxtStep = [];
         peOm = [];
         pResp = [];
         gcpOm = [];
@@ -36,7 +35,7 @@ classdef StepStates < SimStates
                 case'NEXT STEP'
                     odone = me.nxtStep.isDone();
                     if odone % Next target is ready
-                        if me.nxtStep.simCompleted  %  No more targets
+                        if me.nxtStep.stepsCompleted  %  No more targets
                             me.log.info(dbstack,'Steps are done');
                             me.state.setState('COMPLETED');
                             me.currentAction.setState('DONE');

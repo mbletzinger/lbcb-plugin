@@ -1,4 +1,5 @@
 function setTest(me,test)
+me.cfg = me.hfact.cfg;
 switch test
     case { 'UPPER' 'LOWER' 'INCREMENT'}
         me.genStepConfigSettings(0);
@@ -17,16 +18,4 @@ for idx = 1:4
         me.setLimits(i,test);
     end
 end
-lcfg = LogLevelsDao(me.cfg);
-lcfg.cmdLevel = 'DEBUG';
-ocfg = OmConfigDao(me.cfg);
-ocfg.useFakeOm = 1;
-sensorNames = cell(15,1);
-apply2Lbcb = cell(15,1);
-sensorNames(1:6,1) = {'Ext.Long.LBCB2' 'Ext.Tranv.TopLBCB2' 'Ext.Tranv.Bot.LBCB2',...
-    'Ext.Long.LBCB1', 'Ext.Tranv.LeftLBCB1' 'Ext.Tranv.RightLBCB1'}';
-apply2Lbcb(1:6,1) = {'LBCB2' 'LBCB2' 'LBCB2' 'LBCB1' 'LBCB1' 'LBCB1'}';
-ocfg.sensorNames = sensorNames;
-ocfg.apply2Lbcb = apply2Lbcb;
-ocfg.numLbcbs = 2;
 end

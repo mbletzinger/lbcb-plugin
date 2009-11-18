@@ -123,9 +123,9 @@ classdef HandleFactory <  handle
                 me.simStates{c}.gui = me.gui;
                 me.simStates{c}.ocOm = me.ocOm;
                 me.simStates{c}.dat = me.dat;
+                me.simStates{c}.nxtStep = me.nxtStep;
             end
             me.simStates{2}.fakeGcp = me.fakeGcp;
-            me.simStates{2}.nxtStep = me.nxtStep;
             me.simStates{2}.peOm = me.peOm;
             me.simStates{2}.gcpOm = me.gcpOm;
             me.simStates{2}.pResp = me.pResp;
