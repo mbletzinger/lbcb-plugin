@@ -29,4 +29,6 @@ else
         fcfg.scale2(d) = s / m;
     end
 end
+ocfg = OmConfigDao(me.cfg);
+ocfg.useFakeOm = 1;
 end

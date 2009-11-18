@@ -1,4 +1,5 @@
 function genTargets(me,test)
+me.infile = me.hfact.inF;
 numSteps = 10;
 me.tgts = zeros(numSteps,24);
 me.cDofs = zeros(1,24);

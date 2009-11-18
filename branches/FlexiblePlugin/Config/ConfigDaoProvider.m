@@ -64,6 +64,18 @@ classdef ConfigDaoProvider < handle
             scfg = StepConfigDao(me.cfg);
             yes = scfg.doEdCalculations;
         end
+        function yes = doStepSplitting(me)
+            scfg = StepConfigDao(me.cfg);
+            yes = scfg.doStepSplitting; 
+        end
+        function inc = getSubstepInc(me,isLbcb1)
+            scfg = StepConfigDao(me.cfg);
+            if isLbcb1
+                inc = scfg.substepincL1;
+            else
+                inc = scfg.substepincL2;
+            end
+        end
 
     end
 end

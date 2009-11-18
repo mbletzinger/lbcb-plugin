@@ -1,12 +1,9 @@
 classdef TargetStates < SimStates
     properties
-        currentTargetAction = StateEnum({...
+        currentAction = StateEnum({...
             'WAIT FOR TARGET',...
             'GET TARGET',...
-            'TRANSFORM TARGET',...
-            'SPLIT TARGET',...
             'EXECUTE SUBSTEPS',...
-            'EXECUTE TARGET',...
             'SEND TARGET RESPONSE',...
             'DONE'
             });
@@ -27,18 +24,89 @@ classdef TargetStates < SimStates
             me.currentAction.setState('WAIT FOR TARGET');
         end
         function done = isDone(me)
+            done = 0;
             switch me.currentAction.getState()
                 case 'WAIT FOR TARGET'
                 case 'GET TARGET'
-                case 'CONVERT TARGET'
-                case 'SPLIT TARGET'
                 case 'EXECUTE SUBSTEPS'
-                case 'EXECUTE TARGET'
                 case 'SEND TARGET RESPONSE'
                 case 'DONE'
+                    done = 1;
                 otherwise
                     me.log.error(dbstack,sprintf('%s action not recognized',action));
             end
         end
+    end
+    methods (Access='private')
+        function waitForTarget(me)
+            if me.targetSource.isState('INPUT FILE')
+                if me.inF.endOfFile
+                    me.currentAction.setState('DONE');
+                else
+                me.currentAction.setState('GET TARGET');
+                end
+                return;
+            end
+        end
+        function getTarget(me)
+            if me.targetSource.isState('INPUT_FILE')
+                me.dat.curTarget = me.inF.next();
+                me.dat.curTarget.transformCommand();
+                steps = me.splitTarget();
+                me.currentAction.setState('EXECUTE SUBSTEPS');
+                me.stpEx.start(steps);
+            end
+        end
+        function steps = splitTarget(me)
+            if me.cdp.doStepSplitting == false
+                steps = [me.dat.curTarget];
+                return;
+            end
+            stpSize = ones(24,1);  % hack around divide by zero problem
+            stpSize(1:6) = me.cdp.getSubstepInc(1);
+            stpSize(7:12) = me.cdp.getSubstepInc(0);
+            [ initialDisp initialDispDofs initialForce initialForceDofs ] = ...
+                me.dat.prevTarget.cmdData();
+            [ finalDisp finalDispDofs finalForce finalForceDofs ] = ...
+                me.dat.curTarget.cmdData(); %#ok<NASGU>
+            numSteps = (finalDisp - initialDisp) / stpSize;
+            [m, maxNumSteps] = max(numSteps);
+            inc = (finalDisp - initialDisp) / maxNumSteps;
+            finc = (finalForce - initialForce) / maxNumSteps;
+            steps = cell(maxNumSteps,1);
+            disp = initialDisp;
+            force = intialForce;
+            for i = 1 : maxNumSteps
+                prevDisp = disp;
+                prevForce = force;
+                disp = prevDisp + inc;
+                force = prevForce + finc;
+                tgts{1}.disp = disp(1:6); %#ok<*AGROW>
+                tgts{1}.dispDofs = initialDispDofs(1:6);
+                tgts{1}.force = force(1:6);
+                tgts{1}.forceDofs = initialForceDofs(1:6);
+                if cdp.numLbcbs > 1
+                    tgts{2}.disp = disp(7:12);
+                    tgts{2}.dispDofs = initialDispDofs(7:12);
+                    tgts{2}.force = force(7:12);
+                    tgts{2}.forceDofs = initialForceDofs(7:12);
+                end
+                steps{i} = me.sdf.target2StepData(tgts);
+                
+            end
+        end
+        function executeSubsteps(me)
+            if me.stpEx.isDone() == false
+                return;
+            end
+            me.currentAction.setState('SEND TARGET RESPONSE');            
+        end
+        function sendTargetResponses(me)
+             if me.targetSource.isState('INPUT_FILE')
+                me.dat.prevTarget = me.dat.prevTarget;
+                me.dat.prevTarget.transformResponse();
+                me.currentAction.setState('WAIT FOR TARGET');
+            end
+       end
     end
 end

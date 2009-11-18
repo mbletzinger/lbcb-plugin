@@ -5,6 +5,7 @@ classdef SimStates < handle
         ocOm = [];
         log = Logger;
         dat = [];
+        nxtStep = [];
     end
     methods
     end

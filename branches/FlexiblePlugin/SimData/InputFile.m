@@ -26,7 +26,7 @@ classdef  InputFile < Substeps
         end
         function readSpecfile(me,path)
             me.commandDofs = zeros(1,24);
-            [pathstr, name, ext, versn] = fileparts(path);
+            [pathstr, name, ext, versn] = fileparts(path); %#ok<NASGU>
             specname = sprintf('%s_spec%s',name,ext);
             specpath = fullfile(pathstr,specname);
             if exist(specname,'file') == 2
@@ -37,7 +37,7 @@ classdef  InputFile < Substeps
             me.commandDofs(1,1:length(cmdDofs)) = cmdDofs;
         end
         function loadSteps(me,tgts)
-            [lgth dummy] = size(tgts);
+            [lgth dummy] = size(tgts); %#ok<NASGU>
             me.steps = cell(lgth,1);
             for t = 1:lgth
                 tgt1 = Target;

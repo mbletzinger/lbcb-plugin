@@ -22,7 +22,7 @@ classdef WindowLimitsDao < handle
     end
     methods
         function me = WindowLimitsDao(label, cfg)
-            me.cfg = cfg;
+            me.dt = DataTypes(cfg);
             me.label = label;
         end
         function result = get.window1(me)

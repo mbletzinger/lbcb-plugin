@@ -1,11 +1,12 @@
-HandleTest
-s = SetupTest(hfact);
+cfg = Configuration;
+
+s = SetupTest();
+s.cfg = cfg;
+s.genOmConfig();
+s.genNetworkConfig();
+hfact = HandleFactory([],cfg);
+s.hfact = hfact;
 s.setTest('UPPER');
-lcfg = LogLevelsDao(s.cfg);
-lcfg.cmdLevel = 'DEBUG';
-lcfg.msgLevel = 'INFO';
-Logger.setCmdLevel(lcfg.cmdLevel);
-Logger.setMsgLevel(lcfg.msgLevel);
 NetworkConfig('cfg',s.cfg);
 step = s.infile.steps{2};
 mdlLbcb = hfact.mdlLbcb;

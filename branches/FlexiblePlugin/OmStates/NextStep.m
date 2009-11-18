@@ -12,7 +12,7 @@
 classdef NextStep < OmState
     properties
         steps = [];
-        simCompleted = 0;
+        stepsCompleted = 0;
         lc = [];
         st = [];
         
@@ -24,7 +24,7 @@ classdef NextStep < OmState
             done = 1;
             % Dumb MATLAB  double negative comparison to see if the current
             % step is not empty
-            if isempty(me.dat.curStepData) == 0
+            if isempty(me.dat.curStepData) == false
                 if me.needsCorrection()
                     me.dat.nextStepData = me.sdf.target2StepData({ me.dat.curStepData.lbcbCps{1}.command ...
                         me.dat.curStepData.lbcbCps{2}.command });
@@ -35,7 +35,7 @@ classdef NextStep < OmState
                     % get next input step
                     me.dat.nextStepData = me.steps.next();
                     me.dat.correctionTarget = me.dat.nextStepData;
-                    me.simCompleted = me.steps.endOfFile;
+                    me.stepsCompleted = me.steps.endOfFile;
                 end
             else % This must be the first step
                 me.dat.nextStepData = me.steps.next();

@@ -23,17 +23,12 @@ classdef SetupTest < handle
             });
     end
     methods
-        function me = SetupTest(hfact)
-            me.cfg = hfact.cfg;
-            me.hfact = hfact;
-            me.infile = me.hfact.inF;
-            lcfg = LogLevelsDao(me.cfg);
-            lcfg.cmdLevel = 'DEBUG';
-            lcfg.msgLevel = 'INFO';
-        end
         setTest(me,test)
         m = getMultiplier(me, d)
         genFakeParameters(me,idx,needsConverge)
+        genOmConfig(me)
+        genLogConfig(me)
+        genNetworkConfig(me)
         genStepConfigSettings(me,requireCorrection)
         genTargets(me,isUpper,needsIncrement)
         genLimitTargets(me, idx, isUpper,numSteps)
