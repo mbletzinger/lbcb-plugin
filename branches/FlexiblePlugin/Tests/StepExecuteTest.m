@@ -1,12 +1,13 @@
-HandleTest
-s = SetupTest(hfact);
+cfg = Configuration;
+
+s = SetupTest();
+s.cfg = cfg;
+s.genOmConfig();
+s.genNetworkConfig();
+s.genLogConfig()
+hfact = HandleFactory([],cfg);
+s.hfact = hfact;
 s.setTest('RAMP');
-% FakeOmProperties('cfg',hfact.cfg);
-lcfg = LogLevelsDao(hfact.cfg);
-lcfg.cmdLevel = 'DEBUG';
-lcfg.msgLevel = 'INFO';
-Logger.setCmdLevel(lcfg.cmdLevel);
-Logger.setMsgLevel(lcfg.msgLevel);
 mdlLbcb = hfact.mdlLbcb;
 stpEx = hfact.stpEx;
 stpEx.start(s.infile)

@@ -4,6 +4,7 @@ s = SetupTest();
 s.cfg = cfg;
 s.genOmConfig();
 s.genNetworkConfig();
+s.genLogConfig()
 hfact = HandleFactory([],cfg);
 s.hfact = hfact;
 s.setTest('UPPER');
