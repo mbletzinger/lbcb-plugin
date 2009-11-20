@@ -46,7 +46,6 @@ classdef ElasticDeformation < handle
         end
         % calculate LBCB position based on external sensor readings.
         calculate(me, curLbcbCp,prevLbcbCp)
-        lengths = dof2act(me,deltas,v0,p0,q0)
         loadConfig(me)
     end
 end
