@@ -5,6 +5,8 @@ classdef StepConfigActions < handle
         log = Logger
         aps
         ssITable = cell(6,2);
+        edflist
+        ddflist
     end
     methods
         function me = StepConfigActions(cfg)
@@ -12,6 +14,8 @@ classdef StepConfigActions < handle
             me.scfg = StepConfigDao(cfg);
             ssI1 = me.scfg.substepIncL1;
             ssI2 = me.scfg.substepIncL2;
+            me.edflist = FunctionLists('ElasticDeformation');
+            me.ddflist = FunctionLists('DerivedDof');
             
             for i = 1:6
                 if ssI1.dispDofs(i)
@@ -26,12 +30,35 @@ classdef StepConfigActions < handle
             me.handles = handles;
             set(me.handles.DoEdCalc,'Value',me.scfg.doEdCalculations);
             set(me.handles.DoEdCorrection,'Value',me.scfg.doEdCorrection);
-            set(me.handles.DoDdCalc,'Value',me.scfg.doDdofCalculations);
+            set(me.handles.doDdCalc,'Value',me.scfg.doDdofCalculations);
             set(me.handles.DoDdCorrection,'Value',me.scfg.doDdofCorrection);
             set(me.handles.SubStepIncrements,'Data',me.ssITable);
             set(me.handles.DoStepSplitting,'Value',me.scfg.doStepSplitting);
             set(me.handles.CorrectionPerSubstep,'String',sprintf('%d',me.scfg.correctEverySubstep));
-        
+            yes = 0;
+            if me.scfg.correctEverySubstep > 0
+                
+                yes = 1;
+            end
+            set(me.handles.doSubstepCorrection,'Value',yes);
+            
+            set(me.handles.edCalcFunction,'String',me.edflist.list);
+            set(me.handles.ddCalcFunction,'String',me.ddflist.list);
+            set(me.handles.ddCorrectFunction,'String',me.ddflist.list);
+
+            idx = me.edflist.getIndex(me.scfg.edCalculationFunction);
+            if idx > 0
+               set(me.handles.edCalcFunction,'Value',idx);
+            end
+            idx = me.ddflist.getIndex(me.scfg.ddCalculationFunction);
+            if idx > 0
+               set(me.handles.ddCalcFunction,'Value',idx);
+            end
+            idx = me.ddflist.getIndex(me.scfg.ddCorrectionFunction);
+            if idx > 0
+               set(me.handles.ddCorrectFunction,'Value',idx);
+            end
+
         end
         function setDoStepSplitting(me,value)
             me.scfg.doStepSplitting = value;
@@ -78,5 +105,15 @@ classdef StepConfigActions < handle
                 me.scfg.substepIncL2 = ssI;
             end            
         end
+        function setEdCalcFunction(me,value)
+            me.scfg.edCalculationFunction = me.edflist.list{value};
+        end
+        function setDdCalcFunction(me,value)
+            me.scfg.ddCalculationFunction = me.ddflist.list{value};
+        end
+        function setDdCorrectFunction(me,value)
+            me.scfg.ddCorrectionFunction = me.ddflist.list{value};
+        end
+
     end
 end

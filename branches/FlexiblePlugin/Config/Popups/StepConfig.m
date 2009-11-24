@@ -22,7 +22,7 @@ function varargout = StepConfig(varargin)
 
 % Edit the above text to modify the response to help StepConfig
 
-% Last Modified by GUIDE v2.5 15-Oct-2009 08:18:17
+% Last Modified by GUIDE v2.5 23-Nov-2009 13:04:37
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -119,8 +119,8 @@ handles.actions.setDoEdCalculations(get(hObject,'Value'));
 function DoEdCorrection_Callback(hObject, eventdata, handles)
 handles.actions.setDoEdCorrection(get(hObject,'Value'));
 
-% --- Executes on button press in DoDdCalc.
-function DoDdCalc_Callback(hObject, eventdata, handles)
+% --- Executes on button press in doDdCalc.
+function doDdCalc_Callback(hObject, eventdata, handles)
 handles.actions.setDoDdofCalculations(get(hObject,'Value'));
 
 % --- Executes on button press in DoDdCorrection.
@@ -134,3 +134,50 @@ handles.actions.setCorrectionPerSubstep(get(hObject,'String'));
 % --- Executes on button press in OK.
 function OK_Callback(hObject, eventdata, handles)
 delete(handles.StepConfig);
+
+
+% --- Executes on selection change in edCalcFunction.
+function edCalcFunction_Callback(hObject, eventdata, handles)
+% hObject    handle to edCalcFunction (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: contents = get(hObject,'String') returns edCalcFunction contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from edCalcFunction
+handles.actions.setEdCalcFunction(get(hObject,'Value'));
+
+
+% --- Executes on selection change in ddCalcFunction.
+function ddCalcFunction_Callback(hObject, eventdata, handles)
+% hObject    handle to ddCalcFunction (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: contents = get(hObject,'String') returns ddCalcFunction contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from
+%        ddCalcFunction
+handles.actions.setDdCalcFunction(get(hObject,'Value'));
+
+
+% --- Executes on button press in doSubstepCorrection.
+function doSubstepCorrection_Callback(hObject, eventdata, handles)
+% hObject    handle to doSubstepCorrection (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of doSubstepCorrection
+if get(hObject,'Value') 
+    return;
+end
+handles.actions.setCorrectionPerSubstep('0');
+
+% --- Executes on selection change in ddCorrectFunction.
+function ddCorrectFunction_Callback(hObject, eventdata, handles)
+% hObject    handle to ddCorrectFunction (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: contents = get(hObject,'String') returns ddCorrectFunction contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from ddCorrectFunction
+handles.actions.setDdCorrectFunction(get(hObject,'Value'));
+

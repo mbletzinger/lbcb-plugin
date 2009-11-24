@@ -66,7 +66,7 @@ classdef StepConfigDao < handle
             result = me.dt.getBool('step.derivedDof.correction',0);
         end
         function set.doDdofCorrection(me,value)
-            me.dt.setBool('ostep.derivedDof.correction',value);
+            me.dt.setBool('step.derivedDof.correction',value);
         end
         function result = get.doStepSplitting(me)
             result = me.dt.getBool('step.stepSplitting',0);

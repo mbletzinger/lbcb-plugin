@@ -91,7 +91,7 @@ classdef HandleFactory <  handle
             
             me.ed{1} = ElasticDeformation(cdp,0);
             me.ed{2} = ElasticDeformation(cdp,1);
-            me.dd = DerivedDof;
+            me.dd = DerivedDof(cdp);
             me.st{1} = StepTolerances(me.cfg,1);
             me.st{2} = StepTolerances(me.cfg,0);
             me.dat = SimSharedData;

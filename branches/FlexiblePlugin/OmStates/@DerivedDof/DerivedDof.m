@@ -19,8 +19,12 @@ classdef DerivedDof < handle
         Fz1tar = 0;
         Fz2tar = 0;
         log = Logger;
+        cdp;
     end
     methods
+        function me = DerivedDof(cdp)
+            me.cdp = cdp;
+        end
         calculate(me,cstep)
         adjustTarget(me,step)
     end
