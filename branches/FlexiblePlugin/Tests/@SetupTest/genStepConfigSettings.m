@@ -8,4 +8,7 @@ scfg.doStepSplitting = 0;
 scfg.correctEverySubstep = 0;
 scfg.substepIncL1 = Target;
 scfg.substepIncL2 = Target;
+scfg.edCalculationFunction = 'noEdCalculate';
+scfg.ddCalculationFunction = 'noDdCalculate'; 
+scfg.ddCorrectionFunction = 'noDdAdjustTarget'; 
 end

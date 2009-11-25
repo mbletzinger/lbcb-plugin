@@ -116,7 +116,8 @@ classdef HandleFactory <  handle
                 
             end
             
-            me.fakeGcp = GetControlPointsFake(me.cfg);
+            me.fakeGcp = GetControlPointsFake(cdp);
+            me.fakeGcp.dat = me.dat;
             
             for c =1:length(me.simStates)
                 me.simStates{c}.cdp = cdp;

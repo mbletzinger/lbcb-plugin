@@ -41,5 +41,16 @@ classdef LbcbControlPoint < handle
                 str = sprintf('%s/%s=%f',str,labels{v},me.correctionDeltas(v));
             end
         end
+        function [ disp dDofs force fDofs] = cmdData(me)
+            disp = me.command.disp;
+            dDofs = me.command.dispDofs;
+            force = me.command.force;
+            fDofs = me.command.forceDofs;
+        end
+        function [ disp force] = respData(me)
+            disp = me.response.disp;
+            force = me.response.force;
+            
+        end
     end
 end
