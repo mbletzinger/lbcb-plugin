@@ -1,5 +1,5 @@
 function [ disp force] = respData(me)
-if cdp.numLbcbs == 1
+if me.cdp.numLbcbs == 1
     disp = zeros(6,1);
     force = zeros(6,1);
 else
@@ -8,11 +8,9 @@ else
 end
 
 
-disp(1:6) = me.lbcbCps{1}.command.disp;
-force(1:6) = me.lbcbCps{1}.command.force;
+[ disp(1:6) force(1:6) ] = me.lbcbCps{1}.respData();
 
-if cdp.numLbcbs > 1
-    disp(7:12) = me.lbcbCps{2}.command.disp;
-    force(1:6) = me.lbcbCps{2}.command.force;
+if me.cdp.numLbcbs > 1
+    [ disp(7:12) force(7:12) ] = me.lbcbCps{1}.respData();
 end
 end

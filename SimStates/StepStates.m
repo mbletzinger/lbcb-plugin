@@ -66,7 +66,7 @@ classdef StepStates < SimStates
                 case 'OM GET CONTROL POINTS'
                     if me.isFake()
                         me.dat.stepShift();
-                        me.fakeGcp.generateControlPoints(me.dat.curStepData);
+                        me.fakeGcp.generateControlPoints();
                         me.currentAction.setState('PROCESS OM RESPONSE');
                     else
                         odone = me.gcpOm.isDone();
