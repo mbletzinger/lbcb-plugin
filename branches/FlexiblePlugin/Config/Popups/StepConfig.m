@@ -22,7 +22,7 @@ function varargout = StepConfig(varargin)
 
 % Edit the above text to modify the response to help StepConfig
 
-% Last Modified by GUIDE v2.5 23-Nov-2009 13:04:37
+% Last Modified by GUIDE v2.5 30-Nov-2009 17:16:07
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -180,4 +180,3 @@ function ddCorrectFunction_Callback(hObject, eventdata, handles)
 % Hints: contents = get(hObject,'String') returns ddCorrectFunction contents as cell array
 %        contents{get(hObject,'Value')} returns selected item from ddCorrectFunction
 handles.actions.setDdCorrectFunction(get(hObject,'Value'));
-

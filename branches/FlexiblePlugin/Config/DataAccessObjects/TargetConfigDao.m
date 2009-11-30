@@ -20,6 +20,8 @@ classdef TargetConfigDao < handle
         addresses
         offsets
         xforms
+        simCor2LbcbFunction
+        lbcb2SimCorFunction
     end
     methods
         function me = TargetConfigDao(cfg)
@@ -60,6 +62,19 @@ classdef TargetConfigDao < handle
         function set.addresses(me,value)
             me.dt.setStringVector('uisimcor.addresses',value);
         end
+        function result = get.simCor2LbcbFunction(me)
+            result = me.dt.getString('target.simCor2Lbcb.transformation.function',0);
+        end
+        function set.simCor2LbcbFunction(me,value)
+            me.dt.setString('target.simCor2Lbcb.transformation.function',value);
+        end
+         function result = get.lbcb2SimCorFunction(me)
+            result = me.dt.getString('target.lbcb2SimCor.transformation.function',0);
+        end
+        function set.lbcb2SimCorFunction(me,value)
+            me.dt.setString('target.lbcb2SimCor.transformation.function',value);
+        end
+       
         function addControlPoint(me)
             n = me.numControlPoints;
             if me.empty
