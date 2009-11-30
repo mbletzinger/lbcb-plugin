@@ -6,12 +6,15 @@ classdef TargetConfigActions < handle
         mcpTable
         aps
         selected
+        flist
     end
     methods
         function me = TargetConfigActions(cfg)
             me.tcfg = TargetConfigDao(cfg);
             me.aps = StateEnum({'LBCB1','LBCB2','BOTH'});
             me.selected = 1;
+            me.flist = FunctionLists('ControlPointTransformation');
+
             if me.tcfg.empty
                 me.addControlPoint(0);
             else
@@ -23,6 +26,17 @@ classdef TargetConfigActions < handle
             format = {'char',me.aps.states};
             set(me.handles.modelControlPoints,'ColumnFormat',format)
             set(me.handles.modelControlPoints,'Data',me.mcpTable);
+            set(me.handles.s2lFunction,'String',me.flist.list);
+            set(me.handles.l2sFunction,'String',me.flist.list);
+            
+            idx = me.flist.getIndex(me.scfg.simCor2LbcbFunction);
+            if idx > 0
+               set(me.handles.s2lFunction,'Value',idx);
+            end
+            idx = me.flist.getIndex(me.scfg.lbcb2SimCorFunction);
+            if idx > 0
+               set(me.handles.l2sFunction,'Value',idx);
+            end
         end
         function setCell(me,indices,data,errString)
             if isempty(data)
@@ -78,6 +92,13 @@ classdef TargetConfigActions < handle
                 set(me.handles.modelControlPoints,'Data',me.mcpTable);
             end
         end
+        function setLbcb2SimCorFunction(me,value)
+            me.scfg.lbcb2SimCorFunction = me.edflist.list{value};
+        end
+        function setSimCor2LbcbFunction(me,value)
+            me.scfg.simCor2LbcbFunction = me.edflist.list{value};
+        end
+
 
     end
 end

@@ -22,7 +22,7 @@ function varargout = TargetConfig(varargin)
 
 % Edit the above text to modify the response to help TargetConfig
 
-% Last Modified by GUIDE v2.5 13-Nov-2009 04:36:00
+% Last Modified by GUIDE v2.5 30-Nov-2009 17:15:59
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -144,3 +144,72 @@ function removeCps_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 handles.actions.removeControlPoint(1);
+
+
+% --- Executes on selection change in s2lFunction.
+function s2lFunction_Callback(hObject, eventdata, handles)
+% hObject    handle to s2lFunction (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: contents = get(hObject,'String') returns s2lFunction contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from s2lFunction
+
+
+% --- Executes during object creation, after setting all properties.
+function s2lFunction_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to s2lFunction (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: popupmenu controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on selection change in l2sFunction.
+function l2sFunction_Callback(hObject, eventdata, handles)
+% hObject    handle to l2sFunction (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: contents = get(hObject,'String') returns l2sFunction contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from l2sFunction
+
+
+% --- Executes during object creation, after setting all properties.
+function l2sFunction_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to l2sFunction (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: popupmenu controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on selection change in modelControlPoints.
+function modelControlPoints_Callback(hObject, eventdata, handles)
+% hObject    handle to modelControlPoints (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: contents = get(hObject,'String') returns modelControlPoints contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from modelControlPoints
+
+
+% --- Executes during object creation, after setting all properties.
+function modelControlPoints_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to modelControlPoints (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: listbox controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
