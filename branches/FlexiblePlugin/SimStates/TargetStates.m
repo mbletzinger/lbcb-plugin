@@ -25,11 +25,16 @@ classdef TargetStates < SimStates
         end
         function done = isDone(me)
             done = 0;
+            me.log.debug(dbstack,sprintf('Executing %s',me.currentAction.getState()));
             switch me.currentAction.getState()
                 case 'WAIT FOR TARGET'
+                    me.waitForTarget();
                 case 'GET TARGET'
+                    me.getTarget();
                 case 'EXECUTE SUBSTEPS'
+                    me.executeSubsteps();
                 case 'SEND TARGET RESPONSE'
+                    me.sendTargetResponses();
                 case 'DONE'
                     done = 1;
                 otherwise
@@ -49,7 +54,7 @@ classdef TargetStates < SimStates
             end
         end
         function getTarget(me)
-            if me.targetSource.isState('INPUT_FILE')
+            if me.targetSource.isState('INPUT FILE')
                 me.dat.curTarget = me.inF.next();
                 me.dat.curTarget.transformCommand();
                 steps = me.splitTarget();
@@ -102,7 +107,7 @@ classdef TargetStates < SimStates
             me.currentAction.setState('SEND TARGET RESPONSE');            
         end
         function sendTargetResponses(me)
-             if me.targetSource.isState('INPUT_FILE')
+             if me.targetSource.isState('INPUT FILE')
                 me.dat.prevTarget = me.dat.prevTarget;
                 me.dat.prevTarget.transformResponse();
                 me.currentAction.setState('WAIT FOR TARGET');
