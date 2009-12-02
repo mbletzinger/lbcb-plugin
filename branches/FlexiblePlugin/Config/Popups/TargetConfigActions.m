@@ -3,102 +3,83 @@ classdef TargetConfigActions < handle
         handles = [];
         tcfg
         log = Logger
-        mcpTable
-        aps
         selected
         flist
     end
     methods
         function me = TargetConfigActions(cfg)
             me.tcfg = TargetConfigDao(cfg);
-            me.aps = StateEnum({'LBCB1','LBCB2','BOTH'});
             me.selected = 1;
             me.flist = FunctionLists('ControlPointTransformation');
-
-            if me.tcfg.empty
-                me.addControlPoint(0);
-            else
-                me.uDisplay(0);
-            end
         end
         function init(me,handles)
             me.handles = handles;
-            format = {'char',me.aps.states};
-            set(me.handles.modelControlPoints,'ColumnFormat',format)
-            set(me.handles.modelControlPoints,'Data',me.mcpTable);
+            set(me.handles.modelControlPoints,'String',me.tcfg.addresses);
             set(me.handles.s2lFunction,'String',me.flist.list);
             set(me.handles.l2sFunction,'String',me.flist.list);
             
-            idx = me.flist.getIndex(me.scfg.simCor2LbcbFunction);
+            idx = me.flist.getIndex(me.tcfg.simCor2LbcbFunction);
             if idx > 0
                set(me.handles.s2lFunction,'Value',idx);
             end
-            idx = me.flist.getIndex(me.scfg.lbcb2SimCorFunction);
+            idx = me.flist.getIndex(me.tcfg.lbcb2SimCorFunction);
             if idx > 0
                set(me.handles.l2sFunction,'Value',idx);
             end
         end
-        function setCell(me,indices,data,errString)
-            if isempty(data)
-                me.log.error(dbstack,errString);
-                return;
-            end
-
-            [alAddr alAp of xf] = me.getConfig();
-            switch indices(2)
-                case 1
-                    alAddr{indices(1)} = data;
-                    me.tcfg.addresses = alAddr;
-                case 2
-                    alAp{indices(1)} = data;
-                    me.tcfg.apply2Lbcb = alAp;
-                 otherwise
-                    me.log.error(dbstack,sprintf('Cannot handle column %d',indices(2)));
-            end
-            me.uDisplay(1);
+        function setAddress(me,list)
+            me.tcfg.addresses = list;
+            me.tcfg.numControlPoints = length(list);
+            set(me.handles.modelControlPoints,'String',list);
         end
-        function [alAddr alAp of xf] = getConfig(me)
+        function [ str idx list ] = getSelected(me)
+            list = get(me.handles.modelControlPoints,'String');
+            idx = get(me.handles.modelControlPoints,'Value');
+            str = list{idx};
+        end
+        function alAddr = getConfig(me)
             alAddr = me.tcfg.addresses;
-            alAp = me.tcfg.apply2Lbcb;
-            of = me.tcfg.offsets;
-            xf = me.tcfg.xforms;
-        end
-        function addControlPoint(me,haveHandle)
-            me.tcfg.addControlPoint();
-            me.uDisplay(haveHandle);
-        end
-        function selectedRow(me,indices)
-            if isempty(indices)
-                return;
-            end
-            me.selected = indices(1);
-        end        
-        function removeControlPoint(me,haveHandle)
-            me.mcpTable(me.selected,:) = [];
-            me.ocfg.removeControlPoint(me.selected);
-            if me.selected > me.ocfg.numExtSensors
-                me.selected = me.ocfg.numExtSensors;
-            end
-            me.uDisplay(haveHandle);
-        end
-        function uDisplay(me,haveHandle)
-            [alAddr alAp of xf] = me.getConfig();
-            me.mcpTable = cell(me.tcfg.numControlPoints,2);
-            for cps = 1:me.tcfg.numControlPoints
-                me.mcpTable{cps,1} = alAddr{cps};
-                me.mcpTable{cps,2} = alAp{cps};
-            end
-            if haveHandle
-                set(me.handles.modelControlPoints,'Data',me.mcpTable);
-            end
         end
         function setLbcb2SimCorFunction(me,value)
-            me.scfg.lbcb2SimCorFunction = me.edflist.list{value};
+            me.tcfg.lbcb2SimCorFunction = me.flist.list{value};
         end
         function setSimCor2LbcbFunction(me,value)
-            me.scfg.simCor2LbcbFunction = me.edflist.list{value};
+            me.tcfg.simCor2LbcbFunction = me.flist.list{value};
         end
-
-
+        function edCps(me)
+            [ str idx list ] = me.getSelected();
+            answer = inputdlg('Address','Edit Address',1,{str});
+            list{idx} = answer{1};
+            me.setAddress(list);
+        end
+        function newCps(me)
+            [ ~, idx ~, ] = me.getSelected();
+            answer = inputdlg('Address','New Address',1,{'MDL-00-00'});
+            me.tcfg.insertControlPoint(idx,answer);
+            set(me.handles.modelControlPoints,'String',me.tcfg.addresses);
+        end
+        function removeCps(me)
+            [ ~, idx ,~ ] = me.getSelected(); 
+            me.tcfg.removeControlPoint(idx);
+            set(me.handles.modelControlPoints,'String',me.tcfg.addresses);
+        end
+        function upCps(me)
+            [ str idx olist ] = me.getSelected();
+            if idx == 1
+                return;
+            end
+            olist(idx) = olist(idx - 1);
+            olist{idx - 1} = str;
+            me.setAddress(olist);
+        end
+        function downCps(me)
+            [ str idx olist ] = me.getSelected();
+            if idx == me.tcfg.numControlPoints
+                return;
+            end
+            olist(idx) = olist(idx + 1);
+            olist{idx + 1} = str;
+            me.setAddress(olist);
+        end
     end
 end
