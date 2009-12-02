@@ -22,7 +22,7 @@ function varargout = TargetConfig(varargin)
 
 % Edit the above text to modify the response to help TargetConfig
 
-% Last Modified by GUIDE v2.5 30-Nov-2009 17:15:59
+% Last Modified by GUIDE v2.5 02-Dec-2009 13:14:50
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -102,50 +102,6 @@ function ok_Callback(hObject, eventdata, handles) %#ok<*INUSL,*DEFNU>
 % handles    structure with handles and user data (see GUIDATA)
 delete(handles.TargetConfig);
 
-
-% --- Executes when entered data in editable cell(s) in modelControlPoints.
-function modelControlPoints_CellEditCallback(hObject, eventdata, handles)
-% hObject    handle to modelControlPoints (see GCBO)
-% eventdata  structure with the following fields (see UITABLE)
-%	Indices: row and column indices of the cell(s) edited
-%	PreviousData: previous data for the cell(s) edited
-%	EditData: string(s) entered by the user
-%	NewData: EditData or its converted form set on the Data property. Empty if Data was not changed
-%	Error: error string when failed to convert EditData to appropriate value for Data
-% handles    structure with handles and user data (see GUIDATA)
-handles.actions.setCell(eventdata.Indices,eventdata.EditData,eventdata.Error);
-
-
-% --- Executes on button press in advanced.
-function advanced_Callback(hObject, eventdata, handles)
-% hObject    handle to advanced (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-AdvancedTargetConfig('cfg',handles.cfg,'idx',handles.actions.selected);
-
-% --- Executes when selected cell(s) is changed in modelControlPoints.
-function modelControlPoints_CellSelectionCallback(hObject, eventdata, handles)
-% hObject    handle to modelControlPoints (see GCBO)
-% eventdata  structure with the following fields (see UITABLE)
-%	Indices: row and column indices of the cell(s) currently selecteds
-% handles    structure with handles and user data (see GUIDATA)
-handles.actions.selectedRow(eventdata.Indices);
-
-% --- Executes on button press in addCps.
-function addCps_Callback(hObject, eventdata, handles)
-% hObject    handle to addCps (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-handles.actions.addControlPoint(1);
-
-% --- Executes on button press in removeCps.
-function removeCps_Callback(hObject, eventdata, handles)
-% hObject    handle to removeCps (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-handles.actions.removeControlPoint(1);
-
-
 % --- Executes on selection change in s2lFunction.
 function s2lFunction_Callback(hObject, eventdata, handles)
 % hObject    handle to s2lFunction (see GCBO)
@@ -154,20 +110,7 @@ function s2lFunction_Callback(hObject, eventdata, handles)
 
 % Hints: contents = get(hObject,'String') returns s2lFunction contents as cell array
 %        contents{get(hObject,'Value')} returns selected item from s2lFunction
-
-
-% --- Executes during object creation, after setting all properties.
-function s2lFunction_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to s2lFunction (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: popupmenu controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
-
+handles.actions.setSimCor2LbcbFunction(get(hObject,'Value'));
 
 % --- Executes on selection change in l2sFunction.
 function l2sFunction_Callback(hObject, eventdata, handles)
@@ -177,19 +120,7 @@ function l2sFunction_Callback(hObject, eventdata, handles)
 
 % Hints: contents = get(hObject,'String') returns l2sFunction contents as cell array
 %        contents{get(hObject,'Value')} returns selected item from l2sFunction
-
-
-% --- Executes during object creation, after setting all properties.
-function l2sFunction_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to l2sFunction (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: popupmenu controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
+handles.actions.setLbcb2SimCorFunction(get(hObject,'Value'));
 
 
 % --- Executes on selection change in modelControlPoints.
@@ -202,14 +133,40 @@ function modelControlPoints_Callback(hObject, eventdata, handles)
 %        contents{get(hObject,'Value')} returns selected item from modelControlPoints
 
 
-% --- Executes during object creation, after setting all properties.
-function modelControlPoints_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to modelControlPoints (see GCBO)
+% --- Executes on button press in upCps.
+function upCps_Callback(hObject, eventdata, handles)
+% hObject    handle to upCps (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
+% handles    structure with handles and user data (see GUIDATA)
+handles.actions.upCps();
 
-% Hint: listbox controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
+
+% --- Executes on button press in dwnCps.
+function dwnCps_Callback(hObject, eventdata, handles)
+% hObject    handle to dwnCps (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+handles.actions.downCps();
+
+% --- Executes on button press in edCps.
+function edCps_Callback(hObject, eventdata, handles)
+% hObject    handle to edCps (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+handles.actions.edCps();
+
+
+% --- Executes on button press in addCps.
+function addCps_Callback(hObject, eventdata, handles)
+% hObject    handle to addCps (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+handles.actions.newCps();
+
+
+% --- Executes on button press in removeCps.
+function removeCps_Callback(hObject, eventdata, handles)
+% hObject    handle to removeCps (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+handles.actions.removeCps();
