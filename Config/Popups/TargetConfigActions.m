@@ -53,13 +53,13 @@ classdef TargetConfigActions < handle
             me.setAddress(list);
         end
         function newCps(me)
-            [ ~, idx ~, ] = me.getSelected();
+            [ dum, idx dum, ] = me.getSelected(); %#ok<NASGU>
             answer = inputdlg('Address','New Address',1,{'MDL-00-00'});
             me.tcfg.insertControlPoint(idx,answer);
             set(me.handles.modelControlPoints,'String',me.tcfg.addresses);
         end
         function removeCps(me)
-            [ ~, idx ,~ ] = me.getSelected(); 
+            [ dum, idx ,dum ] = me.getSelected();  %#ok<NASGU>
             me.tcfg.removeControlPoint(idx);
             set(me.handles.modelControlPoints,'String',me.tcfg.addresses);
         end
