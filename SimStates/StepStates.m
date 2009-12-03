@@ -25,6 +25,7 @@ classdef StepStates < SimStates
     methods
         function start(me,steps)
             me.nxtStep.steps = steps;
+            me.nxtStep.stepsCompleted = false;
             me.currentAction.setState('NEXT STEP');
             me.state.setState('BUSY');
         end

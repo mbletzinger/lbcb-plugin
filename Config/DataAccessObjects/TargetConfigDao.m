@@ -41,14 +41,14 @@ classdef TargetConfigDao < handle
             me.dt.setStringVector('uisimcor.addresses',value);
         end
         function result = get.simCor2LbcbFunction(me)
-            result = me.dt.getString('target.simCor2Lbcb.transformation.function',[]);
+            result = me.dt.getString('target.simCor2Lbcb.transformation.function','noTransformCommand');
         end
         function set.simCor2LbcbFunction(me,value)
             me.dt.setString('target.simCor2Lbcb.transformation.function',value);
         end
          function result = get.lbcb2SimCorFunction(me)
-            result = me.dt.getString('target.lbcb2SimCor.transformation.function',[]);
-        end
+            result = me.dt.getString('target.lbcb2SimCor.transformation.function','noTransformResponse');
+         end
         function set.lbcb2SimCorFunction(me,value)
             me.dt.setString('target.lbcb2SimCor.transformation.function',value);
         end

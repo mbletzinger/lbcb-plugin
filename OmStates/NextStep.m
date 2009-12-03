@@ -19,6 +19,7 @@ classdef NextStep < OmState
     end
     methods
         function start(me)
+            me.stepsCompleted = false;
         end
         function done = isDone(me)
             done = 1;
@@ -29,6 +30,7 @@ classdef NextStep < OmState
                     me.dat.nextStepData = me.sdf.target2StepData({ me.dat.curStepData.lbcbCps{1}.command ...
                         me.dat.curStepData.lbcbCps{2}.command });
                     me.dat.nextStepData.stepNum = me.dat.curStepData.stepNum.next(2);
+                    me.dat.nextStepData.needsCorrection = true;
                     me.edAdjust();
                     me.derivedDofAdjust();
                 else
@@ -67,14 +69,14 @@ classdef NextStep < OmState
             scfg = StepConfigDao(me.cdp.cfg);
             if scfg.doEdCorrection
                 for l = 1: me.cdp.numLbcbs()
- %                   me.ed{l}.adjustTarget(me.dat.nextStepData.lbcbCps{l});
+                   me.ed{l}.adjustTarget(me.dat.nextStepData.lbcbCps{l});
                 end
             end
         end
         function derivedDofAdjust(me)
             scfg = StepConfigDao(me.cdp.cfg);
             if scfg.doDdofCorrection
-%                me.dd.adjustTarget(me.dat.nextStepData);
+               me.dd.adjustTarget(me.dat.nextStepData);
             else
             end
             
