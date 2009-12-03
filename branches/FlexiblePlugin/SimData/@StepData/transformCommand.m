@@ -1,7 +1,5 @@
 function transformCommand(me)
-idx = 1;
-for mdc = 1 : me.modelCps
-    me.lbcbCps{idx}.command = mdc.command.clone();
-    idx = idx + 1;
-end
+tcfg = TargetConfigDao(me.cdp.cfg);
+xform = str2func(tcfg.simCor2LbcbFunction);
+xform(me);
 end

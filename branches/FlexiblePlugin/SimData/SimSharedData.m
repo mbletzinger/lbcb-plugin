@@ -13,10 +13,11 @@ classdef SimSharedData < handle
             me.prevStepData = me.curStepData;
             me.curStepData = me.nextStepData;
         end
-        function newTarget(me)
-            me.prevTarget = me.curTarget;
-            me.curTarget = me.sdf.stepNumber2StepData(...
-                me.curTarget.stepNum.next(0));
+        function clearSteps(me)
+            me.correctionTarget = [];
+            me.prevStepData = [];
+            me.curStepData = [];
+            me.nextStepData = [];
         end
     end
 end

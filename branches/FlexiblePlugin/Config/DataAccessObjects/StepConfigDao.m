@@ -20,7 +20,6 @@ classdef StepConfigDao < handle
         substepIncL1
         substepIncL2
         edCalculationFunction
-        edCorrectionFunction
         ddCalculationFunction
         ddCorrectionFunction
     end
@@ -81,25 +80,19 @@ classdef StepConfigDao < handle
             me.dt.setInt('step.correctEveryStep',value);
         end
         function result = get.edCalculationFunction(me)
-             result = me.dt.getString('step.ed.calculation.function',0);
+             result = me.dt.getString('step.ed.calculation.function','noEdCalculate');
         end
         function set.edCalculationFunction(me,value)
             me.dt.setString('step.ed.calculation.function',value);
         end
-        function result = get.edCorrectionFunction(me)
-             result = me.dt.getString('step.ed.correction.function',0);
-        end
-        function set.edCorrectionFunction(me,value)
-            me.dt.setString('step.ed.correction.function',value);
-        end
         function result = get.ddCalculationFunction(me)
-             result = me.dt.getString('step.dd.calculation.function',0);
+             result = me.dt.getString('step.dd.calculation.function','noDdCalculate');
         end
         function set.ddCalculationFunction(me,value)
             me.dt.setString('step.dd.calculation.function',value);
         end
         function result = get.ddCorrectionFunction(me)
-             result = me.dt.getString('step.dd.correction.function',0);
+             result = me.dt.getString('step.dd.correction.function','noDdAdjustTarget');
         end
         function set.ddCorrectionFunction(me,value)
             me.dt.setString('step.dd.correction.function',value);
