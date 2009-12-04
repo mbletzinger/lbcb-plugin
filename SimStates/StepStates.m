@@ -9,17 +9,11 @@ classdef StepStates < SimStates
         
         currentAction = StateEnum({...
             'NEXT STEP',...
-            'CHECK LIMITS'...
             'OM PROPOSE EXECUTE',...
             'OM GET CONTROL POINTS',...
             'PROCESS OM RESPONSE',...
             'BROADCAST TRIGGER',...
             'DONE'
-            });
-        state = StateEnum({...
-            'BUSY',...
-            'COMPLETED',...
-            'ERRORS EXIST'...
             });
     end
     methods
@@ -43,7 +37,7 @@ classdef StepStates < SimStates
                             done = 1;
                         else % Execute next step
                             me.log.debug(dbstack,sprintf('Next Step is %s',me.dat.nextStepData.toString()));
-                            me.currentAction.setState('CHECK LIMITS');
+                            me.currentAction.setState('OM PROPOSE EXECUTE');
                             me.gui.updateStepTolerances(me.nxtStep.st);
                         end
                     end
@@ -82,27 +76,16 @@ classdef StepStates < SimStates
                         end
                         me.currentAction.setState('PROCESS OM RESPONSE');
                     end
+                    
                 case 'PROCESS OM RESPONSE'
                     me.pResp.start();
                     me.arch.archive(me.dat.curStepData);
                     me.dd.update(me.dat.curStepData);
                     me.currentAction.setState('BROADCAST TRIGGER');
+
                 case 'BROADCAST TRIGGER'
                     me.currentAction.setState('NEXT STEP');
                     
-                case 'CHECK LIMITS'
-                    %        me.nxtStep
-                    odone = me.nxtStep.withinLimits();
-                    me.gui.updateCommandLimits(me.nxtStep.lc);
-                    if odone
-                        me.currentAction.setState('OM PROPOSE EXECUTE');
-                        if me.isFake() == 0
-                            me.peOm.start();
-                        end
-                    else
-                        me.state.setState('ERRORS EXIST');
-                        done = 1;
-                    end
                 otherwise
                     me.log.error(dbstack,sprintf('%s action not recognized',action));
             end

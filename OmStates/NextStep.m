@@ -13,7 +13,6 @@ classdef NextStep < OmState
     properties
         steps = [];
         stepsCompleted = 0;
-        lc = [];
         st = [];
         
     end
@@ -43,10 +42,6 @@ classdef NextStep < OmState
                 me.dat.nextStepData = me.steps.next();
                 me.dat.correctionTarget = me.dat.nextStepData;
             end
-        end
-        % needs to be called immediately after isDone returns true.
-        function yes = withinLimits(me)
-            yes = me.lc.withinLimits(me.dat.nextStepData,me.dat.curStepData );
         end
     end
     methods (Access='private')

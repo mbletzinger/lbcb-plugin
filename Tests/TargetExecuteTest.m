@@ -13,8 +13,25 @@ tgtEx = hfact.tgtEx;
 tgtEx.inF = s.infile;
 done = 0;
 tgtEx.targetSource.setState('INPUT FILE');
+display('****Starting Target test w/o step splitting****');
 tgtEx.start;
 
 while done ==0
     done = tgtEx.isDone;
 end
+display('****Done****');
+display('****Starting Target test with step splitting****');
+
+s.setTest('SUBSTEPS');
+mdlLbcb = hfact.mdlLbcb;
+tgtEx = hfact.tgtEx;
+s.infile.reset();
+tgtEx.inF = s.infile;
+done = 0;
+tgtEx.targetSource.setState('INPUT FILE');
+tgtEx.start;
+
+while done ==0
+    done = tgtEx.isDone;
+end
+display('****Done****');

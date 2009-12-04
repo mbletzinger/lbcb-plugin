@@ -13,6 +13,10 @@ classdef SimSharedData < handle
             me.prevStepData = me.curStepData;
             me.curStepData = me.nextStepData;
         end
+        function targetShift(me,target)
+            me.prevTarget = me.curTarget;
+            me.curTarget = target;
+        end
         function clearSteps(me)
             me.correctionTarget = [];
             me.prevStepData = [];

@@ -19,7 +19,7 @@ classdef HandleFactory <  handle
         % Simulation States and Executors
         omStates = cell(5,1);
         simStates = cell(3,1);
-        simCorStates = cell(2,1);
+        simCorStates = cell(3,1);
         
         %Display update instance
         gui = [];
@@ -54,6 +54,7 @@ classdef HandleFactory <  handle
         cnEx;
         stpEx;
         tgtEx;
+        prcsTgt;
         
         % UiSimCor States
         ocSimCor
@@ -77,6 +78,7 @@ classdef HandleFactory <  handle
             me.simStates{1} = ConnectStates;
             me.simStates{2} = StepStates;
             me.simStates{3} = TargetStates;
+            me.simStates{4} = ProcessTarget;
 
             me.mdlUiSimCor = MdlUiSimCor(me.cfg);
             me.simCorStates{1} = OpenCloseUiSimCor;
@@ -132,7 +134,9 @@ classdef HandleFactory <  handle
             me.simStates{2}.pResp = me.pResp;
             me.simStates{2}.arch = me.arch;
             me.simStates{3}.stpEx = me.simStates{2};
+            me.simStates{3}.prcsTgt = me.simStates{4};
             me.simStates{3}.inF = me.inF;
+            me.simStates{4}.lc = lc;
 
             for c =1:length(me.simCorStates)
                 me.simCorStates{c}.cdp = cdp;
@@ -179,6 +183,9 @@ classdef HandleFactory <  handle
         end
         function c = get.tgtEx(me)
             c= me.simStates{3};
+        end
+        function c = get.prcsTgt(me)
+            c= me.simStates{4};
         end
         function c = get.ocSimCor(me)
             c= me.simCorStates{1};

@@ -1,13 +1,13 @@
 function steps = splitTarget(me)
 steps = Substeps();
+steps.steps = { me.dat.curTarget };
 if me.cdp.doStepSplitting == false
     me.setCorrectionFlag(me.dat.curTarget);
-    steps.steps = { me.dat.curTarget };
     return;
 end
 stpSize = ones(24,1);  % hack around divide by zero problem
-stpSize(1:6) = me.cdp.getSubstepInc(1);
-stpSize(7:12) = me.cdp.getSubstepInc(0);
+stpSize(1:6) = me.cdp.getSubstepInc(1).disp;
+stpSize(7:12) = me.cdp.getSubstepInc(0).disp;
 [ initialDisp initialDispDofs initialForce initialForceDofs ] = ...
     me.dat.prevTarget.cmdData();
 [ finalDisp finalDispDofs finalForce finalForceDofs ] = ...
@@ -19,7 +19,7 @@ finc = (finalForce - initialForce) / maxNumSteps;
 ss = cell(maxNumSteps,1);
 disp = initialDisp;
 force = intialForce;
-for i = 1 : maxNumSteps
+for i = 1 : maxNumSteps - 1
     prevDisp = disp;
     prevForce = force;
     disp = prevDisp + inc;
@@ -38,5 +38,6 @@ for i = 1 : maxNumSteps
     me.setCorrectionFlag(ss{i});
     
 end
+ss{maxNumSteps} = me.dat.curTarget;
 steps.steps = ss;
 end

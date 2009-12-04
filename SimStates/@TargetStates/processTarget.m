@@ -1,10 +1,5 @@
-function getTarget(me)
+function processTarget(me)
 if me.targetSource.isState('INPUT FILE')
-    me.dat.curTarget = me.inF.next();
-    if me.inF.endOfFile
-        me.currentAction.setState('DONE');
-        return;
-    end
     me.dat.curTarget.transformCommand();
     me.dat.clearSteps();
     steps = me.splitTarget();
