@@ -29,7 +29,7 @@ classdef SetupTest < handle
         genOmConfig(me)
         genLogConfig(me)
         genNetworkConfig(me)
-        genStepConfigSettings(me,requireCorrection)
+        genStepConfigSettings(me,requireCorrection, doStepSplitting)
         genTargets(me,isUpper,needsIncrement)
         genLimitTargets(me, idx, isUpper,numSteps)
         genIncrementTargets(me, idx,numSteps)

@@ -12,7 +12,7 @@ switch test
         for idx = 1:4
             me.genIncrementTargets(idx,numSteps);
         end
-    case 'RAMP'
+    case { 'RAMP' 'SUBSTEPS' }
         for idx = 1:4
             me.genRampTargets(idx,numSteps / 2);
         end

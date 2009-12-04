@@ -71,9 +71,9 @@ classdef ConfigDaoProvider < handle
         function inc = getSubstepInc(me,isLbcb1)
             scfg = StepConfigDao(me.cfg);
             if isLbcb1
-                inc = scfg.substepincL1;
+                inc = scfg.substepIncL1;
             else
-                inc = scfg.substepincL2;
+                inc = scfg.substepIncL2;
             end
         end
 

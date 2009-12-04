@@ -17,7 +17,7 @@ switch test
         icfg.used1(d) = 1;
         icfg.window2(d) = me.maxW * m;
         icfg.used2(d) = 1;
-    case {'STEP' 'RAMP'}
+    case {'STEP' 'RAMP', 'SUBSTEPS'}
         scfg.window1(d) = me.maxW * m;
         scfg.used1(d) = 1;
         scfg.window2(d) = me.maxW * m;

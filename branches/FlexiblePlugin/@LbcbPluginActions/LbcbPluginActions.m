@@ -45,7 +45,6 @@ classdef LbcbPluginActions < handle
         selectInputFile(me,on)
         processAutoAccept(me,on)
         processAccept(me,on)
-        processDecline(me,on)
         setCommandLimit(me,dof,lbcb,isLower,str);
         setIncrementLimit(me,dof,lbcb,str);
         setStepTolerance(me,dof,lbcb,str);

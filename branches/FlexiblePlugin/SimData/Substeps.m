@@ -19,6 +19,10 @@ classdef  Substeps < handle
             step = me.steps{me.sIdx};
             me.sIdx = me.sIdx + 1;
         end
+        function reset(me)
+            me.sIdx = 1;
+            me.endOfFile = false;            
+        end
         function set.steps(me,s)
             me.stps = s;
             me.endOfFile = false;
