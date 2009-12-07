@@ -6,7 +6,8 @@ classdef StepStates < SimStates
         fakeGcp = [];
         arch = [];
         dd = DataDisplay;
-        
+        gettingInitialPosiion;
+        sdf
         currentAction = StateEnum({...
             'NEXT STEP',...
             'OM PROPOSE EXECUTE',...
@@ -20,6 +21,12 @@ classdef StepStates < SimStates
         function start(me,steps)
             me.nxtStep.steps = steps;
             me.nxtStep.stepsCompleted = false;
+            me.gettingInitialPosition = false;
+            me.currentAction.setState('NEXT STEP');
+            me.state.setState('BUSY');
+        end
+        function getInitialPosition(me)
+            me.gettingInitialPosition = true;
             me.currentAction.setState('NEXT STEP');
             me.state.setState('BUSY');
         end
@@ -51,7 +58,6 @@ classdef StepStates < SimStates
                                 me.currentAction.setState('DONE');
                                 done = 1;
                             end
-                            me.gcpOm.step = me.peOm.step;
                             me.gcpOm.start();
                             me.currentAction.setState('OM GET CONTROL POINTS');
                         end
@@ -59,8 +65,18 @@ classdef StepStates < SimStates
                         me.currentAction.setState('OM GET CONTROL POINTS');
                     end
                 case 'OM GET CONTROL POINTS'
-                    if me.isFake()
+                    if me.gettingInitialPosition
+                        if me.cdp.numLbcbs() == 2
+                            tgts = { Target Target };
+                        else
+                            tgts = { Target };
+                        end
+                        me.curStepData = me.sdf.target2StepData(tgts);
+                    else
                         me.dat.stepShift();
+                    end
+                    
+                    if me.isFake()
                         me.fakeGcp.generateControlPoints();
                         me.currentAction.setState('PROCESS OM RESPONSE');
                     else
@@ -82,9 +98,13 @@ classdef StepStates < SimStates
                     me.arch.archive(me.dat.curStepData);
                     me.dd.update(me.dat.curStepData);
                     me.currentAction.setState('BROADCAST TRIGGER');
-
+                    
                 case 'BROADCAST TRIGGER'
-                    me.currentAction.setState('NEXT STEP');
+                    if me.gettingInitialPosition
+                        me.currentAction.setState('DONE');
+                    else
+                        me.currentAction.setState('NEXT STEP');
+                    end
                     
                 otherwise
                     me.log.error(dbstack,sprintf('%s action not recognized',action));

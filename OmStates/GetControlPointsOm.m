@@ -10,7 +10,6 @@ classdef GetControlPointsOm < OmState
     end
     methods
         function start(me)
-            me.dat.stepShift(); % next is the new current :)
             me.cpsMsg.setState('LBCB1');
             address = me.cdp.getAddress();
             jmsg = me.mdlLbcb.createCommand('get-control-point',address,me.cpsMsg.getState(),[]);

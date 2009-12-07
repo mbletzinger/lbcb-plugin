@@ -1,6 +1,7 @@
 classdef TargetStates < SimStates
     properties
         currentAction = StateEnum({...
+            'INITIAL POSITION',...
             'WAIT FOR TARGET',...
             'PROCESS TARGET',...
             'EXECUTE SUBSTEPS',...
@@ -14,12 +15,14 @@ classdef TargetStates < SimStates
         stpEx = [];
         prcsTgt = [];
         inF = [];
+        startStep
     end
     methods
-        start(me)
+        start(me,stepNumber)
         done = isDone(me)
     end
     methods (Access='private')
+        initialPosition(me)
         waitForTarget(me)
         processTarget(me)
         steps = splitTarget(me)
