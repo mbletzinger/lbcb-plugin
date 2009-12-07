@@ -133,6 +133,8 @@ classdef HandleFactory <  handle
             me.simStates{2}.gcpOm = me.gcpOm;
             me.simStates{2}.pResp = me.pResp;
             me.simStates{2}.arch = me.arch;
+            me.simStates{2}.sdf = me.sdf;
+            
             me.simStates{3}.stpEx = me.simStates{2};
             me.simStates{3}.prcsTgt = me.simStates{4};
             me.simStates{3}.inF = me.inF;

@@ -1,3 +1,6 @@
-function start(me)
-me.currentAction.setState('WAIT FOR TARGET');
+function start(me,stepNumber)
+me.currentAction.setState('INITIAL POSITION');
+me.inF.sIdx = stepNumber;
+me.startStep = stepNumber;
+me.stpEx.initialPosition();
 end
