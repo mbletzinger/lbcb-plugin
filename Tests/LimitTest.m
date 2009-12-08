@@ -9,6 +9,7 @@ for l = 1:length(loops)
     s.genLogConfig()
     hfact = HandleFactory([],cfg);
     s.hfact = hfact;
+    hfact.arch.setArchiveOn(true);
     s.setTest(loops{l});
     LbcbPlugin('hfact',s.hfact,'notimer',0);
     delete(s);
