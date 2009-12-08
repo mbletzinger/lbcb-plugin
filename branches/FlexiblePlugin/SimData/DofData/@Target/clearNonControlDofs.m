@@ -4,7 +4,7 @@ for i=1:6
         me.disp(i) = 0;
     end
     if me.forceDofs(i) == 0
-        me.forces(i) = 0;
+        me.force(i) = 0;
     end
 end
 end

@@ -22,33 +22,34 @@ classdef NextStep < OmState
         end
         function done = isDone(me)
             done = 1;
-            % Dumb MATLAB  double negative comparison to see if the current
-            % step is not empty
-            if isempty(me.dat.curStepData) == false
-                if me.needsCorrection()
-                    me.dat.nextStepData = me.sdf.target2StepData({ me.dat.curStepData.lbcbCps{1}.command ...
-                        me.dat.curStepData.lbcbCps{2}.command });
-                    me.dat.nextStepData.stepNum = me.dat.curStepData.stepNum.next(2);
-                    me.dat.nextStepData.needsCorrection = true;
-                    me.edAdjust();
-                    me.derivedDofAdjust();
-                else
-                    % get next input step
-                    me.dat.nextStepData = me.steps.next();
-                    me.dat.correctionTarget = me.dat.nextStepData;
-                    me.stepsCompleted = me.steps.endOfFile;
-                end
-            else % This must be the first step
+            if me.steps.started == false
                 me.dat.nextStepData = me.steps.next();
                 me.dat.correctionTarget = me.dat.nextStepData;
+                return;
+            end
+            if me.needsCorrection()
+                me.dat.nextStepData = me.sdf.target2StepData({ me.dat.curStepData.lbcbCps{1}.command ...
+                    me.dat.curStepData.lbcbCps{2}.command }, me.dat.curStepData.stepNum.step, ...
+                    me.dat.curStepData.stepNum.subStep);
+                me.dat.nextStepData.stepNum = me.dat.curStepData.stepNum.next(2);
+                me.dat.nextStepData.needsCorrection = true;
+                me.edAdjust();
+                me.derivedDofAdjust();
+            else
+                % get next input step
+                me.dat.nextStepData = me.steps.next();
+                me.dat.correctionTarget = me.dat.nextStepData;
+                me.stepsCompleted = me.steps.endOfFile;
             end
         end
     end
     methods (Access='private')
         function needsCorrection = needsCorrection(me)
             needsCorrection = 0;
-            scfg = StepConfigDao(me.cdp.cfg);
-            if scfg.doEdCorrection == 0
+            if isempty(me.dat.curStepData)
+                return;
+            end
+            if me.dat.curStepData.needsCorrection == false
                 return;
             end
             wt1 = me.st{1}.withinTolerances(me.dat.correctionTarget.lbcbCps{1}.command,...

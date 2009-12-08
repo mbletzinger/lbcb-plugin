@@ -20,9 +20,10 @@ classdef StepDataFactory < handle
              clone.stepNum = stepNum;
              me.addProtocol(clone);
          end
-         function clone = target2StepData(me,targets)
+         function clone = target2StepData(me,targets,step,sub)
              clone = StepData;
              me.addProtocol(clone);
+             clone.stepNum = StepNumber(step,sub,0);
              lgth = length(targets);
              for t = 1:lgth
                  clone.lbcbCps{t}.command = targets{t};

@@ -6,8 +6,7 @@ classdef StepStates < SimStates
         fakeGcp = [];
         arch = [];
         dd = DataDisplay;
-        gettingInitialPosiion;
-        sdf
+        gettingInitialPosition;
         currentAction = StateEnum({...
             'NEXT STEP',...
             'OM PROPOSE EXECUTE',...
@@ -27,7 +26,7 @@ classdef StepStates < SimStates
         end
         function getInitialPosition(me)
             me.gettingInitialPosition = true;
-            me.currentAction.setState('NEXT STEP');
+            me.currentAction.setState('OM GET CONTROL POINTS');
             me.state.setState('BUSY');
         end
         function done = isDone(me)
@@ -71,7 +70,7 @@ classdef StepStates < SimStates
                         else
                             tgts = { Target };
                         end
-                        me.curStepData = me.sdf.target2StepData(tgts);
+                        me.dat.curStepData = me.sdf.target2StepData(tgts,0,0);
                     else
                         me.dat.stepShift();
                     end
@@ -105,9 +104,10 @@ classdef StepStates < SimStates
                     else
                         me.currentAction.setState('NEXT STEP');
                     end
-                    
+                case 'DONE'
+                    done = 1;
                 otherwise
-                    me.log.error(dbstack,sprintf('%s action not recognized',action));
+                    me.log.error(dbstack,sprintf('%s action not recognized',me.currentAction.getState()));
             end
         end
         function yes = isFake(me)

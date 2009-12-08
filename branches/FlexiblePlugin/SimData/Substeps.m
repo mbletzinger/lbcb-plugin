@@ -2,6 +2,7 @@ classdef  Substeps < handle
     properties
     sIdx = 1;
     endOfFile = false;
+    started = false;
     end
     properties (Access = private)
         stps
@@ -10,6 +11,11 @@ classdef  Substeps < handle
         steps
     end
     methods
+        function me =Substeps()
+            me.sIdx = 1;
+            me.endOfFile = false;
+            me.started = false;
+        end
         function step = next(me)
             if me.sIdx > length(me.steps)
                 step = [];
@@ -18,6 +24,9 @@ classdef  Substeps < handle
             end
             step = me.steps{me.sIdx};
             me.sIdx = me.sIdx + 1;
+            if me.started == false
+                me.started = true;
+            end
         end
         function reset(me)
             me.sIdx = 1;

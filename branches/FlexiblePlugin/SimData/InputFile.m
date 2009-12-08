@@ -70,10 +70,10 @@ classdef  InputFile < Substeps
                 else
                     targets = {tgt1};
                 end
-                me.steps{t} = me.sdf.target2StepData(targets);
-                me.steps{t}.stepNum = StepNumber(t,0,0);
+                me.steps{t} = me.sdf.target2StepData(targets,t,0);
 %                me.log.debug(dbstack,sprintf('Created step=%s',me.steps{t}.toString()));
             end
+            me.started = false;
         end
     end
 end

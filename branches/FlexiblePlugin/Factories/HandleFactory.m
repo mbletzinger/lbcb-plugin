@@ -104,7 +104,6 @@ classdef HandleFactory <  handle
             
             me.arch = Archiver(cdp);
 
-            me.omStates{4}.lc = lc;
             me.omStates{4}.st = me.st;
 
             for c =1:length(me.omStates)
@@ -127,17 +126,18 @@ classdef HandleFactory <  handle
                 me.simStates{c}.ocOm = me.ocOm;
                 me.simStates{c}.dat = me.dat;
                 me.simStates{c}.nxtStep = me.nxtStep;
+                me.simStates{c}.sdf = me.sdf;
             end
             me.simStates{2}.fakeGcp = me.fakeGcp;
             me.simStates{2}.peOm = me.peOm;
             me.simStates{2}.gcpOm = me.gcpOm;
             me.simStates{2}.pResp = me.pResp;
             me.simStates{2}.arch = me.arch;
-            me.simStates{2}.sdf = me.sdf;
             
             me.simStates{3}.stpEx = me.simStates{2};
             me.simStates{3}.prcsTgt = me.simStates{4};
             me.simStates{3}.inF = me.inF;
+
             me.simStates{4}.lc = lc;
 
             for c =1:length(me.simCorStates)
