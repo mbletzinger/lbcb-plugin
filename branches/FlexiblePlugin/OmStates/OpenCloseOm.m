@@ -76,8 +76,8 @@ classdef OpenCloseOm < OmState
             me.gui.colorRunButton('BROKEN'); % Pause the simulation
             me.gui.colorButton('CONNECT OM','BROKEN');
             me.omActions.setState('DONE');            
-            me.log.error(dbstack, sprintf('%s link has been disconnected due to errors',...
-                me.connectionType.getState())); 
+            me.log.error(dbstack,...
+                sprintf('OM link has been disconnected due to errors')); 
         end
     end
     methods (Access=private)

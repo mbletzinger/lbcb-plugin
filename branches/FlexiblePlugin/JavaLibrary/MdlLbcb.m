@@ -32,16 +32,11 @@ classdef MdlLbcb < handle
             'NONE'...
             });
         prevAction;
+        cfg
     end
     methods
         function me = MdlLbcb(cfg)
-            ncfg = NetworkConfigDao(cfg);
-            me.params.setRemoteHost(ncfg.omHost);
-            me.params.setRemotePort(sscanf(ncfg.omPort,'%d'));
-            me.params.setTcpTimeout(sscanf(ncfg.timeout,'%d'));
-            me.simcorTcp = org.nees.uiuc.simcor.UiSimCorTcp('SEND_COMMAND',me.params);
-            stamp = datestr(now,'_yyyy_mm_dd_HH_MM_SS');
-            me.simcorTcp.setArchiveFilename(fullfile(pwd,'Logs',sprintf('OmNetworkLog%s.txt',stamp)));
+            me.cfg = cfg;
             me.state.setState('READY');
             me.prevState = StateEnum(me.state.states);
             me.prevAction = StateEnum(me.action.states);
@@ -83,6 +78,13 @@ classdef MdlLbcb < handle
         
         % Start to open a connection to the operations manager
         function open(me)
+            ncfg = NetworkConfigDao(me.cfg);
+            me.params.setRemoteHost(ncfg.omHost);
+            me.params.setRemotePort(sscanf(ncfg.omPort,'%d'));
+            me.params.setTcpTimeout(sscanf(ncfg.timeout,'%d'));
+            me.simcorTcp = org.nees.uiuc.simcor.UiSimCorTcp('SEND_COMMAND',me.params);
+            stamp = datestr(now,'_yyyy_mm_dd_HH_MM_SS');
+            me.simcorTcp.setArchiveFilename(fullfile(pwd,'Logs',sprintf('OmNetworkLog%s.txt',stamp)));
             me.simcorTcp.startup();
             me.action.setState('OPEN CONNECTION');
             me.state.setState('BUSY');
@@ -93,6 +95,7 @@ classdef MdlLbcb < handle
             me.simcorTcp.shutdown();
             me.action.setState('CLOSE CONNECTION');
             me.state.setState('BUSY');
+            me.simcorTcp = [];
         end
         
         % Create a compound command (command with multiple MDL addresses)

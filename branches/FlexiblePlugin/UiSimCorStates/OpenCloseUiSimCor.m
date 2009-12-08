@@ -69,8 +69,8 @@ classdef OpenCloseUiSimCor < UiSimCorState
             me.gui.colorRunButton('BROKEN'); % Pause the simulation
             me.gui.colorButton('CONNECT SIMCOR','BROKEN');
                         me.omActions.setState('DONE');            
-            me.log.error(dbstack, sprintf('%s link has been disconnected due to errors',...
-                me.connectionType.getState())); 
+            me.log.error(dbstack,...
+                sprintf('UI-SimCor link has been disconnected due to errors')); 
         end
     end
     methods (Access=private)

@@ -1036,7 +1036,7 @@ function AutoAccept_Callback(hObject, eventdata, handles)
 % hObject    handle to AutoAccept (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-handles.actions.processAutoAccept(get(hOject,'Value'));
+handles.actions.processAutoAccept(get(hObject,'Value'));
 
 
 % --- Executes on button press in Accept.
@@ -1044,7 +1044,7 @@ function Accept_Callback(hObject, eventdata, handles)
 % hObject    handle to Accept (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-handles.actions.processAccept(get(hOject,'Value'));
+handles.actions.processAccept(get(hObject,'Value'));
 
 % --- Executes on button press in editCommand.
 function editCommand_Callback(hObject, eventdata, handles)
@@ -1074,4 +1074,4 @@ function startStep_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of startStep as text
 %        str2double(get(hObject,'String')) returns contents of startStep as a double
-handles.actions.setStartStep(get(hOject,'String'));
+handles.actions.setStartStep(get(hObject,'String'));
