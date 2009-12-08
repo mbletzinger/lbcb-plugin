@@ -1,8 +1,7 @@
 function updateGui(me)
-global gui
 % Update handles structure
 h = me.handles;
-g = gui;
+g = h.LbcbPlugin;
 if isempty(h) == 0
 guidata(g, h);
 end

@@ -48,7 +48,6 @@ classdef LbcbPluginResults < handle
         colorButton(me,buttonName,bs)
         addMessage(me,msg)
         updateGui(me)
-        setGui(me,ingui)
         updateCommands(me,ssd)
         blinkAcceptButton(me,on)
         

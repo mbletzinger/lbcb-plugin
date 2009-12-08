@@ -9,6 +9,7 @@ classdef LbcbPluginActions < handle
             });
         log = Logger;
         startStep
+        prevExecute
     end
     methods
         function me  = LbcbPluginActions(handles,hfact)

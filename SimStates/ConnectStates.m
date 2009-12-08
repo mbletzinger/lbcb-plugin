@@ -12,16 +12,12 @@ classdef ConnectStates < SimStates
             switch action
                 case 'OPEN OM CONNECTION'
                     me.ocOm.start(0);
-                    start(me.simTimer);
                 case 'CLOSE OM CONNECTION'
                     me.ocOm.start(1);
-                    start(me.simTimer);
                 case 'OPEN SIMCOR CONNECTION'
                     me.ocSimCor.start(0);
-                    start(me.simTimer);
                 case 'CLOSE SIMCOR CONNECTION'
                     me.ocSimCor.start(1);
-                    start(me.simTimer);
                 otherwise
                     me.log(dbstack,sprintf('%s action not recognized',action));
             end

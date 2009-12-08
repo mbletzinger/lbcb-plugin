@@ -50,8 +50,7 @@ classdef OpenCloseOm < OmState
 
             if me.state.isState('ERRORS EXIST')
                 done = 1;
-                me.omActions.setState('DONE');            
-                me.connectionStatus.setState('ERRORED');
+                me.connectionError();
                 return;
             end
             a = me.omActions.getState();
@@ -73,9 +72,10 @@ classdef OpenCloseOm < OmState
             end
         end
         function connectionError(me)
-            me.ocOm.connectionStatus.setState('ERRORED');
+            me.connectionStatus.setState('ERRORED');
             me.gui.colorRunButton('BROKEN'); % Pause the simulation
-            me.gui.colorColorButton('CONNECT OM','BROKEN');
+            me.gui.colorButton('CONNECT OM','BROKEN');
+            me.omActions.setState('DONE');            
             me.log.error(dbstack, sprintf('%s link has been disconnected due to errors',...
                 me.connectionType.getState())); 
         end
