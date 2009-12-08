@@ -1,4 +1,8 @@
 function processTarget(me)
+done = me.prcsTgt.isDone;
+if done == false
+    return;
+end
 if me.targetSource.isState('INPUT FILE')
     me.dat.curTarget.transformCommand();
     me.dat.clearSteps();
