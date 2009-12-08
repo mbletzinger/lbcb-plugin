@@ -6,6 +6,7 @@ classdef ConnectStates < SimStates
             'OPEN SIMCOR CONNECTION',...
             'CLOSE SIMCOR CONNECTION'...
             });
+        ocSimCor
     end
     methods
         function start(me,action)

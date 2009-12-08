@@ -24,7 +24,7 @@ switch bs
         set(hndl,'FontWeight','normal');
         set(hndl,'Value',0);
     case 'BROKEN'
-        set(hndl,'BackgroundColor','y');
+        set(hndl,'BackgroundColor','r');
         set(hndl,'FontWeight','normal');
         set(hndl,'Value',0);
     otherwise

@@ -19,6 +19,9 @@ classdef LbcbPluginActions < handle
                 javaaddpath(fullfile(pwd,'JavaLibrary'));
             end
             % Default configuration found in lbcb_plugin.properties
+            handles.log = me.log;
+            handles.actions = me;
+            Logger.setMsgLevel(handles.Messages);
             if isempty(hfact)
                 cfg = Configuration;
                 cfg.load();
@@ -27,8 +30,9 @@ classdef LbcbPluginActions < handle
                 me.hfact = hfact;
                 me.hfact.setGuiHandle(handles);                
             end
-            handles.log = me.log;
-            handles.actions = me;
+            lcfg = LogLevelsDao(me.hfact.cfg);
+            Logger.setCmdLevel(lcfg.cmdLevel);
+            Logger.setMsgLevel(lcfg.msgLevel);
             % set up execute timer
             me.simTimer = timer('Period',0.05, 'TasksToExecute',1000000,'ExecutionMode','fixedSpacing','Name','SimulationTimer');
             me.simTimer.TimerFcn = { 'LbcbPluginActions.execute', me };
