@@ -14,6 +14,7 @@ classdef LbcbPluginActions < handle
             'READY'...
             });
         log = Logger;
+        startStep
     end
     methods
         function me  = LbcbPluginActions(handles,hfact)
@@ -37,6 +38,7 @@ classdef LbcbPluginActions < handle
             me.simTimer = timer('Period',0.05, 'TasksToExecute',1000000,'ExecutionMode','fixedSpacing','Name','SimulationTimer');
             me.simTimer.TimerFcn = { 'LbcbPluginActions.execute', me };
             me.currentExecute.setState('READY');
+            me.startStep = 1;
         end
         processRunHold(me,on)
         processConnectOm(me,on)
@@ -45,12 +47,16 @@ classdef LbcbPluginActions < handle
         selectInputFile(me,on)
         processAutoAccept(me,on)
         processAccept(me,on)
+        processEditTarget(me)
+        processArchiveOnOff(me,on)
         setCommandLimit(me,dof,lbcb,isLower,str);
         setIncrementLimit(me,dof,lbcb,str);
         setStepTolerance(me,dof,lbcb,str);
+        setStartStep(me,str)
         setInputFile(me,infile)
         setLoggerLevels(me)
         shutdown(me)
+        startSimulation(me)
     end
     methods (Static)
         execute(obj, event, me)

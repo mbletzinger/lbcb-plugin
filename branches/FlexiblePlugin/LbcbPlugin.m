@@ -22,7 +22,7 @@ function varargout = LbcbPlugin(varargin)
 
 % Edit the above text to modify the response to help LbcbPlugin
 
-% Last Modified by GUIDE v2.5 26-Oct-2009 05:13:21
+% Last Modified by GUIDE v2.5 08-Dec-2009 05:26:20
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -104,8 +104,7 @@ function RunHold_Callback(hObject, eventdata, handles) %#ok<*INUSD,*DEFNU>
 if handles.notimer
     % Used for debugging the software
     disp('no timer execution');
-    handles.actions.running = 1;
-    handles.actions.startSimulation(1);
+    handles.actions.startSimulation();
     LbcbPluginActions.execute([],[],handles.actions);
 
 else
@@ -1041,6 +1040,7 @@ function AutoAccept_Callback(hObject, eventdata, handles)
 % hObject    handle to AutoAccept (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+handles.actions.processAutoAccept(get(hOject,'Value'));
 
 
 % --- Executes on button press in Accept.
@@ -1048,33 +1048,33 @@ function Accept_Callback(hObject, eventdata, handles)
 % hObject    handle to Accept (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+handles.actions.processAccept(get(hOject,'Value'));
 
-
-% --- Executes on button press in Decline.
-function Decline_Callback(hObject, eventdata, handles)
-% hObject    handle to Decline (see GCBO)
+% --- Executes on button press in editCommand.
+function editCommand_Callback(hObject, eventdata, handles)
+% hObject    handle to editCommand (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
 
-
-function SubStep_Callback(hObject, eventdata, handles)
-% hObject    handle to SubStep (see GCBO)
+% --------------------------------------------------------------------
+function ArchiveOnOff_Callback(hObject, eventdata, handles)
+% hObject    handle to ArchiveOnOff (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of SubStep as text
-%        str2double(get(hObject,'String')) returns contents of SubStep as a double
-
-
-% --- Executes during object creation, after setting all properties.
-function SubStep_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to SubStep (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
+if strcmp(get(hObject, 'Checked'),'on')
+    set(hObject,'Checked','off');
+else 
+    set(hObject,'Checked','on');
 end
+handles.actions.processArchiveOnOff(get(hObject,'Checked'));
+
+
+
+function startStep_Callback(hObject, eventdata, handles)
+% hObject    handle to startStep (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of startStep as text
+%        str2double(get(hObject,'String')) returns contents of startStep as a double

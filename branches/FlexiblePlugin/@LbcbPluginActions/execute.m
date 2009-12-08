@@ -1,5 +1,5 @@
 
-function execute(obj, event,me)
+function execute(obj, event,me) %#ok<INUSL>
 % if me.running == 0  % in a hold state
 %     return;
 % end
@@ -12,28 +12,22 @@ if me.previousAction.isState(a) == 0
     me.previousAction.setState(a);
 end
 switch a
-    case 'OPEN CONNECTION'
-        done = me.ocOm.isDone();
-%         oc = me.ocOm
-%         state = me.ocOm.getState()
+    case { 'OPEN OM CONNECTION',...
+            'CLOSE OM CONNECTION',...
+            'OPEN SIMCOR CONNECTION',...
+            'CLOSE SIMCOR CONNECTION' }
+        done = me.hfact.cnEx.isDone();
         if done
-            if me.ocOm.state.isState('ERRORS EXIST') == 0
-                me.log.debug(dbstack,'Open connection is done');
-                me.colorConnectionButton(me.ocOm.connectionType.getState());
-            end
             me.currentAction.setState('READY');
-            me.colorConnectionButton(me.ocOm.connectionType.getState());
             stop(me.simTimer);
         end
-    case 'CLOSE CONNECTION'
-%        ocOm = me.ocOm
-        done = me.ocOm.isDone();
+    case 'RUN SIMULATION'
+        done = me.hfact.tgtEx.isDone();
         if done
-%            currentAction = me.currentAction
             me.currentAction.setState('READY');
-            me.colorConnectionButton(me.ocOm.connectionType.getState());
             stop(me.simTimer);
         end
+        
     case 'READY'
         me.log.error(dbstack,'Someone forgot to stop the simulation timer');
     otherwise
@@ -42,3 +36,4 @@ end
 LbcbPluginActions.updateGui(me);
 % me.log.debug(dbstack,'execute is done');
 end
+

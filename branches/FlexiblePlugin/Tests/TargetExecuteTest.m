@@ -16,6 +16,7 @@ prcsTgt.autoAccept = true;
 done = 0;
 tgtEx.targetSource.setState('INPUT FILE');
 display('****Starting Target test w/o step splitting****');
+hfact.arch.setArchiveOn(true);
 tgtEx.start(1);
 
 while done ==0
