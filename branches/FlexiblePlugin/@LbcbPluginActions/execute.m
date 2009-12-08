@@ -12,10 +12,7 @@ if me.previousAction.isState(a) == 0
     me.previousAction.setState(a);
 end
 switch a
-    case { 'OPEN OM CONNECTION',...
-            'CLOSE OM CONNECTION',...
-            'OPEN SIMCOR CONNECTION',...
-            'CLOSE SIMCOR CONNECTION' }
+    case 'OPEN CLOSE CONNECTION'
         done = me.hfact.cnEx.isDone();
         if done
             me.currentAction.setState('READY');

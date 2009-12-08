@@ -113,7 +113,6 @@ end
 
 % --- Executes on button press in Connect2Om.
 function Connect2Om_Callback(hObject, eventdata, handles)
-handles.actions.openCloseConnection('OperationsManager',get(hObject,'Value') == 0);
 
 
 % --- Executes on button press in ManualInput.
