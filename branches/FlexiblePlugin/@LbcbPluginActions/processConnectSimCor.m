@@ -5,5 +5,6 @@ if on
     action = 'OPEN SIMCOR CONNECTION';
 end
 me.hfact.cnEx.start(action);
-me.startSimulation()
+start(me.simTimer);
+
 end

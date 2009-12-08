@@ -113,20 +113,16 @@ end
 
 % --- Executes on button press in Connect2Om.
 function Connect2Om_Callback(hObject, eventdata, handles)
+handles.actions.processConnectOm(get(hObject,'Value'));
 
 
 % --- Executes on button press in ManualInput.
 function ManualInput_Callback(hObject, eventdata, handles)
-% hObject    handle to ManualInput (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
+handles.actions.processEditTarget();
 
 % --- Executes on button press in StartTriggering.
 function StartTriggering_Callback(hObject, eventdata, handles)
-% hObject    handle to StartTriggering (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
+disp('Not Implemented');
 
 function DxL1_Callback(hObject, eventdata, handles)
 % hObject    handle to DxL1 (see GCBO)
@@ -918,42 +914,42 @@ function NetworkConfiguration_Callback(hObject, eventdata, handles)
 % hObject    handle to NetworkConfiguration (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-NetworkConfig('cfg',handles.actions.cfg);
+NetworkConfig('cfg',handles.actions.hfact.cfg);
 
 % --------------------------------------------------------------------
 function OmConfiguration_Callback(hObject, eventdata, handles)
 % hObject    handle to OmConfiguration (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-OmConfig('cfg',handles.actions.cfg);
+OmConfig('cfg',handles.actions.hfact.cfg);
 
 % --------------------------------------------------------------------
 function Load_Callback(hObject, eventdata, handles)
 % hObject    handle to Load (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-handles.actions.cfg.load()
+handles.actions.hfact.cfg.load()
 
 % --------------------------------------------------------------------
 function Save_Callback(hObject, eventdata, handles)
 % hObject    handle to Save (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-handles.actions.cfg.save()
+handles.actions.hfact.cfg.save()
 
 % --------------------------------------------------------------------
 function Import_Callback(hObject, eventdata, handles)
 % hObject    handle to Import (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-handles.actions.cfg.import()
+handles.actions.hfact.cfg.import()
 
 % --------------------------------------------------------------------
 function Export_Callback(hObject, eventdata, handles)
 % hObject    handle to Export (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-handles.actions.cfg.export()
+handles.actions.hfact.cfg.export()
 
 
 % --------------------------------------------------------------------
@@ -974,7 +970,7 @@ function LoggingLevels_Callback(hObject, eventdata, handles)
 % hObject    handle to LoggingLevels (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-LoggerLevels('cfg',handles.actions.cfg);
+LoggerLevels('cfg',handles.actions.hfact.cfg);
 handles.actions.setLoggerLevels();
 
 
@@ -983,6 +979,7 @@ function StartSimCor_Callback(hObject, eventdata, handles)
 % hObject    handle to StartSimCor (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+handles.actions.processConnectSimCor(get(hObject,'Value'));
 
 
 % --------------------------------------------------------------------
@@ -1077,3 +1074,4 @@ function startStep_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of startStep as text
 %        str2double(get(hObject,'String')) returns contents of startStep as a double
+handles.actions.setStartStep(get(hOject,'String'));

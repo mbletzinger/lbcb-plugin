@@ -45,8 +45,7 @@ classdef OpenCloseUiSimCor < UiSimCorState
 
             if me.state.isState('ERRORS EXIST')
                 done = 1;
-                me.simCorActions.setState('DONE');            
-                me.connectionStatus.setState('ERRORED');
+                me.connectionError();
                 return;
             end
             a = me.simCorActions.getState();
@@ -68,7 +67,8 @@ classdef OpenCloseUiSimCor < UiSimCorState
         function connectionError(me)
             me.connectionStatus.setState('ERRORED');
             me.gui.colorRunButton('BROKEN'); % Pause the simulation
-            me.gui.colorColorButton('CONNECT SIMCOR','BROKEN');
+            me.gui.colorButton('CONNECT SIMCOR','BROKEN');
+                        me.omActions.setState('DONE');            
             me.log.error(dbstack, sprintf('%s link has been disconnected due to errors',...
                 me.connectionType.getState())); 
         end

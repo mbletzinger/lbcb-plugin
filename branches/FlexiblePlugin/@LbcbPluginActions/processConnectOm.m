@@ -5,5 +5,5 @@ if on
     action = 'OPEN OM CONNECTION';
 end
 me.hfact.cnEx.start(action);
-me.startSimulation()
+start(me.simTimer);
 end
