@@ -1,35 +1,35 @@
-function varargout = LbcbPlugin(varargin)
-% LBCBPLUGIN M-file for LbcbPlugin.fig
-%      LBCBPLUGIN, by itself, creates a new LBCBPLUGIN or raises the existing
+function varargout = LbcbPlugin1(varargin)
+% LBCBPLUGIN1 M-file for LbcbPlugin1.fig
+%      LBCBPLUGIN1, by itself, creates a new LBCBPLUGIN1 or raises the existing
 %      singleton*.
 %
-%      H = LBCBPLUGIN returns the handle to a new LBCBPLUGIN or the handle to
+%      H = LBCBPLUGIN1 returns the handle to a new LBCBPLUGIN1 or the handle to
 %      the existing singleton*.
 %
-%      LBCBPLUGIN('CALLBACK',hObject,eventData,handles,...) calls the local
-%      function named CALLBACK in LBCBPLUGIN.M with the given input arguments.
+%      LBCBPLUGIN1('CALLBACK',hObject,eventData,handles,...) calls the local
+%      function named CALLBACK in LBCBPLUGIN1.M with the given input arguments.
 %
-%      LBCBPLUGIN('Property','Value',...) creates a new LBCBPLUGIN or raises the
+%      LBCBPLUGIN1('Property','Value',...) creates a new LBCBPLUGIN1 or raises the
 %      existing singleton*.  Starting from the left, property value pairs are
-%      applied to the GUI before LbcbPlugin_OpeningFcn gets called.  An
+%      applied to the GUI before LbcbPlugin1_OpeningFcn gets called.  An
 %      unrecognized property name or invalid value makes property application
-%      stop.  All inputs are passed to LbcbPlugin_OpeningFcn via varargin.
+%      stop.  All inputs are passed to LbcbPlugin1_OpeningFcn via varargin.
 %
 %      *See GUI Options on GUIDE's Tools menu.  Choose "GUI allows only one
 %      instance to run (singleton)".
 %
 % See also: GUIDE, GUIDATA, GUIHANDLES
 
-% Edit the above text to modify the response to help LbcbPlugin
+% Edit the above text to modify the response to help LbcbPlugin1
 
-% Last Modified by GUIDE v2.5 09-Dec-2009 13:16:37
+% Last Modified by GUIDE v2.5 09-Dec-2009 13:16:46
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
 gui_State = struct('gui_Name',       mfilename, ...
                    'gui_Singleton',  gui_Singleton, ...
-                   'gui_OpeningFcn', @LbcbPlugin_OpeningFcn, ...
-                   'gui_OutputFcn',  @LbcbPlugin_OutputFcn, ...
+                   'gui_OpeningFcn', @LbcbPlugin1_OpeningFcn, ...
+                   'gui_OutputFcn',  @LbcbPlugin1_OutputFcn, ...
                    'gui_LayoutFcn',  [] , ...
                    'gui_Callback',   []);
 if nargin && ischar(varargin{1})
@@ -44,15 +44,15 @@ end
 % End initialization code - DO NOT EDIT
 
 
-% --- Executes just before LbcbPlugin is made visible.
-function LbcbPlugin_OpeningFcn(hObject, eventdata, handles, varargin) %#ok<*INUSL>
+% --- Executes just before LbcbPlugin1 is made visible.
+function LbcbPlugin1_OpeningFcn(hObject, eventdata, handles, varargin) %#ok<*INUSL>
 % This function has no output args, see OutputFcn.
 % hObject    handle to figure
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-% varargin   command line arguments to LbcbPlugin (see VARARGIN)
+% varargin   command line arguments to LbcbPlugin1 (see VARARGIN)
 
-% Choose default command line output for LbcbPlugin
+% Choose default command line output for LbcbPlugin1
 handles.output = hObject;
 hfact = {};
 handles.notimer = 0;
@@ -81,12 +81,12 @@ DataDisplay.setMenuHandle(handles);
 
 % h = handles
 
-% UIWAIT makes LbcbPlugin wait for user response (see UIRESUME)
+% UIWAIT makes LbcbPlugin1 wait for user response (see UIRESUME)
  uiwait(handles.LbcbPlugin);
 
 
 % --- Outputs from this function are returned to the command line.
-function varargout = LbcbPlugin_OutputFcn(hObject, eventdata, handles) 
+function varargout = LbcbPlugin1_OutputFcn(hObject, eventdata, handles) 
 % varargout  cell array for returning output args (see VARARGOUT);
 % hObject    handle to figure
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -997,7 +997,7 @@ end
 
 % --- Executes during object deletion, before destroying properties.
 function LbcbPlugin_DeleteFcn(hObject, eventdata, handles)
-% hObject    handle to LbcbPlugin (see GCBO)
+% hObject    handle to LbcbPlugin1 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
