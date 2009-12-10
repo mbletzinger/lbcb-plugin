@@ -41,20 +41,20 @@ classdef OpenCloseOm < OmState
         end
         function done = isDone(me)
             done = 0;
+            a = me.omActions.getState();
+            me.log.debug(dbstack,sprintf('OpenCloseOm action is %s',a));
             mlDone = me.mdlLbcb.isDone();
+            me.state.setState(me.mdlLbcb.state.getState());
+            me.log.debug(dbstack,sprintf('OpenClose state is %s',me.state.getState()));
             if mlDone == 0
                 return;
             end
-            me.state.setState(me.mdlLbcb.state.getState());
-            me.log.debug(dbstack,sprintf('OpenClose state is %s',me.state.getState()));
 
             if me.state.isState('ERRORS EXIST')
                 done = 1;
                 me.connectionError();
                 return;
             end
-            a = me.omActions.getState();
-            me.log.debug(dbstack,sprintf('OpenCloseOm action is %s',a));
             switch a
                 case 'CONNECTING'
                     me.connect();
@@ -83,6 +83,7 @@ classdef OpenCloseOm < OmState
     methods (Access=private)
         function openingSession(me)
             me.connectionStatus.setState('CONNECTED');
+            me.gui.colorButton('CONNECT OM','ON');
             me.omActions.setState('DONE');            
         end
         function closingSession(me)
@@ -103,6 +104,7 @@ classdef OpenCloseOm < OmState
         end
         function disconnect(me)
             me.connectionStatus.setState('DISCONNECTED');
+            me.gui.colorButton('CONNECT OM','OFF');
             me.omActions.setState('DONE');            
         end
     end
