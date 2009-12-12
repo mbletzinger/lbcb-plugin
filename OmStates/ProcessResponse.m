@@ -11,6 +11,7 @@
 % =====================================================================================================================
 classdef ProcessResponse < OmState
     properties
+        log = Logger('ProcessResponse');
     end
     methods
         function start(me)

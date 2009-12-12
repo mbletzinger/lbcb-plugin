@@ -1,4 +1,4 @@
-function updateCommandLimits(me,lc)
+function updateLimits(me,lc)
 faults1 = lc.cl.faults1;
 faults2 = lc.cl.faults2;
 commands1 = lc.cl.commands1;

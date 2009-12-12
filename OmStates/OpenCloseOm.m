@@ -9,6 +9,7 @@ classdef OpenCloseOm < OmState
             });
          connectionStatus = StateEnum({'CONNECTED','DISCONNECTED','ERRORED'});
         closeIt = 0;
+        log = Logger('OpenCloseOm');
    end
     methods
         function me = OpenCloseOm()

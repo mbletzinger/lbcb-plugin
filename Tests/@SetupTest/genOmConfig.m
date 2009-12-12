@@ -1,11 +1,11 @@
 function genOmConfig(me)
 ocfg = OmConfigDao(me.cfg);
-sensorNames = cell(15,1);
-apply2Lbcb = cell(15,1);
+sensorNames = cell(6,1);
+apply2Lbcb = cell(6,1);
 sensorNames(1:6,1) = {'Ext.Long.LBCB2' 'Ext.Tranv.TopLBCB2' 'Ext.Tranv.Bot.LBCB2',...
     'Ext.Long.LBCB1', 'Ext.Tranv.LeftLBCB1' 'Ext.Tranv.RightLBCB1'}';
 apply2Lbcb(1:6,1) = {'LBCB2' 'LBCB2' 'LBCB2' 'LBCB1' 'LBCB1' 'LBCB1'}';
-sensitivities = ones(15,1) * 0.99994;
+sensitivities = ones(6,1) * 0.99994;
 ocfg.sensorNames = sensorNames;
 ocfg.apply2Lbcb = apply2Lbcb;
 ocfg.numLbcbs = 2;

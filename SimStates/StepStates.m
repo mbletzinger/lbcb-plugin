@@ -15,6 +15,7 @@ classdef StepStates < SimStates
             'BROADCAST TRIGGER',...
             'DONE'
             });
+        log = Logger('StepStates');
     end
     methods
         function start(me,steps)

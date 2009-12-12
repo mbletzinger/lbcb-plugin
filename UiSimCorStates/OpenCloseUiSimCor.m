@@ -8,6 +8,7 @@ classdef OpenCloseUiSimCor < UiSimCorState
             });
          connectionStatus = StateEnum({'CONNECTED','DISCONNECTED','ERRORED'});
         closeIt = 0;
+        log = Logger('OpenCloseUiSimCor');
    end
     methods
         function me = OpenCloseUiSimCor()

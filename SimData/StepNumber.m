@@ -16,7 +16,7 @@ classdef StepNumber < handle
         subStep = 0;
         correctionStep = 0;
         id = 0;
-        log = Logger;
+        log = Logger('StepNumber');
     end
     methods
         function me = StepNumber(step, subStep, cStep)

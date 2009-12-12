@@ -4,7 +4,7 @@ classdef StepTolerances < handle
         diffs = zeros(12,1);
         window = [];
         used = [];
-        log = Logger;
+        log = Logger('StepTolerances');
         cfg = [];
         isLbcb1 = 0;
     end

@@ -5,7 +5,7 @@ classdef StepData < handle
         stepNum = {}; % StepNumber instance
         externalSensorsRaw = [];
         dData = DerivedData;
-        log = Logger;
+        log = Logger('StepData');
         jid = {};
         mdlLbcb = [];
         cdp = [];

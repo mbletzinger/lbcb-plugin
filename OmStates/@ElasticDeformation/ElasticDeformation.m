@@ -28,7 +28,7 @@ classdef ElasticDeformation < handle
         activeDofs = [];
         correctionDeltas = zeros(6,1);
         cdp = [];
-        log = Logger;
+        log = Logger('ElasticDeformation');
         isLbcb1 = 0;
     end
     methods

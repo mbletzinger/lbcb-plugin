@@ -3,7 +3,7 @@ classdef DataDisplay < handle
         dataTable = {};
         totalFxVsLbcbDxL1 = {};
         totalFxVsLbcbDxL2 = {};
-        log = Logger;
+        log = Logger('DataDisplay');
     end
     methods
         function me = DataDisplay()

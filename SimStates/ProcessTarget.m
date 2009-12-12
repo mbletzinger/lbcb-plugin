@@ -10,6 +10,7 @@ classdef ProcessTarget < SimStates
         accepted;
         autoAccept;
         target;
+        log = Logger('ProcessTarget');
     end
     methods
         function me = ProcessTarget()

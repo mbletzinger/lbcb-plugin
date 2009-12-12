@@ -5,7 +5,7 @@ classdef CommandLimits < handle
         limits = [];
         commands1 = zeros(12,1);
         commands2 = zeros(12,1);
-        log = Logger;
+        log = Logger('CommandLimits');
         cfg = [];
     end
     methods
