@@ -1,7 +1,7 @@
 classdef LbcbPluginResults < handle
     properties
         handles = [];
-        cfg = [];
+        hfact = [];
         %text box handles 1 = LBCB1, 2 = LBCB 2
         commandLimitsHandles1 = {};
         commandLimitsHandles2 = {};
@@ -21,7 +21,7 @@ classdef LbcbPluginResults < handle
         msgHandle = [];
         cmdTableHandle = [];
         
-        log = Logger;
+        log = Logger('LbcbPluginResults');
         buttonStatus = StateEnum({...
             'ON',...
             'OFF',...
@@ -37,12 +37,12 @@ classdef LbcbPluginResults < handle
 
     end
     methods
-        function me  = LbcbPluginResults(handles,cfg)
+        function me  = LbcbPluginResults(handles,hfact)
             me.handles = handles;
-            me.cfg = cfg;
+            me.hfact = hfact;
         end
         initialize(me)
-        updateCommandLimits(me,cl,il)
+        updateLimits(me,cl,il)
         updateStepTolerances(me,st)
         updateStepsDisplay(me,simStep)
         colorButton(me,buttonName,bs)

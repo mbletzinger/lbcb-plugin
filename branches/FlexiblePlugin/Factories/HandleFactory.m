@@ -88,7 +88,7 @@ classdef HandleFactory <  handle
             me.cl = CommandLimits(me.cfg);
             lc.cl = me.cl;
             lc.il = me.il;
-            me.gui = LbcbPluginResults(handle,cfg);
+            me.gui = LbcbPluginResults(handle,me);
             
             
             me.ed{1} = ElasticDeformation(cdp,0);
@@ -151,7 +151,7 @@ classdef HandleFactory <  handle
             
         end
         function setGuiHandle(me, handle)
-            me.gui = LbcbPluginResults(handle,me.cfg);
+            me.gui = LbcbPluginResults(handle,me);
             for c =1:length(me.omStates)
                 me.omStates{c}.gui = me.gui;                                
             end

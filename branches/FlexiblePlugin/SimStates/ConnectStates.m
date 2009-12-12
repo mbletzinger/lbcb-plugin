@@ -7,6 +7,7 @@ classdef ConnectStates < SimStates
             'CLOSE SIMCOR CONNECTION'...
             });
         ocSimCor
+        log = Logger('ConnectStates');
     end
     methods
         function start(me,action)

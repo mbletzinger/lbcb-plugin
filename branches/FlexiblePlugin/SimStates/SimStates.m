@@ -3,7 +3,6 @@ classdef SimStates < handle
         gui = [];
         cdp = [];
         ocOm = [];
-        log = Logger;
         dat = [];
         nxtStep = [];
         sdf = [];

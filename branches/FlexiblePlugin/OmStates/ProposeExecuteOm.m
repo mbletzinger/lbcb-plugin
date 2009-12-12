@@ -5,6 +5,7 @@ classdef ProposeExecuteOm < OmState
             'PROPOSE', ...
             });
         id = {}
+        log = Logger('ProposeExecuteOm');
     end
     methods
         function start(me)

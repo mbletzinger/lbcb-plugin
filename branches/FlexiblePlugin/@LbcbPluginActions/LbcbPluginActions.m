@@ -7,7 +7,7 @@ classdef LbcbPluginActions < handle
             'RUN SIMULATION',...
             'READY'...
             });
-        log = Logger;
+        log = Logger('LbcbPluginActions');
         startStep
         prevExecute
     end
@@ -30,6 +30,7 @@ classdef LbcbPluginActions < handle
                 me.hfact = hfact;
                 me.hfact.setGuiHandle(handles);                
             end
+            me.hfact.gui.initialize();
             lcfg = LogLevelsDao(me.hfact.cfg);
             Logger.setCmdLevel(lcfg.cmdLevel);
             Logger.setMsgLevel(lcfg.msgLevel);

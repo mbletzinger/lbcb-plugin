@@ -16,6 +16,7 @@ classdef TargetStates < SimStates
         prcsTgt = [];
         inF = [];
         startStep
+        log = Logger('TargetStates');
     end
     methods
         start(me,stepNumber)

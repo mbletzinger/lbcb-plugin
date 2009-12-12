@@ -14,6 +14,7 @@ classdef NextStep < OmState
         steps = [];
         stepsCompleted = 0;
         st = [];
+        log = Logger('NextStep');
         
     end
     methods

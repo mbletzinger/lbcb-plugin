@@ -21,17 +21,9 @@ classdef ConfigDaoProvider < handle
         end
         function [n s a] = getExtSensors(me)
             ocfg = OmConfigDao(me.cfg);
-            names = ocfg.sensorNames;
-            sensitivities = ocfg.sensitivities;
-            applied = ocfg.apply2Lbcb;
-            lgth = 1;
-            while isempty(applied{lgth}) == 0
-                lgth = lgth + 1;
-            end
-            lgth = lgth - 1;
-            n = names(1:lgth);
-            s = sensitivities(1:lgth);
-            a = applied(1:lgth);
+            n = ocfg.sensorNames;
+            s = ocfg.sensitivities;
+            a = ocfg.apply2Lbcb;
         end
         function [n s a] = getFilteredExtSensors(me,isLbcb1)
             il = 1;

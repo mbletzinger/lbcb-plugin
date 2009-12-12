@@ -5,7 +5,6 @@ classdef OmState < handle
             'READY', ...
             'ERRORS EXIST' ...
             });
-        log = Logger;
         mdlLbcb = [];
         cdp = [];
         dd = [];

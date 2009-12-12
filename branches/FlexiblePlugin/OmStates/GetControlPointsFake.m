@@ -2,7 +2,7 @@ classdef GetControlPointsFake < handle
     properties
         cdp = {};
         drvO = {};
-        log = Logger;
+        log = Logger('GetControlPointsFake');;
         dat
     end
     methods

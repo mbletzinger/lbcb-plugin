@@ -3,7 +3,7 @@ classdef  InputFile < Substeps
     filename = '';
     specfilename = '';
     commandDofs = [];
-    log = Logger;
+    log = Logger('InputFile');
     sdf = [];
     end
     methods

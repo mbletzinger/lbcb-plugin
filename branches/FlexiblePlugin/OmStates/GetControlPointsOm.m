@@ -6,6 +6,7 @@ classdef GetControlPointsOm < OmState
             'ExternalSensors',...
             'DONE',...
             });
+        log = Logger('GetControlPointsOm');
         
     end
     methods

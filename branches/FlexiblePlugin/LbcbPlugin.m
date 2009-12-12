@@ -22,7 +22,7 @@ function varargout = LbcbPlugin(varargin)
 
 % Edit the above text to modify the response to help LbcbPlugin
 
-% Last Modified by GUIDE v2.5 09-Dec-2009 13:16:37
+% Last Modified by GUIDE v2.5 11-Dec-2009 22:00:34
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -108,7 +108,7 @@ if handles.notimer
     LbcbPluginActions.execute([],[],handles.actions);
 
 else
-    handles.actions.setRunButton(get(hObject,'Value'));
+    handles.actions.processRunHold(get(hObject,'Value'));
 end
 
 % --- Executes on button press in Connect2Om.
@@ -1031,9 +1031,9 @@ else
     set(hObject,'Checked','on');
 end
 
-% --- Executes on button press in AutoAccept.
+% --- Executes on button press in commandtable.
 function AutoAccept_Callback(hObject, eventdata, handles)
-% hObject    handle to AutoAccept (see GCBO)
+% hObject    handle to commandtable (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 handles.actions.processAutoAccept(get(hObject,'Value'));
@@ -1075,3 +1075,26 @@ function startStep_Callback(hObject, eventdata, handles)
 % Hints: get(hObject,'String') returns contents of startStep as text
 %        str2double(get(hObject,'String')) returns contents of startStep as a double
 handles.actions.setStartStep(get(hObject,'String'));
+
+
+% --------------------------------------------------------------------
+function StepConfig_Callback(hObject, eventdata, handles)
+% hObject    handle to StepConfig (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+StepConfig('cfg',handles.actions.hfact.cfg);
+
+% --------------------------------------------------------------------
+function TargetConfig_Callback(hObject, eventdata, handles)
+% hObject    handle to TargetConfig (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+TargetConfig('cfg',handles.actions.hfact.cfg);
+
+
+% --------------------------------------------------------------------
+function DerivedDofFactors_Callback(hObject, eventdata, handles)
+% hObject    handle to DerivedDofFactors (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+DerivedDofConfig('cfg',handles.actions.hfact.cfg);

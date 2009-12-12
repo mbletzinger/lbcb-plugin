@@ -7,8 +7,12 @@ classdef Logger < handle
             'WARNING',...
             'ERROR'...
             });
+        class
     end
     methods
+        function me = Logger(class)
+            me.class = class;
+        end
         function debug(me,stack,msg)
            me.process('DEBUG',stack,msg);
         end
@@ -47,9 +51,9 @@ classdef Logger < handle
                 set(hnd,'String',nmsgs);
             end
         end
-        function str = sstring(me, stack) %#ok<MANU>
+        function str = sstring(me, stack) 
             if length(stack) > 1
-            str = sprintf('%s>%s,%d',stack(1).file,stack(1).name,stack(1).line);
+            str = sprintf('%s.%s>%s,%d',me.class,stack(1).file,stack(1).name,stack(1).line);
             else
                 str = 'MAIN';
             end

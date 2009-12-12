@@ -5,7 +5,6 @@ classdef UiSimCorState < handle
             'READY', ...
             'ERRORS EXIST' ...
             });
-        log = Logger;
         mdlUiSimCor = [];
         cdp = [];
         gui = [];

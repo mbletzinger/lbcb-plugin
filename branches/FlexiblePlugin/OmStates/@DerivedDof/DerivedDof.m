@@ -18,7 +18,7 @@ classdef DerivedDof < handle
         Fztarget = 250; % temporary hard-coded values
         Fz1tar = 0;
         Fz2tar = 0;
-        log = Logger;
+        log = Logger('DerivedDof');
         cdp;
     end
     methods
@@ -27,5 +27,6 @@ classdef DerivedDof < handle
         end
         calculate(me,cstep)
         adjustTarget(me,step)
+        loadConfig(me)
     end
 end
