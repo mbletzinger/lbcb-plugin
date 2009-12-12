@@ -9,18 +9,18 @@ inc1 = lc.il.increments1;
 inc2 = lc.il.increments2;
 
 for f = 1:12
-    h1 = cell(2,1);
-    h2 = cell(2,1);
-    i1 = [];
-    i2 = [];
     if isempty(me.commandCurrentValueHandles1)
+        h1 = cell(2,1);
+        h2 = cell(2,1);
+        i1 = [];
+        i2 = [];
 %         me.log.info(dbstack,sprintf('LBCB 1 %s command %f & increment %f',...
 %             me.dofLabel{f},commands1(f),inc1(f)));
 %         me.log.info(dbstack,sprintf('LBCB 2 %s command %f & increment %f',...
 %             me.dofLabel{f},commands2(f),inc2(f)));
     else
-        h1 = me.commandLimitsHandles1{f,:};
-        h2 = me.commandLimitsHandles2{f,:};
+        h1 = me.commandLimitsHandles1(f,:);
+        h2 = me.commandLimitsHandles2(f,:);
         i1 = me.incrementLimitsHandles1{f};
         i2 = me.incrementLimitsHandles2{f};
         set(me.commandCurrentValueHandles1{f},'String',sprintf('%f',commands1(f)));

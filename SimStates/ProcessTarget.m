@@ -37,7 +37,7 @@ classdef ProcessTarget < SimStates
             switch me.currentAction.getState()
                 case 'CHECK LIMITS'
                     within = me.withinLimits();
-                    me.gui.updateCommandLimits(me.lc);
+                    me.gui.updateLimits(me.lc);
                     if within
                         if me.accepted
                             me.dat.targetShift(me.target);
