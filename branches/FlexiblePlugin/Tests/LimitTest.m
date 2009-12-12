@@ -18,6 +18,6 @@ for l = 1:1
     prcsTgt.autoAccept = true;
     done = 0;
     tgtEx.targetSource.setState('INPUT FILE');
-    LbcbPlugin('hfact',s.hfact,'notimer',1);
+    LbcbPlugin('hfact',s.hfact,'notimer',0);
     delete(s);
 end;

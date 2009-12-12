@@ -104,7 +104,9 @@ function RunHold_Callback(hObject, eventdata, handles) %#ok<*INUSD,*DEFNU>
 if handles.notimer
     % Used for debugging the software
     disp('no timer execution');
+    if handles.actions.currentExecute.isState('READY')
     handles.actions.startSimulation();
+    end
     LbcbPluginActions.execute([],[],handles.actions);
 
 else
