@@ -19,6 +19,7 @@ classdef ProcessResponse < OmState
             me.derivedDofCalculate();
         end
         function done = isDone(me)
+            me.statusReady();
             done = 1;
         end
     end

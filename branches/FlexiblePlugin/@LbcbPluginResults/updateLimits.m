@@ -14,10 +14,10 @@ for f = 1:12
         h2 = cell(2,1);
         i1 = [];
         i2 = [];
-%         me.log.info(dbstack,sprintf('LBCB 1 %s command %f & increment %f',...
-%             me.dofLabel{f},commands1(f),inc1(f)));
-%         me.log.info(dbstack,sprintf('LBCB 2 %s command %f & increment %f',...
-%             me.dofLabel{f},commands2(f),inc2(f)));
+        %         me.log.info(dbstack,sprintf('LBCB 1 %s command %f & increment %f',...
+        %             me.dofLabel{f},commands1(f),inc1(f)));
+        %         me.log.info(dbstack,sprintf('LBCB 2 %s command %f & increment %f',...
+        %             me.dofLabel{f},commands2(f),inc2(f)));
     else
         h1 = me.commandLimitsHandles1(f,:);
         h2 = me.commandLimitsHandles2(f,:);
@@ -34,5 +34,8 @@ for f = 1:12
     end
     me.colorFaultText(i1,ifaults1(f));
     me.colorFaultText(i2,ifaults2(f));
+end
+if isempty(me.commandCurrentValueHandles1) == false
+    me.updateGui();
 end
 end

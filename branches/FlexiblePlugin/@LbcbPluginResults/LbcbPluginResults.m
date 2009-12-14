@@ -50,11 +50,11 @@ classdef LbcbPluginResults < handle
         updateGui(me)
         updateCommands(me,ssd)
         blinkAcceptButton(me,on)
+        setLimit(me,hndl,dof,used,limit)
         
     end
     methods (Access=private)
         colorFaultText(me,hndl,fault,isLbcb1,f)
         colorToleranceText(me,hndl,fault,isLbcb1,f)
-        setLimit(me,hndl,dof,used,limit)
     end
 end

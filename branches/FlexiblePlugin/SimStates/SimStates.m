@@ -1,4 +1,4 @@
-classdef SimStates < handle
+classdef SimStates < States
     properties
         gui = [];
         cdp = [];
@@ -6,11 +6,6 @@ classdef SimStates < handle
         dat = [];
         nxtStep = [];
         sdf = [];
-        state = StateEnum({...
-            'BUSY',...
-            'COMPLETED',...
-            'ERRORS EXIST'...
-            });
         
     end
     methods

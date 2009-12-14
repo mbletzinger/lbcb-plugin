@@ -23,6 +23,7 @@ classdef ConnectStates < SimStates
                 otherwise
                     me.log(dbstack,sprintf('%s action not recognized',action));
             end
+            me.statusBusy();
             me.currentAction.setState(action);
         end
         function done = isDone(me)
@@ -30,18 +31,12 @@ classdef ConnectStates < SimStates
                 case { 'OPEN OM CONNECTION' 'CLOSE OM CONNECTION'}
                     done = me.ocOm.isDone();
                     if done
-                        if me.ocOm.state.isState('ERRORS EXIST') == 0
-                            me.state.setState('ERRORS EXIST');
-                        end
-                        me.state.setState('COMPLETED');
+                        me.setStatus(me.ocOm.status);
                     end
                 case { 'OPEN SIMCOR CONNECTION' 'CLOSE SIMCOR CONNECTION' }
                     done = me.ocSimCor.isDone();
                     if done
-                        if me.ocSimCor.state.isState('ERRORS EXIST') == 0
-                            me.state.setState('ERRORS EXIST');
-                        end
-                        me.state.setState('COMPLETED');
+                        me.setStatus(me.ocOm.status);
                     end
                 otherwise
                     me.log(dbstack,sprintf('%s action not recognized',action));

@@ -11,4 +11,5 @@ else
     nmsgs = [ msgs; {msg}];
 end
 set(me.msgHandle,'String',nmsgs);
+me.updateGui();
 end
