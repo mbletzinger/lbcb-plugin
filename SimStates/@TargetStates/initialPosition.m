@@ -7,6 +7,7 @@ me.dat.curTarget = me.dat.curStepData;
 me.dat.curTarget.lbcbCps{1}.command.disp = disp(1:6);
 me.dat.curTarget.lbcbCps{1}.command.force = force(1:6);
 if me.cdp.numLbcbs == 2
+    me.dat.curTarget.lbcbCps{2}.command.disp = disp(7:12);
     me.dat.curTarget.lbcbCps{2}.command.force = force(7:12);
 end
 me.currentAction.setState('WAIT FOR TARGET');

@@ -37,6 +37,7 @@ classdef OpenCloseOm < OmState
                 end
             else
                 me.mdlLbcb.open();
+                me.statusBusy();
                 me.omActions.setState('CONNECTING');
             end
         end
@@ -45,13 +46,11 @@ classdef OpenCloseOm < OmState
             a = me.omActions.getState();
             me.log.debug(dbstack,sprintf('OpenCloseOm action is %s',a));
             mlDone = me.mdlLbcb.isDone();
-            me.state.setState(me.mdlLbcb.state.getState());
-            me.log.debug(dbstack,sprintf('OpenClose state is %s',me.state.getState()));
             if mlDone == 0
                 return;
             end
 
-            if me.state.isState('ERRORS EXIST')
+            if me.mdlLbb.state.isState('ERRORS EXIST')
                 done = 1;
                 me.connectionError();
                 return;
@@ -67,6 +66,7 @@ classdef OpenCloseOm < OmState
                     me.openingSession();
                 case 'DONE'
                     done = 1;
+                    me.statusReady();
                 otherwise
                     done = 1;
                     me.log.error(dbstack(),sprintf('%s not recognized',a));
@@ -77,6 +77,7 @@ classdef OpenCloseOm < OmState
             me.gui.colorRunButton('BROKEN'); % Pause the simulation
             me.gui.colorButton('CONNECT OM','BROKEN');
             me.omActions.setState('DONE');            
+            me.statusErrored();
             me.log.error(dbstack,...
                 sprintf('OM link has been disconnected due to errors')); 
         end

@@ -21,4 +21,7 @@ for f = 1:12
     me.colorToleranceText(t1,within1(f),1,f);
     me.colorToleranceText(t2,within2(f),0,f);
 end
+if isempty(me.toleranceCurrentValueHandles1) == false
+    me.updateGui();
+end
 end

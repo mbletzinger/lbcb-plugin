@@ -1,5 +1,9 @@
 function processTarget(me)
 done = me.prcsTgt.isDone;
+me.setStatus(me.prcsTgt.status);
+if me.hasErrors()
+    return;
+end
 if done == false
     return;
 end

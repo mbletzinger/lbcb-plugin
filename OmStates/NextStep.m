@@ -23,6 +23,7 @@ classdef NextStep < OmState
         end
         function done = isDone(me)
             done = 1;
+            me.statusReady();
             if me.steps.started == false
                 me.dat.nextStepData = me.steps.next();
                 me.dat.correctionTarget = me.dat.nextStepData;

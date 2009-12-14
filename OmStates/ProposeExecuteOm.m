@@ -10,20 +10,22 @@ classdef ProposeExecuteOm < OmState
     methods
         function start(me)
             me.startPropose();
+            me.statusBusy();
         end
         function done = isDone(me)
             done = 0;
             if me.mdlLbcb.isDone() == 0
                 return;
             end
-            me.state.setState(me.mdlLbcb.state.getState);
-            if me.state.isState('ERRORS EXIST')
+            if me.mdlLbcb.state.isState('ERRORS EXIST')
+                me.statusErrored();
                 done = 1;
                 return;
             end
             a = me.action.getState();
             switch a
                 case 'DONE'
+                    me.statusReady();
                     done = 1;
                 case 'PROPOSE'
                     me.startExecute();
@@ -39,7 +41,6 @@ classdef ProposeExecuteOm < OmState
             jmsg = me.dat.nextStepData.generateOmProposeMsg();
             me.log.debug(dbstack,sprintf('Sending %s',char(jmsg)));
             me.mdlLbcb.start(jmsg,stepNum,1);
-            me.state.setState('BUSY');
             me.action.setState('PROPOSE');
         end
         function startExecute(me)
@@ -48,7 +49,6 @@ classdef ProposeExecuteOm < OmState
             jmsg = me.mdlLbcb.createCommand('execute',address,[],[]);
             me.log.debug(dbstack,sprintf('Sending %s',char(jmsg)));
             me.mdlLbcb.start(jmsg,stepNum,0);
-            me.state.setState('BUSY');
             me.action.setState('DONE');
         end
     end

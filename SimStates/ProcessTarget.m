@@ -20,14 +20,14 @@ classdef ProcessTarget < SimStates
         function start(me,target)
             me.target = target;
             me.currentAction.setState('CHECK LIMITS');
-            me.state.setState('BUSY');
+            me.statusBusy();
             me.accepted = me.autoAccept;
             me.gui.blinkAcceptButton(~me.accepted);
-
+            me.log.debug(dbstack,sprintf('Current Target: %s',target.toString()));
         end
         function edited(me)
             me.currentAction.setState('CHECK LIMITS');
-            me.state.setState('BUSY');
+            me.statusBusy();
             me.accepted = me.autoAccept;
             me.gui.blinkAcceptButton(~me.accepted);
         end
@@ -42,11 +42,13 @@ classdef ProcessTarget < SimStates
                         if me.accepted
                             me.dat.targetShift(me.target);
                             me.currentAction.setState('DONE');
+                            me.statusReady();
                         else
                             me.currentAction.setState('WAIT FOR ACCEPT');
                         end
                     else
                         me.currentAction.setState('LIMIT FAULTS EXIST');
+                        me.statusErrored();
                     end
                 case 'WAIT FOR ACCEPT'
                     if me.accepted
@@ -54,6 +56,7 @@ classdef ProcessTarget < SimStates
                         me.gui.blinkAcceptButton(~me.accepted);
                     end
                 case 'LIMIT FAULTS EXIST'
+                        me.currentAction.setState('CHECK LIMITS');
                 case 'DONE'
                     done = 1;
                 otherwise

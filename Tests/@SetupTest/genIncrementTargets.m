@@ -1,9 +1,8 @@
 function genIncrementTargets(me, idx,numSteps)
 d = 3*(idx - 1) + 1;
 m = me.getMultiplier(d);
-min = me.minV *m;
 itv = me.maxW * m / (numSteps - 2);
-start = min + itv;
+start = 1; % Determined by what the fake OM generates for the initial position
 me.log.debug(dbstack,sprintf('d=%d start=%f itv=%f',d,start,itv));
 for i = d: d + 2
     me.cDofs(1,i) = 1;

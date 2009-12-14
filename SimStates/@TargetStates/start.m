@@ -3,4 +3,5 @@ me.currentAction.setState('INITIAL POSITION');
 me.inF.sIdx = stepNumber;
 me.startStep = stepNumber;
 me.stpEx.getInitialPosition();
+me.statusBusy();
 end

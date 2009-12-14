@@ -23,12 +23,12 @@ classdef StepStates < SimStates
             me.nxtStep.stepsCompleted = false;
             me.gettingInitialPosition = false;
             me.currentAction.setState('NEXT STEP');
-            me.state.setState('BUSY');
+            me.statusBusy();
         end
         function getInitialPosition(me)
             me.gettingInitialPosition = true;
             me.currentAction.setState('OM GET CONTROL POINTS');
-            me.state.setState('BUSY');
+            me.statusBusy();
         end
         function done = isDone(me)
             done = 0;
@@ -39,7 +39,7 @@ classdef StepStates < SimStates
                     if odone % Next target is ready
                         if me.nxtStep.stepsCompleted  %  No more targets
                             me.log.info(dbstack,'Steps are done');
-                            me.state.setState('COMPLETED');
+                            me.statusReady();
                             me.currentAction.setState('DONE');
                             done = 1;
                         else % Execute next step
@@ -52,9 +52,9 @@ classdef StepStates < SimStates
                     if me.isFake() == 0
                         odone = me.peOm.isDone();
                         if odone % execute response has been received from OM
-                            if me.peOm.state.isState('ERRORS EXIST')
+                            if me.peOm.hasErrors()
                                 me.ocOm.connectionError();
-                                me.state.setState('ERRORS EXIST');
+                                me.statusErrored();
                                 me.currentAction.setState('DONE');
                                 done = 1;
                             end
@@ -82,9 +82,9 @@ classdef StepStates < SimStates
                     else
                         odone = me.gcpOm.isDone();
                         if odone
-                            if me.peOm.state.isState('ERRORS EXIST')
+                            if me.peOm.hasErrors()
                                 me.ocOm.connectionError();
-                                me.state.setState('ERRORS EXIST');
+                                me.statusErrored();
                                 me.currentAction.setState('DONE');
                                 done = 1;
                             end
@@ -106,6 +106,7 @@ classdef StepStates < SimStates
                         me.currentAction.setState('NEXT STEP');
                     end
                 case 'DONE'
+                    me.statusReady();
                     done = 1;
                 otherwise
                     me.log.error(dbstack,sprintf('%s action not recognized',me.currentAction.getState()));
