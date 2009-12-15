@@ -62,15 +62,15 @@ if isempty(me.handles) == 0
     
     for i = 1:12
         if cl.limits.used1(i)
-            set(me.commandLimitsHandles1{i,1},'String', sprintf('%f',cl.limits.upper1(i)));
-            set(me.commandLimitsHandles1{i,2},'String', sprintf('%f',cl.limits.lower1(i)));
+            set(me.commandLimitsHandles1{i,1},'String', sprintf('%f',cl.limits.lower1(i)));
+            set(me.commandLimitsHandles1{i,2},'String', sprintf('%f',cl.limits.upper1(i)));
         else
             set(me.commandLimitsHandles1{i,1},'String', '');
             set(me.commandLimitsHandles1{i,2},'String', '');
         end
         if cl.limits.used2(i)
-            set(me.commandLimitsHandles2{i,1},'String', sprintf('%f',cl.limits.upper2(i)));
-            set(me.commandLimitsHandles2{i,2},'String', sprintf('%f',cl.limits.lower2(i)));
+            set(me.commandLimitsHandles2{i,1},'String', sprintf('%f',cl.limits.lower2(i)));
+            set(me.commandLimitsHandles2{i,2},'String', sprintf('%f',cl.limits.upper2(i)));
         else
             set(me.commandLimitsHandles2{i,1},'String', '');
             set(me.commandLimitsHandles2{i,2},'String', '');

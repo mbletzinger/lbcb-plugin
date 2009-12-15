@@ -43,4 +43,5 @@ else
         me.hfact.cl.limits.upper2(dof) = n;
     end
 end
+me.hfact.prcsTgt.edited();
 end

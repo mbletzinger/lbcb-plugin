@@ -47,6 +47,7 @@ classdef StepStates < SimStates
                             me.currentAction.setState('OM PROPOSE EXECUTE');
                             me.gui.updateStepTolerances(me.nxtStep.st);
                             me.gui.updateCommandTable();
+                            me.gui.updateStepsDisplay(me.dat.nextStepData.stepNum);
                         end
                     end
                 case 'OM PROPOSE EXECUTE'

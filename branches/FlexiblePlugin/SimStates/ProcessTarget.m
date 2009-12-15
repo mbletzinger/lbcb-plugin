@@ -3,7 +3,6 @@ classdef ProcessTarget < SimStates
         currentAction = StateEnum({...
             'CHECK LIMITS',...
             'WAIT FOR ACCEPT',...
-            'LIMIT FAULTS EXIST',...
             'DONE'
             });
         lc
@@ -49,7 +48,6 @@ classdef ProcessTarget < SimStates
                             me.currentAction.setState('WAIT FOR ACCEPT');
                         end
                     else
-                        me.currentAction.setState('LIMIT FAULTS EXIST');
                         me.statusErrored();
                     end
                 case 'WAIT FOR ACCEPT'
@@ -57,8 +55,6 @@ classdef ProcessTarget < SimStates
                         me.currentAction.setState('CHECK LIMITS');
                         me.gui.blinkAcceptButton(~me.accepted);
                     end
-                case 'LIMIT FAULTS EXIST'
-                        me.currentAction.setState('CHECK LIMITS');
                 case 'DONE'
                     done = 1;
                 otherwise

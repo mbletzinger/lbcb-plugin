@@ -34,6 +34,7 @@ classdef LbcbPluginResults < handle
             });
         lLabel = {'LBCB1' 'LBCB2'};
         dofLabel = {'Dx' 'Dy' 'Dz' 'Rx' 'Ry' 'Rz' 'Fx' 'Fy' 'Fz' 'Mx' 'My' 'Mz' };
+        cmdTable
 
     end
     methods
