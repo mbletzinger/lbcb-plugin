@@ -25,6 +25,8 @@ else
     me.hfact.il.limits.used2(dof) = 1;
     me.hfact.il.limits.window2(dof) = n;
 end
-me.hfact.prcsTgt.edited();
+if me.currentExecute.isState('RUN SIMULATION')
+    me.hfact.prcsTgt.edited();
+end
 end
 

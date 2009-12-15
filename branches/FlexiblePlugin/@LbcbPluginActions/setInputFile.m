@@ -6,6 +6,8 @@ if isempty(iF)
     done = iF.load(fullfile(path,file));
 end
 if done
-    me.nxtTgt.inpF = iF;
+    me.hfact.tgtEx.inF = iF;
+    me.hfact.tgtEx.targetSource.setState('INPUT FILE');
+    
 end
 end
