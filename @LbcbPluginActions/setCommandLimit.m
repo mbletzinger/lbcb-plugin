@@ -14,15 +14,15 @@ if isempty(n)
     me.log.error(dbstack,sprintf('"%s" is not a valid input',str));
     if lbcb == 1
         if isLower
-            LbcbPluginActions.setLimit(me.commandLimitsHandles1{dof,1},dof,me.hfact.cl.limits.used1,me.hfact.cl.limits.lower1);
+            me.hfact.gui.setLimit(me.hfact.guicommandLimitsHandles1{dof,1},dof,me.hfact.cl.limits.used1,me.hfact.cl.limits.lower1);
         else
-            LbcbPluginActions.setLimit(me.commandLimitsHandles1{dof,2},dof,me.hfact.cl.limits.used1,me.hfact.cl.limits.upper1);
+            me.hfact.gui.setLimit(me.hfact.gui.commandLimitsHandles1{dof,2},dof,me.hfact.cl.limits.used1,me.hfact.cl.limits.upper1);
         end
     else
         if isLower
-            LbcbPluginActions.setLimit(me.commandLimitsHandles2{dof,1},dof,me.hfact.cl.limits.used2,me.hfact.cl.limits.lower2);
+            me.hfact.gui.setLimit(me.hfact.gui.commandLimitsHandles2{dof,1},dof,me.hfact.cl.limits.used2,me.hfact.cl.limits.lower2);
         else
-            LbcbPluginActions.setLimit(me.commandLimitsHandles2{dof,2},dof,me.hfact.cl.limits.used2,me.hfact.cl.limits.upper2);
+            me.hfact.gui.setLimit(me.hfact.gui.commandLimitsHandles2{dof,2},dof,me.hfact.cl.limits.used2,me.hfact.cl.limits.upper2);
         end
     end
     return;
@@ -43,5 +43,7 @@ else
         me.hfact.cl.limits.upper2(dof) = n;
     end
 end
-me.hfact.prcsTgt.edited();
+if me.currentExecute.isState('RUN SIMULATION')
+    me.hfact.prcsTgt.edited();
+end
 end
