@@ -930,28 +930,28 @@ function Load_Callback(hObject, eventdata, handles)
 % hObject    handle to Load (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-handles.actions.hfact.cfg.load()
+handles.actions.processConfig('LOAD');
 
 % --------------------------------------------------------------------
 function Save_Callback(hObject, eventdata, handles)
 % hObject    handle to Save (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-handles.actions.hfact.cfg.save()
+handles.actions.processConfig('SAVE');
 
 % --------------------------------------------------------------------
 function Import_Callback(hObject, eventdata, handles)
 % hObject    handle to Import (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-handles.actions.hfact.cfg.import()
+handles.actions.processConfig('IMPORT');
 
 % --------------------------------------------------------------------
 function Export_Callback(hObject, eventdata, handles)
 % hObject    handle to Export (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-handles.actions.hfact.cfg.export()
+handles.actions.processConfig('EXPORT');
 
 
 % --------------------------------------------------------------------
@@ -990,9 +990,9 @@ function DataTable_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 if strcmp(get(hObject,'Checked'),'on')
-    handles.actions.dd.stopDataTable();
+    handles.actions.hfact.gui.ddisp.stopDataTable();
 else 
-    handles.actions.dd.startDataTable();
+    handles.actions.hfact.gui.ddisp.startDataTable();
     set(hObject,'Checked','on');
 end
 
@@ -1014,9 +1014,9 @@ function TotalFxVsLbcb1Dx_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 if strcmp(get(hObject,'Checked'),'on')
-    handles.actions.dd.stopTotalFxVsLbcbDx(1);
+    handles.actions.hfact.gui.ddisp.stopTotalFxVsLbcbDx(1);
 else 
-    handles.actions.dd.startTotalFxVsLbcbDx(1);
+    handles.actions.hfact.gui.ddisp.startTotalFxVsLbcbDx(1);
     set(hObject,'Checked','on');
 end
 

@@ -88,6 +88,8 @@ classdef HandleFactory <  handle
             me.cl = CommandLimits(me.cfg);
             lc.cl = me.cl;
             lc.il = me.il;
+
+            me.dat = SimSharedData;
             me.gui = LbcbPluginResults(handle,me);
             
             
@@ -96,7 +98,7 @@ classdef HandleFactory <  handle
             me.dd = DerivedDof(cdp);
             me.st{1} = StepTolerances(me.cfg,1);
             me.st{2} = StepTolerances(me.cfg,0);
-            me.dat = SimSharedData;
+            
             me.sdf = StepDataFactory;
             me.sdf.cdp = cdp;
             me.sdf.mdlLbcb = me.mdlLbcb;

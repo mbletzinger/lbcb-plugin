@@ -57,6 +57,7 @@ classdef LbcbPluginActions < handle
         setLoggerLevels(me)
         shutdown(me)
         startSimulation(me)
+        processConfig(me,action)
     end
     methods (Static)
         execute(obj, event, me)

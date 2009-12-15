@@ -2,7 +2,7 @@ classdef StepConfigActions < handle
     properties
         handles = [];
         scfg
-        log = Logger
+        log = Logger('StepConfigActions');
         aps
         ssITable = cell(6,2);
         edflist

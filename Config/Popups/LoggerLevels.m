@@ -67,7 +67,7 @@ if(nargin > 3)
         end
     end
 end
-log = Logger;
+log = Logger('LoggerLevels');
 handles.dao = LogLevelsDao(cfg);
 popups = StateEnum(log.levelTypes.states);
 set(handles.CmdLevel,'String',popups.states');
