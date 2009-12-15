@@ -4,9 +4,13 @@ numSteps = 10;
 me.tgts = zeros(numSteps,24);
 me.cDofs = zeros(1,24);
 switch test
-    case { 'UPPER' 'LOWER' 'STEP' }
+    case { 'UPPER' 'STEP' }
         for idx = 1:4
             me.genLimitTargets(idx,1,numSteps);
+        end
+    case 'LOWER'
+        for idx = 1:4
+            me.genLimitTargets(idx,0,numSteps);
         end
     case 'INCREMENT'
         for idx = 1:4

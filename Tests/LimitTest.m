@@ -1,7 +1,7 @@
 
 loops = {'INCREMENT' 'UPPER' 'LOWER' 'STEP'};
-%for l = 1:length(loops)
-for l = 1:1
+for l = 1:length(loops)
+% for l = 1:1
     cfg = Configuration;
     s = SetupTest();
     s.cfg = cfg;

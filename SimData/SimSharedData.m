@@ -36,8 +36,9 @@ classdef SimSharedData < handle
                 for d = 1 : length(didx)
                     table{s,d} = disp(didx(d));
                 end
+                dEnd = length(didx);
                 for d = 1 : length(fidx)
-                    table{s,d} = force(fidx(d));
+                    table{s,d + dEnd} = force(fidx(d));
                 end
             end
         end

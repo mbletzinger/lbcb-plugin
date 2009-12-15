@@ -25,6 +25,5 @@ else
     me.st.limits.used2(dof) = 1;
     me.st.limits.window2(dof) = n;
 end
-
 end
 
