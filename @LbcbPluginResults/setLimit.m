@@ -1,4 +1,4 @@
-function setLimit(hndl,dof,used,limit,isLbcb1)
+function setLimit(me,hndl,dof,used,limit,isLbcb1)
 if isempty(hndl)
     if used(dof)
         me.log.info(dbstack,sprintf('Setting limit of %s dof %s to %f',...

@@ -1,5 +1,5 @@
 function processEditTarget(me)
-targets = { me.hfact.curTarget.lbcbCps{1}.command,...
-    me.hfact.curTarget.lbcbCps{2}.command };
+targets = { me.hfact.dat.curTarget.lbcbCps{1}.command,...
+    me.hfact.dat.curTarget.lbcbCps{2}.command };
 EditTarget('targets',targets);
 end

@@ -46,6 +46,7 @@ classdef StepStates < SimStates
                             me.log.debug(dbstack,sprintf('Next Step is %s',me.dat.nextStepData.toString()));
                             me.currentAction.setState('OM PROPOSE EXECUTE');
                             me.gui.updateStepTolerances(me.nxtStep.st);
+                            me.gui.updateCommandTable();
                         end
                     end
                 case 'OM PROPOSE EXECUTE'

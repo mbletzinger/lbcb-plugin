@@ -3,7 +3,7 @@ classdef OmConfigActions < handle
         handles = [];
         table;
         ocfg
-        log = Logger
+        log = Logger('OmConfigActions')
         aps
         pertTable = cell(6,2);
         selected;

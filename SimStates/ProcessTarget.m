@@ -19,9 +19,11 @@ classdef ProcessTarget < SimStates
         end
         function start(me,target)
             me.target = target;
+            me.dat.targetShift(me.target);
             me.currentAction.setState('CHECK LIMITS');
             me.statusBusy();
             me.accepted = me.autoAccept;
+            me.gui.updateCommandTable();
             me.gui.blinkAcceptButton(~me.accepted);
             me.log.debug(dbstack,sprintf('Current Target: %s',target.toString()));
         end
@@ -29,6 +31,7 @@ classdef ProcessTarget < SimStates
             me.currentAction.setState('CHECK LIMITS');
             me.statusBusy();
             me.accepted = me.autoAccept;
+            me.gui.updateCommandTable();
             me.gui.blinkAcceptButton(~me.accepted);
         end
         function done = isDone(me)
@@ -40,7 +43,6 @@ classdef ProcessTarget < SimStates
                     me.gui.updateLimits(me.lc);
                     if within
                         if me.accepted
-                            me.dat.targetShift(me.target);
                             me.currentAction.setState('DONE');
                             me.statusReady();
                         else
@@ -64,7 +66,7 @@ classdef ProcessTarget < SimStates
             end
         end
         function yes = withinLimits(me)
-            yes = me.lc.withinLimits(me.target,me.dat.curTarget );
+            yes = me.lc.withinLimits(me.dat.curTarget,me.dat.prevTarget );
         end
         
     end
