@@ -35,12 +35,16 @@ classdef LbcbPluginResults < handle
         lLabel = {'LBCB1' 'LBCB2'};
         dofLabel = {'Dx' 'Dy' 'Dz' 'Rx' 'Ry' 'Rz' 'Fx' 'Fy' 'Fz' 'Mx' 'My' 'Mz' };
         cmdTable
+        ddisp
 
     end
     methods
         function me  = LbcbPluginResults(handles,hfact)
             me.handles = handles;
             me.hfact = hfact;
+            me.ddisp = DataDisplay();
+            me.ddisp.dat = me.hfact.dat;
+            DataDisplay.setMenuHandle(handles);
         end
         initialize(me)
         updateLimits(me,cl,il)
@@ -53,6 +57,7 @@ classdef LbcbPluginResults < handle
         updateCommands(me,ssd)
         blinkAcceptButton(me,on)
         setLimit(me,hndl,dof,used,limit)
+        fillInLimits(me)
         
     end
     methods (Access=private)

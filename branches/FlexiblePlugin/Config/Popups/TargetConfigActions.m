@@ -2,7 +2,7 @@ classdef TargetConfigActions < handle
     properties
         handles = [];
         tcfg
-        log = Logger
+        log = Logger('TargetConfigActions');
         selected
         flist
     end

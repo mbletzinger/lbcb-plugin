@@ -4,6 +4,7 @@ classdef DataDisplay < handle
         totalFxVsLbcbDxL1 = {};
         totalFxVsLbcbDxL2 = {};
         log = Logger('DataDisplay');
+        dat
     end
     methods
         function me = DataDisplay()
@@ -13,7 +14,7 @@ classdef DataDisplay < handle
             me.totalFxVsLbcbDxL2 = TotalFxVsLbcbDx(0);
         end
         function startDataTable(me)
-            me.dataTable = LbcbDataTable('DOF Data');
+            me.dataTable = LbcbDataTable('Step DOF Data');
         end
         function stopDataTable(me)
             me.dataTable.delete();
@@ -33,12 +34,12 @@ classdef DataDisplay < handle
                 DataDisplay.deleteDisplay(2);
             end
         end
-        function update(me,step)
-            if isempty(me.dataTable) == 0 % Means the data table exists (double negative)
-                me.dataTable.update(step);
+        function update(me)
+            if isempty(me.dataTable) == false
+                me.dataTable.update(me.dat.curStepData);
             end
-            me.totalFxVsLbcbDxL1.update(step);
-            me.totalFxVsLbcbDxL2.update(step);            
+            me.totalFxVsLbcbDxL1.update(me.dat.curStepData);
+            me.totalFxVsLbcbDxL2.update(me.dat.curStepData);            
         end
     end
     methods (Static)

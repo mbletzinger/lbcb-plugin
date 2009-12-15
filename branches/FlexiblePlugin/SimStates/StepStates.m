@@ -98,7 +98,7 @@ classdef StepStates < SimStates
                 case 'PROCESS OM RESPONSE'
                     me.pResp.start();
                     me.arch.archive(me.dat.curStepData);
-                    me.dd.update(me.dat.curStepData);
+                    me.gui.ddisp.update();
                     me.currentAction.setState('BROADCAST TRIGGER');
                     
                 case 'BROADCAST TRIGGER'

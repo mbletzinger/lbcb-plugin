@@ -32,11 +32,11 @@ classdef Configuration < handle
         function import(me)
             done = 0;
             while done == false
-                name = uigetfile('*.properties','Import Configuration');
-                if name == 0
+               [fileName,pathName,filterIndex] = uigetfile('*.properties','Import Configuration'); %#ok<NASGU>
+                if fileName == 0
                     return
                 end
-                done = me.loadFile(name);
+                done = me.loadFile(fullfile(pathName,fileName));
                 if done == 0
                     errordlg(me.error);
                 end
@@ -46,11 +46,11 @@ classdef Configuration < handle
         function export(me)
             done = 0;
             while done == false
-                name = uigetfile('*.properties','Export Configuration');
-                if name == 0
+                [fileName,pathName,filterIndex] = uiputfile('*.properties','Export Configuration'); %#ok<NASGU>
+                if fileName == 0
                     return
                 end
-                done = me.saveFile(name);
+                done = me.saveFile(fullfile(pathName,fileName));
                 if done == 0
                     errordlg(me.error);
                 end

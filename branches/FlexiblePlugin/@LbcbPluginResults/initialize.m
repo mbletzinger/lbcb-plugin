@@ -57,26 +57,7 @@ if isempty(me.handles) == 0
     me.commandLimitsHandles2{11,2} = me.handles.MyU2;
     me.commandLimitsHandles2{12,2} = me.handles.MzU2;
     
-    cl = me.hfact.cl;
-    cl.getLimits();
-    
-    for i = 1:12
-        if cl.limits.used1(i)
-            set(me.commandLimitsHandles1{i,1},'String', sprintf('%f',cl.limits.lower1(i)));
-            set(me.commandLimitsHandles1{i,2},'String', sprintf('%f',cl.limits.upper1(i)));
-        else
-            set(me.commandLimitsHandles1{i,1},'String', '');
-            set(me.commandLimitsHandles1{i,2},'String', '');
-        end
-        if cl.limits.used2(i)
-            set(me.commandLimitsHandles2{i,1},'String', sprintf('%f',cl.limits.lower2(i)));
-            set(me.commandLimitsHandles2{i,2},'String', sprintf('%f',cl.limits.upper2(i)));
-        else
-            set(me.commandLimitsHandles2{i,1},'String', '');
-            set(me.commandLimitsHandles2{i,2},'String', '');
-        end
-    end
-    
+        
     me.commandCurrentValueHandles1 = cell(12,1);
     me.commandCurrentValueHandles1{1} = me.handles.DxCV1;
     me.commandCurrentValueHandles1{2} = me.handles.DyCV1;
@@ -133,23 +114,7 @@ if isempty(me.handles) == 0
     me.commandTolerancesHandles2{11} = me.handles.MyT2;
     me.commandTolerancesHandles2{12} = me.handles.MzT2;
     
-    st = me.hfact.st;
-    st{1}.getWindow();
-    st{2}.getWindow();
-    
-    for i = 1:12
-        if st{1}.used(i)
-            set(me.commandTolerancesHandles1{i},'String', sprintf('%f',st{1}.window(i)));
-        else
-            set(me.commandTolerancesHandles1{i},'String', '');
-        end
-        if st{2}.used(i)
-            set(me.commandTolerancesHandles2{i},'String', sprintf('%f',st{2}.window(i)));
-        else
-            set(me.commandTolerancesHandles2{i},'String', '');
-        end
-    end
-    
+       
     me.toleranceCurrentValueHandles1 = cell(12,1);
     me.toleranceCurrentValueHandles1{1} = me.handles.DxTCV1;
     me.toleranceCurrentValueHandles1{2} = me.handles.DyTCV1;
@@ -206,21 +171,6 @@ if isempty(me.handles) == 0
     me.incrementLimitsHandles2{11} = me.handles.MyI2;
     me.incrementLimitsHandles2{12} = me.handles.MzI2;
     
-    il = me.hfact.il;
-    il.getLimits();
-
-    for i = 1:12
-        if il.limits.used1(i)
-            set(me.incrementLimitsHandles1{i},'String', sprintf('%f',il.limits.window1(i)));
-        else
-            set(me.incrementLimitsHandles1{i},'String', '');
-        end
-        if il.limits.used2(i)
-            set(me.incrementLimitsHandles2{i},'String', sprintf('%f',il.limits.window2(i)));
-        else
-            set(me.incrementLimitsHandles2{i},'String', '');
-        end
-    end
     
     me.incrementCurrentValueHandles1 = cell(12,1);
     me.incrementCurrentValueHandles1{1} = me.handles.DxICV1;
@@ -256,6 +206,7 @@ if isempty(me.handles) == 0
     me.stepHandles{2} = me.handles.SubStep;
     me.msgHandle = me.handles.Messages;
     me.cmdTableHandle = me.handles.CommandTable;
+    me.fillInLimits()
 end
 me.colorRunButton('OFF');
 end
