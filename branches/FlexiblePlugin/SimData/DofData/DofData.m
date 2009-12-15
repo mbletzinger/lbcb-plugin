@@ -12,18 +12,22 @@ classdef DofData < handle
     properties
         disp = zeros(6,1);
         force = zeros(6,1);
+        labels = {'Dx' 'Dy' 'Dz' 'Rx' 'Ry' 'Rz',...
+            'Fx' 'Fy' 'Fz' 'Mx' 'My' 'Mz'};
     end
     methods
         function str = toString(me)
-            labels = {'dx' 'dy' 'dz' 'rx' 'ry' 'rz'};
             str = '';
             for v = 1:length(me.disp)
-                str = sprintf('%s/%s=%f',str,labels{v},me.disp(v));
+                str = sprintf('%s/%s=%f',str,me.labels{v},me.disp(v));
             end
-            labels = {'fx' 'fy' 'fz' 'mx' 'my' 'mz'};
             for v = 1:length(me.force)
-                str = sprintf('%s/%s=%f',str,labels{v},me.force(v));
+                str = sprintf('%s/%s=%f',str,me.labels{v + 6},me.force(v));
             end
+        end
+        function l = label(me,dof,isLbcb1)
+            idx = (isLbcb1 == false) + 1;
+            l = sprintf('LBCB%d %s', idx,me.labels{dof});
         end
     end
 end

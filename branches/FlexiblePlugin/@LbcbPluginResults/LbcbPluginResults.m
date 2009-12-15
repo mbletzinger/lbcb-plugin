@@ -45,6 +45,7 @@ classdef LbcbPluginResults < handle
         updateLimits(me,cl,il)
         updateStepTolerances(me,st)
         updateStepsDisplay(me,simStep)
+        updateCommandTable(me)
         colorButton(me,buttonName,bs)
         addMessage(me,msg)
         updateGui(me)
