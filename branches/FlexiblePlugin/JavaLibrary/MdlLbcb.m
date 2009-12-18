@@ -33,6 +33,7 @@ classdef MdlLbcb < handle
             });
         prevAction;
         cfg
+        dbgWin
     end
     methods
         function me = MdlLbcb(cfg)
@@ -125,6 +126,7 @@ classdef MdlLbcb < handle
             end
             transaction = tf.createTransaction(jmsg);
             me.simcorTcp.startTransaction(transaction);
+            me.dbgWin.addMsg(char(jmsg.toString));
             me.action.setState('EXECUTING TRANSACTION');
             me.state.setState('BUSY');
         end
@@ -149,6 +151,7 @@ classdef MdlLbcb < handle
 %                    me.state.setState('READY');
                     transaction = me.simcorTcp.pickupTransaction();
                     jresponse = transaction.getResponse();
+                    me.dbgWin.addMsg(char(jresponse.toString));
                     me.response = ResponseMessage(jresponse);
                 case 'TRANSACTION_DONE'
                     me.state.setState('READY');

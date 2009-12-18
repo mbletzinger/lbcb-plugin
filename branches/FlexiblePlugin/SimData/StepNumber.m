@@ -24,7 +24,7 @@ classdef StepNumber < handle
             me.subStep = subStep;
             me.correctionStep = cStep;
             me.id = StepNumber.newId();
-            me.log.debug(dbstack,sprintf('created step %s',me.toString()));
+%            me.log.debug(dbstack,sprintf('created step %s',me.toString()));
         end
         % increment the step or substep and return in a new instance
         function simstate = next(me,stepType)

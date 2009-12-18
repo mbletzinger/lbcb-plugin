@@ -5,7 +5,6 @@ function execute(obj, event,me) %#ok<INUSL>
 % end
 a = me.currentExecute.getState();
 
-me.log.debug(dbstack,sprintf('Executing action %s',a));
 
 if me.currentExecute.idx ~= me.prevExecute
     me.log.debug(dbstack,sprintf('Executing action %s',a));

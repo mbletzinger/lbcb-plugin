@@ -5,7 +5,6 @@ classdef StepStates < SimStates
         gcpOm = [];
         fakeGcp = [];
         arch = [];
-        dd = DataDisplay;
         gettingInitialPosition;
         currentAction = StateEnum({...
             'NEXT STEP',...
@@ -15,9 +14,13 @@ classdef StepStates < SimStates
             'BROADCAST TRIGGER',...
             'DONE'
             });
+        prevAction
         log = Logger('StepStates');
     end
     methods
+        function me = StepStates()
+            me.prevAction = 0;
+        end
         function start(me,steps)
             me.nxtStep.steps = steps;
             me.nxtStep.stepsCompleted = false;
@@ -27,31 +30,51 @@ classdef StepStates < SimStates
         end
         function getInitialPosition(me)
             me.gettingInitialPosition = true;
+            if me.cdp.numLbcbs() == 2
+                tgts = { Target Target };
+            else
+                tgts = { Target };
+            end
+            me.dat.curStepData = me.sdf.target2StepData(tgts,0,0);
+            if me.isFake == false
+                me.gcpOm.start();
+            end
             me.currentAction.setState('OM GET CONTROL POINTS');
             me.statusBusy();
         end
         function done = isDone(me)
             done = 0;
-            me.log.debug(dbstack,sprintf('Executing %s',me.currentAction.getState()));
+            a = me.currentAction.getState();
+            if me.currentAction.idx ~= me.prevAction
+                me.log.debug(dbstack,sprintf('Executing action %s',a));
+                me.prevAction = me.currentAction.idx;
+                me.ddisp.dbgWin.setStepState(me.currentAction.idx);
+            end
             switch me.currentAction.getState()
                 case'NEXT STEP'
                     odone = me.nxtStep.isDone();
                     if odone % Next target is ready
                         if me.nxtStep.stepsCompleted  %  No more targets
-                            me.log.info(dbstack,'Steps are done');
+                            me.log.info(dbstack,'Substeps are done');
                             me.statusReady();
                             me.currentAction.setState('DONE');
                             done = 1;
                         else % Execute next step
                             me.log.debug(dbstack,sprintf('Next Step is %s',me.dat.nextStepData.toString()));
                             me.currentAction.setState('OM PROPOSE EXECUTE');
+                            if me.isFake() == false
+                                me.peOm.start()
+                            end
                             me.gui.updateStepTolerances(me.nxtStep.st);
                             me.gui.updateCommandTable();
                             me.gui.updateStepsDisplay(me.dat.nextStepData.stepNum);
                         end
                     end
                 case 'OM PROPOSE EXECUTE'
-                    if me.isFake() == 0
+                    if me.isFake()
+                        me.dat.stepShift();
+                        me.currentAction.setState('OM GET CONTROL POINTS');
+                    else
                         odone = me.peOm.isDone();
                         if odone % execute response has been received from OM
                             if me.peOm.hasErrors()
@@ -60,23 +83,12 @@ classdef StepStates < SimStates
                                 me.currentAction.setState('DONE');
                                 done = 1;
                             end
+                            me.dat.stepShift();
                             me.gcpOm.start();
                             me.currentAction.setState('OM GET CONTROL POINTS');
                         end
-                    else
-                        me.currentAction.setState('OM GET CONTROL POINTS');
                     end
                 case 'OM GET CONTROL POINTS'
-                    if me.gettingInitialPosition
-                        if me.cdp.numLbcbs() == 2
-                            tgts = { Target Target };
-                        else
-                            tgts = { Target };
-                        end
-                        me.dat.curStepData = me.sdf.target2StepData(tgts,0,0);
-                    else
-                        me.dat.stepShift();
-                    end
                     
                     if me.isFake()
                         me.fakeGcp.generateControlPoints();
@@ -91,12 +103,11 @@ classdef StepStates < SimStates
                                 done = 1;
                             end
                             me.pResp.start();
+                            me.currentAction.setState('PROCESS OM RESPONSE');
                         end
-                        me.currentAction.setState('PROCESS OM RESPONSE');
                     end
                     
                 case 'PROCESS OM RESPONSE'
-                    me.pResp.start();
                     me.arch.archive(me.dat.curStepData);
                     me.gui.ddisp.update();
                     me.currentAction.setState('BROADCAST TRIGGER');

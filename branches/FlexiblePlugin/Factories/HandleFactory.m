@@ -40,6 +40,10 @@ classdef HandleFactory <  handle
         %Archiver
         
         arch = [];
+        
+        % Display Windows
+        ddisp = []
+        
       
     end
     properties (Dependent = true)
@@ -91,7 +95,7 @@ classdef HandleFactory <  handle
 
             me.dat = SimSharedData;
             me.gui = LbcbPluginResults(handle,me);
-            
+            DataDisplay.setMenuHandle(handle);
             
             me.ed{1} = ElasticDeformation(cdp,0);
             me.ed{2} = ElasticDeformation(cdp,1);
@@ -121,6 +125,12 @@ classdef HandleFactory <  handle
             
             me.fakeGcp = GetControlPointsFake(cdp);
             me.fakeGcp.dat = me.dat;
+            me.ddisp = DataDisplay;
+            dbgWin = DebugWindow;
+            me.ddisp.dat = me.dat;
+            me.ddisp.dbgWin = dbgWin;
+            me.gui.ddisp = me.ddisp;
+            me.mdlLbcb.dbgWin = dbgWin;
             
             for c =1:length(me.simStates)
                 me.simStates{c}.cdp = cdp;
@@ -129,6 +139,7 @@ classdef HandleFactory <  handle
                 me.simStates{c}.dat = me.dat;
                 me.simStates{c}.nxtStep = me.nxtStep;
                 me.simStates{c}.sdf = me.sdf;
+                me.simStates{c}.ddisp = me.ddisp;
             end
             me.simStates{1}.ocSimCor = me.ocSimCor;
             me.simStates{2}.fakeGcp = me.fakeGcp;
@@ -142,6 +153,10 @@ classdef HandleFactory <  handle
             me.simStates{3}.inF = me.inF;
 
             me.simStates{4}.lc = lc;
+            dbgWin.stpEx = me.simStates{2}; 
+            dbgWin.tgtEx = me.simStates{3};
+            dbgWin.prcsTgt = me.simStates{4};
+            
 
             for c =1:length(me.simCorStates)
                 me.simCorStates{c}.cdp = cdp;
@@ -163,6 +178,7 @@ classdef HandleFactory <  handle
             for c =1:length(me.simCorStates)
                 me.simCorStates{c}.gui = me.gui;
             end
+            DataDisplay.setMenuHandle(handle);
         end
         
         function c = get.ocOm(me)

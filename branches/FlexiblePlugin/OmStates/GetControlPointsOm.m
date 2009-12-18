@@ -6,10 +6,14 @@ classdef GetControlPointsOm < OmState
             'ExternalSensors',...
             'DONE',...
             });
+        prevCps
         log = Logger('GetControlPointsOm');
         
     end
     methods
+        function me = GetControlPointsOm()
+            me.prevCps = 0;
+        end
         function start(me)
             me.cpsMsg.setState('LBCB1');
             address = me.cdp.getAddress();
@@ -19,18 +23,22 @@ classdef GetControlPointsOm < OmState
         end
         function done = isDone(me)
             c = me.cpsMsg.getState();
+            if me.cpsMsg.idx ~= me.prevCps
+                me.log.debug(dbstack,sprintf('Executing CPS %s',c));
+                me.prevCps = me.cpsMsg.idx;
+            end
             done = 0;
             address = me.cdp.getAddress();
             if me.mdlLbcb.isDone() == 0
                 return;
             end
-            me.state.setState(me.mdlLbcb.state.getState);
-            if me.state.isState('ERRORS EXIST')
+            if me.mdlLbcb.state.isState('ERRORS EXIST')
                 me.statusErrored();
+                me.log.error(dbstack,'OM Link has errored out');
                 done = 1;
                 return;
             end
-
+            
             lgth = me.cdp.numLbcbs();
             switch c
                 case 'LBCB1'
@@ -43,14 +51,14 @@ classdef GetControlPointsOm < OmState
                     jmsg = me.mdlLbcb.createCommand('get-control-point',address,me.cpsMsg.getState(),[]);
                     me.mdlLbcb.start(jmsg,me.dat.curStepData.stepNum,0);
                     me.statusBusy();
-
+                    
                 case 'LBCB2'
                     me.dat.curStepData.parseOmControlPointMsg(me.mdlLbcb.response)
                     me.cpsMsg.setState('ExternalSensors');
                     jmsg = me.mdlLbcb.createCommand('get-control-point',address,me.cpsMsg.getState(),[]);
                     me.mdlLbcb.start(jmsg,me.dat.curStepData.stepNum,0);
                     me.statusBusy();
-
+                    
                 case 'ExternalSensors'
                     me.dat.curStepData.parseOmControlPointMsg(me.mdlLbcb.response)
                     me.cpsMsg.setState('DONE');

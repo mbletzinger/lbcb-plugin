@@ -37,6 +37,7 @@ classdef NextStep < OmState
                 me.dat.nextStepData.needsCorrection = true;
                 me.edAdjust();
                 me.derivedDofAdjust();
+                me.log.info(dbstack,'Generating correction step');
             else
                 % get next input step
                 me.dat.nextStepData = me.steps.next();

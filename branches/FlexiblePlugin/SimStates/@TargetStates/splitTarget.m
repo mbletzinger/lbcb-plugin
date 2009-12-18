@@ -47,6 +47,6 @@ for i = 1 : maxNumSteps
 end
 ss{maxNumSteps + 1} = me.dat.curTarget;
 ss{maxNumSteps + 1}.stepNum.subStep = maxNumSteps + 1;
-;
 steps.steps = ss;
+me.log.info(dbstack,sprintf('Created %d substeps',length(ss)));
 end

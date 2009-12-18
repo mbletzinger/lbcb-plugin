@@ -42,9 +42,6 @@ classdef LbcbPluginResults < handle
         function me  = LbcbPluginResults(handles,hfact)
             me.handles = handles;
             me.hfact = hfact;
-            me.ddisp = DataDisplay();
-            me.ddisp.dat = me.hfact.dat;
-            DataDisplay.setMenuHandle(handles);
         end
         initialize(me)
         updateLimits(me,cl,il)
@@ -58,6 +55,7 @@ classdef LbcbPluginResults < handle
         blinkAcceptButton(me,on)
         setLimit(me,hndl,dof,used,limit)
         fillInLimits(me)
+        colorAutoAcceptButton(me,on)
         
     end
     methods (Access=private)

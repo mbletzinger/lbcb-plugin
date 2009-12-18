@@ -7,13 +7,15 @@ classdef OpenCloseOm < OmState
             'OPENING_SESSION',...
             'DONE',...
             });
-         connectionStatus = StateEnum({'CONNECTED','DISCONNECTED','ERRORED'});
+        prevAction
+        connectionStatus = StateEnum({'CONNECTED','DISCONNECTED','ERRORED'});
         closeIt = 0;
         log = Logger('OpenCloseOm');
-   end
+    end
     methods
         function me = OpenCloseOm()
             me.connectionStatus.setState('DISCONNECTED');
+            me.prevAction = 0;
         end
         function start(me, closeIt)
             me.closeIt = closeIt;
@@ -44,13 +46,16 @@ classdef OpenCloseOm < OmState
         function done = isDone(me)
             done = 0;
             a = me.omActions.getState();
-            me.log.debug(dbstack,sprintf('OpenCloseOm action is %s',a));
+            if me.omActions.idx ~= me.prevAction
+                me.log.debug(dbstack,sprintf('Executing action %s',a));
+                me.prevAction = me.omActions.idx;
+            end
             mlDone = me.mdlLbcb.isDone();
             if mlDone == 0
                 return;
             end
-
-            if me.mdlLbb.state.isState('ERRORS EXIST')
+            
+            if me.mdlLbcb.state.isState('ERRORS EXIST')
                 done = 1;
                 me.connectionError();
                 return;
@@ -76,21 +81,21 @@ classdef OpenCloseOm < OmState
             me.connectionStatus.setState('ERRORED');
             me.gui.colorRunButton('BROKEN'); % Pause the simulation
             me.gui.colorButton('CONNECT OM','BROKEN');
-            me.omActions.setState('DONE');            
+            me.omActions.setState('DONE');
             me.statusErrored();
             me.log.error(dbstack,...
-                sprintf('OM link has been disconnected due to errors')); 
+                sprintf('OM link has been disconnected due to errors'));
         end
     end
     methods (Access=private)
         function openingSession(me)
             me.connectionStatus.setState('CONNECTED');
             me.gui.colorButton('CONNECT OM','ON');
-            me.omActions.setState('DONE');            
+            me.omActions.setState('DONE');
         end
         function closingSession(me)
             me.mdlLbcb.close();
-            me.omActions.setState('DISCONNECTING');            
+            me.omActions.setState('DISCONNECTING');
         end
         function connect(me)
             address = me.cdp.getAddress();
@@ -107,7 +112,7 @@ classdef OpenCloseOm < OmState
         function disconnect(me)
             me.connectionStatus.setState('DISCONNECTED');
             me.gui.colorButton('CONNECT OM','OFF');
-            me.omActions.setState('DONE');            
+            me.omActions.setState('DONE');
         end
     end
 end

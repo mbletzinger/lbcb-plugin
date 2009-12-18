@@ -3,11 +3,11 @@ function parseOmControlPointMsg(me,rsp)
 mdl = me.cdp.getAddress();
 switch char(address.getSuffix())
     case 'LBCB1'
-        lbcbR = LbcbReading;
+        lbcbR = me.lbcbCps{1}.response.clone();
         lbcbR.parse(contents,mdl);
         me.lbcbCps{1}.response = lbcbR;
     case 'LBCB2'
-        lbcbR = LbcbReading;
+        lbcbR = me.lbcbCps{1}.response.clone();
         lbcbR.parse(contents,mdl);
         me.lbcbCps{2}.response = lbcbR;
     case 'ExternalSensors'

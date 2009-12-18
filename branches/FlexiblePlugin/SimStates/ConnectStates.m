@@ -6,6 +6,7 @@ classdef ConnectStates < SimStates
             'OPEN SIMCOR CONNECTION',...
             'CLOSE SIMCOR CONNECTION'...
             });
+        prevAction
         ocSimCor
         log = Logger('ConnectStates');
     end
@@ -27,19 +28,46 @@ classdef ConnectStates < SimStates
             me.currentAction.setState(action);
         end
         function done = isDone(me)
-            switch me.currentAction.getState()
-                case { 'OPEN OM CONNECTION' 'CLOSE OM CONNECTION'}
+            a = me.currentAction.getState();
+            if me.currentAction.idx ~= me.prevAction
+                me.log.debug(dbstack,sprintf('Executing action %s',a));
+                me.prevAction = me.currentAction.idx;
+            end
+            switch a
+                case 'OPEN OM CONNECTION'
+                    done = me.ocOm.isDone();
+                    if done
+                        me.setStatus(me.ocOm.status);
+                        if me.isReady()
+                            me.log.info(dbstack,'Operation Manager is connected');
+                        end
+                    end
+                case 'CLOSE OM CONNECTION'
                     done = me.ocOm.isDone();
                     if done
                         me.setStatus(me.ocOm.status);
                     end
-                case { 'OPEN SIMCOR CONNECTION' 'CLOSE SIMCOR CONNECTION' }
+                    if me.isReady()
+                        me.log.info(dbstack,'Operation Manager is no longer connected');
+                    end
+                case 'OPEN SIMCOR CONNECTION'
                     done = me.ocSimCor.isDone();
                     if done
                         me.setStatus(me.ocOm.status);
                     end
+                    if me.isReady()
+                        me.log.info(dbstack,'UI-SimCor is connected');
+                    end
+                case 'CLOSE SIMCOR CONNECTION'
+                    done = me.ocSimCor.isDone();
+                    if done
+                        me.setStatus(me.ocOm.status);
+                    end
+                    if me.isReady()
+                        me.log.info(dbstack,'UI-SimCor is no longer connected');
+                    end
                 otherwise
-                    me.log(dbstack,sprintf('%s action not recognized',action));
+                    me.log.error(dbstack,sprintf('%s action not recognized',action));
             end
         end
     end
