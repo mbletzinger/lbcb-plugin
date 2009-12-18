@@ -19,6 +19,8 @@ classdef LbcbReading < handle
         node = '';
         cdp = [];
         id = [];
+        log = Logger('LbcbReading')
+
     end
     properties (Dependent = true)
         disp;
@@ -35,6 +37,11 @@ classdef LbcbReading < handle
         % is not provided because the values must be set according to the
         % source
         function dof = get.disp(me)
+            if isempty(me.cdp)
+                dof = me.lbcb.disp;
+                me.log.error(dbstack, 'CDP not set in LbcbReading');
+                return;
+            end
             if me.cdp.useEd()
                 dof = me.ed.disp;
             else
@@ -58,7 +65,11 @@ classdef LbcbReading < handle
             clone.ed.disp = me.ed.disp;
             clone.ed.force = me.ed.force;
             clone.node = me.node;
-            clone.cdp = me.cpd;
+            if isempty(me.cdp)
+                me.log.error(dbstack,'CDP Not set');
+                return;
+            end
+            clone.cdp = me.cdp;
         end
         function str = toString(me)
             str = sprintf('/lbcb%s\n\t',me.lbcb.toString());

@@ -204,6 +204,7 @@ if isempty(me.handles) == 0
     
     me.stepHandles{1} = me.handles.Step;
     me.stepHandles{2} = me.handles.SubStep;
+    me.stepHandles{3} = me.handles.CorrectionStep;
     me.msgHandle = me.handles.Messages;
     me.cmdTableHandle = me.handles.CommandTable;
     me.fillInLimits()

@@ -6,7 +6,8 @@ classdef SimStates < States
         dat = [];
         nxtStep = [];
         sdf = [];
-        
+        ddisp = [];
+
     end
     methods
     end

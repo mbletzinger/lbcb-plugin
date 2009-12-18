@@ -12,6 +12,7 @@ classdef TargetStates < SimStates
             'INPUT FILE',...
             'UI SIMCOR',...
             });
+        prevAction
         stpEx = [];
         prcsTgt = [];
         inF = [];

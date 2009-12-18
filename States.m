@@ -19,7 +19,7 @@ classdef States < handle
         function statusErrored(me)
             me.status.setState('ERRORS EXIST');
         end
-        function yes = isDone(me)
+        function yes = isReady(me)
             yes = me.status.isState('READY');
         end
         function yes = hasErrors(me)

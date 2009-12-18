@@ -74,6 +74,7 @@ classdef  InputFile < Substeps
 %                me.log.debug(dbstack,sprintf('Created step=%s',me.steps{t}.toString()));
             end
             me.started = false;
+            me.log.info(dbstack,sprintf('Loaded %d steps',lgth));
         end
     end
 end

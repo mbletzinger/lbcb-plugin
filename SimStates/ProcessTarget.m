@@ -5,6 +5,7 @@ classdef ProcessTarget < SimStates
             'WAIT FOR ACCEPT',...
             'DONE'
             });
+        prevAction
         lc
         accepted;
         autoAccept;
@@ -15,6 +16,7 @@ classdef ProcessTarget < SimStates
         function me = ProcessTarget()
             me.accepted = false;
             me.autoAccept = false;
+            me.prevAction = 0;
         end
         function start(me,target)
             me.target = target;
@@ -35,8 +37,14 @@ classdef ProcessTarget < SimStates
         end
         function done = isDone(me)
             done = 0;
-            me.log.debug(dbstack,sprintf('Executing %s',me.currentAction.getState()));
-            switch me.currentAction.getState()
+            a = me.currentAction.getState();
+            if me.currentAction.idx ~= me.prevAction
+                me.log.debug(dbstack,sprintf('Executing action %s',a));
+                me.prevAction = me.currentAction.idx;
+                me.ddisp.dbgWin.setProcessState(me.currentAction.idx);
+
+            end
+            switch a
                 case 'CHECK LIMITS'
                     within = me.withinLimits();
                     me.gui.updateLimits(me.lc);

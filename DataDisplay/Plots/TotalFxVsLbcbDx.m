@@ -9,11 +9,15 @@ classdef TotalFxVsLbcbDx < handle
     end
     methods
         function me = TotalFxVsLbcbDx(isLbcb1)
-            me.plot = XyPlots();
+            me.plot = XyPlots(sprintf('Total Fx vs LBCB %d Dx',1 + (isLbcb1 == false)));
             me.isLbcb1 = isLbcb1;
+            me.plot.figNum = 1 + (isLbcb1 == false);
         end
-        function displayPlot(me,turnOn)
-                me.plot.displayPlot(turnOn);
+        function displayMe(me)
+                me.plot.displayMe();
+        end
+        function undisplayMe(me)
+                me.plot.undisplayMe();
         end
         function update(me,step)
             cpsidx = 2;

@@ -22,7 +22,7 @@ function varargout = LbcbPlugin(varargin)
 
 % Edit the above text to modify the response to help LbcbPlugin
 
-% Last Modified by GUIDE v2.5 11-Dec-2009 22:00:34
+% Last Modified by GUIDE v2.5 17-Dec-2009 03:07:44
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -74,11 +74,9 @@ if(nargin > 3)
 end
 
 handles.actions = LbcbPluginActions(handles,hfact);
+handles.log = Logger('LbcbPlugin');
 % Update handles structure
-set(handles.DataTable,'Checked','off');
 guidata(hObject, handles);
-DataDisplay.setMenuHandle(handles);
-
 % h = handles
 
 % UIWAIT makes LbcbPlugin wait for user response (see UIRESUME)
@@ -115,7 +113,15 @@ end
 
 % --- Executes on button press in Connect2Om.
 function Connect2Om_Callback(hObject, eventdata, handles)
-handles.actions.processConnectOm(get(hObject,'Value'));
+val = get(hObject,'Value');
+if val == false
+    if get(handles.RunHold, 'Value')
+        handles.log.error(dbstack,'Need to stop the Simulation before disconnecting');
+        set(hObject,'Value',true);
+        return;
+    end
+end
+handles.actions.processConnectOm(val);
 
 
 % --- Executes on button press in ManualInput.
@@ -989,11 +995,12 @@ function DataTable_Callback(hObject, eventdata, handles)
 % hObject    handle to DataTable (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-if strcmp(get(hObject,'Checked'),'on')
+if strcmp(get(hObject, 'Checked'),'on')
+    set(hObject,'Checked','off');
     handles.actions.hfact.gui.ddisp.stopDataTable();
 else 
-    handles.actions.hfact.gui.ddisp.startDataTable();
     set(hObject,'Checked','on');
+    handles.actions.hfact.gui.ddisp.startDataTable();
 end
 
 
@@ -1005,6 +1012,9 @@ function LbcbPlugin_DeleteFcn(hObject, eventdata, handles)
 
 if isfield(handles,'actions')
     disp('Shutting Down');
+    for d = 0 : 3
+        DataDisplay.checkOff([],[],d);
+    end
 end
 
 
@@ -1015,6 +1025,7 @@ function TotalFxVsLbcb1Dx_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 if strcmp(get(hObject,'Checked'),'on')
     handles.actions.hfact.gui.ddisp.stopTotalFxVsLbcbDx(1);
+    set(hObject,'Checked','off');
 else 
     handles.actions.hfact.gui.ddisp.startTotalFxVsLbcbDx(1);
     set(hObject,'Checked','on');
@@ -1027,9 +1038,10 @@ function TotalFxVsLbcb2Dx_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 if strcmp(get(hObject,'Checked'),'on')
-    handles.actions.dd.stopTotalFxVsLbcbDx(0);
+    handles.actions.hfact.gui.ddisp.stopTotalFxVsLbcbDx(0);
+    set(hObject,'Checked','off');
 else 
-    handles.actions.dd.startTotalFxVsLbcbDx(0);
+    handles.actions.hfact.gui.ddisp.startTotalFxVsLbcbDx(0);
     set(hObject,'Checked','on');
 end
 
@@ -1061,8 +1073,10 @@ function ArchiveOnOff_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 if strcmp(get(hObject, 'Checked'),'on')
+    handles.actions.hfact.gui.ddisp.startTotalFxVsLbcbDx(1);
     set(hObject,'Checked','off');
 else 
+    handles.actions.hfact.gui.ddisp.startTotalFxVsLbcbDx(1);
     set(hObject,'Checked','on');
 end
 handles.actions.processArchiveOnOff(get(hObject,'Checked'));
@@ -1100,3 +1114,18 @@ function DerivedDofFactors_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 DerivedDofConfig('cfg',handles.actions.hfact.cfg);
+
+
+% --------------------------------------------------------------------
+function DebugWindow_Callback(hObject, eventdata, handles)
+% hObject    handle to DebugWindow (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+if strcmp(get(hObject, 'Checked'),'on')
+    set(hObject,'Checked','off');
+    handles.actions.hfact.gui.ddisp.stopDebugWindow();
+else 
+    set(hObject,'Checked','on');
+    handles.actions.hfact.gui.ddisp.startDebugWindow();
+end
+handles.actions.processArchiveOnOff(get(hObject,'Checked'));
