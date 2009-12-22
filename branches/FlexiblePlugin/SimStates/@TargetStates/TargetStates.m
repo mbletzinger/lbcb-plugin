@@ -15,6 +15,8 @@ classdef TargetStates < SimStates
         prevAction
         stpEx = [];
         prcsTgt = [];
+        tgtRsp = [];
+        ocSimCor = [];
         inF = [];
         startStep
         log = Logger('TargetStates');

@@ -82,6 +82,7 @@ classdef StepStates < SimStates
                                 me.statusErrored();
                                 me.currentAction.setState('DONE');
                                 done = 1;
+                                return;
                             end
                             me.dat.stepShift();
                             me.gcpOm.start();
@@ -101,6 +102,7 @@ classdef StepStates < SimStates
                                 me.statusErrored();
                                 me.currentAction.setState('DONE');
                                 done = 1;
+                                return;
                             end
                             me.pResp.start();
                             me.currentAction.setState('PROCESS OM RESPONSE');

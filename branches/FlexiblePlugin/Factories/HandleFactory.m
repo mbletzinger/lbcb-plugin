@@ -151,8 +151,10 @@ classdef HandleFactory <  handle
             me.simStates{3}.stpEx = me.simStates{2};
             me.simStates{3}.prcsTgt = me.simStates{4};
             me.simStates{3}.inF = me.inF;
-
+            me.simStates{3}.tgtRsp = me.tgtRsp;
+            me.simStates{3}.ocSimCor = me.ocSimCor;
             me.simStates{4}.lc = lc;
+            
             dbgWin.stpEx = me.simStates{2}; 
             dbgWin.tgtEx = me.simStates{3};
             dbgWin.prcsTgt = me.simStates{4};
@@ -165,6 +167,7 @@ classdef HandleFactory <  handle
                 me.simCorStates{c}.dat = me.dat;
                 me.simCorStates{c}.sdf = me.sdf;
             end
+            
             
         end
         function setGuiHandle(me, handle)
