@@ -96,7 +96,6 @@ classdef MdlLbcb < handle
             me.simcorTcp.shutdown();
             me.action.setState('CLOSE CONNECTION');
             me.state.setState('BUSY');
-            me.simcorTcp = [];
         end
         
         % Create a compound command (command with multiple MDL addresses)

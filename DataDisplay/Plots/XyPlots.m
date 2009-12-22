@@ -24,8 +24,8 @@ classdef XyPlots < DisplayControl
             me.ydata{idx} = d(2,:);
             me.xdata{idx} = d(1,:);
             if me.isDisplayed
-                set(me.lineSeries{idx},'XData',me.xdata);
-                set(me.lineSeries{idx},'YData',me.ydata);
+                set(me.lineSeries(idx),'XData',me.xdata{idx});
+                set(me.lineSeries(idx),'YData',me.ydata{idx});
             end
         end
         function setLegends(me,lgnds)
