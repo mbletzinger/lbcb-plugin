@@ -15,7 +15,7 @@ classdef ModelControlPoint < handle
         response = [];
         command = [];
         address = [];
-        m2d = Msg2DofData();
+
     end
     methods
         function me = ModelControlPoint()

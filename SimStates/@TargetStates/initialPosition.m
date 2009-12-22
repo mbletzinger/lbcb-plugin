@@ -11,4 +11,8 @@ if me.cdp.numLbcbs == 2
     me.dat.curTarget.lbcbCps{2}.command.force = force(7:12);
 end
 me.currentAction.setState('WAIT FOR TARGET');
+if me.targetSource.isState('UI SIMCOR')
+    me.tgtRsp.start();
+end
+    
 end

@@ -2,16 +2,12 @@ classdef StepDataFactory < handle
     properties
         mdlLbcb = [];
         cdp = [];
+        m2d = Msg2DofData();
     end
     methods
-         function clone = clone(me,step)
+         function clone = newStep(me)
             clone = StepData;
-            num = StepData.numLbcbs();
             me.addProtocol(clone);
-            for l = 1: num
-                clone.lbcbCps{l} = step.lbcbCps{l}.clone();
-            end
-            clone.externalSensorsRaw = step.externalSensorsRaw;
             clone.stepNum = step.StepNum;
             
          end
@@ -30,6 +26,23 @@ classdef StepDataFactory < handle
              end
              
          end
+         function clone = uisimcorMsg2Step(me,cmd)
+             clone = StepData;
+             me.addProtocol(clone);
+             [addresses, contents] = cmd.getContents();
+             if iscell(addresses)
+                 for a = 1 : length(addresses)
+                    target = me.m2d.parse(contents{a},addresses{a});
+                    for t = 1 : 6
+                    end
+                 end
+             else
+                target = me.m2d.parse(contents,addresses);             
+             end
+            me.command = targets{1};
+            me.address = address;
+
+         end
          function addProtocol(me,step)
              step.mdlLbcb = me.mdlLbcb;
              step.cdp = me.cdp;
@@ -38,11 +51,14 @@ classdef StepDataFactory < handle
              for l = 1 : lgth
                  step.lbcbCps{l} = LbcbControlPoint;
                  step.lbcbCps{l}.response.cdp = me.cdp;
+                 step.lbcbCps{l}.command.cdp = me.cdp;
              end
              if me.cdp.numModelCps > 0
                  step.modelCps = cell(me.cdp.numModelCps,1);
                  for m = 1:me.cdp.numModelCps
                      step.modelCps{m} = ModelControlPoint;
+                     step.modelCps{m}.response.cdp = me.cdp;
+                     step.modelCps{m}.command.cdp = me.cdp;
                  end
              end
          end

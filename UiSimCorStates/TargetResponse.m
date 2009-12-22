@@ -6,16 +6,18 @@ classdef TargetResponse < UiSimCorState
             'SEND_RESPONSE', ...
             });
         id = {}
+        target
     end
     methods
         function start(me)
-			me.mdlUiSimCor.start();	
+			me.mdlUiSimCor.start();
+                        me.statusBusy();
         end
 		function respond(me)
             jmsg = me.dat.curTarget.generateSimCorResponseMsg();
             me.log.debug(dbstack,sprintf('Sending %s',char(jmsg)));
             me.mdlUiSimCor.respond(jmsg);
-            me.state.setState('BUSY');
+            me.statusBusy();
             me.action.setState('SEND_RESPONSE');
 		end
 		function done = isDone(me)
@@ -23,8 +25,9 @@ classdef TargetResponse < UiSimCorState
             if me.mdlUiSimCor.isDone() == 0
                 return;
             end
-            me.state.setState(me.mdlUiSimCor.state.getState);
-            if me.state.isState('ERRORS EXIST')
+            if me.mdlUiSimCor.state.isState('ERRORS EXIST')
+                me.statusErrored();
+                me.log.error(dbstack,'UI-SimCor Link has errored out');
                 done = 1;
                 return;
             end
@@ -32,10 +35,9 @@ classdef TargetResponse < UiSimCorState
             switch a
                 case 'DONE'
                     done = 1;
-                    me.state.setState('READY');
+                    me.statusReady();
                 case 'GET_TARGET'
-                    me.dat.newTarget()
-                    me.dat.curTarget.parseOmControlPointMsg(me.mdlUiSimCor.response)
+                    me.target = me.dat.sdf.uisimcorMsg2Step(me.mdlUiSimCor.response);
                     me.action.setState('DONE');
                 case 'SEND_RESPONSE'
                     me.action.setState('DONE');                    
