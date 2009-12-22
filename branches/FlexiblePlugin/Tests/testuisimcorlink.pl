@@ -5,9 +5,9 @@ use File::Spec;
 use Cwd;
 use strict;
 
-#my ( $host, $port ) = ( "localhost", "6342" );
+my ( $host, $port ) = ( "localhost", "6445" );
 
-my ($host, $port) = ("128.174.15.184","6445");
+#my ($host, $port) = ("128.174.15.184","6445");
 my $cwd     = cwd();
 my @dirs    = File::Spec->splitdir($cwd);
 my $dropped = pop @dirs;
