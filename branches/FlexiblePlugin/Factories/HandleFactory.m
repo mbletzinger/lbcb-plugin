@@ -19,7 +19,7 @@ classdef HandleFactory <  handle
         % Simulation States and Executors
         omStates = cell(5,1);
         simStates = cell(3,1);
-        simCorStates = cell(3,1);
+        simCorStates = cell(1,1);
         
         %Display update instance
         gui = [];
@@ -55,7 +55,6 @@ classdef HandleFactory <  handle
         pResp;
         
         %Simulation Execution
-        cnEx;
         stpEx;
         tgtEx;
         prcsTgt;
@@ -79,10 +78,9 @@ classdef HandleFactory <  handle
             me.omStates{4} = NextStep;
             me.omStates{5} = ProcessResponse;
             
-            me.simStates{1} = ConnectStates;
-            me.simStates{2} = StepStates;
-            me.simStates{3} = TargetStates;
-            me.simStates{4} = ProcessTarget;
+            me.simStates{1} = StepStates;
+            me.simStates{2} = TargetStates;
+            me.simStates{3} = ProcessTarget;
 
             me.mdlUiSimCor = MdlUiSimCor(me.cfg);
             me.simCorStates{1} = OpenCloseUiSimCor;
@@ -141,23 +139,22 @@ classdef HandleFactory <  handle
                 me.simStates{c}.sdf = me.sdf;
                 me.simStates{c}.ddisp = me.ddisp;
             end
-            me.simStates{1}.ocSimCor = me.ocSimCor;
-            me.simStates{2}.fakeGcp = me.fakeGcp;
-            me.simStates{2}.peOm = me.peOm;
-            me.simStates{2}.gcpOm = me.gcpOm;
-            me.simStates{2}.pResp = me.pResp;
-            me.simStates{2}.arch = me.arch;
+            me.simStates{1}.fakeGcp = me.fakeGcp;
+            me.simStates{1}.peOm = me.peOm;
+            me.simStates{1}.gcpOm = me.gcpOm;
+            me.simStates{1}.pResp = me.pResp;
+            me.simStates{1}.arch = me.arch;
             
-            me.simStates{3}.stpEx = me.simStates{2};
-            me.simStates{3}.prcsTgt = me.simStates{4};
-            me.simStates{3}.inF = me.inF;
-            me.simStates{3}.tgtRsp = me.tgtRsp;
-            me.simStates{3}.ocSimCor = me.ocSimCor;
-            me.simStates{4}.lc = lc;
+            me.simStates{2}.stpEx = me.simStates{1};
+            me.simStates{2}.prcsTgt = me.simStates{3};
+            me.simStates{2}.inF = me.inF;
+            me.simStates{2}.tgtRsp = me.tgtRsp;
+            me.simStates{2}.ocSimCor = me.ocSimCor;
+            me.simStates{3}.lc = lc;
             
-            dbgWin.stpEx = me.simStates{2}; 
-            dbgWin.tgtEx = me.simStates{3};
-            dbgWin.prcsTgt = me.simStates{4};
+            dbgWin.stpEx = me.simStates{1}; 
+            dbgWin.tgtEx = me.simStates{2};
+            dbgWin.prcsTgt = me.simStates{3};
             
 
             for c =1:length(me.simCorStates)
@@ -199,23 +196,20 @@ classdef HandleFactory <  handle
         function c = get.pResp(me)
             c= me.omStates{5};
         end
-        function c = get.cnEx(me)
+        function c = get.stpEx(me)
             c= me.simStates{1};
         end
-        function c = get.stpEx(me)
+        function c = get.tgtEx(me)
             c= me.simStates{2};
         end
-        function c = get.tgtEx(me)
-            c= me.simStates{3};
-        end
         function c = get.prcsTgt(me)
-            c= me.simStates{4};
+            c= me.simStates{3};
         end
         function c = get.ocSimCor(me)
             c= me.simCorStates{1};
         end
         function c = get.tgtRsp(me)
-            c= me.simCorStates{1};
+            c= me.simCorStates{2};
         end
    end
 end

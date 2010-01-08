@@ -32,7 +32,7 @@ classdef Target < DofData
         clone = clone(me)
         str = toString(me)
         reading = target2Reading(me)
-        msg = createMsg(me,values)
+        msg = createMsg(me)
         parse(me,msg,node)
     end
 end

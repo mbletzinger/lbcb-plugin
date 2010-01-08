@@ -1,15 +1,30 @@
 classdef LbcbPluginActions < handle
     properties
         simTimer = [];
+        comTimer = [];
+        csimcorTimer = [];
         hfact = [];
-        currentExecute = StateEnum({...
-            'OPEN CLOSE CONNECTION',...
+        currentSimExecute = StateEnum({...
             'RUN SIMULATION',...
-            'READY'...
+            'DONE'...
+            });
+        connectOmAction = StateEnum({...
+            'OPEN OM CONNECTION',...
+            'CLOSE OM CONNECTION',...
+            'DONE'...
+            });
+        
+        connectSimCorAction = StateEnum({...
+            'OPEN SIMCOR CONNECTION',...
+            'CLOSE SIMCOR CONNECTION'...
+            'DONE'...
             });
         log = Logger('LbcbPluginActions');
         startStep
         prevExecute
+        ocSimCor
+        ocOm
+
     end
     methods
         function me  = LbcbPluginActions(handles,hfact)
@@ -28,15 +43,19 @@ classdef LbcbPluginActions < handle
                 me.hfact = HandleFactory(handles,cfg);
             else
                 me.hfact = hfact;
-                me.hfact.setGuiHandle(handles);                
+                me.hfact.setGuiHandle(handles);
             end
             me.hfact.gui.initialize();
             lcfg = LogLevelsDao(me.hfact.cfg);
             Logger.setCmdLevel(lcfg.cmdLevel);
             Logger.setMsgLevel(lcfg.msgLevel);
-            % set up execute timer
+            % set up execute timers
             me.simTimer = timer('Period',0.05, 'TasksToExecute',1000000,'ExecutionMode','fixedSpacing','Name','SimulationTimer');
-            me.simTimer.TimerFcn = { 'LbcbPluginActions.execute', me };
+            me.simTimer.TimerFcn = { 'LbcbPluginActions.executeSim', me };
+            me.comTimer = timer('Period',0.05, 'TasksToExecute',1000000,'ExecutionMode','fixedSpacing','Name','SimulationTimer');
+            me.comTimer.TimerFcn = { 'LbcbPluginActions.connectOm', me };
+            me.csimcorTimer = timer('Period',0.05, 'TasksToExecute',1000000,'ExecutionMode','fixedSpacing','Name','SimulationTimer');
+            me.csimcorTimer.TimerFcn = { 'LbcbPluginActions.connectSimCor', me };
             me.currentExecute.setState('READY');
             me.startStep = 1;
         end
@@ -60,6 +79,8 @@ classdef LbcbPluginActions < handle
         processConfig(me,action)
     end
     methods (Static)
-        execute(obj, event, me)
+        executeSim(obj, event, me)
+        connectOm(obj, event, me)
+        connectSimCor(obj, event, me)
     end
 end

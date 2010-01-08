@@ -3,7 +3,8 @@ classdef OpenCloseUiSimCor < UiSimCorState
         simCorActions = StateEnum({...
             'CONNECTING',...
             'DISCONNECTING',...
-            'WAIT FOR_OPEN_SESSION',...
+            'WAIT FOR OPEN SESSION',...
+            'WAIT FOR SET PARAMETER',...
             'DONE',...
             });
          connectionStatus = StateEnum({'CONNECTED','DISCONNECTED','ERRORED'});
@@ -41,10 +42,8 @@ classdef OpenCloseUiSimCor < UiSimCorState
             if mlDone == 0
                 return;
             end
-            me.state.setState(me.mdlUiSimCor.state.getState());
-            me.log.debug(dbstack,sprintf('OpenClose state is %s',me.state.getState()));
 
-            if me.state.isState('ERRORS EXIST')
+            if me.mdlUiSimCor.state.isState('ERRORS EXIST')
                 done = 1;
                 me.connectionError();
                 return;
@@ -56,8 +55,10 @@ classdef OpenCloseUiSimCor < UiSimCorState
                     me.connect();
                 case 'DISCONNECTING'
                     me.disconnect();
-                case 'WAIT FOR_OPEN_SESSION'
+                case 'WAIT FOR OPEN SESSION'
                     me.openingSession();
+                case 'WAIT FOR SET PARAMETER'
+                    me.setParameter();
                 case 'DONE'
                     done = 1;
                 otherwise
@@ -69,13 +70,19 @@ classdef OpenCloseUiSimCor < UiSimCorState
             me.connectionStatus.setState('ERRORED');
             me.gui.colorRunButton('BROKEN'); % Pause the simulation
             me.gui.colorButton('CONNECT SIMCOR','BROKEN');
-                        me.omActions.setState('DONE');            
+                        me.simCorActions.setState('DONE');            
             me.log.error(dbstack,...
                 sprintf('UI-SimCor link has been disconnected due to errors')); 
         end
     end
     methods (Access=private)
         function openingSession(me)
+            address = me.cdp.getAddress();
+            jmsg = me.mdlUiSimCor.createResponse(address,[],'Module initialized');
+            me.mdlUiSimCor.respond(jmsg);
+            me.simCorActions.setState('WAIT FOR SET PARAMETER');
+        end
+        function setParameter(me)
             me.simCorActions.setState('DONE');            
         end
         function connect(me)
@@ -87,8 +94,8 @@ classdef OpenCloseUiSimCor < UiSimCorState
                 return;
             end
             jmsg = me.mdlUiSimCor.createResponse(address,[],'Open Session Succeeded');
-            me.mdlUiSimCor.respond(jmsg,[],0);
-            me.simCorActions.setState('WAIT FOR_OPEN_SESSION');
+            me.mdlUiSimCor.respond(jmsg);
+            me.simCorActions.setState('WAIT FOR OPEN SESSION');
         end
         function disconnect(me)
             me.connectionStatus.setState('DISCONNECTED');

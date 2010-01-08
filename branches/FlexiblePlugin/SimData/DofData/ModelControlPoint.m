@@ -26,16 +26,12 @@ classdef ModelControlPoint < handle
             clone = ModelControlPoint;
             clone.command = me.command.clone();
             clone.response = me.response.clone();
+            clone.address = me.address;
         end
         function str = toString(me)
             str = sprintf('/addr=%s',me.address);
             str = sprintf('%s/command=%s',str,me.command.toString());
             str = sprintf('%s\n\t/response=%s',str,me.response.toString());
-        end
-        function parse(me,msg,address)
-            targets = me.m2d.parse(msg,address);
-            me.command = targets{1};
-            me.address = address;
         end
     end
 end

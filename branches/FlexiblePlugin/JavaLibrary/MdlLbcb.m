@@ -83,7 +83,7 @@ classdef MdlLbcb < handle
             me.params.setRemoteHost(ncfg.omHost);
             me.params.setRemotePort(sscanf(ncfg.omPort,'%d'));
             me.params.setTcpTimeout(sscanf(ncfg.timeout,'%d'));
-            me.simcorTcp = org.nees.uiuc.simcor.UiSimCorTcp('SEND_COMMAND',me.params);
+            me.simcorTcp = org.nees.uiuc.simcor.ConnectionPeer('SEND_COMMAND',me.params);
             stamp = datestr(now,'_yyyy_mm_dd_HH_MM_SS');
             me.simcorTcp.setArchiveFilename(fullfile(pwd,'Logs',sprintf('OmNetworkLog%s.txt',stamp)));
             me.simcorTcp.startup();

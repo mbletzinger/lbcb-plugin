@@ -83,7 +83,8 @@ classdef MdlUiSimCor < handle
             ncfg = NetworkConfigDao(me.cfg);
             me.params.setLocalPort(sscanf(ncfg.simcorPort,'%d'));
             me.params.setTcpTimeout(sscanf(ncfg.timeout,'%d'));
-            me.simcorTcp = org.nees.uiuc.simcor.UiSimCorTcp('RECEIVE_COMMAND',me.params);
+            me.params.setLfcrSendEom(false);
+            me.simcorTcp = org.nees.uiuc.simcor.ConnectionPeer('RECEIVE_COMMAND',me.params);
             stamp = datestr(now,'_yyyy_mm_dd_HH_MM_SS');
             me.simcorTcp.setArchiveFilename(fullfile(pwd,'Logs',sprintf('UiSimCorNetworkLog%s.txt',stamp)));
             me.simcorTcp.startup();
@@ -96,7 +97,6 @@ classdef MdlUiSimCor < handle
             me.simcorTcp.shutdown();
             me.action.setState('CLOSE CONNECTION');
             me.state.setState('BUSY');
-            me.simcorTcp = [];
         end
         
         % Create a compound command (command with multiple MDL addresses)
@@ -199,7 +199,7 @@ classdef MdlUiSimCor < handle
                     me.action.setState('NONE');
                     me.log.error(dbstack(),char(me.simcorTcp.getTransaction().getError().getText()));
                     me.simcorTcp.shutdown();
-                case {'CLOSING_CONNECTION' 'OPENING_CONNECTION' }
+                case {'CLOSING_CONNECTION' 'OPENING_CONNECTION' ,'STOP_LISTENING'}
                 otherwise
                     me.log.error(dbstack,sprintf('"%s" not recognized',csS));
             end
