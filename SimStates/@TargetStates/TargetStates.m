@@ -11,6 +11,7 @@ classdef TargetStates < SimStates
         targetSource = StateEnum({...
             'INPUT FILE',...
             'UI SIMCOR',...
+            'NONE',...
             });
         prevAction
         stpEx = [];
@@ -22,6 +23,10 @@ classdef TargetStates < SimStates
         log = Logger('TargetStates');
     end
     methods
+        function me = TargetStates()
+            me.currentAction.setState('DONE');
+            me.targetSource.setState('NONE');
+        end
         start(me,stepNumber)
         done = isDone(me)
     end

@@ -3,7 +3,10 @@ me.currentExecute.setState('OPEN CLOSE CONNECTION');
 action = 'CLOSE OM CONNECTION';
 if on
     action = 'OPEN OM CONNECTION';
+    me.hfact.ocOm.start(0);
+else
+    me.hfact.ocOm.start(1);
 end
-me.hfact.cnEx.start(action);
-start(me.simTimer);
+me.connectOmAction(action);
+start(me.comTimer);
 end

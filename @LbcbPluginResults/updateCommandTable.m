@@ -1,10 +1,17 @@
 function updateCommandTable(me)
-hndl = me.handles.CommandTable;
+
+if(isempty(me.handles) == false)
+    hndl = me.handles.CommandTable;
+end
 if isempty(me.cmdTable)
     [ didx, fidx, labels ] = me.hfact.dat.cmdTableHeaders(); %#ok<ASGLU>
-    set(hndl,'ColumnName',labels);
+    if(isempty(me.handles) == false)
+        set(hndl,'ColumnName',labels);
+    end
 end
 me.cmdTable = me.hfact.dat.cmdTable();
-set(hndl,'Data',me.cmdTable);
-me.updateGui();
+if(isempty(me.handles) == false)
+    set(hndl,'Data',me.cmdTable);
+    me.updateGui();
+end
 end

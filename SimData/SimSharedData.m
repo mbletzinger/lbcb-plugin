@@ -43,11 +43,14 @@ classdef SimSharedData < handle
             end
         end
         function [ didx, fidx, labels ] = cmdTableHeaders(me)
-            dofO = me.curTarget.lbcbCps{1}.response.lbcb; % for the label functions
-            [ disp dDofs force fDofs] = me.curTarget.cmdData();
             didx = [];
             fidx = [];
             labels = {};
+            if isempty(me.curTarget)
+                return;
+            end
+            dofO = me.curTarget.lbcbCps{1}.response.lbcb; % for the label functions
+            [ disp dDofs force fDofs] = me.curTarget.cmdData();
             idx = 1;
             for d = 1 : length(disp)
                 if dDofs(d)
