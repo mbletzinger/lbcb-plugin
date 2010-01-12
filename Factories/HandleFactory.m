@@ -169,6 +169,7 @@ classdef HandleFactory <  handle
         end
         function setGuiHandle(me, handle)
             me.gui = LbcbPluginResults(handle,me);
+            me.gui.ddisp = me.ddisp;
             for c =1:length(me.omStates)
                 me.omStates{c}.gui = me.gui;                                
             end
