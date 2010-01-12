@@ -41,6 +41,7 @@ classdef DataDisplay < handle
             end
         end
         function update(me)
+            me.log.debug(dbstack, sprintf('Displaying %s',me.dat.curStepData.toString()));
             me.dataTable.update(me.dat.curStepData);
             me.totalFxVsLbcbDxL1.update(me.dat.curStepData);
             me.totalFxVsLbcbDxL2.update(me.dat.curStepData);

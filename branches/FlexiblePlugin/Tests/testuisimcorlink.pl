@@ -5,9 +5,9 @@ use File::Spec;
 use Cwd;
 use strict;
 
-my ( $host, $port ) = ( "localhost", "6445" );
+#my ( $host, $port ) = ( "localhost", "6445" );
 
-#my ($host, $port) = ("128.174.15.184","6445");
+my ($host, $port) = ("cee-neesstit1.cee.illinois.edu","6445");
 my $cwd     = cwd();
 my @dirs    = File::Spec->splitdir($cwd);
 my $dropped = pop @dirs;
@@ -34,11 +34,11 @@ for my $i ( 1 .. 5 ) {
 	$year += 1900;
 	$month++;
 	print "$month/$mday/$year";
-	sendCommand( "propose	trans200912317925.320[100 23]"
+	sendCommand( "propose	trans200912317925.320"
 		  . "	MDL-00-01:LBCB1	x	displacement	0.5	y	displacement	0.0"
 		  . "	MDL-00-01:LBCB2	z	displacement	0.5	y	rotation	0.002" );
 	receiveCommand();
-	sendCommand("execute	trans200912317925.320[100 23]");
+	sendCommand("execute	trans200912317925.320");
 	receiveCommand();
 	sendCommand("get-control-point	dummy	MDL-00-01:LBCB2");
 	receiveCommand();

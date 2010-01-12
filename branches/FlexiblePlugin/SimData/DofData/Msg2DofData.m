@@ -18,7 +18,6 @@ classdef Msg2DofData < handle
         % Parses the data portion of a control point message
         function data = parse(me,msg,mdl)
             data = {Target()};
-            data{1}.cps = me.parseCps(mdl);
             tgt =1;
             tokens = regexp(char(msg),'\t','split');
             cellA = me.tokensSort(tokens);
@@ -29,7 +28,6 @@ classdef Msg2DofData < handle
                 if(index == 0)
                     tgt = tgt + 1;
                     data{tgt} = Target();
-                    data{tgt}.node = cellA{r,1};
                     continue;
                 end
                 if isForce

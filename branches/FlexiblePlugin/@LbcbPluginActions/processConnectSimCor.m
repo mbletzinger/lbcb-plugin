@@ -1,5 +1,4 @@
 function processConnectSimCor(me,on)
-me.currentExecute.setState('OPEN CLOSE CONNECTION');
 action = 'CLOSE SIMCOR CONNECTION';
 if on
     action = 'OPEN SIMCOR CONNECTION';
@@ -7,8 +6,8 @@ if on
 else
     me.hfact.ocSimCor.start(1);
 end
-me.connectSimCorAction(action);
-isOn = get(me.simcorTimer,'Running');
+me.connectSimCorAction.setState(action);
+isOn = get(me.csimcorTimer,'Running');
 if strcmp(isOn,'off')
     start(me.csimcorTimer);
 end

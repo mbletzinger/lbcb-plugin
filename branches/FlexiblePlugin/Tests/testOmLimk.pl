@@ -5,6 +5,7 @@ use File::Spec;
 use Cwd;
 use strict;
 
+#my ($host, $port) = ("127.0.0.1",6445);
 my ($host, $port) = ("127.0.0.1",6342);
 #my ($host, $port) = ("192.168.1.101","5057");
 my $cwd =cwd();

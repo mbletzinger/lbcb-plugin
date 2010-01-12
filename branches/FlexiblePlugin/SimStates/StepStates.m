@@ -93,6 +93,7 @@ classdef StepStates < SimStates
                     
                     if me.isFake()
                         me.fakeGcp.generateControlPoints();
+                        me.pResp.start();
                         me.currentAction.setState('PROCESS OM RESPONSE');
                     else
                         odone = me.gcpOm.isDone();
@@ -110,6 +111,7 @@ classdef StepStates < SimStates
                     end
                     
                 case 'PROCESS OM RESPONSE'
+                    me.pResp.isDone();
                     me.arch.archive(me.dat.curStepData);
                     me.gui.ddisp.update();
                     me.currentAction.setState('BROADCAST TRIGGER');
