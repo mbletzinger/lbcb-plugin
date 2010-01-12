@@ -1012,6 +1012,7 @@ function LbcbPlugin_DeleteFcn(hObject, eventdata, handles)
 
 if isfield(handles,'actions')
     disp('Shutting Down');
+    handles.actions.shutdown();
     for d = 0 : 3
         DataDisplay.checkOff([],[],d);
     end

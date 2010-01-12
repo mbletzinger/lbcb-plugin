@@ -27,8 +27,10 @@ classdef MdlUiSimCor < handle
             });
         prevState;
         action = StateEnum({ ... 
+            'START LISTENER', ...
             'OPEN CONNECTION', ...
             'CLOSE CONNECTION', ...
+            'STOP LISTENER', ...
             'RECEIVING COMMAND',...
             'SENDING RESPONSE',...
             'NONE'...
@@ -52,6 +54,8 @@ classdef MdlUiSimCor < handle
                 me.prevAction.setState(a);
             end
             switch a
+                case { 'START LISTENER' 'STOP LISTENER' }
+                    me.listenAction();
                 case { 'OPEN CONNECTION' 'CLOSE CONNECTION' }
                     me.connectionAction();
                 case 'RECEIVING COMMAND'
@@ -200,6 +204,28 @@ classdef MdlUiSimCor < handle
                     me.log.error(dbstack(),char(me.simcorTcp.getTransaction().getError().getText()));
                     me.simcorTcp.shutdown();
                 case {'CLOSING_CONNECTION' 'OPENING_CONNECTION' ,'STOP_LISTENING'}
+                otherwise
+                    me.log.error(dbstack,sprintf('"%s" not recognized',csS));
+            end
+        end
+        function listenAction(me)
+            is = InitStates();
+            ts = StateEnum(is.transactionStates);
+            ts.setState(char(me.simcorTcp.isReady()));
+            csS = ts.getState();
+ %           me.log.debug(dbstack,sprintf('Transaction state is %s',csS));
+            switch csS
+                case 'TRANSACTION_DONE'
+                    me.state.setState('READY');
+                    me.action.setState('NONE');
+                    me.simcorTcp.isReady();
+                case 'ERRORS_EXIST'
+                    me.simcorTcp.isReady();
+                    me.state.setState('ERRORS EXIST');
+                    me.action.setState('NONE');
+                    me.log.error(dbstack(),char(me.simcorTcp.getTransaction().getError().getText()));
+                    me.simcorTcp.shutdown();
+                case {'CLOSING_CONNECTION' 'OPENING_CONNECTION' }
                 otherwise
                     me.log.error(dbstack,sprintf('"%s" not recognized',csS));
             end

@@ -1,4 +1,4 @@
 function startSimulation(me)
     me.hfact.tgtEx.start(me.startStep);
-    me.currentExecute.setState('RUN SIMULATION');
+    me.currentSimExecute.setState('RUN SIMULATION');
 end

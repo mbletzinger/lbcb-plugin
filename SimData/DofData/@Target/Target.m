@@ -16,8 +16,6 @@ classdef Target < DofData
         forceDofs = zeros(6,1);% true if controlled dof force
         m2d = Msg2DofData();
         dofLabels = {'x','y','z'};
-        node = '';
-        cps = '';
     end
     methods
         function me = Target()

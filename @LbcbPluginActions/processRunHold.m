@@ -1,11 +1,14 @@
 function processRunHold(me,on)
 if on
     me.hfact.gui.colorRunButton('ON');
-    if me.currentExecute.isState('READY')
+    if me.currentSimExecute.isState('DONE')
         me.startSimulation()
     end
     me.hfact.tgtEx.statusReady();
-    start(me.simTimer);
+    isOn = get(me.simTimer,'Running');
+    if strcmp(isOn,'off')
+        start(me.simTimer);
+    end
 else
     me.hfact.gui.colorRunButton('OFF');
     stop(me.simTimer);

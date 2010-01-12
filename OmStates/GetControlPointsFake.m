@@ -68,7 +68,7 @@ classdef GetControlPointsFake < handle
             end
             me.dat.curStepData.externalSensorsRaw = readings;
             me.dat.curStepData.distributeExtSensorData(readings);
-            %            me.log.debug(dbstack,sprintf('Generated fake response: %s',istep.toString));
+%            me.log.debug(dbstack,sprintf('Generated fake response: %s',me.dat.curStepData.toString));
         end
         function generateCorrectiveCps(me)
             lgt = 12;

@@ -1,5 +1,9 @@
 
 function executeSim(obj, event,me) %#ok<INUSL>
+if rem(me.simTimerCnt,100) == 0
+    me.log.debug(dbstack,'Simulation Timer Executing')
+end
+me.simTimerCnt = me.simTimerCnt + 1;
 done = me.hfact.tgtEx.isDone();
 if done
     me.currentExecute.setState('READY');
