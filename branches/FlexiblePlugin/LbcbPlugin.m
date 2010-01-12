@@ -22,7 +22,7 @@ function varargout = LbcbPlugin(varargin)
 
 % Edit the above text to modify the response to help LbcbPlugin
 
-% Last Modified by GUIDE v2.5 17-Dec-2009 03:07:44
+% Last Modified by GUIDE v2.5 12-Jan-2010 14:53:53
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -102,10 +102,10 @@ function RunHold_Callback(hObject, eventdata, handles) %#ok<*INUSD,*DEFNU>
 if handles.notimer
     % Used for debugging the software
     disp('no timer execution');
-    if handles.actions.currentExecute.isState('READY')
+    if handles.actions.currentSimExecute.isState('DONE')
     handles.actions.startSimulation();
     end
-    LbcbPluginActions.execute([],[],handles.actions);
+    LbcbPluginActions.executeSim([],[],handles.actions);
 
 else
     handles.actions.processRunHold(get(hObject,'Value'));
@@ -1130,3 +1130,88 @@ else
     handles.actions.hfact.gui.ddisp.startDebugWindow();
 end
 handles.actions.processArchiveOnOff(get(hObject,'Checked'));
+
+
+% --------------------------------------------------------------------
+function TotalMyVsLbcb1Dx_Callback(hObject, eventdata, handles)
+% hObject    handle to TotalMyVsLbcb1Dx (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+if strcmp(get(hObject,'Checked'),'on')
+    handles.actions.hfact.gui.ddisp.stopTotalMyVsLbcbDx(1);
+    set(hObject,'Checked','off');
+else 
+    handles.actions.hfact.gui.ddisp.startTotalMyVsLbcbDx(1);
+    set(hObject,'Checked','on');
+end
+
+
+% --------------------------------------------------------------------
+function TotalMyVsLbcb2Dx_Callback(hObject, eventdata, handles)
+% hObject    handle to TotalMyVsLbcb2Dx (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+if strcmp(get(hObject,'Checked'),'on')
+    handles.actions.hfact.gui.ddisp.stopTotalMyVsLbcbDx(0);
+    set(hObject,'Checked','off');
+else 
+    handles.actions.hfact.gui.ddisp.startTotalMyVsLbcbDx(0);
+    set(hObject,'Checked','on');
+end
+
+
+% --------------------------------------------------------------------
+function MyVsLbcb1Dx_Callback(hObject, eventdata, handles)
+% hObject    handle to MyVsLbcb1Dx (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+if strcmp(get(hObject,'Checked'),'on')
+    handles.actions.hfact.gui.ddisp.stopMyVsDx(1);
+    set(hObject,'Checked','off');
+else 
+    handles.actions.hfact.gui.ddisp.startMyVsDx(1);
+    set(hObject,'Checked','on');
+end
+
+
+% --------------------------------------------------------------------
+function MyVsLbcb2Dx_Callback(hObject, eventdata, handles)
+% hObject    handle to MyVsLbcb2Dx (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+if strcmp(get(hObject,'Checked'),'on')
+    handles.actions.hfact.gui.ddisp.stopMyVsDx(1);
+    set(hObject,'Checked','off');
+else 
+    handles.actions.hfact.gui.ddisp.startMyVsDx(1);
+    set(hObject,'Checked','on');
+end
+
+
+% --------------------------------------------------------------------
+function RyVsLbcb1Dx_Callback(hObject, eventdata, handles)
+% hObject    handle to RyVsLbcb1Dx (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+if strcmp(get(hObject,'Checked'),'on')
+    handles.actions.hfact.gui.ddisp.stopRyVsDx(1);
+    set(hObject,'Checked','off');
+else 
+    handles.actions.hfact.gui.ddisp.startRyVsDx(1);
+    set(hObject,'Checked','on');
+end
+
+
+
+% --------------------------------------------------------------------
+function RyVsLbcb2Dx_Callback(hObject, eventdata, handles)
+% hObject    handle to RyVsLbcb2Dx (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+if strcmp(get(hObject,'Checked'),'on')
+    handles.actions.hfact.gui.ddisp.stopRyVsDx(0);
+    set(hObject,'Checked','off');
+else 
+    handles.actions.hfact.gui.ddisp.startRyVsDx(0);
+    set(hObject,'Checked','on');
+end

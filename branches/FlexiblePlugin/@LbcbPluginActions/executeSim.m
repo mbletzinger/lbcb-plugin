@@ -6,7 +6,7 @@ end
 me.simTimerCnt = me.simTimerCnt + 1;
 done = me.hfact.tgtEx.isDone();
 if done
-    me.currentExecute.setState('READY');
+    me.currentSimExecute.setState('DONE');
     me.hfact.gui.colorRunButton('OFF');
     stop(me.simTimer);
 end

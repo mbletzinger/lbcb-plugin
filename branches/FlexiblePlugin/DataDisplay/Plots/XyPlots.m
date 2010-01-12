@@ -1,15 +1,20 @@
 classdef XyPlots < DisplayControl
     properties
-        xdata = cell(8,1);
-        ydata = cell(8,1);
-        lineSeries = [];
-        legends = {};
+        xdata
+        ydata
+        lineSeries
+        legends
         figNum
         name
     end
     methods
         function me = XyPlots(name)
             me.name = name;
+            me.xdata = cell(8,1);
+            me.ydata = cell(8,1);
+            me.lineSeries = [];
+            me.legends = {};
+            me.figNum = [];
         end
         function displayMe(me)
             me.fig = figure('DeleteFcn',{'DataDisplay.checkOff', me.figNum }, 'Name',me.name);
@@ -21,8 +26,8 @@ classdef XyPlots < DisplayControl
             me.isDisplayed = true;
         end
         function update(me,d,idx)
-            me.ydata{idx} = d(2,:);
-            me.xdata{idx} = d(1,:);
+            me.ydata{idx} = d(1,:);
+            me.xdata{idx} = d(2,:);
             if me.isDisplayed
                 set(me.lineSeries(idx),'XData',me.xdata{idx});
                 set(me.lineSeries(idx),'YData',me.ydata{idx});
