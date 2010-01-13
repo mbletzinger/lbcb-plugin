@@ -23,16 +23,20 @@ classdef GetControlPointsFake < handle
             if me.cdp.numLbcbs()  > 1
                 lgt = 24;
             end
-            fcfg = FakeOmDao(me.cdp.cfg);            
+            fcfg = FakeOmDao(me.cdp.cfg);
             cmd = zeros(24,1);
             dofs = zeros(24,1);
             scl = zeros(24,1);
             ofst = zeros(24,1);
             drv = cell(24,1);
-            [cmd(1:12) dofs(1:12) cmd(13:24) dofs(13:24) ] = me.dat.curStepData.cmdData();
-            % reorganize data to reflect the fake parameters
-            cmd = vertcat(cmd(1:6), cmd(13:18), cmd(7:12), cmd(19:24));
-            dofs = vertcat(dofs(1:6), dofs(13:18), dofs(7:12), dofs(19:24));
+            if me.cdp.numLbcbs()  > 1
+                [cmd(1:12) dofs(1:12) cmd(13:24) dofs(13:24) ] = me.dat.curStepData.cmdData();
+                % reorganize data to reflect the fake parameters
+                cmd = vertcat(cmd(1:6), cmd(13:18), cmd(7:12), cmd(19:24));
+                dofs = vertcat(dofs(1:6), dofs(13:18), dofs(7:12), dofs(19:24));
+            else
+                [cmd(1:6) dofs(1:6) cmd(7:12) dofs(7:12) ] = me.dat.curStepData.cmdData();
+            end
             scl(1:12) = fcfg.scale1;
             ofst(1:12) = fcfg.offset1;
             drv(1:12) = fcfg.derived1;
@@ -61,14 +65,14 @@ classdef GetControlPointsFake < handle
             escl = fcfg.eScale;
             eofst = fcfg.eOffset;
             edrv = fcfg.eDerived;
- 
+            
             for e = 1:length(names)
                 ddof = me.getDof(cmd,edrv(e));
                 readings(e) = ddof * escl(e) + eofst(e);
             end
             me.dat.curStepData.externalSensorsRaw = readings;
             me.dat.curStepData.distributeExtSensorData(readings);
-%            me.log.debug(dbstack,sprintf('Generated fake response: %s',me.dat.curStepData.toString));
+            %            me.log.debug(dbstack,sprintf('Generated fake response: %s',me.dat.curStepData.toString));
         end
         function generateCorrectiveCps(me)
             lgt = 12;
@@ -115,7 +119,7 @@ classdef GetControlPointsFake < handle
             escl = fcfg.eScale;
             eofst = fcfg.eOffset;
             edrv = fcfg.eDerived;
- 
+            
             for e = 1:length(names)
                 ddof = me.getDof(cmd,edrv(e));
                 readings(e) = ddof * escl(e) + eofst(e) - error;

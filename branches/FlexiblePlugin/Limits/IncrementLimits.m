@@ -12,11 +12,12 @@ classdef IncrementLimits < handle
             me.cfg = cfg;
         end
         function yes = withinLimits(me,curStep,prevStep)
+            cdp = ConfigDaoProvider(me.cfg);
             me.getLimits();
             me.faults2 = zeros(12,1);
             [me.faults1 me.increments1 ] = me.wL(curStep.lbcbCps{1}.command,...
                 prevStep.lbcbCps{1}.command,me.limits.window1,me.limits.used1);
-            lt = length(curStep.lbcbCps);
+            lt = cdp.numLbcbs();
             if lt > 1
                 [me.faults2 me.increments2 ] = me.wL(curStep.lbcbCps{2}.command,...
                     prevStep.lbcbCps{2}.command,me.limits.window2,me.limits.used2);

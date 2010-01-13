@@ -16,7 +16,7 @@ classdef DataDisplay < handle
     end
     methods
         function me = DataDisplay()
-            me.dataTable = LbcbDataTable('Step DOF Data');
+            me.dataTable = DataTable('Step DOF Data');
             DataDisplay.setDataDisplayHandle(me);
             me.totalFxVsLbcbDxL1 = TotalFxVsLbcbDx(1);
             me.totalFxVsLbcbDxL2 = TotalFxVsLbcbDx(0);
@@ -28,7 +28,7 @@ classdef DataDisplay < handle
             me.RyVsDxL2 = RyVsDx(0);
         end
         function startDataTable(me)
-            me.dataTable.displayMe(me.cdp);
+            me.dataTable.displayMe();
         end
         function stopDataTable(me)
             DataDisplay.deleteDisplay(0);
@@ -107,6 +107,11 @@ classdef DataDisplay < handle
             me.RyVsDxL1.update(me.dat.curStepData);
             me.RyVsDxL2.update(me.dat.curStepData);
         end
+        function setCdp(me,cdp)
+            me.cdp = cdp;
+            me.dataTable.cdp = cdp;            
+        end
+        
     end
     methods (Static)
         function deleteDisplay(display)
@@ -145,7 +150,7 @@ classdef DataDisplay < handle
             mhndl = hndl;
         end
         function checkOff(obj,event,c)
-            global mhndl;            
+            global mhndl;
             switch c
                 case 0
                     set(mhndl.DataTable,'Checked','off');

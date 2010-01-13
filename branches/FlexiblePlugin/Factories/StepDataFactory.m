@@ -20,11 +20,13 @@ classdef StepDataFactory < handle
             clone = StepData;
             me.addProtocol(clone);
             clone.stepNum = StepNumber(step,sub,0);
-            lgth = length(targets);
-            for t = 1:lgth
-                clone.lbcbCps{t}.command = targets{t};
+            lgth = me.cdp.numLbcbs();
+            if lgth > 1
+                clone.lbcbCps{1}.command = targets{1};
+                clone.lbcbCps{2}.command = targets{2};
+            else
+                clone.lbcbCps{1}.command = targets{1};
             end
-            
         end
         function clone = uisimcorMsg2Step(me,cmd)
             clone = StepData;

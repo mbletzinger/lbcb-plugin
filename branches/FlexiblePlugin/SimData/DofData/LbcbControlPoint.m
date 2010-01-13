@@ -16,6 +16,7 @@ classdef LbcbControlPoint < handle
         command = [];
         externalSensors = [];
         correctionDeltas = zeros(6,1);
+        log = Logger('LbcbControlPoint')
     end
     methods
         function me = LbcbControlPoint()
@@ -52,5 +53,12 @@ classdef LbcbControlPoint < handle
             force = me.response.force;
             
         end
+%         function set.command(me,cmd)
+%             if iscell(cmd)
+%                 disp('Single cell array assigned to command'); 
+%                 dbstop;
+%             end
+%             me.command = cmd;
+%         end
     end
 end

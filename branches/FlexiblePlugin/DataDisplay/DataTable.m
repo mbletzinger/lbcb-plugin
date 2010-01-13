@@ -10,11 +10,10 @@ classdef DataTable < DisplayControl
         cdp
     end
     methods
-        function me = LbcbDataTable(name)
+        function me = DataTable(name)
             me.name = name;
         end
-        function displayMe(me,cdp)
-            me.cdp = cdp;
+        function displayMe(me)
             mnames = me.modelHeaders();
             me.fig = figure('Position',[100 100 1080 340], 'Name', me.name,'DeleteFcn',{'DataDisplay.checkOff',0 });
             me.table = uitable('ColumnName',me.cnames,'RowName',{ me.rnames{:} mnames{:} },...
@@ -40,12 +39,16 @@ classdef DataTable < DisplayControl
             end
             if me.cdp.numModelCps() > 0
                 for m = 1 : me.cdp.numModelCps()
-                    me.data((6 + (m * 2 - 1)),:) = [ step.modelCps{m}.command.disp', step.modelCps{m}.command.force']; 
-                    me.data((6 + (m * 2)),:) = [ step.modelCps{m}.response.disp', step.modelCps{m}.response.force']; 
+                    me.data((6 + (m * 2 - 1)),:) = [ step.modelCps{m}.command.disp', step.modelCps{m}.command.force'];
+                    me.data((6 + (m * 2)),:) = [ step.modelCps{m}.response.disp', step.modelCps{m}.response.force'];
                 end
             end
             if me.isDisplayed
                 set(me.table,'Data',me.data);
+                simstep = step.stepNum;
+                set(me.steps{1},'String',sprintf('%d',simstep.step));
+                set(me.steps{2},'String',sprintf('%d',simstep.subStep));
+                set(me.steps{3},'String',sprintf('%d',simstep.correctionStep));
             end
         end
         function mnames = modelHeaders(me)
