@@ -12,6 +12,7 @@ classdef DataDisplay < handle
         log = Logger('DataDisplay');
         dat
         dbgWin
+        cdp
     end
     methods
         function me = DataDisplay()
@@ -27,7 +28,7 @@ classdef DataDisplay < handle
             me.RyVsDxL2 = RyVsDx(0);
         end
         function startDataTable(me)
-            me.dataTable.displayMe();
+            me.dataTable.displayMe(me.cdp);
         end
         function stopDataTable(me)
             DataDisplay.deleteDisplay(0);

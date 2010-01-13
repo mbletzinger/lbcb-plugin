@@ -124,6 +124,7 @@ classdef HandleFactory <  handle
             me.fakeGcp = GetControlPointsFake(cdp);
             me.fakeGcp.dat = me.dat;
             me.ddisp = DataDisplay;
+            me.ddisp.cdp = cdp;
             dbgWin = DebugWindow;
             me.ddisp.dat = me.dat;
             me.ddisp.dbgWin = dbgWin;
