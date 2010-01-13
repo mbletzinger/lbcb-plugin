@@ -24,7 +24,7 @@ classdef TargetConfigDao < handle
         function me = TargetConfigDao(cfg)
             me.dt = DataTypes(cfg);
             me.empty = true;
-            if me.numControlPoints > 0
+            if isempty(me.addresses{1}) == false
                 me.empty = false;
             end
         end
