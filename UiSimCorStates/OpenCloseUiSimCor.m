@@ -78,7 +78,7 @@ classdef OpenCloseUiSimCor < UiSimCorState
     methods (Access=private)
         function openingSession(me)
             address = me.cdp.getAddress();
-            jmsg = me.mdlUiSimCor.createResponse(address,[],'Module initialized');
+            jmsg = me.mdlUiSimCor.createResponse(address,[],'LBCB Plugin initialized');
             me.mdlUiSimCor.respond(jmsg);
             me.simCorActions.setState('WAIT FOR SET PARAMETER');
         end

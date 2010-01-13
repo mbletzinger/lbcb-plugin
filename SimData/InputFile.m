@@ -63,8 +63,8 @@ classdef  InputFile < Substeps
                     end
                     tgt2.setForceDof(d - 18,tgts(t,i));
                 end
-%                me.log.debug(dbstack,sprintf('Created tgt1=%s',tgt1.toString()));
-                if sum(me.commandDofs(12:24)) > 0
+                me.log.debug(dbstack,sprintf('Created tgt1=%s',tgt1.toString()));
+                if me.sdf.cdp.numLbcbs() > 1
                     targets = { tgt1; tgt2 };
 %                    me.log.debug(dbstack,sprintf('Created tgt2=%s',tgt2.toString()));
                 else
