@@ -1,8 +1,10 @@
 classdef StepDataFactory < handle
     properties
         mdlLbcb = [];
+        mdlUiSimCor
         cdp = [];
         m2d = Msg2DofData();
+        tgtNumber;
     end
     methods
         function clone = newStep(me)
@@ -31,35 +33,39 @@ classdef StepDataFactory < handle
         function clone = uisimcorMsg2Step(me,cmd)
             clone = StepData;
             me.addProtocol(clone);
+            clone.stepNum = StepNumber(me.nextTgtNumber(),0,0);
             [addresses, contents] = cmd.getContents();
             if iscell(addresses)
                 for a = 1 : length(addresses)
-                    target = me.m2d.parse(contents{a},addresses{a});
+                    addr = char(addresses{a}.toString());
+                    target = me.m2d.parse(contents{a},addr);
                     for t = 1 : 6
-                        if(target.dispDofs(t))
-                            clone.modelCps{a}.command.setDispDof(t,target.disp(t));
+                        if(target{1}.dispDofs(t))
+                            clone.modelCps{a}.command.setDispDof(t,target{1}.disp(t));
                         end
-                        if(target.forceDofs(t))
-                            clone.modelCps{a}.command.setForceDof(t,target.force(t));
+                        if(target{1}.forceDofs(t))
+                            clone.modelCps{a}.command.setForceDof(t,target{1}.force(t));
                         end
                     end
-                    clone.modelCps{a}.address = addresses{a};
+                    clone.modelCps{a}.address = addr;
                 end
             else
-                target = me.m2d.parse(contents,addresses);
+                addr = char(addresses.toString());
+                target = me.m2d.parse(contents,addr);
                 for t = 1 : 6
-                    if(target.dispDofs(t))
-                        clone.modelCps{1}.command.setDispDof(t,target.disp(t));
+                    if(target{1}.dispDofs(t))
+                        clone.modelCps{1}.command.setDispDof(t,target{1}.disp(t));
                     end
-                    if(target.forceDofs(t))
-                        clone.modelCps{1}.command.setForceDof(t,target.force(t));
+                    if(target{1}.forceDofs(t))
+                        clone.modelCps{1}.command.setForceDof(t,target{1}.force(t));
                     end
                 end
-                clone.modelCps{1}.address = addresses;
-            end            
+                clone.modelCps{1}.address = addr;
+            end
         end
         function addProtocol(me,step)
             step.mdlLbcb = me.mdlLbcb;
+            step.mdlUiSimCor = me.mdlUiSimCor;
             step.cdp = me.cdp;
             lgth = me.cdp.numLbcbs();
             step.lbcbCps = cell(lgth,1);
@@ -77,5 +83,13 @@ classdef StepDataFactory < handle
                 end
             end
         end
+        function resetTgtNumber(me)
+            me.tgtNumber = 1;
+        end
+        function t = nextTgtNumber(me)
+            t = me.tgtNumber;
+            me.tgtNumber = t + 1;
+        end
+        
     end
 end

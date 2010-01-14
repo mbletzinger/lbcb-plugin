@@ -34,13 +34,13 @@ classdef CommandMessage < handle
         end
         function [addresses, contents] = getContents(me)
             if me.isCompound
-                adrs = me.jcommand.getAddresses();
-                size = adrs.size();
+                jadrs = me.jcommand.getAddresses();
+                size = jadrs.size();
                 addresses = cell(size,1);
                 contents = cell(size,1);
                 for a = 0:size - 1
-                    contents(a) = me.jcommand.getContents(adrs.get(a));
-                    addresses(a) = adrs.get(a);
+                    contents(a + 1) = me.jcommand.getContent(jadrs.get(a));
+                    addresses(a + 1) = jadrs.get(a);
                 end
             else
                 addresses = me.jcommand.getAddress();

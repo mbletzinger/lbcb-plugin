@@ -104,6 +104,7 @@ classdef HandleFactory <  handle
             me.sdf = StepDataFactory;
             me.sdf.cdp = cdp;
             me.sdf.mdlLbcb = me.mdlLbcb;
+            me.sdf.mdlUiSimCor = me.mdlUiSimCor;
             me.inF = InputFile(me.sdf);
             
             me.arch = Archiver(cdp);

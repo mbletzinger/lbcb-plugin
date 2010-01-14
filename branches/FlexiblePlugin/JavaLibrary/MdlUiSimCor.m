@@ -9,7 +9,7 @@
 %   action - StateEnum object storing the current action
 %   response - ResponseMessage containing the response contents
 %
-% $LastChangedDate: 2009-10-24 20:25:33 -0500 (Sat, 24 Oct 2009) $ 
+% $LastChangedDate: 2009-10-24 20:25:33 -0500 (Sat, 24 Oct 2009) $
 % $Author: mbletzin $
 % =====================================================================================================================
 classdef MdlUiSimCor < handle
@@ -26,7 +26,7 @@ classdef MdlUiSimCor < handle
             'ERRORS EXIST' ...
             });
         prevState;
-        action = StateEnum({ ... 
+        action = StateEnum({ ...
             'START LISTENER', ...
             'OPEN CONNECTION', ...
             'CLOSE CONNECTION', ...
@@ -141,7 +141,7 @@ classdef MdlUiSimCor < handle
             ts = StateEnum(is.transactionStates);
             ts.setState(me.simcorTcp.isReady());
             csS = ts.getState();
-%            me.log.debug(dbstack,sprintf('Transaction state is %s',csS));
+            me.log.debug(dbstack,sprintf('Transaction state is %s',csS));
             switch csS
                 case 'ERRORS_EXIST'
                     me.state.setState('ERRORS EXIST');
@@ -150,15 +150,16 @@ classdef MdlUiSimCor < handle
                     me.simcorTcp.isReady();
                     me.simcorTcp.shutdown();
                 case 'COMMAND_AVAILABLE'
-%                    me.state.setState('READY');
+                    %                    me.state.setState('READY');
                     transaction = me.simcorTcp.pickupTransaction();
+                    me.log.debug(dbstack, sprintf('Command Transaction %s',char(transaction.toString())));
                     jcommand = transaction.getCommand();
                     me.command = CommandMessage(jcommand);
                     me.state.setState('READY');
                     me.action.setState('NONE');
                     me.simcorTcp.isReady();
                 case {'WAIT_FOR_COMMAND' 'READ_COMMAND'}
-                % still busy
+                    % still busy
                 otherwise
                     me.log.error(dbstack,sprintf('"%s" not recognized',ts.getState()));
             end
@@ -168,7 +169,7 @@ classdef MdlUiSimCor < handle
             ts = StateEnum(is.transactionStates);
             ts.setState(me.simcorTcp.isReady());
             csS = ts.getState();
-%            me.log.debug(dbstack,sprintf('Transaction state is %s',csS));
+            %            me.log.debug(dbstack,sprintf('Transaction state is %s',csS));
             switch csS
                 case 'ERRORS_EXIST'
                     me.state.setState('ERRORS EXIST');
@@ -181,7 +182,7 @@ classdef MdlUiSimCor < handle
                     me.action.setState('NONE');
                     me.simcorTcp.isReady();
                 case { 'SENDING_RESPONSE', 'WAIT_FOR_RESPONSE'}
-                % still busy
+                    % still busy
                 otherwise
                     me.log.error(dbstack,sprintf('"%s" not recognized',ts.getState()));
             end
@@ -191,7 +192,7 @@ classdef MdlUiSimCor < handle
             ts = StateEnum(is.transactionStates);
             ts.setState(char(me.simcorTcp.isReady()));
             csS = ts.getState();
- %           me.log.debug(dbstack,sprintf('Transaction state is %s',csS));
+            %           me.log.debug(dbstack,sprintf('Transaction state is %s',csS));
             switch csS
                 case 'TRANSACTION_DONE'
                     me.state.setState('READY');
@@ -213,7 +214,7 @@ classdef MdlUiSimCor < handle
             ts = StateEnum(is.transactionStates);
             ts.setState(char(me.simcorTcp.isReady()));
             csS = ts.getState();
- %           me.log.debug(dbstack,sprintf('Transaction state is %s',csS));
+            %           me.log.debug(dbstack,sprintf('Transaction state is %s',csS));
             switch csS
                 case 'TRANSACTION_DONE'
                     me.state.setState('READY');

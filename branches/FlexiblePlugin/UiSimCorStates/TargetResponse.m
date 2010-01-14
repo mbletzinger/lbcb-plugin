@@ -2,25 +2,27 @@ classdef TargetResponse < UiSimCorState
     properties
         action = StateEnum({ ...
             'DONE'...
-            'GET_TARGET', ...
+            'WAIT_FOR_TARGET',...
             'SEND_RESPONSE', ...
             });
         id = {}
         target
+        log = Logger('TargetResponse');
     end
     methods
         function start(me)
-			me.mdlUiSimCor.start();
-                        me.statusBusy();
+            me.mdlUiSimCor.start();
+            me.statusBusy();
+            me.action.setState('WAIT_FOR_TARGET');
         end
-		function respond(me)
+        function respond(me)
             jmsg = me.dat.curTarget.generateSimCorResponseMsg();
             me.log.debug(dbstack,sprintf('Sending %s',char(jmsg)));
             me.mdlUiSimCor.respond(jmsg);
             me.statusBusy();
             me.action.setState('SEND_RESPONSE');
-		end
-		function done = isDone(me)
+        end
+        function done = isDone(me)
             done = 0;
             if me.mdlUiSimCor.isDone() == 0
                 return;
@@ -32,25 +34,20 @@ classdef TargetResponse < UiSimCorState
                 return;
             end
             a = me.action.getState();
+            me.log.debug(dbstack,sprintf('action is %s',a));
             switch a
                 case 'DONE'
                     done = 1;
                     me.statusReady();
-                case 'GET_TARGET'
-                    me.target = me.dat.sdf.uisimcorMsg2Step(me.mdlUiSimCor.response);
+                case 'WAIT_FOR_TARGET'
+                    me.target = me.sdf.uisimcorMsg2Step(me.mdlUiSimCor.command);
                     me.action.setState('DONE');
                 case 'SEND_RESPONSE'
-                    me.action.setState('DONE');                    
+                    me.action.setState('DONE');
                 otherwise
                     str = sprintf('%s not recognized',a);
                     disp(str);
             end
-        end
-    end
-    methods (Access=private)
-        function startPropose(me)
-        end
-        function startExecute(me)
         end
     end
 end

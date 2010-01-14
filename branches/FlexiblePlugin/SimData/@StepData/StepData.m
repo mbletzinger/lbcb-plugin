@@ -8,6 +8,7 @@ classdef StepData < handle
         log = Logger('StepData');
         jid = {};
         mdlLbcb = [];
+        mdlUiSimCor = [];
         cdp = [];
         needsCorrection = 0;
     end

@@ -3,13 +3,16 @@ classdef OpenCloseUiSimCor < UiSimCorState
         simCorActions = StateEnum({...
             'CONNECTING',...
             'DISCONNECTING',...
-            'WAIT FOR OPEN SESSION',...
-            'WAIT FOR SET PARAMETER',...
+            'WAIT FOR OPEN SESSION COMMAND',...
+            'WAIT FOR OPEN SESSION RESPONSE',...
+            'WAIT FOR SET PARAMETER COMMAND',...
+            'WAIT FOR SET PARAMETER RESPONSE',...
             'DONE',...
             });
          connectionStatus = StateEnum({'CONNECTED','DISCONNECTED','ERRORED'});
         closeIt = 0;
         log = Logger('OpenCloseUiSimCor');
+        prevAction
    end
     methods
         function me = OpenCloseUiSimCor()
@@ -49,17 +52,26 @@ classdef OpenCloseUiSimCor < UiSimCorState
                 return;
             end
             a = me.simCorActions.getState();
-            me.log.debug(dbstack,sprintf('OpenCloseOm action is %s',a));
+            if me.simCorActions.idx ~= me.prevAction
+                me.log.debug(dbstack,sprintf('Executing action %s',a));
+                me.prevAction = me.simCorActions.idx;
+            end
+
             switch a
                 case 'CONNECTING'
                     me.connect();
                 case 'DISCONNECTING'
                     me.disconnect();
-                case 'WAIT FOR OPEN SESSION'
-                    me.openingSession();
-                case 'WAIT FOR SET PARAMETER'
-                    me.setParameter();
+                case 'WAIT FOR OPEN SESSION COMMAND'
+                    me.openingSessionCommand();
+                case 'WAIT FOR OPEN SESSION RESPONSE'
+                    me.openingSessionResponse();
+                case 'WAIT FOR SET PARAMETER COMMAND'
+                    me.setParameterCommand();
+                case 'WAIT FOR SET PARAMETER RESPONSE'
+                    me.setParameterResponse();
                 case 'DONE'
+                    me.sdf.resetTgtNumber();
                     done = 1;
                 otherwise
                     done = 1;
@@ -76,13 +88,24 @@ classdef OpenCloseUiSimCor < UiSimCorState
         end
     end
     methods (Access=private)
-        function openingSession(me)
+        function openingSessionCommand(me)
+            address = me.cdp.getAddress();
+            jmsg = me.mdlUiSimCor.createResponse(address,[],'Open Session Succeeded');
+            me.mdlUiSimCor.respond(jmsg);
+            me.simCorActions.setState('WAIT FOR OPEN SESSION RESPONSE');
+        end
+        function openingSessionResponse(me)
+            me.mdlUiSimCor.start();
+            me.simCorActions.setState('WAIT FOR SET PARAMETER COMMAND');
+        end
+        function setParameterCommand(me)
             address = me.cdp.getAddress();
             jmsg = me.mdlUiSimCor.createResponse(address,[],'LBCB Plugin initialized');
             me.mdlUiSimCor.respond(jmsg);
-            me.simCorActions.setState('WAIT FOR SET PARAMETER');
+            me.simCorActions.setState('WAIT FOR SET PARAMETER RESPONSE');            
         end
-        function setParameter(me)
+        function setParameterResponse(me)
+            me.gui.colorButton('CONNECT SIMCOR','ON');
             me.simCorActions.setState('DONE');            
         end
         function connect(me)
@@ -93,12 +116,12 @@ classdef OpenCloseUiSimCor < UiSimCorState
                 me.simCorActions.setState('DONE');
                 return;
             end
-            jmsg = me.mdlUiSimCor.createResponse(address,[],'Open Session Succeeded');
-            me.mdlUiSimCor.respond(jmsg);
-            me.simCorActions.setState('WAIT FOR OPEN SESSION');
+            me.mdlUiSimCor.start();
+            me.simCorActions.setState('WAIT FOR OPEN SESSION COMMAND');
         end
         function disconnect(me)
             me.connectionStatus.setState('DISCONNECTED');
+            me.gui.colorButton('CONNECT SIMCOR','OFF');
             me.simCorActions.setState('DONE');            
         end
     end
