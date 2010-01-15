@@ -16,6 +16,10 @@ else
             me.currentAction.setState('DONE');
             return;
         end
+        if me.tgtRsp.abort
+            me.currentAction.setState('ABORT SIMULATION');
+            return;
+        end
     me.prcsTgt.start(me.tgtRsp.target);
     me.currentAction.setState('PROCESS TARGET');
     end

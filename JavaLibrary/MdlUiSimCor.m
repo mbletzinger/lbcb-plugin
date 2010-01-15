@@ -1,3 +1,4 @@
+
 % =====================================================================================================================
 % Class controling the communications to the Operations Manager.
 %
@@ -141,7 +142,7 @@ classdef MdlUiSimCor < handle
             ts = StateEnum(is.transactionStates);
             ts.setState(me.simcorTcp.isReady());
             csS = ts.getState();
-            me.log.debug(dbstack,sprintf('Transaction state is %s',csS));
+%            me.log.debug(dbstack,sprintf('Transaction state is %s',csS));
             switch csS
                 case 'ERRORS_EXIST'
                     me.state.setState('ERRORS EXIST');
