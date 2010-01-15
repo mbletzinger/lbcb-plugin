@@ -78,7 +78,8 @@ classdef TargetConfigDao < handle
             n = me.numControlPoints;
             if n == 1
                 me.empty = true;
-                me.addresses = {};
+                addr = {};
+                n = 0;
             else
                 me.numControlPoints = n-1;
             end
