@@ -24,9 +24,6 @@ classdef RyVsDx < handle
             if me.isLbcb1
                 cpsidx = 1;
             end
-            if isempty(step.dData.values)
-                return;
-            end
             ry = step.lbcbCps{cpsidx}.response.disp(5);
             cdx = step.lbcbCps{cpsidx}.command.disp(1);
             mdx = step.lbcbCps{cpsidx}.response.disp(1);
