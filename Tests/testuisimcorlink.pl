@@ -34,20 +34,8 @@ for my $i ( 1 .. 5 ) {
 	$year += 1900;
 	$month++;
 	print "$month/$mday/$year";
-	sendCommand( "propose	trans200912317925.320"
-		  . "	MDL-00-01:LBCB1	x	displacement	0.5	y	displacement	0.0"
-		  . "	MDL-00-01:LBCB2	z	displacement	0.5	y	rotation	0.002" );
-	receiveCommand();
-	sendCommand("execute	trans200912317925.320");
-	receiveCommand();
-	sendCommand("get-control-point	dummy	MDL-00-01:LBCB2");
-	receiveCommand();
-	sendCommand("get-control-point	dummy	MDL-00-01:ExternalSensors");
-	receiveCommand();
 	sendCommand( "propose	trans20080206155057.44"
 		  . "	MDL-00-01	x	displacement	1.0000000000e-003	y	displacement	2.0000000000e-003	z	rotation	3.0000000000e-003"
-		  . "	MDL-00-02	x	displacement	4.0000000000e-003	y	displacement	5.0000000000e-003	z	rotation	6.0000000000e-003"
-		  . "	MDL-00-03	x	displacement	7.0000000000e-003	y	displacement	8.0000000000e-003	z	rotation	9.0000000000e-003"
 	);
 	receiveCommand();
 	$increment = $increment eq "0.5" ? "-0.5" : "0.5";

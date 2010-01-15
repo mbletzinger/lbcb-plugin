@@ -29,8 +29,8 @@ classdef OmConfigDao < handle
     end
     methods
         function me = OmConfigDao(cfg)
-        me.dt = DataTypes(cfg);
-        me.empty = true;
+            me.dt = DataTypes(cfg);
+            me.empty = true;
         end
         function result = get.numLbcbs(me)
             result = me.dt.getInt('om.numLbcbs',1);
@@ -102,67 +102,64 @@ classdef OmConfigDao < handle
         function set.perturbationsL2(me,value)
             me.dt.setTarget('om.sensor.perturbations.lbcb2',value);
         end
-        function addSensor(me)
+        function insertSensor(me,s)
             n = me.numExtSensors;
+            
+            me.sensorNames = me.insertIntoArray(s,me.sensorNames,true);
+            me.apply2Lbcb = me.insertIntoArray(s,me.apply2Lbcb,true);
+            me.sensitivities = me.insertIntoArray(s,me.sensitivities,false);
+            me.base = me.insertIntoArray(s,me.base,true);
+            me.plat = me.insertIntoArray(s,me.plat,true);
+            me.sensorErrorTol = me.insertIntoArray(s,me.sensorErrorTol,false);
+            me.sensorNames{s} = ' ';
+            me.apply2Lbcb{s} = 'BOTH';
+            me.base{s} = zeros(3,1);
+            me.plat{s} = zeros(3,1);
             if me.empty
                 me.empty = false;
             else
                 me.numExtSensors = n+1;
             end
-            sn = cell(me.numExtSensors,1);
-            ap = cell(me.numExtSensors,1);
-            se = ones(me.numExtSensors,1);
-            bs = cell(me.numExtSensors,1);
-            pl = cell(me.numExtSensors,1);
-            et = zeros(me.numExtSensors,1);
-            
-            sn(1:n) = me.sensorNames(1:n);
-            ap(1:n) = me.apply2Lbcb(1:n);
-            se(1:n) = me.sensitivities(1:n);
-            bs(1:n) = me.base(1:n);
-            pl(1:n) = me.plat(1:n);
-            et(1:n) = me.sensorErrorTol(1:n);
-            sn{me.numExtSensors} = ' ';
-            ap{me.numExtSensors} = 'BOTH';
-            bs{me.numExtSensors} = zeros(3,1);
-            pl{me.numExtSensors} = zeros(3,1);
-            me.sensorNames = sn;
-            me.apply2Lbcb = ap;
-            me.sensitivities = se;
-            me.base = bs;
-            me.plat = pl;
-            me.sensorErrorTol = et;
         end
         function removeSensor(me,s)
             
-            sn = me.sensorNames;
-            ap = me.apply2Lbcb;
-            se = me.sensitivities;
-            bs = me.base;
-            pl = me.plat;
-            et = me.sensorErrorTol;
-
-            sn(s) = [];
-            ap(s) = [];
-            se(s) = [];
-            bs(s) = [];
-            pl(s) = [];
-            et(s) = [];
-
+            me.sensorNames = me.removeFromArray(s,me.sensorNames);
+            me.apply2Lbcb = me.removeFromArray(s,me.apply2Lbcb);
+            me.sensitivities = me.removeFromArray(s,me.sensitivities);
+            me.base = me.removeFromArray(s,me.base);
+            me.plat = me.removeFromArray(s,me.plat);
+            me.sensorErrorTol = me.removeFromArray(s,me.sensorErrorTol);
+            
             n = me.numExtSensors;
             if n == 1
                 me.empty = true;
             else
                 me.numExtSensors = n-1;
             end
-            
-            me.sensorNames = sn;
-            me.apply2Lbcb = ap;
-            me.sensitivities = se;
-            me.base = bs;
-            me.plat = pl;
-            me.sensorErrorTol = et;
         end
-
+        function out = insertIntoArray(me,s,in,isCell)
+            n = me.numExtSensors;
+            if isCell
+                out = cell(n + 1,1);
+            else
+                out = zeroes(n + 1,1);
+            end
+            if s < n
+                out(1:s) = in(1:s);
+            else
+                out(1:n) = in(1:n);
+            end
+            if s < n + 1
+                out(s + 1 : n + 1) = in(s:n);
+            end
+        end
+        function out = removeFromArray(me,s,in)
+            n = me.numExtSensors;
+            out = in;
+            out(s) = [];
+            if n == 1
+                out = {};
+            end
+        end
     end
 end
