@@ -4,12 +4,17 @@ classdef TargetResponse < UiSimCorState
             'DONE'...
             'WAIT_FOR_TARGET',...
             'SEND_RESPONSE', ...
+            'CLOSE_SESSION_RECEIVED',...
             });
         id = {}
         target
         log = Logger('TargetResponse');
+        abort
     end
     methods
+        function me = TargetResponse()
+            me.abort = false;
+        end
         function start(me)
             me.mdlUiSimCor.start();
             me.statusBusy();
@@ -40,9 +45,18 @@ classdef TargetResponse < UiSimCorState
                     done = 1;
                     me.statusReady();
                 case 'WAIT_FOR_TARGET'
-                    me.target = me.sdf.uisimcorMsg2Step(me.mdlUiSimCor.command);
+                    command = me.mdlUiSimCor.command;
+                    if strcmp(command.getCommand(),'close-session')
+                        me.action.setState('CLOSE_SESSION_RECEIVED');
+                        address = me.cdp.getAddress();
+                        jmsg = me.mdlUiSimCor.createResponse(address,[],'GoodBye');
+                        me.mdlUiSimCor.respond(jmsg);
+                        me.abort = true;
+                        return;
+                    end
+                    me.target = me.sdf.uisimcorMsg2Step(command);
                     me.action.setState('DONE');
-                case 'SEND_RESPONSE'
+                case {'SEND_RESPONSE', 'CLOSE_SESSION_RECEIVED' }
                     me.action.setState('DONE');
                 otherwise
                     str = sprintf('%s not recognized',a);

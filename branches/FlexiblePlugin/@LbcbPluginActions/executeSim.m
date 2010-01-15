@@ -8,6 +8,9 @@ done = me.hfact.tgtEx.isDone();
 if done
     me.currentSimExecute.setState('DONE');
     me.hfact.gui.colorRunButton('OFF');
+    if me.hfact.tgtEx.targetSource.isState('UI SIMCOR')
+        me.processConnectSimCor(false);
+    end
     stop(me.simTimer);
 end
 if me.hfact.tgtEx.hasErrors()

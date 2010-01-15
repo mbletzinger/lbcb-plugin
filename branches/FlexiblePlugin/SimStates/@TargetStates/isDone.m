@@ -19,6 +19,8 @@ switch a
         me.executeSubsteps();
     case 'SEND TARGET RESPONSE'
         me.sendTargetResponses();
+    case 'ABORT SIMULATION'
+        done = 1;
     case 'DONE'
         done = 1;
     otherwise

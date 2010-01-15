@@ -7,7 +7,7 @@
 % isCompound - flag that indicates that the message contains mutiple
 %  control points
 %
-% $LastChangedDate: 2009-07-02 18:04:20 -0500 (Thu, 02 Jul 2009) $ 
+% $LastChangedDate: 2009-07-02 18:04:20 -0500 (Thu, 02 Jul 2009) $
 % $Author: mbletzin $
 % =====================================================================================================================
 classdef CommandMessage < handle
@@ -18,9 +18,9 @@ classdef CommandMessage < handle
     methods
         function me = CommandMessage(jcommand)
             me.jcommand = jcommand;
-         if isa(jcommand,'org.nees.uiuc.simcor.transaction.SimCorCompoundMsg')
-             me.isCompound = 1;
-         end
+            if isa(jcommand,'org.nees.uiuc.simcor.transaction.SimCorCompoundMsg')
+                me.isCompound = 1;
+            end
         end
         function result = isOk(me)
             s = InitStates();
@@ -46,6 +46,9 @@ classdef CommandMessage < handle
                 addresses = me.jcommand.getAddress();
                 contents = me.jcommand.getContent();
             end
+        end
+        function command = getCommand(me)
+            command = char(me.jcommand.getCommand());
         end
     end
 end
