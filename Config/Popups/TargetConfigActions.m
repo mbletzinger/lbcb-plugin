@@ -20,11 +20,11 @@ classdef TargetConfigActions < handle
             
             idx = me.flist.getIndex(me.tcfg.simCor2LbcbFunction);
             if idx > 0
-               set(me.handles.s2lFunction,'Value',idx);
+                set(me.handles.s2lFunction,'Value',idx);
             end
             idx = me.flist.getIndex(me.tcfg.lbcb2SimCorFunction);
             if idx > 0
-               set(me.handles.l2sFunction,'Value',idx);
+                set(me.handles.l2sFunction,'Value',idx);
             end
         end
         function setAddress(me,list)
@@ -53,7 +53,11 @@ classdef TargetConfigActions < handle
             me.setAddress(list);
         end
         function newCps(me)
-            [ dum, idx dum, ] = me.getSelected(); %#ok<NASGU>
+            if me.tcfg.empty
+                idx = 1;
+            else
+                [ dum, idx dum, ] = me.getSelected(); %#ok<NASGU>
+            end
             answer = inputdlg('Address','New Address',1,{'MDL-00-00'});
             me.tcfg.insertControlPoint(idx,answer);
             set(me.handles.modelControlPoints,'String',me.tcfg.addresses);
@@ -61,6 +65,13 @@ classdef TargetConfigActions < handle
         function removeCps(me)
             [ dum, idx ,dum ] = me.getSelected();  %#ok<NASGU>
             me.tcfg.removeControlPoint(idx);
+            if(me.tcfg.empty)
+                set(me.handles.modelControlPoints,'String','');
+                return;
+            end
+            if(idx > me.tcfg.numControlPoints)
+                set(me.handles.modelControlPoints,'Value',me.tcfg.numControlPoints);
+            end
             set(me.handles.modelControlPoints,'String',me.tcfg.addresses);
         end
         function upCps(me)
