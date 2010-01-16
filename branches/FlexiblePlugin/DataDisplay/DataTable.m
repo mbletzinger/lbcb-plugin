@@ -23,7 +23,7 @@ classdef DataTable < DisplayControl
             static2 = uicontrol('Style','text','Position',[115 315 50 18],'Parent',me.fig,'String','Substep');
             me.steps{2} = uicontrol('Style','edit','Position',[170 315 50 18],'Parent',me.fig);
             static3 = uicontrol('Style','text','Position',[225 315 50 25],'Parent',me.fig,'String','Correction Step');
-            me.steps{1} = uicontrol('Style','edit','Position',[280 315 50 18],'Parent',me.fig);
+            me.steps{3} = uicontrol('Style','edit','Position',[280 315 50 18],'Parent',me.fig);
             me.isDisplayed = true;
             set(me.table,'Data',me.data);
         end
@@ -35,7 +35,7 @@ classdef DataTable < DisplayControl
             if length(step.lbcbCps) > 1
                 me.data(3,:) = [ step.lbcbCps{2}.command.disp' step.lbcbCps{2}.command.force' ];
                 me.data(4,:) = [ step.lbcbCps{2}.response.disp' step.lbcbCps{2}.response.force' ];
-                me.data(6,:) = [ step.lbcbCps{2}.response.ed.disp' step.lbcbCps{2}.response.ed.force' ];
+                me.data(6,:) = [ step.lbcbCps{2}.response.lbcb.disp' step.lbcbCps{2}.response.lbcb.force' ];
             end
             if me.cdp.numModelCps() > 0
                 for m = 1 : me.cdp.numModelCps()
