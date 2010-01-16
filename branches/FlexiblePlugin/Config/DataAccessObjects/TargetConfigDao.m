@@ -3,10 +3,10 @@
 %
 % Members:
 %   cfg - a Configuration instance
-%   numControlPoints, addresses, apply2Lbcb are all 
+%   numControlPoints, addresses, apply2Lbcb are all
 %   dependent properties whose values reside in a java properties object.
 %
-% $LastChangedDate: 2009-05-31 07:19:36 -0500 (Sun, 31 May 2009) $ 
+% $LastChangedDate: 2009-05-31 07:19:36 -0500 (Sun, 31 May 2009) $
 % $Author: mbletzin $
 % =====================================================================================================================
 classdef TargetConfigDao < handle
@@ -46,17 +46,18 @@ classdef TargetConfigDao < handle
         function set.simCor2LbcbFunction(me,value)
             me.dt.setString('target.simCor2Lbcb.transformation.function',value);
         end
-         function result = get.lbcb2SimCorFunction(me)
+        function result = get.lbcb2SimCorFunction(me)
             result = me.dt.getString('target.lbcb2SimCor.transformation.function','noTransformResponse');
-         end
+        end
         function set.lbcb2SimCorFunction(me,value)
             me.dt.setString('target.lbcb2SimCor.transformation.function',value);
         end
-       
+        
         function insertControlPoint(me,s,str)
             n = me.numControlPoints;
             if me.empty
                 me.empty = false;
+                me.numControlPoints = 1;
             else
                 me.numControlPoints = n+1;
             end
@@ -78,12 +79,12 @@ classdef TargetConfigDao < handle
             n = me.numControlPoints;
             if n == 1
                 me.empty = true;
-                addr = {};
-                n = 0;
+                me.addresses = {};
+                me.numControlPoints = 0;
             else
                 me.numControlPoints = n-1;
+                me.addresses = addr;
             end
-            me.addresses = addr;
         end
     end
 end

@@ -31,6 +31,9 @@ classdef OmConfigDao < handle
         function me = OmConfigDao(cfg)
             me.dt = DataTypes(cfg);
             me.empty = true;
+            if isempty(me.sensorNames{1}) == false
+                me.empty = false;
+            end
         end
         function result = get.numLbcbs(me)
             result = me.dt.getInt('om.numLbcbs',1);
@@ -39,7 +42,7 @@ classdef OmConfigDao < handle
             me.dt.setInt('om.numLbcbs',value);
         end
         function result = get.numExtSensors(me)
-            result = me.dt.getInt('om.numExtSensors',1);
+            result = me.dt.getInt('om.numExtSensors',0);
         end
         function set.numExtSensors(me,value)
             me.dt.setInt('om.numExtSensors',value);
@@ -73,7 +76,7 @@ classdef OmConfigDao < handle
             result = me.dt.getTransVector('om.location.base','ext.sensor',sz);
         end
         function set.base(me,value)
-            sz = me.numExtSensors;
+            sz = length(value);
             me.dt.setTransVector('om.location.base','ext.sensor',sz,value);
         end
         function result = get.plat(me)
@@ -81,7 +84,7 @@ classdef OmConfigDao < handle
             result = me.dt.getTransVector('om.location.plat','ext.sensor',sz);
         end
         function set.plat(me,value)
-            sz = me.numExtSensors;
+            sz = length(value);
             me.dt.setTransVector('om.location.plat','ext.sensor',sz,value);
         end
         function result = get.sensorErrorTol(me)
@@ -104,36 +107,45 @@ classdef OmConfigDao < handle
         end
         function insertSensor(me,s)
             n = me.numExtSensors;
-            
-            me.sensorNames = me.insertIntoArray(s,me.sensorNames,true);
-            me.apply2Lbcb = me.insertIntoArray(s,me.apply2Lbcb,true);
-            me.sensitivities = me.insertIntoArray(s,me.sensitivities,false);
-            me.base = me.insertIntoArray(s,me.base,true);
-            me.plat = me.insertIntoArray(s,me.plat,true);
-            me.sensorErrorTol = me.insertIntoArray(s,me.sensorErrorTol,false);
-            me.sensorNames{s} = ' ';
-            me.apply2Lbcb{s} = 'BOTH';
-            me.base{s} = zeros(3,1);
-            me.plat{s} = zeros(3,1);
             if me.empty
+                me.numExtSensors = 1;
                 me.empty = false;
+                
+                me.sensorNames = {' '};
+                me.apply2Lbcb = {'BOTH'};
+                me.base = {zeros(3,1)};
+                me.plat = {zeros(3,1)};
+                
             else
+                me.sensorNames = me.insertIntoArray(s,me.sensorNames,true);
+                me.apply2Lbcb = me.insertIntoArray(s,me.apply2Lbcb,true);
+                me.sensitivities = me.insertIntoArray(s,me.sensitivities,false);
+                me.base = me.insertIntoArray(s,me.base,true);
+                me.plat = me.insertIntoArray(s,me.plat,true);
+                me.sensorErrorTol = me.insertIntoArray(s,me.sensorErrorTol,false);
+                
+                me.sensorNames{s} = ' ';
+                me.apply2Lbcb{s} = 'BOTH';
+                me.base{s} = zeros(3,1);
+                me.plat{s} = zeros(3,1);
                 me.numExtSensors = n+1;
+                
             end
         end
         function removeSensor(me,s)
             
-            me.sensorNames = me.removeFromArray(s,me.sensorNames);
-            me.apply2Lbcb = me.removeFromArray(s,me.apply2Lbcb);
-            me.sensitivities = me.removeFromArray(s,me.sensitivities);
-            me.base = me.removeFromArray(s,me.base);
-            me.plat = me.removeFromArray(s,me.plat);
-            me.sensorErrorTol = me.removeFromArray(s,me.sensorErrorTol);
             
             n = me.numExtSensors;
             if n == 1
                 me.empty = true;
+                me.numExtSensors = 0;
             else
+                me.sensorNames = me.removeFromArray(s,me.sensorNames);
+                me.apply2Lbcb = me.removeFromArray(s,me.apply2Lbcb);
+                me.sensitivities = me.removeFromArray(s,me.sensitivities);
+                me.base = me.removeFromArray(s,me.base);
+                me.plat = me.removeFromArray(s,me.plat);
+                me.sensorErrorTol = me.removeFromArray(s,me.sensorErrorTol);
                 me.numExtSensors = n-1;
             end
         end
@@ -142,7 +154,7 @@ classdef OmConfigDao < handle
             if isCell
                 out = cell(n + 1,1);
             else
-                out = zeroes(n + 1,1);
+                out = zeros(n + 1,1);
             end
             if s < n
                 out(1:s) = in(1:s);
