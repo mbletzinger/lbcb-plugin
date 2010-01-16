@@ -49,6 +49,7 @@ classdef Logger < handle
                     nmsgs = [ msgs; {str}];
                 end
                 set(hnd,'String',nmsgs);
+                set(hnd,'Value',length(nmsgs));
             end
         end
         function str = sstring(me, stack) 
