@@ -1,5 +1,10 @@
-function parseOmControlPointMsg(me,rsp)
+function good = parseOmControlPointMsg(me,rsp)
 [address contents] = rsp.getContents();
+good = 1;
+if isempty(address)
+    good = 0;
+    return;
+end
 mdl = me.cdp.getAddress();
 switch char(address.getSuffix())
     case 'LBCB1'

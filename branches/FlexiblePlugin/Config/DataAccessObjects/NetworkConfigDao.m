@@ -3,7 +3,7 @@
 %
 % Members:
 %   cfg - a Configuration instance
-%   omHost, omPort, triggerPort, simcorPort, and timeout are all 
+%   omHost, omPort, triggerPort, simcorPort, and connectionTimeout are all 
 %   dependent properties whose values reside in a java properties object.
 %
 % $LastChangedDate: 2009-05-31 07:19:36 -0500 (Sun, 31 May 2009) $ 
@@ -15,7 +15,8 @@ classdef NetworkConfigDao < handle
         omPort
         triggerPort
         simcorPort
-        timeout
+        connectionTimeout
+        msgTimeout
         address
     end
     properties
@@ -32,31 +33,37 @@ classdef NetworkConfigDao < handle
             me.dt.setString('network.omHost',value);
         end
         function result = get.omPort(me)
-            result = me.dt.getString('network.omPort','localhost');
+            result = me.dt.getInt('network.omPort',1000);
         end
         function set.omPort(me,value)
-            me.dt.setString('network.omPort',value);
+            me.dt.setInt('network.omPort',value);
         end
         function result = get.triggerPort(me)
-            result = me.dt.getString('network.triggerPort','localhost');
+            result = me.dt.getInt('network.triggerPort',1000);
         end
         function set.triggerPort(me,value)
-            me.dt.setString('network.triggerPort',value);
+            me.dt.setInt('network.triggerPort',value);
         end
         function result = get.simcorPort(me)
-            result = me.dt.getString('network.simcorPort','localhost');
+            result = me.dt.getInt('network.simcorPort',1000);
         end
         function set.simcorPort(me,value)
             me.dt.setString('network.simcorPort',value);
         end
-        function result = get.timeout(me)
-            result = me.dt.getString('network.timeout','localhost');
+        function result = get.connectionTimeout(me)
+            result = me.dt.getInt('network.connectionTimeout',3000);
         end
-        function set.timeout(me,value)
-            me.dt.setString('network.timeout',value);
+        function set.connectionTimeout(me,value)
+            me.dt.setInt('network.connectionTimeout',value);
+        end
+        function result = get.msgTimeout(me)
+            result = me.dt.getInt('network.msgTimeout',3000);
+        end
+        function set.msgTimeout(me,value)
+            me.dt.setInt('network.msgTimeout',value);
         end
         function result = get.address(me)
-            result = me.dt.getString('network.address','localhost');
+            result = me.dt.getString('network.address','MDL-00-01');
         end
         function set.address(me,value)
             me.dt.setString('network.address',value);

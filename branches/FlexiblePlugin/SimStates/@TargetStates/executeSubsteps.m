@@ -2,6 +2,12 @@ function executeSubsteps(me)
 if me.stpEx.isDone() == false
     return;
 end
+if me.stpEx.hasErrors()
+    me.ocOm.connectionError();
+    me.statusErrored();
+    me.currentAction.setState('DONE');
+    return;
+end
 me.dat.curTarget.transformResponse();
 me.currentAction.setState('SEND TARGET RESPONSE');
 if me.targetSource.isState('UI SIMCOR')

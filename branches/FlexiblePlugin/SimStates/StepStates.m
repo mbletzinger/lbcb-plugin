@@ -98,7 +98,7 @@ classdef StepStates < SimStates
                     else
                         odone = me.gcpOm.isDone();
                         if odone
-                            if me.peOm.hasErrors()
+                            if me.gcpOm.hasErrors()
                                 me.ocOm.connectionError();
                                 me.statusErrored();
                                 me.currentAction.setState('DONE');
