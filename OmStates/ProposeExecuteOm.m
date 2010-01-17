@@ -30,6 +30,7 @@ classdef ProposeExecuteOm < OmState
             if me.mdlLbcb.state.isState('ERRORS EXIST')
                 me.statusErrored();
                 me.log.error(dbstack,'OM Link has errored out');
+                me.action.setState('DONE');
                 done = 1;
                 return;
             end

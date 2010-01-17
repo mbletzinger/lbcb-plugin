@@ -35,6 +35,7 @@ classdef GetControlPointsOm < OmState
             if me.mdlLbcb.state.isState('ERRORS EXIST')
                 me.statusErrored();
                 me.log.error(dbstack,'OM Link has errored out');
+                me.cpsMsg.setState('DONE');
                 done = 1;
                 return;
             end
@@ -47,20 +48,44 @@ classdef GetControlPointsOm < OmState
                     else
                         me.cpsMsg.setState('ExternalSensors');
                     end
-                    me.dat.curStepData.parseOmControlPointMsg(me.mdlLbcb.response)
+                    goodMsg = me.dat.curStepData.parseOmControlPointMsg(me.mdlLbcb.response);
+                    if goodMsg == false
+                        me.statusErrored();
+                        me.log.error(dbstack,sprintf('Bad msg received from OM [%s]',...
+                            char(me.mdlLbcb.response.toString)));
+                        me.cpsMsg.setState('DONE');
+                        done = 1;
+                        return;
+                    end
                     jmsg = me.mdlLbcb.createCommand('get-control-point',address,me.cpsMsg.getState(),[]);
                     me.mdlLbcb.start(jmsg,me.dat.curStepData.stepNum,0);
                     me.statusBusy();
                     
                 case 'LBCB2'
-                    me.dat.curStepData.parseOmControlPointMsg(me.mdlLbcb.response)
+                    goodMsg = me.dat.curStepData.parseOmControlPointMsg(me.mdlLbcb.response);
+                    if goodMsg == false
+                        me.statusErrored();
+                        me.log.error(dbstack,sprintf('Bad msg received from OM [%s]',...
+                            char(me.mdlLbcb.response.toString)));
+                        done = 1;
+                        me.cpsMsg.setState('DONE');
+                        return;
+                    end
                     me.cpsMsg.setState('ExternalSensors');
                     jmsg = me.mdlLbcb.createCommand('get-control-point',address,me.cpsMsg.getState(),[]);
                     me.mdlLbcb.start(jmsg,me.dat.curStepData.stepNum,0);
                     me.statusBusy();
                     
                 case 'ExternalSensors'
-                    me.dat.curStepData.parseOmControlPointMsg(me.mdlLbcb.response)
+                    goodMsg = me.dat.curStepData.parseOmControlPointMsg(me.mdlLbcb.response);
+                    if goodMsg == false
+                        me.statusErrored();
+                        me.log.error(dbstack,sprintf('Bad msg received from OM [%s]',...
+                            char(me.mdlLbcb.response.toString)));
+                        done = 1;
+                        me.cpsMsg.setState('DONE');
+                        return;
+                    end
                     me.cpsMsg.setState('DONE');
                     me.statusReady();
                 case 'DONE'

@@ -86,12 +86,13 @@ classdef MdlUiSimCor < handle
         % Start to open a connection to the operations manager
         function open(me)
             ncfg = NetworkConfigDao(me.cfg);
-            me.params.setLocalPort(sscanf(ncfg.simcorPort,'%d'));
-            me.params.setTcpTimeout(sscanf(ncfg.timeout,'%d'));
+            me.params.setLocalPort(ncfg.simcorPort);
+            me.params.setTcpTimeout(ncfg.connectionTimeout);
             me.params.setLfcrSendEom(false);
             me.simcorTcp = org.nees.uiuc.simcor.ConnectionPeer('RECEIVE_COMMAND',me.params);
             stamp = datestr(now,'_yyyy_mm_dd_HH_MM_SS');
             me.simcorTcp.setArchiveFilename(fullfile(pwd,'Logs',sprintf('UiSimCorNetworkLog%s.txt',stamp)));
+            me.simcorTcp.getTransactionFactory().setTransactionTimeout(ncfg.msgTimeout);
             me.simcorTcp.startup();
             me.action.setState('OPEN CONNECTION');
             me.state.setState('BUSY');

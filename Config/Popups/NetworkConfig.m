@@ -29,7 +29,7 @@ function varargout = NetworkConfig(varargin)
 
 % Edit the above text to modify the response to help NetworkConfig
 
-% Last Modified by GUIDE v2.5 01-Jul-2009 12:46:20
+% Last Modified by GUIDE v2.5 17-Jan-2010 15:30:31
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -78,10 +78,11 @@ end
 handles.dao = NetworkConfigDao(cfg);
 
 set(handles.omHost,'String',handles.dao.omHost);
-set(handles.OmPort,'String',handles.dao.omPort);
-set(handles.SimCorPort,'String',handles.dao.simcorPort);
-set(handles.TriggerPort,'String',handles.dao.triggerPort);
-set(handles.timeout,'String',handles.dao.timeout);
+set(handles.OmPort,'String',sprintf('%d',handles.dao.omPort));
+set(handles.SimCorPort,'String',sprintf('%d',handles.dao.simcorPort));
+set(handles.TriggerPort,'String',sprintf('%d',handles.dao.triggerPort));
+set(handles.connectionTimeout,'String',sprintf('%d',handles.dao.connectionTimeout));
+set(handles.msgTimeout,'String',sprintf('%d',handles.dao.msgTimeout));
 set(handles.Address,'String',handles.dao.address);
 % Make the GUI modal
 set(handles.NetworkConfig,'WindowStyle','modal')
@@ -93,170 +94,42 @@ guidata(hObject, handles);
 % uiwait(handles.NetworkConfig);
 
 
-% --- Outputs from this function are returned to the command line.
-function varargout = NetworkConfig_OutputFcn(hObject, eventdata, handles) 
-% varargout  cell array for returning output args (see VARARGOUT);
-% hObject    handle to figure
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Get default command line output from handles structure
-
-% if isequal(get(handles.NetworkConfig, 'waitstatus'), 'waiting')
-%     % The GUI is still in UIWAIT, us UIRESUME
-%     uiresume(handles.NetworkConfig);
-% else
-%     % The GUI is no longer waiting, just close it
-%     delete(handles.NetworkConfig);
-% end
-% 
-% varargout{1} = handles.output;
+function varargout = NetworkConfig_OutputFcn(hObject, eventdata, handles)  %#ok<INUSD,*STOUT>
 
 
 
-function omHost_Callback(hObject, eventdata, handles)
-% hObject    handle to omHost (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of omHost as text
-%        str2double(get(hObject,'String')) returns contents of omHost as a double
+function omHost_Callback(hObject, eventdata, handles) %#ok<*INUSL>
 handles.dao.omHost = get(hObject,'String');
 
-% --- Executes during object creation, after setting all properties.
-function omHost_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to omHost (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
 
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
+function OmPort_Callback(hObject, eventdata, handles) %#ok<*DEFNU>
+handles.dao.omPort = sscanf(get(hObject,'String'),'%d');
 
-
-
-function OmPort_Callback(hObject, eventdata, handles)
-% hObject    handle to OmPort (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-handles.dao.omPort = get(hObject,'String');
-
-% Hints: get(hObject,'String') returns contents of OmPort as text
-%        str2double(get(hObject,'String')) returns contents of OmPort as a double
-
-
-% --- Executes during object creation, after setting all properties.
-function OmPort_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to OmPort (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
 
 
 
 function TriggerPort_Callback(hObject, eventdata, handles)
-% hObject    handle to TriggerPort (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of TriggerPort as text
-%        str2double(get(hObject,'String')) returns contents of TriggerPort as a double
-handles.dao.triggerPort = get(hObject,'String');
-
-
-% --- Executes during object creation, after setting all properties.
-function TriggerPort_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to TriggerPort (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
+handles.dao.triggerPort = sscanf(get(hObject,'String'),'%d');
 
 
 
-function timeout_Callback(hObject, eventdata, handles)
-% hObject    handle to timeout (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of timeout as text
-%        str2double(get(hObject,'String')) returns contents of timeout as a double
-handles.dao.timeout = get(hObject,'String');
-
-
-% --- Executes during object creation, after setting all properties.
-function timeout_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to timeout (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
+function connectionTimeout_Callback(hObject, eventdata, handles)
+handles.dao.connectionTimeout = sscanf(get(hObject,'String'),'%d');
 
 
 function SimCorPort_Callback(hObject, eventdata, handles)
-% hObject    handle to SimCorPort (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of SimCorPort as text
-%        str2double(get(hObject,'String')) returns contents of SimCorPort as a double
-handles.dao.simcorPort = get(hObject,'String');
+handles.dao.simcorPort = sccanf(get(hObject,'String'),'%d');
 
 
-% --- Executes during object creation, after setting all properties.
-function SimCorPort_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to SimCorPort (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
 
 
-% --- Executes on button press in OkButton.
 function OkButton_Callback(hObject, eventdata, handles)
-% hObject    handle to OkButton (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
 delete(handles.NetworkConfig);
 
 
 
 function Address_Callback(hObject, eventdata, handles)
-% hObject    handle to Address (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of Address as text
-%        str2double(get(hObject,'String')) returns contents of Address as a double
 handles.dao.address = get(hObject,'String');
 
-% --- Executes during object creation, after setting all properties.
-function Address_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to Address (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
+function msgTimeout_Callback(hObject, eventdata, handles)
+handles.dao.msgTimeout = sscanf(get(hObject,'String'),'%d');

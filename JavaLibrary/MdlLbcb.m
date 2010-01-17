@@ -81,11 +81,12 @@ classdef MdlLbcb < handle
         function open(me)
             ncfg = NetworkConfigDao(me.cfg);
             me.params.setRemoteHost(ncfg.omHost);
-            me.params.setRemotePort(sscanf(ncfg.omPort,'%d'));
-            me.params.setTcpTimeout(sscanf(ncfg.timeout,'%d'));
+            me.params.setRemotePort(ncfg.omPort);
+            me.params.setTcpTimeout(ncfg.connectionTimeout);
             me.simcorTcp = org.nees.uiuc.simcor.ConnectionPeer('SEND_COMMAND',me.params);
             stamp = datestr(now,'_yyyy_mm_dd_HH_MM_SS');
             me.simcorTcp.setArchiveFilename(fullfile(pwd,'Logs',sprintf('OmNetworkLog%s.txt',stamp)));
+            me.simcorTcp.getTransactionFactory().setTransactionTimeout(ncfg.msgTimeout);
             me.simcorTcp.startup();
             me.action.setState('OPEN CONNECTION');
             me.state.setState('BUSY');
