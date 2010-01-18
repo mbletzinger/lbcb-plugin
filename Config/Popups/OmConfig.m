@@ -109,7 +109,7 @@ function fakeOmProps_Callback(hObject, eventdata, handles)
 % hObject    handle to fakeOmProps (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-FakeOmProperties('cfg',handles.cfg)
+FakeOmConfig('cfg',handles.cfg)
 
 % --- Executes on button press in useFakeOm.
 function useFakeOm_Callback(hObject, eventdata, handles)
