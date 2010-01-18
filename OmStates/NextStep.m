@@ -6,7 +6,7 @@
 %  curStep - The current LbcbStep
 %  nextStep - The next LbcbStep as calculated by this class
 %
-% $LastChangedDate: 2009-06-01 15:30:46 -0500 (Mon, 01 Jun 2009) $ 
+% $LastChangedDate: 2009-06-01 15:30:46 -0500 (Mon, 01 Jun 2009) $
 % $Author: mbletzin $
 % =====================================================================================================================
 classdef NextStep < OmState
@@ -44,6 +44,8 @@ classdef NextStep < OmState
                 me.dat.correctionTarget = me.dat.nextStepData;
                 me.stepsCompleted = me.steps.endOfFile;
             end
+            me.log.debug(dbstack,sprintf('Next Step is %s',me.dat.nextStepData.toString()));
+            
         end
     end
     methods (Access='private')
@@ -68,14 +70,14 @@ classdef NextStep < OmState
             scfg = StepConfigDao(me.cdp.cfg);
             if scfg.doEdCorrection
                 for l = 1: me.cdp.numLbcbs()
-                   me.ed{l}.adjustTarget(me.dat.nextStepData.lbcbCps{l});
+                    me.ed{l}.adjustTarget(me.dat.nextStepData.lbcbCps{l});
                 end
             end
         end
         function derivedDofAdjust(me)
             scfg = StepConfigDao(me.cdp.cfg);
             if scfg.doDdofCorrection
-               me.dd.adjustTarget(me.dat.nextStepData);
+                me.dd.adjustTarget(me.dat.nextStepData);
             else
             end
             
