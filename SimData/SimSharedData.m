@@ -77,5 +77,8 @@ classdef SimSharedData < handle
                 end
             end
         end
+        function set.nextStepData(me,sd)
+            me.nextStepData = sd;
+        end
     end
 end

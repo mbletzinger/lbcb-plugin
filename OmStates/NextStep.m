@@ -40,9 +40,14 @@ classdef NextStep < OmState
                 me.log.info(dbstack,'Generating correction step');
             else
                 % get next input step
-                me.dat.nextStepData = me.steps.next();
-                me.dat.correctionTarget = me.dat.nextStepData;
+                stp = me.steps.next();
                 me.stepsCompleted = me.steps.endOfFile;
+                if me.stepsCompleted
+                    return;
+                else
+                    me.dat.nextStepData = stp;
+                    me.dat.correctionTarget = stp;
+                end
             end
             me.log.debug(dbstack,sprintf('Next Step is %s',me.dat.nextStepData.toString()));
             

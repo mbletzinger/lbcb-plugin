@@ -21,7 +21,7 @@ if maxNumSteps < 2
 end
 inc = (finalDisp - initialDisp) / maxNumSteps;
 finc = (finalForce - initialForce) / maxNumSteps;
-ss = cell(maxNumSteps + 1,1);
+ss = cell(maxNumSteps,1);
 disp = initialDisp;
 force = initialForce;
 for i = 1 : maxNumSteps
