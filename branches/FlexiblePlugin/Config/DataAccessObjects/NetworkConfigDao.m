@@ -48,7 +48,7 @@ classdef NetworkConfigDao < handle
             result = me.dt.getInt('network.simcorPort',1000);
         end
         function set.simcorPort(me,value)
-            me.dt.setString('network.simcorPort',value);
+            me.dt.setInt('network.simcorPort',value);
         end
         function result = get.connectionTimeout(me)
             result = me.dt.getInt('network.connectionTimeout',3000);

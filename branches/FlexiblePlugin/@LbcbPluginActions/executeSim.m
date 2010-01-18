@@ -1,10 +1,5 @@
 
 function executeSim(obj, event,me) %#ok<INUSL>
-if me.hfact.tgtEx.targetSource.isState('NONE')
-    me.hfact.gui.colorRunButton('OFF');
-    me.log.info(dbstack,'Target source has not been set');
-    stop(me.simTimer);
-end
 if rem(me.simTimerCnt,100) == 0
     me.log.debug(dbstack,'Simulation Timer Executing')
 end
