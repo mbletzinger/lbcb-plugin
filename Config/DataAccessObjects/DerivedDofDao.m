@@ -22,13 +22,13 @@ classdef DerivedDofDao < handle
             me.dt = DataTypes(cfg);
         end
         function result = get.kfactor(me)
-             result = me.dt.getDouble('derivedDofs.kfactor',1);
+             result = me.dt.getDouble('derivedDofs.kfactor',10);
         end
         function set.kfactor(me,value)
             me.dt.setDouble('derivedDofs.kfactors',value);
         end
         function result = get.Fztarget(me)
-             result = me.dt.getDouble('derivedDofs.Fztarget',1);
+             result = me.dt.getDouble('derivedDofs.Fztarget',50);
         end
         function set.Fztarget(me,value)
             me.dt.setDouble('derivedDofs.Fztarget',value);
