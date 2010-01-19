@@ -5,6 +5,7 @@ if me.targetSource.isState('INPUT FILE')
         me.currentAction.setState('DONE');
         return;
     end
+%    me.dat.curTarget.transformCommand();
     me.prcsTgt.start(target);
     me.currentAction.setState('PROCESS TARGET');
     return;
@@ -20,6 +21,7 @@ else
             me.currentAction.setState('ABORT SIMULATION');
             return;
         end
+    me.tgtRsp.target.transformCommand();
     me.prcsTgt.start(me.tgtRsp.target);
     me.currentAction.setState('PROCESS TARGET');
     end

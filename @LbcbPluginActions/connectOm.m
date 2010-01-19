@@ -6,7 +6,8 @@ if rem(me.comTimerCnt,100) == 0
 end
 me.comTimerCnt = me.comTimerCnt + 1;
 
-me.log.debug(dbstack,sprintf('Executing Action %s',a));
+%me.log.debug(dbstack,sprintf('Executing Action %s',a));
+
 switch a
     case 'OPEN OM CONNECTION'
         done = me.hfact.ocOm.isDone();

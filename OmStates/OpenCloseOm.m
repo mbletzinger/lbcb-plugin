@@ -55,7 +55,7 @@ classdef OpenCloseOm < OmState
                 return;
             end
             
-            if me.mdlLbcb.state.isState('ERRORS EXIST')
+            if me.mdlLbcb.state.isState('ERRORS EXIST') && me.omActions.isState('CLOSING_SESSION') == false
                 done = 1;
                 me.connectionError();
                 return;
