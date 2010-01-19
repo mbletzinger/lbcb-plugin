@@ -13,7 +13,8 @@ stpSize(7:12) = me.cdp.getSubstepInc(0).disp;
     me.dat.prevTarget.cmdData(); %#ok<NASGU,ASGLU>
 [ finalDisp finalDispDofs finalForce finalForceDofs ] = ...
     me.dat.curTarget.cmdData();
-numSteps = abs(finalDisp - (initialDisp & finalDispDofs)) ./ stpSize;
+% numSteps = abs(finalDisp - (initialDisp & finalDispDofs)) ./ stpSize;
+numSteps = abs(finalDisp - initialDisp) ./ stpSize;
 maxNumSteps = max(ceil(numSteps));
 if maxNumSteps < 2
     me.setCorrectionFlag(me.dat.curTarget);
