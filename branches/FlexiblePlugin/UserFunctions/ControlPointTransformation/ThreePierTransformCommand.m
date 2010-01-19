@@ -18,7 +18,7 @@ lbcbTgts{1}.setDispDof(3,-mdlTgts{2}.disp(2));
 lbcbTgts{1}.setDispDof(5,mdlTgts{2}.disp(6));
 % Set Rz on LBCB 2
 %lbcbTgts{1}.setDispDof(6,-mdlTgts{2}.disp(5));
-
+me.log.debug(dbstack, sprintf('M2 and L1 %s and %s', mdlTgts{2}.toString(),lbcbTgts{1}.toString()));
 
 % LBCB 2
 
@@ -34,6 +34,7 @@ lbcbTgts{2}.setDispDof(3,-mdlTgts{1}.disp(2));
 lbcbTgts{2}.setDispDof(5,mdlTgts{1}.disp(6));
 % Set Rz on LBCB 2
 %lbcbTgts{2}.setDispDof(6,-mdlTgts{1}.disp(5));
+me.log.debug(dbstack, sprintf('M1 and L2 %s and %s', mdlTgts{1}.toString(),lbcbTgts{2}.toString()));
 
 
 end

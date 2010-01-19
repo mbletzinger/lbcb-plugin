@@ -7,7 +7,6 @@ end
 if done == false
     return;
 end
-me.dat.curTarget.transformCommand();
 me.dat.clearSteps();
 steps = me.splitTarget();
 me.currentAction.setState('EXECUTE SUBSTEPS');
