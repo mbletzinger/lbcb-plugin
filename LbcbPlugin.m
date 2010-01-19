@@ -1025,7 +1025,7 @@ function TotalFxVsLbcb1Dx_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 if strcmp(get(hObject,'Checked'),'on')
-    handles.actions.hfact.gui.ddisp.stopTotalFxVsLbcbDx(1);
+    handles.actions.hfact.gui.ddisp.stopTotalFxVsLbcbDx(0);
     set(hObject,'Checked','off');
 else 
     handles.actions.hfact.gui.ddisp.startTotalFxVsLbcbDx(1);
@@ -1042,7 +1042,7 @@ if strcmp(get(hObject,'Checked'),'on')
     handles.actions.hfact.gui.ddisp.stopTotalFxVsLbcbDx(0);
     set(hObject,'Checked','off');
 else 
-    handles.actions.hfact.gui.ddisp.startTotalFxVsLbcbDx(0);
+    handles.actions.hfact.gui.ddisp.startTotalFxVsLbcbDx(1);
     set(hObject,'Checked','on');
 end
 
@@ -1074,10 +1074,10 @@ function ArchiveOnOff_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 if strcmp(get(hObject, 'Checked'),'on')
-    handles.actions.hfact.gui.ddisp.startTotalFxVsLbcbDx(1);
+    handles.actions.processArchiveOnOff(0);
     set(hObject,'Checked','off');
 else 
-    handles.actions.hfact.gui.ddisp.startTotalFxVsLbcbDx(1);
+    handles.actions.processArchiveOnOff(1);
     set(hObject,'Checked','on');
 end
 handles.actions.processArchiveOnOff(get(hObject,'Checked'));
@@ -1138,7 +1138,7 @@ function TotalMyVsLbcb1Dx_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 if strcmp(get(hObject,'Checked'),'on')
-    handles.actions.hfact.gui.ddisp.stopTotalMyVsLbcbDx(1);
+    handles.actions.hfact.gui.ddisp.stopTotalMyVsLbcbDx(0);
     set(hObject,'Checked','off');
 else 
     handles.actions.hfact.gui.ddisp.startTotalMyVsLbcbDx(1);
@@ -1155,7 +1155,7 @@ if strcmp(get(hObject,'Checked'),'on')
     handles.actions.hfact.gui.ddisp.stopTotalMyVsLbcbDx(0);
     set(hObject,'Checked','off');
 else 
-    handles.actions.hfact.gui.ddisp.startTotalMyVsLbcbDx(0);
+    handles.actions.hfact.gui.ddisp.startTotalMyVsLbcbDx(1);
     set(hObject,'Checked','on');
 end
 
@@ -1166,7 +1166,7 @@ function MyVsLbcb1Dx_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 if strcmp(get(hObject,'Checked'),'on')
-    handles.actions.hfact.gui.ddisp.stopMyVsDx(1);
+    handles.actions.hfact.gui.ddisp.stopMyVsDx(0);
     set(hObject,'Checked','off');
 else 
     handles.actions.hfact.gui.ddisp.startMyVsDx(1);
@@ -1180,7 +1180,7 @@ function MyVsLbcb2Dx_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 if strcmp(get(hObject,'Checked'),'on')
-    handles.actions.hfact.gui.ddisp.stopMyVsDx(1);
+    handles.actions.hfact.gui.ddisp.stopMyVsDx(0);
     set(hObject,'Checked','off');
 else 
     handles.actions.hfact.gui.ddisp.startMyVsDx(1);
@@ -1194,7 +1194,7 @@ function RyVsLbcb1Dx_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 if strcmp(get(hObject,'Checked'),'on')
-    handles.actions.hfact.gui.ddisp.stopRyVsDx(1);
+    handles.actions.hfact.gui.ddisp.stopRyVsDx(0);
     set(hObject,'Checked','off');
 else 
     handles.actions.hfact.gui.ddisp.startRyVsDx(1);
@@ -1212,6 +1212,6 @@ if strcmp(get(hObject,'Checked'),'on')
     handles.actions.hfact.gui.ddisp.stopRyVsDx(0);
     set(hObject,'Checked','off');
 else 
-    handles.actions.hfact.gui.ddisp.startRyVsDx(0);
+    handles.actions.hfact.gui.ddisp.startRyVsDx(1);
     set(hObject,'Checked','on');
 end

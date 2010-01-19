@@ -17,7 +17,7 @@ classdef DataTable < DisplayControl
             mnames = me.modelHeaders();
             me.fig = figure('Position',[100 100 1080 340], 'Name', me.name,'DeleteFcn',{'DataDisplay.checkOff',0 });
             me.table = uitable('ColumnName',me.cnames,'RowName',{ me.rnames{:} mnames{:} },...
-                'Parent',me.fig,'Position',[5 5 1050 300],'ColumnFormat',repmat({'numeric'},1,length(me.cnames)));
+                'Parent',me.fig,'Position',[5 5 1070 300],'ColumnFormat',repmat({'numeric'},1,length(me.cnames)));
             static1 = uicontrol('Style','text','Position',[5 315 50 18],'Parent',me.fig,'String','Step');
             me.steps{1} = uicontrol('Style','edit','Position',[60 315 50 18],'Parent',me.fig);
             static2 = uicontrol('Style','text','Position',[115 315 50 18],'Parent',me.fig,'String','Substep');
@@ -39,6 +39,7 @@ classdef DataTable < DisplayControl
             end
             if me.cdp.numModelCps() > 0
                 for m = 1 : me.cdp.numModelCps()
+%                    me.log.debug(dbstack,sprintf('Model: %s',step.modelCps{m}));
                     me.data((6 + (m * 2 - 1)),:) = [ step.modelCps{m}.command.disp', step.modelCps{m}.command.force'];
                     me.data((6 + (m * 2)),:) = [ step.modelCps{m}.response.disp', step.modelCps{m}.response.force'];
                 end
