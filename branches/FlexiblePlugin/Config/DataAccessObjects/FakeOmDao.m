@@ -35,14 +35,14 @@ classdef FakeOmDao < handle
             me.dt = DataTypes(cfg);
         end
         function result = get.derived1(me)
-            result = me.dt.getStringVector('fake.om.derived1',[]);
+            result = me.dt.getStringVector('fake.om.derived1',me.derivedOptions(1:12));
         end
         function set.derived1(me,value)
             me.dt.setStringVector('fake.om.derived1',value);
         end
         
         function result = get.derived2(me)
-            result = me.dt.getStringVector('fake.om.derived2',[]);
+            result = me.dt.getStringVector('fake.om.derived2',me.derivedOptions(13:24));
         end
         function set.derived2(me,value)
             me.dt.setStringVector('fake.om.derived2',value);
@@ -77,7 +77,7 @@ classdef FakeOmDao < handle
         end
         
         function result = get.eDerived(me)
-            result = me.dt.getStringVector('fake.om.eDerived',[]);
+            result = me.dt.getStringVector('fake.om.eDerived',me.derivedOptions(1:12));
         end
         function set.eDerived(me,value)
             me.dt.setStringVector('fake.om.eDerived',value);

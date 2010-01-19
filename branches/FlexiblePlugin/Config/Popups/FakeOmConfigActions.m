@@ -27,7 +27,7 @@ classdef FakeOmConfigActions < handle
                 me.dofTable{d,2} = scale(d);
                 me.dofTable{d,3} = offset(d);
             end
-
+            
             
             derive = me.fcfg.eDerived;
             scale = me.fcfg.eScale;
@@ -62,37 +62,39 @@ classdef FakeOmConfigActions < handle
             end
             if indices(1) > 24
                 me.log.error(dbstack, 'Only 24 DOFs exist');
-              return;
+                return;
             end
             if indices(1) > 12
-            derive = me.fcfg.derived2;
-            scale = me.fcfg.scale2;
-            offset = me.fcfg.offset2;
+                derive = me.fcfg.derived2;
+                scale = me.fcfg.scale2;
+                offset = me.fcfg.offset2;
+                idx = indices(1) - 12;
             else
-            derive = me.fcfg.derived1;
-            scale = me.fcfg.scale1;
-            offset = me.fcfg.offset1;
+                derive = me.fcfg.derived1;
+                scale = me.fcfg.scale1;
+                offset = me.fcfg.offset1;
+                idx = indices(1);
             end
             switch indices(2)
                 case 1
-                    derive{indices(1)} = data;
+                    derive{idx} = data;
                 case 2
-                    scale(indices(1)) = data;
+                    scale(idx) = data;
                 case 3
-                    offset(indices(1)) = data;
+                    offset(idx) = data;
                 otherwise
                     me.log.error(dbstack,sprintf('Cannot handle column %d',indices(2)));
             end
-                        if indices(1) > 12
-            me.fcfg.derived2 = derive;
-            me.fcfg.scale2 = scale;
-            me.fcfg.offset2 = offset;
+            if indices(1) > 12
+                me.fcfg.derived2 = derive;
+                me.fcfg.scale2 = scale;
+                me.fcfg.offset2 = offset;
             else
-            me.fcfg.derived1 = derive;
-            me.fcfg.scale1 = scale;
-            me.fcfg.offset1 = offset;
+                me.fcfg.derived1 = derive;
+                me.fcfg.scale1 = scale;
+                me.fcfg.offset1 = offset;
             end
-
+            
         end
         function setExtSensCell(me,indices,data,errString)
             if isempty(data)
@@ -101,7 +103,7 @@ classdef FakeOmConfigActions < handle
             end
             if indices(1) > length(me.sensorNames)
                 me.log.error(dbstack, sprintf('Only %d exist',length(me.sensorNames)));
-              return;
+                return;
             end
             derive = me.fcfg.eDerived;
             scale = me.fcfg.eScale;
@@ -119,7 +121,7 @@ classdef FakeOmConfigActions < handle
             me.fcfg.eDerived = derive;
             me.fcfg.eScale = scale;
             me.fcfg.eOffset = offset;
-
+            
         end
     end
 end
