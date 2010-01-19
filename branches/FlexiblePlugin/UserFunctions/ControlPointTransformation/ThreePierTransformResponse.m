@@ -36,7 +36,7 @@ mdlTgts{1}.setForceDof(6,lbcbTgts{2}.force(5));
 % Control Point 2
 
 % Set Dx from LBCB 1
-mdlTgts{2}.setDispDof(1,-lbcbTgts{1}.disp(1));
+mdlTgts{2}.setDispDof(1,lbcbTgts{1}.disp(1));
 % Set Dy from LBCB 1
 mdlTgts{2}.setDispDof(2,-lbcbTgts{1}.disp(3));
 % Set Dz from LBCB 1
@@ -44,12 +44,12 @@ mdlTgts{2}.setDispDof(3,lbcbTgts{1}.disp(2));
 % Set Rx from LBCB 1
 mdlTgts{2}.setDispDof(4,lbcbTgts{1}.disp(4));
 % Set Ry from LBCB 1
-mdlTgts{2}.setDispDof(5,lbcbTgts{1}.disp(6));
+mdlTgts{2}.setDispDof(5,-lbcbTgts{1}.disp(6));
 % Set Rz from LBCB 1
-mdlTgts{2}.setDispDof(6,-lbcbTgts{1}.disp(5));
+mdlTgts{2}.setDispDof(6,lbcbTgts{1}.disp(5));
 
 % Set Dx from LBCB 1
-mdlTgts{2}.setForceDof(1,-lbcbTgts{1}.force(1));
+mdlTgts{2}.setForceDof(1,lbcbTgts{1}.force(1));
 % Set Dy from LBCB 1
 mdlTgts{2}.setForceDof(2,-lbcbTgts{1}.force(3));
 % Set Dz from LBCB 1
@@ -57,8 +57,8 @@ mdlTgts{2}.setForceDof(3,lbcbTgts{1}.force(2));
 % Set Rx from LBCB 1
 mdlTgts{2}.setForceDof(4,lbcbTgts{1}.force(4));
 % Set Ry from LBCB 1
-mdlTgts{2}.setForceDof(5,lbcbTgts{1}.force(6));
+mdlTgts{2}.setForceDof(5,-lbcbTgts{1}.force(6));
 % Set Rz from LBCB 1
-mdlTgts{2}.setForceDof(6,-lbcbTgts{1}.force(5));
+mdlTgts{2}.setForceDof(6,lbcbTgts{1}.force(5));
 
 end
