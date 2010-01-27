@@ -2,8 +2,12 @@ function loadConfig(me)
 ocfg = OmConfigDao(me.cdp.cfg);
 [names se applied ] = me.cdp.getExtSensors();
 lt = length(applied);
-base = [ ocfg.baseX(1:lt)'; ocfg.baseY(1:lt)'; ocfg.baseZ(1:lt)' ];
-plat = [ ocfg.platX(1:lt)'; ocfg.platY(1:lt)'; ocfg.platZ(1:lt)' ];
+base = zeros(3,lt);
+plat = zeros(3,lt);
+for s = 1:lt
+    base(:,s) = ocfg.base{s};
+    plat(:,s) = ocfg.plat{s};
+end
 perts = ocfg.perturbationsL2;
 sensorErrorTol = ocfg.sensorErrorTol;
 lb = 'LBCB2';
@@ -13,20 +17,20 @@ if me.isLbcb1
 end
 i = 1;
 
-mbase = zeros(lt,3);
-mplat = zeros(lt,3);
+mbase = zeros(3,lt);
+mplat = zeros(3,lt);
 mpotTol = zeros(lt);
 for s = 1:lt
     if strcmp(applied{s},lb)
-      mbase(i,:) = base(:,s); %[base(s) base(s+15) base(s+30)];  % Really quick fix
-      mplat(i,:) = plat(:,s);%[plat(s) plat(s+15) plat(s+30)];  % Really quick fix
+      mbase(:,i) = base(:,s);
+      mplat(:,i) = plat(:,s);
       mpotTol(i) = sensorErrorTol(s);
       i = i + 1;
     end
 end
 i = i -1;
-me.base = mbase(1:i,:);
-me.plat = mplat(1:i,:);
+me.base = mbase(:,1:i);
+me.plat = mplat(:,1:i);
 me.potTol = mpotTol(1:i);
 
 mperts = zeros(6,1);

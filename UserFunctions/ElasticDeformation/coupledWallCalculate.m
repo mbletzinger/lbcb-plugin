@@ -1,6 +1,11 @@
 function coupledWallCalculate(me, curLbcbCP,prevLbcbCP)
 me.loadConfig();
 lbcbR = curLbcbCP.response;
+
+sprintf('**********\n')
+me.log.debug(dbstack,sprintf('ED Step: %s',curLbcbCP.toString()));
+sprintf('**********\n')
+
 actualLengths = curLbcbCP.externalSensors; % was lengths
 activeDOFs = me.activeDofs;
 v0 = [0 0 0]';

@@ -34,8 +34,7 @@ classdef ProcessResponse < OmState
                     if isempty(me.dat.prevStepData) == 0
                         pcps = me.dat.prevStepData.lbcbCps{l};
                     end                
-%                    me.ed{l}.calculate(ccps,pcps);
-% temp fix
+                    me.ed{l}.calculate(ccps,pcps);
                     me.dat.curStepData.lbcbCps{l}.response.ed = ...
                         me.dat.curStepData.lbcbCps{l}.response.lbcb;
                 end

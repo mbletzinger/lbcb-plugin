@@ -17,7 +17,9 @@ switch char(address.getSuffix())
         me.lbcbCps{2}.response = lbcbR;
     case 'ExternalSensors'
         [n se a ] = me.cdp.getExtSensors();
-        readings = me.parseExternalSensorsMsg(n,contents);
+        mcontents = char(contents);
+        % temp fix Java library needs to strip leading tabs
+        readings = me.parseExternalSensorsMsg(n,mcontents(2:end));
         me.distributeExtSensorData(readings);
 end
 end
