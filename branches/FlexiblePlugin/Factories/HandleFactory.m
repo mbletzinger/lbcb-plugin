@@ -95,8 +95,8 @@ classdef HandleFactory <  handle
             me.gui = LbcbPluginResults(handle,me);
             DataDisplay.setMenuHandle(handle);
             
-            me.ed{1} = ElasticDeformation(cdp,0);
-            me.ed{2} = ElasticDeformation(cdp,1);
+            me.ed{1} = ElasticDeformation(cdp,1);
+            me.ed{2} = ElasticDeformation(cdp,0);
             me.dd = DerivedDof(cdp);
             me.st{1} = StepTolerances(me.cfg,1);
             me.st{2} = StepTolerances(me.cfg,0);

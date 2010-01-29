@@ -1,10 +1,8 @@
-function coupledWallCalculate(me, curLbcbCP,prevLbcbCP)
+function coupledWallEdCalculate(me, curLbcbCP,prevLbcbCP)
 me.loadConfig();
 lbcbR = curLbcbCP.response;
 
-sprintf('**********\n')
-me.log.debug(dbstack,sprintf('ED Step: %s',curLbcbCP.toString()));
-sprintf('**********\n')
+% me.log.debug(dbstack,sprintf('ED Step: %s',curLbcbCP.toString()));
 
 actualLengths = curLbcbCP.externalSensors; % was lengths
 activeDOFs = me.activeDofs;
@@ -35,18 +33,18 @@ end
 
 me.log.debug(dbstack,sprintf('deltas [%s]',dumpVector(delta)));
 % Looping through disp-controlled DOFs to populate columns of disp Jacobian
-for i = 1:length(activeDOFs)
+for n = 1:length(activeDOFs)
     
     del = delta;    % Setting temporary global delta
     
     % Updating temporary global delta to include pert in current DOF
-    del(activeDOFs(i)) = del(activeDOFs(i)) + me.perturbations(i);
+    del(activeDOFs(n)) = del(activeDOFs(n)) + me.perturbations(n);
     
-    pertlength = me.dof2act(del,v0,me.plat,me.base); % Calc for expected SP lengths
-    me.log.debug(dbstack,sprintf('pertlength [%s]',dumpVector(pertlength)));
-    dldDOF = (pertlength - actualLengths)/me.perturbations(i);% SP length change/pert size
-    me.log.debug(dbstack,sprintf('dldDOF [%s]',dumpVector(dldDOF)));
-    Jacobian(:,i) = dldDOF';   % Populating Jacobian column for current DOF
+    pertlength = dof2act(del,v0,me.plat,me.base); % Calc for expected SP lengths
+%     me.log.debug(dbstack,sprintf('pertlength [%s]',dumpVector(pertlength)));
+    dldDOF = (pertlength - actualLengths)/me.perturbations(n);% SP length change/pert size
+%     me.log.debug(dbstack,sprintf('dldDOF [%s]',dumpVector(dldDOF)));
+    Jacobian(:,n) = dldDOF';   % Populating Jacobian column for current DOF
 end
 
 %% First estimation of position from external sensor lengths
@@ -56,7 +54,7 @@ for jb = 1:length(Jacobian(1,:))
 end
 me.log.debug(dbstack,sprintf('actualLengths [%s]',dumpVector(actualLengths)));
 me.log.debug(dbstack,sprintf('prevLengths [%s]',dumpVector(prevLengths)));
-deltaest = Jacobian\(actualLengths - prevLengths);
+deltaest = (Jacobian\(actualLengths - prevLengths)')';
 
 % Defining Cartesian displacements: estimated change + previous disp
 delta = [0 0 0 0 0 0]';
@@ -65,10 +63,10 @@ for d = 1:length(activeDOFs)
 end
 
 % Calculating SP lengths based on first delta approximation
-lengthscalc = me.dof2act(delta,v0,me.plat,me.base);
+lengthscalc = dof2act(delta,v0,me.plat,me.base);
 
 % Calculating discrepancy between actual and expected SP lengths from delta
-errors = actualLengths - lengthscalc';
+errors = actualLengths - lengthscalc;
 
 %% Checking first estimation's accuracy and iterating as needed
 % Doing a second iteration using lengthscalc as "starting" point
@@ -79,14 +77,14 @@ if sum(abs(errors)<me.potTol) == length(activeDOFs)
 end
 
 while pass == 0
-    deltaest = Jacobian\(actualLengths - lengthscalc') + deltaest;
+    deltaest = (Jacobian\(actualLengths - lengthscalc)')' + deltaest;
     
     for d = 1:length(activeDOFs)
         delta(activeDOFs(d)) = deltaest(d) + prevDisplacement(d);
     end
     
-    lengthscalc = me.dof2act(delta,v0,me.plat,me.base);
-    errors = actualLengths - lengthscalc';
+    lengthscalc = dof2act(delta,v0,me.plat,me.base);
+    errors = actualLengths - lengthscalc;
     n = n + 1;
     
     if sum(abs(errors)<me.potTol) == length(activeDOFs)
@@ -104,7 +102,7 @@ for i = 1:length(activeDOFs)
     curLbcbCP.response.ed.disp(activeDOFs(i)) = deltaest(i);
 end
 
-
+me.log.debug(dbstack,sprintf('ed control point: %s',curLbcbCP.toString()))
 
 
 %% Nested function to calculate Cartesian displacement at startup:
@@ -124,7 +122,10 @@ end
        me.log.debug(dbstack,sprintf('perturbations [%s]',dumpVector(me.perturbations)));
        me.log.debug(dbstack,sprintf('actualLengths [%s]',dumpVector(actualLengths)));
        me.log.debug(dbstack,sprintf('prevLengths [%s]',dumpVector(prevLengths)));
+       
        % Looping through disp-controlled DOFs to populate columns of disp Jacobian
+       zerolength = dof2act(delta,v0,me.plat,me.base); % Calc SP_lengths at Zero Position
+       
        for i = 1:length(activeDOFs)
            
            del = delta;    % Setting temporary global delta
@@ -132,8 +133,8 @@ end
            % Updating temporary global delta to include pert in current DOF
            del(activeDOFs(i)) = del(activeDOFs(i)) + me.perturbations(i);
            
-           pertlength = me.dof2act(del,v0,me.plat,me.base); % Calc for expected SP lengths
-           dldDOF = (pertlength - actualLengths)/me.perturbations(i);% SP length change/pert size
+           pertlength = dof2act(del,v0,me.plat,me.base); % Calc for expected SP lengths
+           dldDOF = (pertlength - zerolength)/me.perturbations(i);% SP length change/pert size
            Jacobian(:,i) = dldDOF';   % Populating Jacobian column for current DOF
        end
        for jbb = 1:length(Jacobian(1,:))
@@ -147,7 +148,8 @@ end
        deltaest = Jacobian\(deltaLs);
        else
            me.log.info(dbstack,'No change in length detected');
-           deltaest = Jacobian;
+%            deltaest = Jacobian;
+           deltaest = zeros(size(deltaLs));
        end
        
        % Defining Cartesian displacements: estimated change + previous disp
@@ -157,10 +159,10 @@ end
        end
        
        % Calculating SP lengths based on first delta approximation
-       lengthscalc = me.dof2act(delta,v0,me.plat,me.base);
+       lengthscalc = dof2act(delta,v0,me.plat,me.base);
        
        % Calculating discrepancy between actual and expected SP lengths from delta
-       errors = actualLengths - lengthscalc';
+       errors = actualLengths - lengthscalc;
        
        %% Checking first estimation's accuracy and iterating as needed
        % Doing a second iteration using lengthscalc as "starting" point
@@ -171,14 +173,14 @@ end
        end
        
        while pass == 0
-           deltaest = Jacobian\(actualLengths - lengthscalc') + deltaest;
+           deltaest = (Jacobian\(actualLengths - lengthscalc)')' + deltaest;
            
            for j = 1:length(activeDOFs)
                delta(activeDOFs(j)) = deltaest(j) + prevDisplacement(j);
            end
            
-           lengthscalc = me.dof2act(delta,v0,me.plat,me.base);
-           errors = actualLengths - lengthscalc';
+           lengthscalc = dof2act(delta,v0,me.plat,me.base);
+           errors = actualLengths - lengthscalc;
            n = n + 1;
            
            if sum(abs(errors)<me.potTol) == length(activeDOFs)
