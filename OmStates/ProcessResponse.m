@@ -30,18 +30,21 @@ classdef ProcessResponse < OmState
                 %calculate elastic deformations
                 for l = 1: me.cdp.numLbcbs()
                     ccps = me.dat.curStepData.lbcbCps{l};
-                    pcps = [];
+                    pcps = {};
                     if isempty(me.dat.prevStepData) == 0
                         pcps = me.dat.prevStepData.lbcbCps{l};
                     end                
                     me.ed{l}.calculate(ccps,pcps);
-                    me.dat.curStepData.lbcbCps{l}.response.ed = ...
-                        me.dat.curStepData.lbcbCps{l}.response.lbcb;
+%                     me.dat.curStepData.lbcbCps{l}.response.ed = ...
+%                         me.dat.curStepData.lbcbCps{l}.response.lbcb;
                 end
             end
         end
         function derivedDofCalculate(me)
-            me.dd.calculate(me.dat.curStepData);
+            scfg = StepConfigDao(me.cdp.cfg);
+            if scfg.doDdofCalculations
+                me.dd.calculate(me.dat.curStepData);
+            end
         end
     end
 end
