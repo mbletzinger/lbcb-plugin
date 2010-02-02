@@ -36,5 +36,9 @@ lbcbTgts{2}.setDispDof(5,mdlTgts{1}.disp(6));
 %lbcbTgts{2}.setDispDof(6,-mdlTgts{1}.disp(5));
 me.log.debug(dbstack, sprintf('M1 and L2 %s and %s', mdlTgts{1}.toString(),lbcbTgts{2}.toString()));
 
+size_factor=1/24;
+scale_factor=[size_factor 1 size_factor^2 size_factor^3];
+
+[lbcbTgts{1}.disp,lbcbTgts{2}.disp] = scale_command(scale_factor,lbcbTgts);
 
 end
