@@ -7,12 +7,6 @@ classdef StepDataFactory < handle
         tgtNumber;
     end
     methods
-        function clone = newStep(me)
-            clone = StepData;
-            me.addProtocol(clone);
-            clone.stepNum = step.StepNum;
-            
-        end
         function clone = stepNumber2StepData(me,stepNum)
             clone = StepData;
             clone.stepNum = stepNum;
@@ -24,10 +18,10 @@ classdef StepDataFactory < handle
             clone.stepNum = StepNumber(step,sub,0);
             lgth = me.cdp.numLbcbs();
             if lgth > 1
-                clone.lbcbCps{1}.command = targets{1};
-                clone.lbcbCps{2}.command = targets{2};
+                clone.lbcbCps{1}.command = targets{1}.clone();
+                clone.lbcbCps{2}.command = targets{2}.clone();
             else
-                clone.lbcbCps{1}.command = targets{1};
+                clone.lbcbCps{1}.command = targets{1}.clone();
             end
         end
         function clone = uisimcorMsg2Step(me,cmd)
