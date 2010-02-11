@@ -36,11 +36,15 @@ classdef ElasticDeformation < handle
             me.cdp = cdp;
             me.isLbcb1 = isLbcb1;
         end
-        function deltaDiff(me,curLbcbCp)
-            me.correctionDeltas = curLbcbCp.command.disp - curLbcbCp.response.disp;
+        function deltaDiff(me,command,response)
+            me.correctionDeltas = response.disp - command.disp;
         end
         function adjustTarget(me,curLbcbCp)
-            curLbcbCp.command.disp = curLbcbCp.command.disp + me.correctionDeltas;
+            me.log.debug(dbstack,'ed Adjustment here*******************');
+            disp = curLbcbCp.command.disp + me.correctionDeltas;
+            for d = 1:6
+                curLbcbCp.command.setDispDof(d,disp(d));
+            end
             curLbcbCp.correctionDeltas = me.correctionDeltas;
             curLbcbCp.command.clearNonControlDofs();
         end

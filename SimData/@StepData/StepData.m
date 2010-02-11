@@ -1,18 +1,30 @@
 classdef StepData < handle
     properties
-        lbcbCps = {}; % Instances of LbcbControlPoint
-        modelCps = {}; % Instances of model control points
-        stepNum = {}; % StepNumber instance
-        externalSensorsRaw = [];
-        dData = DerivedData;
+        lbcbCps;
+        modelCps;
+        stepNum;
+        externalSensorsRaw;
+        dData;
         log = Logger('StepData');
-        jid = {};
-        mdlLbcb = [];
-        mdlUiSimCor = [];
-        cdp = [];
-        needsCorrection = 0;
+        jid;
+        mdlLbcb;
+        mdlUiSimCor;
+        cdp;
+        needsCorrection;
     end
     methods
+        function me = StepData()
+            me.lbcbCps = {}; % Instances of LbcbControlPoint
+            me.modelCps = {}; % Instances of model control points
+            me.stepNum = {}; % StepNumber instance
+            me.externalSensorsRaw = [];
+            me.dData = DerivedData;
+            me.jid = {};
+            me.mdlLbcb = [];
+            me.mdlUiSimCor = [];
+            me.cdp = [];
+            me.needsCorrection = 0;
+        end
         str = toString(me)
         jmsg = generateOmProposeMsg(me)
         jmsg = generateSimCorResponseMsg(me)

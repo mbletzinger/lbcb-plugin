@@ -13,7 +13,8 @@ if isempty(prevLbcbCP)
     % firstStep is nested function found below for getting first SP disps
     [prevLengths, prevDisplacement] = firstStep(me,actualLengths);
 else
-    prevLengths = me.currentLengths;        % was lengths0
+%     prevLengths = me.currentLengths;        % was lengths0
+    prevLengths = prevLbcbCP.externalSensors;   % was lengths0
     prevDisplacement = prevLbcbCP.response.disp; % was deltas0
 end
 lbcbR.ed.force = lbcbR.lbcb.force;
@@ -31,7 +32,7 @@ for i = 1:length(activeDOFs)
     delta(activeDOFs(i)) = prevDisplacement(activeDOFs(i));
 end
 
-me.log.debug(dbstack,sprintf('deltas [%s]',dumpVector(delta)));
+% me.log.debug(dbstack,sprintf('deltas [%s]',dumpVector(delta)));
 % Looping through disp-controlled DOFs to populate columns of disp Jacobian
 for n = 1:length(activeDOFs)
     
@@ -52,8 +53,8 @@ end
 for jb = 1:length(Jacobian(1,:))
         me.log.debug(dbstack,sprintf('J%d [%s]',jb,dumpVector(Jacobian(jb,:))));
 end
-me.log.debug(dbstack,sprintf('actualLengths [%s]',dumpVector(actualLengths)));
-me.log.debug(dbstack,sprintf('prevLengths [%s]',dumpVector(prevLengths)));
+% me.log.debug(dbstack,sprintf('actualLengths [%s]',dumpVector(actualLengths)));
+% me.log.debug(dbstack,sprintf('prevLengths [%s]',dumpVector(prevLengths)));
 deltaest = (Jacobian\(actualLengths - prevLengths)')';
 
 % Defining Cartesian displacements: estimated change + previous disp
@@ -102,7 +103,7 @@ for i = 1:length(activeDOFs)
     curLbcbCP.response.ed.disp(activeDOFs(i)) = deltaest(i);
 end
 
-me.log.debug(dbstack,sprintf('ed control point: %s',curLbcbCP.toString()))
+% me.log.debug(dbstack,sprintf('ed control point: %s',curLbcbCP.toString()))
 
 
 %% Nested function to calculate Cartesian displacement at startup:
@@ -118,10 +119,10 @@ me.log.debug(dbstack,sprintf('ed control point: %s',curLbcbCP.toString()))
        delta = [0 0 0 0 0 0]';
        me.plat
        me.base
-       me.log.debug(dbstack,sprintf('activeDOFS [%s]',dumpVector(activeDOFs)));
-       me.log.debug(dbstack,sprintf('perturbations [%s]',dumpVector(me.perturbations)));
-       me.log.debug(dbstack,sprintf('actualLengths [%s]',dumpVector(actualLengths)));
-       me.log.debug(dbstack,sprintf('prevLengths [%s]',dumpVector(prevLengths)));
+%        me.log.debug(dbstack,sprintf('activeDOFS [%s]',dumpVector(activeDOFs)));
+%        me.log.debug(dbstack,sprintf('perturbations [%s]',dumpVector(me.perturbations)));
+%        me.log.debug(dbstack,sprintf('actualLengths [%s]',dumpVector(actualLengths)));
+%        me.log.debug(dbstack,sprintf('prevLengths [%s]',dumpVector(prevLengths)));
        
        % Looping through disp-controlled DOFs to populate columns of disp Jacobian
        zerolength = dof2act(delta,v0,me.plat,me.base); % Calc SP_lengths at Zero Position
