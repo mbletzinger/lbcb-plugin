@@ -10,12 +10,16 @@
 % =====================================================================================================================
 classdef DofData < handle
     properties
-        disp = zeros(6,1);
-        force = zeros(6,1);
+        disp;
+        force;
         labels = {'Dx' 'Dy' 'Dz' 'Rx' 'Ry' 'Rz',...
             'Fx' 'Fy' 'Fz' 'Mx' 'My' 'Mz'};
     end
     methods
+        function me = DofData()
+            me.disp = zeros(6,1);
+            me.force = zeros(6,1);
+        end
         function str = toString(me)
             str = '';
             for v = 1:length(me.disp)

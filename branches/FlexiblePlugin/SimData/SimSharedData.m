@@ -7,6 +7,7 @@ classdef SimSharedData < handle
         curStepData = [];
         nextStepData = [];
         sdf = [];
+        log = Logger('SimSharedData');
     end
     methods
         function stepShift(me)
@@ -24,6 +25,8 @@ classdef SimSharedData < handle
             me.nextStepData = [];
         end
         function table = cmdTable(me)
+            lbls = {'Current Target','Previous Target','Correction Target',...
+                'Next Step','Current Step','Previous Step'};
             steps = { me.curTarget, me.prevTarget, me.correctionTarget,  ...
                 me.nextStepData,  me.curStepData, me.prevStepData};
             [ didx, fidx, labels ] = me.cmdTableHeaders();
@@ -32,6 +35,7 @@ classdef SimSharedData < handle
                 if isempty(steps{s})
                     continue;
                 end
+                me.log.debug(dbstack,sprintf('%s: %s',lbls{s},steps{s}.toString()));
                 [ disp dDofs force fDofs] = steps{s}.cmdData(); %#ok<NASGU,ASGLU>
                 for d = 1 : length(didx)
                     table{s,d} = disp(didx(d));

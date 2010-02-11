@@ -63,7 +63,7 @@ mdlTgts{2}.setForceDof(6,lbcbTgts{1}.force(5));
 
 
 size_factor=1/24;
-scale_factor=[size_factor 1 size_factor^2 size_factor^3];
+scale_factor=[size_factor 1 1000*size_factor^2 1000*size_factor^3];
 
 [mdlTgts{1}.disp,mdlTgts{2}.disp,mdlTgts{1}.force,mdlTgts{2}.force] = scale_command(scale_factor,mdlTgts);
 

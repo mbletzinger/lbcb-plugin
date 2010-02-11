@@ -12,16 +12,17 @@
 % =====================================================================================================================
 classdef LbcbControlPoint < handle
     properties
-        response = [];
-        command = [];
-        externalSensors = [];
-        correctionDeltas = zeros(6,1);
+        response;
+        command;
+        externalSensors;
+        correctionDeltas;
         log = Logger('LbcbControlPoint')
     end
     methods
         function me = LbcbControlPoint()
             me.response = LbcbReading;
             me.command = Target;
+            me.correctionDeltas = zeros(6,1);
         end
         function clone = clone(me)
             clone = LbcbControlPoint;
