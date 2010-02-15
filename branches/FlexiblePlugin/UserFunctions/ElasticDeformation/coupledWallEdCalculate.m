@@ -43,7 +43,7 @@ for n = 1:length(activeDOFs)
     
     pertlength = dof2act(del,v0,me.plat,me.base); % Calc for expected SP lengths
 %     me.log.debug(dbstack,sprintf('pertlength [%s]',dumpVector(pertlength)));
-    dldDOF = (pertlength - actualLengths)/me.perturbations(n);% SP length change/pert size
+    dldDOF = (pertlength - prevLengths)/me.perturbations(n);% SP length change/pert size
 %     me.log.debug(dbstack,sprintf('dldDOF [%s]',dumpVector(dldDOF)));
     Jacobian(:,n) = dldDOF';   % Populating Jacobian column for current DOF
 end
@@ -60,7 +60,7 @@ deltaest = (Jacobian\(actualLengths - prevLengths)')';
 % Defining Cartesian displacements: estimated change + previous disp
 delta = [0 0 0 0 0 0]';
 for d = 1:length(activeDOFs)
-    delta(activeDOFs(d)) = deltaest(d) + prevDisplacement(d);
+    delta(activeDOFs(d)) = deltaest(d) + prevDisplacement(activeDOFs(d));
 end
 
 % Calculating SP lengths based on first delta approximation
@@ -81,7 +81,7 @@ while pass == 0
     deltaest = (Jacobian\(actualLengths - lengthscalc)')' + deltaest;
     
     for d = 1:length(activeDOFs)
-        delta(activeDOFs(d)) = deltaest(d) + prevDisplacement(d);
+        delta(activeDOFs(d)) = deltaest(d) + prevDisplacement(activeDOFs(d));
     end
     
     lengthscalc = dof2act(delta,v0,me.plat,me.base);
@@ -91,6 +91,22 @@ while pass == 0
     if sum(abs(errors)<me.potTol) == length(activeDOFs)
         pass = 1;
     end
+    
+%     %% Loop for updating jacobian every iteration
+%     for n = 1:length(activeDOFs)
+%         
+%         del = delta;    % Setting temporary global delta
+%         
+%         % Updating temporary global delta to include pert in current DOF
+%         del(activeDOFs(n)) = del(activeDOFs(n)) + me.perturbations(n);
+%         
+%         pertlength = dof2act(del,v0,me.plat,me.base); % Calc for expected SP lengths
+%         %     me.log.debug(dbstack,sprintf('pertlength [%s]',dumpVector(pertlength)));
+%         dldDOF = (pertlength - actualLengths)/me.perturbations(n);% SP length change/pert size
+%         %     me.log.debug(dbstack,sprintf('dldDOF [%s]',dumpVector(dldDOF)));
+%         Jacobian(:,n) = dldDOF';   % Populating Jacobian column for current DOF
+%     end
+    
 end
 
 for d = 1:length(activeDOFs)
@@ -156,7 +172,7 @@ end
        % Defining Cartesian displacements: estimated change + previous disp
        delta = [0 0 0 0 0 0]';
        for j = 1:length(activeDOFs)
-           delta(activeDOFs(j)) = deltaest(j) + prevDisplacement(j);
+           delta(activeDOFs(j)) = deltaest(j) + prevDisplacement(activeDOFs(j));
        end
        
        % Calculating SP lengths based on first delta approximation
@@ -177,7 +193,7 @@ end
            deltaest = (Jacobian\(actualLengths - lengthscalc)')' + deltaest;
            
            for j = 1:length(activeDOFs)
-               delta(activeDOFs(j)) = deltaest(j) + prevDisplacement(j);
+               delta(activeDOFs(j)) = deltaest(j) + prevDisplacement(activeDOFs(j));
            end
            
            lengthscalc = dof2act(delta,v0,me.plat,me.base);
@@ -187,6 +203,22 @@ end
            if sum(abs(errors)<me.potTol) == length(activeDOFs)
                pass = 1;
            end
+           
+%            %% Loop for updating Jacobian every iteration
+%            for n = 1:length(activeDOFs)
+%                
+%                del = delta;    % Setting temporary global delta
+%                
+%                % Updating temporary global delta to include pert in current DOF
+%                del(activeDOFs(n)) = del(activeDOFs(n)) + me.perturbations(n);
+%                
+%                pertlength = dof2act(del,v0,me.plat,me.base); % Calc for expected SP lengths
+%                %     me.log.debug(dbstack,sprintf('pertlength [%s]',dumpVector(pertlength)));
+%                dldDOF = (pertlength - actualLengths)/me.perturbations(n);% SP length change/pert size
+%                %     me.log.debug(dbstack,sprintf('dldDOF [%s]',dumpVector(dldDOF)));
+%                Jacobian(:,n) = dldDOF';   % Populating Jacobian column for current DOF
+%            end
+           
        end
        
        for j = 1:length(activeDOFs)
