@@ -41,7 +41,7 @@ classdef ElasticDeformation < handle
         end
         function adjustTarget(me,curLbcbCp)
             me.log.debug(dbstack,'ed Adjustment here*******************');
-            curLbcbCp.command.disp = curLbcbCp.command.disp + me.correctionDeltas;
+            curLbcbCp.command.disp = curLbcbCp.command.disp - me.correctionDeltas;
             curLbcbCp.correctionDeltas = me.correctionDeltas;
             curLbcbCp.command.clearNonControlDofs();
         end
