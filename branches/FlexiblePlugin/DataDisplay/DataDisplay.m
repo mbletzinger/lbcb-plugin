@@ -95,18 +95,18 @@ classdef DataDisplay < handle
                 DataDisplay.deleteDisplay(9);
             end
         end
-        function update(me)
-            me.log.debug(dbstack, sprintf('Displaying %s',me.dat.curStepData.toString()));
-            me.dataTable.update(me.dat.curStepData);
-            me.MyVsDxL1.update(me.dat.curStepData);
-            me.RyVsDxL1.update(me.dat.curStepData);
+        function update(me,target)
+            me.log.debug(dbstack, sprintf('Displaying %s',target.toString()));
+            me.dataTable.update(target);
+            me.MyVsDxL1.update(target);
+            me.RyVsDxL1.update(target);
             if me.cdp.numLbcbs() > 1
-                me.totalFxVsLbcbDxL1.update(me.dat.curStepData);
-                me.totalFxVsLbcbDxL2.update(me.dat.curStepData);
-                me.totalMyVsLbcbDxL1.update(me.dat.curStepData);
-                me.totalMyVsLbcbDxL2.update(me.dat.curStepData);
-                me.MyVsDxL2.update(me.dat.curStepData);
-                me.RyVsDxL2.update(me.dat.curStepData);
+                me.totalFxVsLbcbDxL1.update(target);
+                me.totalFxVsLbcbDxL2.update(target);
+                me.totalMyVsLbcbDxL1.update(target);
+                me.totalMyVsLbcbDxL2.update(target);
+                me.MyVsDxL2.update(target);
+                me.RyVsDxL2.update(target);
             end
         end
         function setCdp(me,cdp)

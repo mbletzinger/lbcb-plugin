@@ -39,7 +39,7 @@ classdef DataTable < DisplayControl
             end
             if me.cdp.numModelCps() > 0
                 for m = 1 : me.cdp.numModelCps()
-%                    me.log.debug(dbstack,sprintf('Model: %s',step.modelCps{m}));
+                   me.log.debug(dbstack,sprintf('Model: %s',step.modelCps{m}));
                     me.data((6 + (m * 2 - 1)),:) = [ step.modelCps{m}.command.disp', step.modelCps{m}.command.force'];
                     me.data((6 + (m * 2)),:) = [ step.modelCps{m}.response.disp', step.modelCps{m}.response.force'];
                 end
