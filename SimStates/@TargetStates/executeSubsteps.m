@@ -9,6 +9,7 @@ if me.stpEx.hasErrors()
     return;
 end
 me.dat.curTarget.transformResponse();
+me.gui.ddisp.update(me.dat.curTarget);
 me.currentAction.setState('SEND TARGET RESPONSE');
 if me.targetSource.isState('UI SIMCOR')
     me.tgtRsp.respond();
