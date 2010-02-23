@@ -12,4 +12,5 @@ lbcbTgts = xform(me,mdlTgts);
 for l = 1 : me.cdp.numLbcbs()
     me.lbcbCps{l}.command = lbcbTgts{l};
 end
+me.containsModelCps = 1;
 end

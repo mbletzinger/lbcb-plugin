@@ -11,6 +11,7 @@ classdef StepData < handle
         mdlUiSimCor;
         cdp;
         needsCorrection;
+        containsModelCps
     end
     methods
         function me = StepData()
@@ -24,6 +25,8 @@ classdef StepData < handle
             me.mdlUiSimCor = [];
             me.cdp = [];
             me.needsCorrection = 0;
+            me.containsModelCps = 0;
+
         end
         str = toString(me)
         jmsg = generateOmProposeMsg(me)

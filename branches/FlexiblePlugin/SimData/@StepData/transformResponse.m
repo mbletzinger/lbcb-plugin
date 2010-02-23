@@ -17,5 +17,5 @@ mdlTgts = xform(me,lbcbTgts);
 for m = 1 : me.cdp.numModelCps() 
     me.modelCps{m}.response = mdlTgts{m};
 end
-
+me.containsModelCps = 1;
 end
