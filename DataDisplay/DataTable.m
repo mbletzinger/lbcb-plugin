@@ -8,6 +8,7 @@ classdef DataTable < DisplayControl
             'LBCB2 Command','LBCB2 Response','LBCB1 Readings','LBCB2 Readings'};
         data
         cdp
+        log = Logger('DataTable');
     end
     methods
         function me = DataTable(name)
@@ -37,9 +38,9 @@ classdef DataTable < DisplayControl
                 me.data(4,:) = [ step.lbcbCps{2}.response.disp' step.lbcbCps{2}.response.force' ];
                 me.data(6,:) = [ step.lbcbCps{2}.response.lbcb.disp' step.lbcbCps{2}.response.lbcb.force' ];
             end
-            if me.cdp.numModelCps() > 0
+            if me.cdp.numModelCps() > 0 && step.containsModelCps
                 for m = 1 : me.cdp.numModelCps()
-                   me.log.debug(dbstack,sprintf('Model: %s',step.modelCps{m}));
+                   me.log.debug(dbstack,sprintf('Model: %s',step.modelCps{m}.toString()));
                     me.data((6 + (m * 2 - 1)),:) = [ step.modelCps{m}.command.disp', step.modelCps{m}.command.force'];
                     me.data((6 + (m * 2)),:) = [ step.modelCps{m}.response.disp', step.modelCps{m}.response.force'];
                 end

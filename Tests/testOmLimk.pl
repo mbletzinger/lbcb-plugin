@@ -42,12 +42,12 @@ while ($running) {
     next;
   }
   if ($keyword eq 'propose') {
-    sleep 3;
+    sleep 10;
     sendResponse("OK\t0\t$trans\tpropose accepted");
     next;
   }
   if ($keyword eq 'execute') {
-    sleep 5;
+    sleep 10;
     sendResponse("OK\t0\t$trans\texecute done");
     next;
   }
