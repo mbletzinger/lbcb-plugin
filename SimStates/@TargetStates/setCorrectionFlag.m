@@ -1,12 +1,7 @@
 function setCorrectionFlag(me,step)
 scfg = StepConfigDao(me.cdp.cfg);
-correctStep = scfg.doEdCorrection | scfg.doDdofCorrection;
 substep = step.stepNum.subStep;
 cess =  scfg.correctEverySubstep;
-if correctStep == false
-    step.needsCorrection = false;
-    return;
-end
 
 if  substep == 0
     step.needsCorrection = true;

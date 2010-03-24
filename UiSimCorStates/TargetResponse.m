@@ -55,6 +55,7 @@ classdef TargetResponse < UiSimCorState
                         return;
                     end
                     me.target = me.sdf.uisimcorMsg2Step(command);
+                    me.target.needsCorrection = true;
                     me.action.setState('DONE');
                 case {'SEND_RESPONSE', 'CLOSE_SESSION_RECEIVED' }
                     me.action.setState('DONE');
