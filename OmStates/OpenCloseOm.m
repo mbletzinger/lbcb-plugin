@@ -3,8 +3,6 @@ classdef OpenCloseOm < OmState
         omActions = StateEnum({...
             'CONNECTING',...
             'DISCONNECTING',...
-            'CLOSING_SESSION',...
-            'OPENING_SESSION',...
             'DONE',...
             });
         prevAction
@@ -28,15 +26,8 @@ classdef OpenCloseOm < OmState
                 return;
             end
             if me.closeIt
-                if me.connectionStatus.isState('CONNECTED')  % There are no errors
-                    address = me.cdp.getAddress();
-                    jmsg = me.mdlLbcb.createCommand('close-session',address,[],[]);
-                    me.mdlLbcb.start(jmsg,[],0);
-                    me.omActions.setState('CLOSING_SESSION');
-                else
                     me.mdlLbcb.close();
                     me.omActions.setState('DISCONNECTING');
-                end
             else
                 me.mdlLbcb.open();
                 me.statusBusy();
@@ -65,10 +56,6 @@ classdef OpenCloseOm < OmState
                     me.connect();
                 case 'DISCONNECTING'
                     me.disconnect();
-                case 'CLOSING_SESSION'
-                    me.closingSession();
-                case 'OPENING_SESSION'
-                    me.openingSession();
                 case 'DONE'
                     done = 1;
                     me.statusReady();
@@ -88,15 +75,6 @@ classdef OpenCloseOm < OmState
         end
     end
     methods (Access=private)
-        function openingSession(me)
-            me.connectionStatus.setState('CONNECTED');
-            me.gui.colorButton('CONNECT OM','ON');
-            me.omActions.setState('DONE');
-        end
-        function closingSession(me)
-            me.mdlLbcb.close();
-            me.omActions.setState('DISCONNECTING');
-        end
         function connect(me)
             address = me.cdp.getAddress();
             if isempty(address)
@@ -105,9 +83,7 @@ classdef OpenCloseOm < OmState
                 me.omActions.setState('DONE');
                 return;
             end
-            jmsg = me.mdlLbcb.createCommand('open-session',address,[],[]);
-            me.mdlLbcb.start(jmsg,[],0);
-            me.omActions.setState('OPENING_SESSION');
+            me.omActions.setState('DONE');
         end
         function disconnect(me)
             me.connectionStatus.setState('DISCONNECTED');

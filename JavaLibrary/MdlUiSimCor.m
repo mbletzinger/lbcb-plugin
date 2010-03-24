@@ -28,10 +28,8 @@ classdef MdlUiSimCor < handle
             });
         prevState;
         action = StateEnum({ ...
-            'START LISTENER', ...
             'OPEN CONNECTION', ...
             'CLOSE CONNECTION', ...
-            'STOP LISTENER', ...
             'RECEIVING COMMAND',...
             'SENDING RESPONSE',...
             'NONE'...
@@ -55,8 +53,6 @@ classdef MdlUiSimCor < handle
                 me.prevAction.setState(a);
             end
             switch a
-                case { 'START LISTENER' 'STOP LISTENER' }
-                    me.listenAction();
                 case { 'OPEN CONNECTION' 'CLOSE CONNECTION' }
                     me.connectionAction();
                 case 'RECEIVING COMMAND'
@@ -89,11 +85,12 @@ classdef MdlUiSimCor < handle
             me.params.setLocalPort(ncfg.simcorPort);
             me.params.setTcpTimeout(ncfg.connectionTimeout);
             me.params.setLfcrSendEom(false);
-            me.simcorTcp = org.nees.uiuc.simcor.ConnectionPeer('RECEIVE_COMMAND',me.params);
+            me.simcorTcp = org.nees.uiuc.simcor.UiSimCorTcp('P2P_RECEIVE_COMMAND',...
+                ncfg.address, ncfg.systemDescription);
             stamp = datestr(now,'_yyyy_mm_dd_HH_MM_SS');
             me.simcorTcp.setArchiveFilename(fullfile(pwd,'Logs',sprintf('UiSimCorNetworkLog%s.txt',stamp)));
-            me.simcorTcp.getTransactionFactory().setTransactionTimeout(ncfg.msgTimeout);
-            me.simcorTcp.startup();
+            me.simcorTcp.getTf().setTransactionTimeout(ncfg.msgTimeout);
+            me.simcorTcp.startup(me.params);
             me.action.setState('OPEN CONNECTION');
             me.state.setState('BUSY');
         end
@@ -109,7 +106,7 @@ classdef MdlUiSimCor < handle
         % the mdl, cps, and content arguments have to be cell arrays.
         % The return is a Java object containing the message.
         function jmsg = createCompoundResponse(me,mdl, cps, content)
-            tf = me.simcorTcp.getTransactionFactory();
+            tf = me.simcorTcp.getTf();
             jmsg = tf.createCompoundResponse(mdl, cps, content,0);
         end
         
@@ -117,7 +114,7 @@ classdef MdlUiSimCor < handle
         % that is not used should be passed in as an empty matrix [].
         % The return is a Java object containing the message.
         function jmsg = createResponse(me,mdl, cps, content)
-            tf = me.simcorTcp.getTransactionFactory();
+            tf = me.simcorTcp.getTf();
             jmsg = tf.createResponse(mdl, cps, content,0);
         end
         
@@ -130,7 +127,9 @@ classdef MdlUiSimCor < handle
             me.state.setState('BUSY');
         end
         function start(me)
-            me.simcorTcp.startTransaction();
+            ncfg = NetworkConfigDao(me.cfg);
+            timeout = ncfg.msgTimeout;
+            me.simcorTcp.startTransaction(timeout);
             me.action.setState('RECEIVING COMMAND');
             me.state.setState('BUSY');
         end
@@ -206,29 +205,7 @@ classdef MdlUiSimCor < handle
                     me.action.setState('NONE');
                     me.log.error(dbstack(),char(me.simcorTcp.getTransaction().getError().getText()));
                     me.simcorTcp.shutdown();
-                case {'CLOSING_CONNECTION' 'OPENING_CONNECTION' ,'STOP_LISTENING'}
-                otherwise
-                    me.log.error(dbstack,sprintf('"%s" not recognized',csS));
-            end
-        end
-        function listenAction(me)
-            is = InitStates();
-            ts = StateEnum(is.transactionStates);
-            ts.setState(char(me.simcorTcp.isReady()));
-            csS = ts.getState();
-            %           me.log.debug(dbstack,sprintf('Transaction state is %s',csS));
-            switch csS
-                case 'TRANSACTION_DONE'
-                    me.state.setState('READY');
-                    me.action.setState('NONE');
-                    me.simcorTcp.isReady();
-                case 'ERRORS_EXIST'
-                    me.simcorTcp.isReady();
-                    me.state.setState('ERRORS EXIST');
-                    me.action.setState('NONE');
-                    me.log.error(dbstack(),char(me.simcorTcp.getTransaction().getError().getText()));
-                    me.simcorTcp.shutdown();
-                case {'CLOSING_CONNECTION' 'OPENING_CONNECTION' }
+                case {'CLOSING_CONNECTION' 'CHECK_LISTENER_OPEN_CONNECTION' ,'STOP_LISTENER'}
                 otherwise
                     me.log.error(dbstack,sprintf('"%s" not recognized',csS));
             end

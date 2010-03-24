@@ -17,7 +17,9 @@ classdef NetworkConfigDao < handle
         simcorPort
         connectionTimeout
         msgTimeout
+        executeMsgTimeout
         address
+        systemDescription
     end
     properties
         dt;
@@ -62,11 +64,23 @@ classdef NetworkConfigDao < handle
         function set.msgTimeout(me,value)
             me.dt.setInt('network.msgTimeout',value);
         end
+        function result = get.executeMsgTimeout(me)
+            result = me.dt.getInt('network.execute.msgTimeout',3000);
+        end
+        function set.executeMsgTimeout(me,value)
+            me.dt.setInt('network.execute.msgTimeout',value);
+        end
         function result = get.address(me)
             result = me.dt.getString('network.address','MDL-00-01');
         end
         function set.address(me,value)
             me.dt.setString('network.address',value);
+        end
+        function result = get.systemDescription(me)
+            result = me.dt.getString('network.system.description','LBCB Plugin');
+        end
+        function set.systemDescription(me,value)
+            me.dt.setString('network.system.description',value);
         end
     end
 end

@@ -83,11 +83,12 @@ classdef MdlLbcb < handle
             me.params.setRemoteHost(ncfg.omHost);
             me.params.setRemotePort(ncfg.omPort);
             me.params.setTcpTimeout(ncfg.connectionTimeout);
-            me.simcorTcp = org.nees.uiuc.simcor.ConnectionPeer('SEND_COMMAND',me.params);
+            me.simcorTcp = org.nees.uiuc.simcor.UiSimCorTcp('P2P_SEND_COMMAND',...
+                ncfg.address, ncfg.systemDescription);
             stamp = datestr(now,'_yyyy_mm_dd_HH_MM_SS');
             me.simcorTcp.setArchiveFilename(fullfile(pwd,'Logs',sprintf('OmNetworkLog%s.txt',stamp)));
-            me.simcorTcp.getTransactionFactory().setTransactionTimeout(ncfg.msgTimeout);
-            me.simcorTcp.startup();
+            me.simcorTcp.getTf().setTransactionTimeout(ncfg.msgTimeout);
+            me.simcorTcp.startup(me.params);
             me.action.setState('OPEN CONNECTION');
             me.state.setState('BUSY');
         end
@@ -103,7 +104,7 @@ classdef MdlLbcb < handle
         % the mdl, cps, and content arguments have to be cell arrays.
         % The return is a Java object containing the message.
         function jmsg = createCompoundCommand(me,cmd, mdl, cps, content)
-            tf = me.simcorTcp.getTransactionFactory();
+            tf = me.simcorTcp.getTf();
             jmsg = tf.createCompoundCommand(cmd, mdl, cps, content);
         end
         
@@ -111,7 +112,7 @@ classdef MdlLbcb < handle
         % that is not used should be passed in as an empty matrix [].
         % The return is a Java object containing the message.
         function jmsg = createCommand(me,cmd, mdl, cps, content)
-            tf = me.simcorTcp.getTransactionFactory();
+            tf = me.simcorTcp.getTf();
             jmsg = tf.createCommand(cmd, mdl, cps, content);
         end
         
@@ -119,13 +120,18 @@ classdef MdlLbcb < handle
         % consists of a command sent to the OM and the response returned by
         % the OM.
         function start(me,jmsg, stepNums,createId)
-            tf = me.simcorTcp.getTransactionFactory();
+            ncfg = NetworkConfigDao(me.cfg);
+            tf = me.simcorTcp.getTf();
             if createId
                 id = tf.createTransactionId(stepNums.step, stepNums.subStep, stepNums.correctionStep);
                 tf.setId(id);
             end
             transaction = tf.createTransaction(jmsg);
-            me.simcorTcp.startTransaction(transaction);
+            timeout = ncfg.msgTimeout;
+            if(jmsg.getCommand().equals('execute'))
+                timeout = ncfg.executeMsgTimeout;
+            end
+            me.simcorTcp.startTransaction(transaction,timeout);
             me.dbgWin.addMsg(char(jmsg.toString));
             me.action.setState('EXECUTING TRANSACTION');
             me.state.setState('BUSY');
