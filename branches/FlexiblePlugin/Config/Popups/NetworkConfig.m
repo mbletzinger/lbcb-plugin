@@ -29,7 +29,7 @@ function varargout = NetworkConfig(varargin)
 
 % Edit the above text to modify the response to help NetworkConfig
 
-% Last Modified by GUIDE v2.5 17-Jan-2010 15:30:31
+% Last Modified by GUIDE v2.5 24-Mar-2010 07:01:32
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -83,7 +83,9 @@ set(handles.SimCorPort,'String',sprintf('%d',handles.dao.simcorPort));
 set(handles.TriggerPort,'String',sprintf('%d',handles.dao.triggerPort));
 set(handles.connectionTimeout,'String',sprintf('%d',handles.dao.connectionTimeout));
 set(handles.msgTimeout,'String',sprintf('%d',handles.dao.msgTimeout));
+set(handles.executeMsgTimeout,'String',sprintf('%d',handles.dao.executeMsgTimeout));
 set(handles.Address,'String',handles.dao.address);
+set(handles.systemDescription,'String',handles.dao.systemDescription);
 % Make the GUI modal
 set(handles.NetworkConfig,'WindowStyle','modal')
 
@@ -133,3 +135,13 @@ handles.dao.address = get(hObject,'String');
 
 function msgTimeout_Callback(hObject, eventdata, handles)
 handles.dao.msgTimeout = sscanf(get(hObject,'String'),'%d');
+
+
+
+function executeMsgTimeout_Callback(hObject, eventdata, handles)
+handles.dao.executeMsgTimeout = sscanf(get(hObject,'String'),'%d');
+
+
+
+function systemDescription_Callback(hObject, eventdata, handles)
+handles.dao.systemDescription = get(hObject,'String');
