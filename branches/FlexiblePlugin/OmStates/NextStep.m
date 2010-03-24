@@ -46,6 +46,7 @@ classdef NextStep < OmState
                     return;
                 else
                     me.dat.nextStepData = stp;
+                    me.prelimAdjust();
                     me.dat.correctionTarget = stp;
                 end
             end
@@ -77,6 +78,16 @@ classdef NextStep < OmState
                 for l = 1: me.cdp.numLbcbs()
                     me.ed{l}.deltaDiff(me.dat.correctionTarget.lbcbCps{l}.command,...
                         me.dat.curStepData.lbcbCps{l}.response);
+                    me.ed{l}.adjustTarget(me.dat.nextStepData.lbcbCps{l});
+                end
+            end
+        end
+        function prelimAdjust(me)
+            scfg = StepConfigDao(me.cdp.cfg);
+            if scfg.doEdCorrection
+                for l = 1: me.cdp.numLbcbs()
+                    me.ed{l}.deltaDiff(me.dat.correctionTarget.lbcbCps{l}.command,...
+                        me.dat.curStepData.lbcbCps{l}.command);
                     me.ed{l}.adjustTarget(me.dat.nextStepData.lbcbCps{l});
                 end
             end

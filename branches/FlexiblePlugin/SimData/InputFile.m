@@ -71,6 +71,7 @@ classdef  InputFile < Substeps
                     targets = {tgt1};
                 end
                 me.steps{t} = me.sdf.target2StepData(targets,t,0);
+                me.steps{t}.needsCorrection = true;
 %                me.log.debug(dbstack,sprintf('Created step=%s',me.steps{t}.toString()));
             end
             me.started = false;
