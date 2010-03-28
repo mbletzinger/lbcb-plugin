@@ -62,7 +62,6 @@ while ($running) {
     next;
   }
   if ($keyword eq 'close-session') {
-    sendResponse("OK\t0\t$trans\tClose accepted");
     $running = 0;
     next;
   }

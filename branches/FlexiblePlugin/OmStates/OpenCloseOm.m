@@ -83,6 +83,7 @@ classdef OpenCloseOm < OmState
                 me.omActions.setState('DONE');
                 return;
             end
+            me.connectionStatus.setState('CONNECTED');
             me.omActions.setState('DONE');
         end
         function disconnect(me)

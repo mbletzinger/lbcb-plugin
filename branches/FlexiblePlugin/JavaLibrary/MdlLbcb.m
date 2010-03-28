@@ -125,13 +125,14 @@ classdef MdlLbcb < handle
             if createId
                 id = tf.createTransactionId(stepNums.step, stepNums.subStep, stepNums.correctionStep);
                 tf.setId(id);
+            else
+                id = [];
             end
-            transaction = tf.createTransaction(jmsg);
             timeout = ncfg.msgTimeout;
             if(jmsg.getCommand().equals('execute'))
                 timeout = ncfg.executeMsgTimeout;
             end
-            me.simcorTcp.startTransaction(transaction,timeout);
+            me.simcorTcp.startTransaction(jmsg,id,timeout);
             me.dbgWin.addMsg(char(jmsg.toString));
             me.action.setState('EXECUTING TRANSACTION');
             me.state.setState('BUSY');
@@ -145,6 +146,7 @@ classdef MdlLbcb < handle
             ts = StateEnum(is.transactionStates);
             ts.setState(me.simcorTcp.isReady());
             csS = ts.getState();
+            csS = me.errorsExist(csS);            
 %            me.log.debug(dbstack,sprintf('Transaction state is %s',csS));
             switch csS
                 case 'ERRORS_EXIST'
@@ -163,7 +165,7 @@ classdef MdlLbcb < handle
                     me.state.setState('READY');
                     me.action.setState('NONE');
                     me.simcorTcp.isReady();
-                case { 'READ_RESPONSE', 'WAIT_FOR_RESPONSE' 'SENDING_COMMAND'}
+                case { 'READ_RESPONSE', 'WAIT_FOR_RESPONSE' 'SENDING_COMMAND' 'SETUP_READ_RESPONSE'}
                 % still busy
                 otherwise
                     me.log.error(dbstack,sprintf('"%s" not recognized',ts.getState()));
@@ -174,11 +176,19 @@ classdef MdlLbcb < handle
             ts = StateEnum(is.transactionStates);
             ts.setState(char(me.simcorTcp.isReady()));
             csS = ts.getState();
- %           me.log.debug(dbstack,sprintf('Transaction state is %s',csS));
+            csS = me.errorsExist(csS);
+              me.log.debug(dbstack,sprintf('Transaction state is %s',csS));
             switch csS
-                case 'TRANSACTION_DONE'
+                case {'RESPONSE_AVAILABLE' 'READY' }
                     me.state.setState('READY');
                     me.action.setState('NONE');
+                     transaction = me.simcorTcp.pickupTransaction();
+                    jresponse = transaction.getResponse();
+                    if isempty(jresponse) == false
+                        me.dbgWin.addMsg(char(jresponse.toString));
+                        me.response = ResponseMessage(jresponse);
+                    end
+                    me.simcorTcp.isReady();
                     me.simcorTcp.isReady();
                 case 'ERRORS_EXIST'
                     me.simcorTcp.isReady();
@@ -186,10 +196,21 @@ classdef MdlLbcb < handle
                     me.action.setState('NONE');
                     me.log.error(dbstack(),char(me.simcorTcp.getTransaction().getError().getText()));
                     me.simcorTcp.shutdown();
-                case {'CLOSING_CONNECTION' 'OPENING_CONNECTION' }
+                case {'CLOSING_CONNECTION' 'OPENING_CONNECTION' 'CHECK_OPEN_CONNECTION' ...
+                        'ASSEMBLE_OPEN_COMMAND' 'SENDING_COMMAND' 'SETUP_READ_RESPONSE'...
+                        'SENDING_CLOSE_COMMAND' 'WAIT_FOR_RESPONSE' 'TRANSACTION_DONE'}
                 otherwise
                     me.log.error(dbstack,sprintf('"%s" not recognized',csS));
             end
         end
+        function result = errorsExist(me,state)
+            jerror = me.simcorTcp.getTransaction().getError();
+            if(jerror.errorsExist())
+                result = 'ERRORS_EXIST';
+            else
+                result = state;
+            end
+        end
+            
     end
 end
