@@ -9,26 +9,26 @@
 %   action - StateEnum object storing the current action
 %   response - ResponseMessage containing the response contents
 %
-% $LastChangedDate$ 
-% $Author$
+% $LastChangedDate: 2010-03-28 05:38:28 -0500 (Sun, 28 Mar 2010) $
+% $Author: mbletzin $
 % =====================================================================================================================
-classdef MdlLbcb < handle
+classdef MdlBroadcast < handle
     properties
         params = org.nees.uiuc.simcor.tcp.TcpParameters;
         simcorTcp = {};
         connection = {};
         response = {};
-        log = Logger('MdlLbcb');
+        log = Logger('MdlBroadcast');
         state = StateEnum({ ...
             'BUSY', ...
             'READY', ...
             'ERRORS EXIST' ...
             });
         prevState;
-        action = StateEnum({ ... 
-            'OPEN CONNECTION', ...
-            'CLOSE CONNECTION', ...
-            'EXECUTING TRANSACTION',...
+        action = StateEnum({ ...
+            'START LISTENER', ...
+            'STOP LISTENER', ...
+            'BROADCASTING',...
             'NONE'...
             });
         prevAction;
@@ -36,7 +36,7 @@ classdef MdlLbcb < handle
         dbgWin
     end
     methods
-        function me = MdlLbcb(cfg)
+        function me = MdlBroadcast(cfg)
             me.cfg = cfg;
             me.state.setState('READY');
             me.prevState = StateEnum(me.state.states);
@@ -52,10 +52,10 @@ classdef MdlLbcb < handle
             end
             done = 0;
             switch a
-                case { 'OPEN CONNECTION' 'CLOSE CONNECTION' }
+                case { 'START LISTENER' 'STOP LISTENER' }
                     me.connectionAction();
-                case 'EXECUTING TRANSACTION'
-                    me.executeTransactionAction();
+                case 'BROADCASTING'
+                    me.broadcastAction();
                 case 'NONE'
                     done = 1;
                 otherwise
@@ -63,7 +63,7 @@ classdef MdlLbcb < handle
             end
             ss = me.state.getState();
             if me.prevState.isState(ss) == 0
-                me.log.debug(dbstack,sprintf('mdlbcb state is %s',ss));
+                me.log.debug(dbstack,sprintf('mdlbroadcast state is %s',ss));
                 me.prevState.setState(ss);
             end
             switch ss
@@ -77,77 +77,50 @@ classdef MdlLbcb < handle
             end
         end
         
-        % Start to open a connection to the operations manager
-        function open(me)
+        % Start the broadcaster
+        function startup(me)
             ncfg = NetworkConfigDao(me.cfg);
-            me.params.setRemoteHost(ncfg.omHost);
-            me.params.setRemotePort(ncfg.omPort);
+            me.params.setLocalPort(ncfg.triggerPort);
             me.params.setTcpTimeout(ncfg.connectionTimeout);
-            me.simcorTcp = org.nees.uiuc.simcor.UiSimCorTcp('P2P_SEND_COMMAND',...
+            me.simcorTcp = org.nees.uiuc.simcor.UiSimCorTriggerBroadcast(...
                 ncfg.address, ncfg.systemDescription);
             stamp = datestr(now,'_yyyy_mm_dd_HH_MM_SS');
-            me.simcorTcp.setArchiveFilename(fullfile(pwd,'Logs',sprintf('OmNetworkLog%s.txt',stamp)));
+            me.simcorTcp.setArchiveFilename(fullfile(pwd,'Logs',sprintf('TriggerBroadcastNetworkLog%s.txt',stamp)));
             me.simcorTcp.getTf().setTransactionTimeout(ncfg.msgTimeout);
             me.simcorTcp.startup(me.params);
-            me.action.setState('OPEN CONNECTION');
+            me.action.setState('START LISTENER');
             me.state.setState('BUSY');
         end
         
-        % Start to close the connection to the operations manager
-        function close(me)
+        % Start to shut down the broadcast service
+        function shutdown(me)
             me.simcorTcp.shutdown();
-            me.action.setState('CLOSE CONNECTION');
+            me.action.setState('STOP LISTENER');
             me.state.setState('BUSY');
         end
         
-        % Create a compound command (command with multiple MDL addresses)
-        % the mdl, cps, and content arguments have to be cell arrays.
-        % The return is a Java object containing the message.
-        function jmsg = createCompoundCommand(me,cmd, mdl, cps, content)
-            tf = me.simcorTcp.getTf();
-            jmsg = tf.createCompoundCommand(cmd, mdl, cps, content);
-        end
-        
-        % Create a simple command  all arguments are strings.  Any argument
-        % that is not used should be passed in as an empty matrix [].
-        % The return is a Java object containing the message.
-        function jmsg = createCommand(me,cmd, mdl, cps, content)
-            tf = me.simcorTcp.getTf();
-            jmsg = tf.createCommand(cmd, mdl, cps, content);
-        end
-        
-        % Start a transaction with the operations manager.  A transaction
-        % consists of a command sent to the OM and the response returned by
-        % the OM.
-        function start(me,jmsg, stepNums,createId)
+        % Start a broadcast
+        function start(me, stepNum)
             ncfg = NetworkConfigDao(me.cfg);
             tf = me.simcorTcp.getTf();
-            if createId
-                id = tf.createTransactionId(stepNums.step, stepNums.subStep, stepNums.correctionStep);
-                tf.setId(id);
-            else
-                id = [];
-            end
             timeout = ncfg.msgTimeout;
-            if(jmsg.getCommand().equals('execute'))
-                timeout = ncfg.executeMsgTimeout;
-            end
-            me.simcorTcp.startTransaction(jmsg,id,timeout);
+            jmsg = tf.createBroadcastTransaction(stepNum.step, stepNum.subStep, stepNum.correctionStep, timeout);
+            me.simcorTcp.startTransaction(jmsg);
             me.dbgWin.addMsg(char(jmsg.toString));
-            me.action.setState('EXECUTING TRANSACTION');
+            me.action.setState('BROADCASTING');
             me.state.setState('BUSY');
         end
     end
     
     methods (Access=private)
         % process transaction
-        function executeTransactionAction(me)
+        function broadcastAction(me)
             is = InitStates();
             ts = StateEnum(is.transactionStates);
             ts.setState(me.simcorTcp.isReady());
             csS = ts.getState();
-            csS = me.errorsExist(csS);            
-%            me.log.debug(dbstack,sprintf('Transaction state is %s',csS));
+            csS = me.errorsExist(csS);
+            %            me.log.debug(dbstack,sprintf('Transaction state is %s',csS));
             switch csS
                 case 'ERRORS_EXIST'
                     me.state.setState('ERRORS EXIST');
@@ -155,19 +128,13 @@ classdef MdlLbcb < handle
                     me.log.error(dbstack(),char(me.simcorTcp.getTransaction().getError().getText()));
                     me.simcorTcp.isReady();
                     me.simcorTcp.shutdown();
-                case 'RESPONSE_AVAILABLE'
-%                    me.state.setState('READY');
-                    transaction = me.simcorTcp.pickupTransaction();
-                    jresponse = transaction.getResponse();
-                    me.dbgWin.addMsg(char(jresponse.toString));
-                    me.response = ResponseMessage(jresponse);
                 case 'READY'
                     me.state.setState('READY');
                     me.action.setState('NONE');
                     me.simcorTcp.isReady();
-                case { 'READ_RESPONSE', 'WAIT_FOR_RESPONSE' 'SENDING_COMMAND'...
-                        'SETUP_READ_RESPONSE' 'TRANSACTION_DONE'}
-                % still busy
+                case { 'SETUP_TRIGGER_READ_RESPONSES' 'WAIT_FOR_TRIGGER_RESPONSES' ...
+                        'TRANSACTION_DONE'}
+                    % still busy
                 otherwise
                     me.log.error(dbstack,sprintf('"%s" not recognized',ts.getState()));
             end
@@ -178,40 +145,34 @@ classdef MdlLbcb < handle
             ts.setState(char(me.simcorTcp.isReady()));
             csS = ts.getState();
             csS = me.errorsExist(csS);
-              me.log.debug(dbstack,sprintf('Transaction state is %s',csS));
+            me.log.debug(dbstack,sprintf('Transaction state is %s',csS));
             switch csS
-                case {'RESPONSE_AVAILABLE' 'READY' }
+                case {'READY' }
                     me.state.setState('READY');
                     me.action.setState('NONE');
-                     transaction = me.simcorTcp.pickupTransaction();
-                    jresponse = transaction.getResponse();
-                    if isempty(jresponse) == false
-                        me.dbgWin.addMsg(char(jresponse.toString));
-                        me.response = ResponseMessage(jresponse);
-                    end
-                    me.simcorTcp.isReady();
-                    me.simcorTcp.isReady();
                 case 'ERRORS_EXIST'
                     me.simcorTcp.isReady();
                     me.state.setState('ERRORS EXIST');
                     me.action.setState('NONE');
                     me.log.error(dbstack(),char(me.simcorTcp.getTransaction().getError().getText()));
                     me.simcorTcp.shutdown();
-                case {'CLOSING_CONNECTION' 'OPENING_CONNECTION' 'CHECK_OPEN_CONNECTION' ...
-                        'ASSEMBLE_OPEN_COMMAND' 'SENDING_COMMAND' 'SETUP_READ_RESPONSE'...
-                        'SENDING_CLOSE_COMMAND' 'WAIT_FOR_RESPONSE' 'TRANSACTION_DONE'}
+                case {'TRANSACTION_DONE' 'BROADCAST_CLOSE_COMMAND' 'CLOSE_TRIGGER_CONNECTIONS' 'STOP_LISTENER'}
                 otherwise
                     me.log.error(dbstack,sprintf('"%s" not recognized',csS));
             end
         end
         function result = errorsExist(me,state)
             jerror = me.simcorTcp.getTransaction().getError();
-            if(jerror.errorsExist())
-                result = 'ERRORS_EXIST';
+            if jerror.errorsExist()
+                me.log.error(dbstack,char(jerror.getText()));
+                if jerror.isClientsAddedMsg()
+                    result = state;
+                else
+                    result = 'ERRORS_EXIST';
+                end
             else
                 result = state;
             end
-        end
-            
+        end     
     end
 end

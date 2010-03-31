@@ -3,6 +3,7 @@ classdef HandleFactory <  handle
         % MDL instances
         mdlLbcb = {};
         mdlUiSimCor = {};
+        mdlBroadcast = {};
         % Limit instances
         cl = []; % CommandLimits object
         st = cell(2,1); % StepTolerances objects
@@ -19,7 +20,8 @@ classdef HandleFactory <  handle
         % Simulation States and Executors
         omStates = cell(5,1);
         simStates = cell(3,1);
-        simCorStates = cell(1,1);
+        simCorStates = cell(2,1);
+        brdcstStates = cell(2,1);
         
         %Display update instance
         gui = [];
@@ -63,6 +65,9 @@ classdef HandleFactory <  handle
         ocSimCor
         tgtRsp
         
+        % Broadcast Trigger States
+        ssBrdcst
+        brdcstRsp
         
     end
     methods
@@ -85,6 +90,11 @@ classdef HandleFactory <  handle
             me.mdlUiSimCor = MdlUiSimCor(me.cfg);
             me.simCorStates{1} = OpenCloseUiSimCor;
             me.simCorStates{2} = TargetResponse;
+
+            me.mdlBroadcast = MdlBroadcast(me.cfg);
+            me.brdcstStates{1} = StartStopBroadcaster;
+            me.brdcstStates{2} = BroadcastResponses;
+            
             lc = LimitChecks;
             me.il = IncrementLimits(me.cfg);
             me.cl = CommandLimits(me.cfg);
@@ -131,6 +141,7 @@ classdef HandleFactory <  handle
             me.ddisp.dbgWin = dbgWin;
             me.gui.ddisp = me.ddisp;
             me.mdlLbcb.dbgWin = dbgWin;
+            me.mdlBroadcast.dbgWin = dbgWin;
             
             for c =1:length(me.simStates)
                 me.simStates{c}.cdp = cdp;
@@ -156,8 +167,7 @@ classdef HandleFactory <  handle
             
             dbgWin.stpEx = me.simStates{1}; 
             dbgWin.tgtEx = me.simStates{2};
-            dbgWin.prcsTgt = me.simStates{3};
-            
+            dbgWin.prcsTgt = me.simStates{3};          
 
             for c =1:length(me.simCorStates)
                 me.simCorStates{c}.cdp = cdp;
@@ -167,6 +177,13 @@ classdef HandleFactory <  handle
                 me.simCorStates{c}.sdf = me.sdf;
             end
             
+            for c =1:length(me.brdcstStates)
+                me.brdcstStates{c}.cdp = cdp;
+                me.brdcstStates{c}.gui = me.gui;
+                me.brdcstStates{c}.mdlBroadcast = me.mdlBroadcast;
+                me.brdcstStates{c}.dat = me.dat;
+                me.brdcstStates{c}.sdf = me.sdf;
+            end
             
         end
         function setGuiHandle(me, handle)
@@ -180,6 +197,9 @@ classdef HandleFactory <  handle
             end
             for c =1:length(me.simCorStates)
                 me.simCorStates{c}.gui = me.gui;
+            end
+            for c =1:length(me.brdcstStates)
+                me.brdcstStates{c}.gui = me.gui;
             end
             DataDisplay.setMenuHandle(handle);
         end
@@ -213,6 +233,12 @@ classdef HandleFactory <  handle
         end
         function c = get.tgtRsp(me)
             c= me.simCorStates{2};
+        end
+        function c = get.ssBrdcst(me)
+            c= me.brdcstStates{1};
+        end
+        function c = get.brdcstRsp(me)
+            c= me.brdcstStates{2};
         end
    end
 end
