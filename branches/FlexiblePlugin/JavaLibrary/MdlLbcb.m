@@ -9,7 +9,7 @@
 %   action - StateEnum object storing the current action
 %   response - ResponseMessage containing the response contents
 %
-% $LastChangedDate$ 
+% $LastChangedDate$
 % $Author$
 % =====================================================================================================================
 classdef MdlLbcb < handle
@@ -25,7 +25,7 @@ classdef MdlLbcb < handle
             'ERRORS EXIST' ...
             });
         prevState;
-        action = StateEnum({ ... 
+        action = StateEnum({ ...
             'OPEN CONNECTION', ...
             'CLOSE CONNECTION', ...
             'EXECUTING TRANSACTION',...
@@ -41,6 +41,7 @@ classdef MdlLbcb < handle
             me.state.setState('READY');
             me.prevState = StateEnum(me.state.states);
             me.prevAction = StateEnum(me.action.states);
+            me.action.setState('NONE');
         end
         
         % Continue executing the current action
@@ -95,6 +96,9 @@ classdef MdlLbcb < handle
         
         % Start to close the connection to the operations manager
         function close(me)
+            if isempty(me.simcorTcp)
+                return;
+            end
             me.simcorTcp.shutdown();
             me.action.setState('CLOSE CONNECTION');
             me.state.setState('BUSY');
@@ -146,8 +150,8 @@ classdef MdlLbcb < handle
             ts = StateEnum(is.transactionStates);
             ts.setState(me.simcorTcp.isReady());
             csS = ts.getState();
-            csS = me.errorsExist(csS);            
-%            me.log.debug(dbstack,sprintf('Transaction state is %s',csS));
+            csS = me.errorsExist(csS);
+            %            me.log.debug(dbstack,sprintf('Transaction state is %s',csS));
             switch csS
                 case 'ERRORS_EXIST'
                     me.state.setState('ERRORS EXIST');
@@ -156,7 +160,7 @@ classdef MdlLbcb < handle
                     me.simcorTcp.isReady();
                     me.simcorTcp.shutdown();
                 case 'RESPONSE_AVAILABLE'
-%                    me.state.setState('READY');
+                    %                    me.state.setState('READY');
                     transaction = me.simcorTcp.pickupTransaction();
                     jresponse = transaction.getResponse();
                     me.dbgWin.addMsg(char(jresponse.toString));
@@ -167,7 +171,7 @@ classdef MdlLbcb < handle
                     me.simcorTcp.isReady();
                 case { 'READ_RESPONSE', 'WAIT_FOR_RESPONSE' 'SENDING_COMMAND'...
                         'SETUP_READ_RESPONSE' 'TRANSACTION_DONE'}
-                % still busy
+                    % still busy
                 otherwise
                     me.log.error(dbstack,sprintf('"%s" not recognized',ts.getState()));
             end
@@ -178,12 +182,12 @@ classdef MdlLbcb < handle
             ts.setState(char(me.simcorTcp.isReady()));
             csS = ts.getState();
             csS = me.errorsExist(csS);
-              me.log.debug(dbstack,sprintf('Transaction state is %s',csS));
+            me.log.debug(dbstack,sprintf('Transaction state is %s',csS));
             switch csS
                 case {'RESPONSE_AVAILABLE' 'READY' }
                     me.state.setState('READY');
                     me.action.setState('NONE');
-                     transaction = me.simcorTcp.pickupTransaction();
+                    transaction = me.simcorTcp.pickupTransaction();
                     jresponse = transaction.getResponse();
                     if isempty(jresponse) == false
                         me.dbgWin.addMsg(char(jresponse.toString));
@@ -212,6 +216,6 @@ classdef MdlLbcb < handle
                 result = state;
             end
         end
-            
+        
     end
 end

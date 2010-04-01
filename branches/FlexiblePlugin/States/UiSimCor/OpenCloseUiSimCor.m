@@ -7,23 +7,26 @@ classdef OpenCloseUiSimCor < UiSimCorState
             'WAIT FOR SET PARAMETER RESPONSE',...
             'DONE',...
             });
-         connectionStatus = StateEnum({'CONNECTED','DISCONNECTED','ERRORED'});
+        connectionStatus = StateEnum({'CONNECTED','DISCONNECTED','ERRORED'});
         closeIt = 0;
         log = Logger('OpenCloseUiSimCor');
         prevAction
-   end
+    end
     methods
         function me = OpenCloseUiSimCor()
             me.connectionStatus.setState('DISCONNECTED');
         end
-        function start(me, closeIt)
+        function aborted = start(me, closeIt)
             me.closeIt = closeIt;
+            aborted = false;
             if closeIt && me.connectionStatus.isState('DISCONNECTED')
                 me.log.error(dbstack,'SIMCOR Connection already disconnected');
+                aborted = true;
                 return;
             end
             if closeIt == 0 && me.connectionStatus.isState('CONNECTED')
                 me.log.error(dbstack,'SIMCOR Connection already connected');
+                aborted = true;
                 return;
             end
             if me.closeIt
@@ -43,7 +46,7 @@ classdef OpenCloseUiSimCor < UiSimCorState
             if mlDone == 0
                 return;
             end
-
+            
             if me.mdlUiSimCor.state.isState('ERRORS EXIST')
                 done = 1;
                 me.connectionError();
@@ -54,7 +57,7 @@ classdef OpenCloseUiSimCor < UiSimCorState
                 me.log.debug(dbstack,sprintf('Executing action %s',a));
                 me.prevAction = me.simCorActions.idx;
             end
-
+            
             switch a
                 case 'CONNECTING'
                     me.connect();
@@ -76,9 +79,9 @@ classdef OpenCloseUiSimCor < UiSimCorState
             me.connectionStatus.setState('ERRORED');
             me.gui.colorRunButton('BROKEN'); % Pause the simulation
             me.gui.colorButton('CONNECT SIMCOR','BROKEN');
-                        me.simCorActions.setState('DONE');            
+            me.simCorActions.setState('DONE');
             me.log.error(dbstack,...
-                sprintf('UI-SimCor link has been disconnected due to errors')); 
+                sprintf('UI-SimCor link has been disconnected due to errors'));
         end
     end
     methods (Access=private)
@@ -86,11 +89,11 @@ classdef OpenCloseUiSimCor < UiSimCorState
             address = me.cdp.getAddress();
             jmsg = me.mdlUiSimCor.createResponse(address,[],'LBCB Plugin initialized');
             me.mdlUiSimCor.respond(jmsg);
-            me.simCorActions.setState('WAIT FOR SET PARAMETER RESPONSE');            
+            me.simCorActions.setState('WAIT FOR SET PARAMETER RESPONSE');
         end
         function setParameterResponse(me)
             me.gui.colorButton('CONNECT SIMCOR','ON');
-            me.simCorActions.setState('DONE');            
+            me.simCorActions.setState('DONE');
         end
         function connect(me)
             address = me.cdp.getAddress();
@@ -106,7 +109,7 @@ classdef OpenCloseUiSimCor < UiSimCorState
         function disconnect(me)
             me.connectionStatus.setState('DISCONNECTED');
             me.gui.colorButton('CONNECT SIMCOR','OFF');
-            me.simCorActions.setState('DONE');            
+            me.simCorActions.setState('DONE');
         end
     end
 end

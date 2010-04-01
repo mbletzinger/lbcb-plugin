@@ -1,10 +1,14 @@
 function processConnectSimCor(me,on)
 action = 'CLOSE SIMCOR CONNECTION';
+
 if on
     action = 'OPEN SIMCOR CONNECTION';
-    me.hfact.ocSimCor.start(0);
+    nope = me.hfact.ocSimCor.start(0);
 else
-    me.hfact.ocSimCor.start(1);
+    nope = me.hfact.ocSimCor.start(1);
+end
+if nope
+    return;
 end
 me.connectSimCorAction.setState(action);
 isOn = get(me.csimcorTimer,'Running');
