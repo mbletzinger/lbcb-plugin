@@ -3,6 +3,7 @@ classdef SimSharedData < handle
         prevTarget = [];
         curTarget = [];
         correctionTarget = [];
+        correctionStepData = [];
         prevStepData = [];
         curStepData = [];
         nextStepData = [];
@@ -20,15 +21,24 @@ classdef SimSharedData < handle
         end
         function clearSteps(me)
             me.correctionTarget = [];
+            me.correctionStepData = [];
             me.prevStepData = [];
             me.curStepData = [];
             me.nextStepData = [];
         end
+        function nextCorrectionStep(me) 
+                me.nextStepData = me.sdf.target2StepData({ me.curStepData.lbcbCps{1}.command ...
+                    me.curStepData.lbcbCps{2}.command }, me.curStepData.stepNum.step, ...
+                    me.curStepData.stepNum.subStep);
+                me.nextStepData.stepNum = me.curStepData.stepNum.next(2);
+                me.nextStepData.needsCorrection = true;
+                me.correctionStepData = me.nextStepData;
+        end
         function table = cmdTable(me)
             lbls = {'Current Target','Previous Target','Correction Target',...
-                'Next Step','Current Step','Previous Step'};
+                'Correction Step','Next Step','Current Step','Previous Step'};
             steps = { me.curTarget, me.prevTarget, me.correctionTarget,  ...
-                me.nextStepData,  me.curStepData, me.prevStepData};
+                me.correctionStepData, me.nextStepData,  me.curStepData, me.prevStepData};
             [ didx, fidx, labels ] = me.cmdTableHeaders();
             table = cell(6,length(labels));
             for s = 1 : 6

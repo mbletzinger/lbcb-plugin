@@ -30,11 +30,7 @@ classdef NextStep < OmState
                 return;
             end
             if me.needsCorrection()
-                me.dat.nextStepData = me.sdf.target2StepData({ me.dat.curStepData.lbcbCps{1}.command ...
-                    me.dat.curStepData.lbcbCps{2}.command }, me.dat.curStepData.stepNum.step, ...
-                    me.dat.curStepData.stepNum.subStep);
-                me.dat.nextStepData.stepNum = me.dat.curStepData.stepNum.next(2);
-                me.dat.nextStepData.needsCorrection = true;
+                me.dat.nextCorrectionStep();
                 me.edAdjust();
                 me.derivedDofAdjust();
                 me.log.info(dbstack,'Generating correction step');
@@ -56,7 +52,7 @@ classdef NextStep < OmState
     end
     methods (Access='private')
         function needsCorrection = needsCorrection(me)
-            needsCorrection = 0;
+            needsCorrection = false;
             if isempty(me.dat.curStepData)
                 return;
             end
@@ -70,7 +66,7 @@ classdef NextStep < OmState
                 wt2 = me.st{2}.withinTolerances(me.dat.correctionTarget.lbcbCps{2}.command,...
                     me.dat.curStepData.lbcbCps{2}.response);
             end
-            needsCorrection = (wt1 && wt2) == 0;
+            needsCorrection = (wt1 && wt2) == false;
         end
         function edAdjust(me)
             scfg = StepConfigDao(me.cdp.cfg);
@@ -87,7 +83,7 @@ classdef NextStep < OmState
             if scfg.doEdCorrection
                 for l = 1: me.cdp.numLbcbs()
                     me.ed{l}.deltaDiff(me.dat.correctionTarget.lbcbCps{l}.command,...
-                        me.dat.curStepData.lbcbCps{l}.command);
+                        me.dat.correctionStepData.lbcbCps{l}.command);
                     me.ed{l}.adjustTarget(me.dat.nextStepData.lbcbCps{l});
                 end
             end

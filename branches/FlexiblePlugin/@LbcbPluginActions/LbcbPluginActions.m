@@ -3,6 +3,7 @@ classdef LbcbPluginActions < handle
         simTimer = [];
         comTimer = [];
         csimcorTimer = [];
+        ctriggerTimer = [];
         simTimerCnt = [];
         comTimerCnt = [];
         csimcorTimerCnt = [];
@@ -20,6 +21,11 @@ classdef LbcbPluginActions < handle
         connectSimCorAction = StateEnum({...
             'OPEN SIMCOR CONNECTION',...
             'CLOSE SIMCOR CONNECTION'...
+            'DONE'...
+            });
+        startTriggeringAction = StateEnum({...
+            'START TRIGGERING',...
+            'STOP TRIGGERING',...
             'DONE'...
             });
         log = Logger('LbcbPluginActions');
@@ -62,6 +68,8 @@ classdef LbcbPluginActions < handle
             me.comTimer.TimerFcn = { 'LbcbPluginActions.connectOm', me };
             me.csimcorTimer = timer('Period',0.05, 'TasksToExecute',1000000,'ExecutionMode','fixedSpacing','Name','ConnectSimCorTimer');
             me.csimcorTimer.TimerFcn = { 'LbcbPluginActions.connectSimCor', me };
+            me.ctriggerTimer = timer('Period',0.05, 'TasksToExecute',1000000,'ExecutionMode','fixedSpacing','Name','StartTriggerTimer');
+            me.ctriggerTimer.TimerFcn = { 'LbcbPluginActions.startTriggering', me };
             me.currentSimExecute.setState('DONE');
             me.connectSimCorAction.setState('DONE');
             me.connectOmAction.setState('DONE');
@@ -69,8 +77,9 @@ classdef LbcbPluginActions < handle
         end
         processRunHold(me,on)
         processConnectOm(me,on)
-        processTriggering(me,on)
         processConnectSimCor(me,on)
+        processTriggering(me,on)
+        processVamping(me,on)
         selectInputFile(me,on)
         processAutoAccept(me,on)
         processAccept(me,on)
@@ -90,5 +99,6 @@ classdef LbcbPluginActions < handle
         executeSim(obj, event, me)
         connectOm(obj, event, me)
         connectSimCor(obj, event, me)
+        startTriggering(obj, event, me)
     end
 end

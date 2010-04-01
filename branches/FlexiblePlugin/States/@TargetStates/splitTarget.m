@@ -18,6 +18,7 @@ numSteps = abs(finalDisp - initialDisp) ./ stpSize;
 maxNumSteps = max(ceil(numSteps));
 if maxNumSteps < 2
     me.setCorrectionFlag(me.dat.curTarget);
+    me.setTriggeringFlag(me.dat.curTarget);
     return;
 end
 inc = (finalDisp - initialDisp) / maxNumSteps;
@@ -46,6 +47,7 @@ for i = 1 : maxNumSteps
     end
     ss{i} = me.sdf.target2StepData(tgts,sn,i);
     me.setCorrectionFlag(ss{i});
+    me.setTriggeringFlag(ss{i});
     
 end
 steps.steps = ss;

@@ -11,7 +11,8 @@ classdef StepData < handle
         mdlUiSimCor;
         cdp;
         needsCorrection;
-        containsModelCps
+        containsModelCps;
+        needsTriggering;
     end
     methods
         function me = StepData()
@@ -24,8 +25,9 @@ classdef StepData < handle
             me.mdlLbcb = [];
             me.mdlUiSimCor = [];
             me.cdp = [];
-            me.needsCorrection = 0;
+            me.needsCorrection = false;
             me.containsModelCps = 0;
+            me.needsTriggering = false;
 
         end
         str = toString(me)
