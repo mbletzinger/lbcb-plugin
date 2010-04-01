@@ -94,6 +94,9 @@ classdef MdlBroadcast < handle
         
         % Start to shut down the broadcast service
         function shutdown(me)
+            if isempty(me.simcorTcp)
+                return;
+            end
             me.simcorTcp.shutdown();
             me.action.setState('STOP LISTENER');
             me.state.setState('BUSY');

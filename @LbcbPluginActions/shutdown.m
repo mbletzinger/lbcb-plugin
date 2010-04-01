@@ -1,7 +1,8 @@
 function shutdown(me)
-me.processRunHold(0)
-me.processConnectOm(0);
-me.processConnectSimCor(0);
+me.processRunHold(false)
+me.processConnectOm(false);
+me.processConnectSimCor(false);
+me.processTriggering(false);
 cnt = 0;
 someOn = false;
 while someOn
@@ -19,6 +20,11 @@ while someOn
     if strcmp(isOn,'on')
         someOn = true;
         link = 'UI-SimCor Link';
+    end
+    isOn = get(me.ctriggerTimer,'Running');
+    if strcmp(isOn,'on')
+        someOn = true;
+        link = 'Trigger Server';
     end
     if rem(cnt,100) == 0
         me.log.debug(dbstack, sprintf('Waiting for %s to shut down',link));

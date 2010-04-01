@@ -14,14 +14,17 @@ classdef StartStopBroadcaster < BroadcasterState
         function me = StartStopBroadcaster()
             me.connectionStatus.setState('DISCONNECTED');
         end
-        function start(me, closeIt)
+        function aborted = start(me, closeIt)
             me.closeIt = closeIt;
+                aborted = false;
             if closeIt && me.connectionStatus.isState('DISCONNECTED')
                 me.log.error(dbstack,'Trigger Broadcaster already stopped');
+                aborted = true;
                 return;
             end
             if closeIt == 0 && me.connectionStatus.isState('CONNECTED')
                 me.log.error(dbstack,'Trigger Broadcaster already started');
+                aborted = true;
                 return;
             end
             if me.closeIt

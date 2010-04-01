@@ -15,14 +15,17 @@ classdef OpenCloseOm < OmState
             me.connectionStatus.setState('DISCONNECTED');
             me.prevAction = 0;
         end
-        function start(me, closeIt)
+        function aborted = start(me, closeIt)
             me.closeIt = closeIt;
+                aborted = false;
             if closeIt && me.connectionStatus.isState('DISCONNECTED')
                 me.log.error(dbstack,'OM Connection already disconnected');
+                aborted = true;
                 return;
             end
             if closeIt == 0 && me.connectionStatus.isState('CONNECTED')
                 me.log.error(dbstack,'OM Connection already connected');
+                aborted = true;
                 return;
             end
             if me.closeIt

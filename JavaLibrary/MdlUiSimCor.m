@@ -43,6 +43,7 @@ classdef MdlUiSimCor < handle
             me.state.setState('READY');
             me.prevState = StateEnum(me.state.states);
             me.prevAction = StateEnum(me.action.states);
+            me.action.setState('NONE');
         end
         
         % Continue executing the current action
@@ -97,6 +98,9 @@ classdef MdlUiSimCor < handle
         
         % Start to close the connection to the operations manager
         function close(me)
+            if isempty(me.simcorTcp)
+                return;
+            end
             me.simcorTcp.shutdown();
             me.action.setState('CLOSE CONNECTION');
             me.state.setState('BUSY');
