@@ -1,8 +1,6 @@
 function initialize(me)
 
-if isempty(me.handles) == 0
-    set(me.handles.Rev, 'String','$LastChangedDate: 2009-06-10 18:15:21 -0500 (Wed, 10 Jun 2009) $');
-    
+if isempty(me.handles) == 0    
     me.commandLimitsHandles1 = cell(12,2);
     me.commandLimitsHandles1{1,1} = me.handles.DxL1;
     me.commandLimitsHandles1{2,1} = me.handles.DyL1;

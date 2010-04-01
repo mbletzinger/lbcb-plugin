@@ -22,7 +22,7 @@ function varargout = StepConfig(varargin)
 
 % Edit the above text to modify the response to help StepConfig
 
-% Last Modified by GUIDE v2.5 30-Nov-2009 17:16:07
+% Last Modified by GUIDE v2.5 01-Apr-2010 12:30:37
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -180,3 +180,16 @@ function ddCorrectFunction_Callback(hObject, eventdata, handles)
 % Hints: contents = get(hObject,'String') returns ddCorrectFunction contents as cell array
 %        contents{get(hObject,'Value')} returns selected item from ddCorrectFunction
 handles.actions.setDdCorrectFunction(get(hObject,'Value'));
+
+
+
+function substepTriggering_Callback(hObject, eventdata, handles)
+handles.actions.setTriggeringPerSubstep(get(hObject,'String'));
+
+
+% --- Executes on button press in doSubstepTriggering.
+function doSubstepTriggering_Callback(hObject, eventdata, handles)
+if get(hObject,'Value') 
+    return;
+end
+handles.actions.setTriggeringPerSubstep('0');

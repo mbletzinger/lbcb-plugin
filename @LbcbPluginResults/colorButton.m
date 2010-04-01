@@ -11,6 +11,8 @@ switch buttonName
         hndl = me.handles.StartSimCor;
     case 'TRIGGER'
         hndl = me.handles.StartTriggering;
+    case 'VAMPING'
+        hndl = me.handles.vamping;
     otherwise
         me.log.error(dbstack,sprintf('%s not recognized',buttonName));
 end

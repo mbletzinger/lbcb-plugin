@@ -71,6 +71,14 @@ classdef StepConfigActions < handle
             end
             me.scfg.correctEverySubstep = value;
         end
+        function setTriggeringPerSubstep(me,str)
+            value = sscanf(str,'%d');
+            if isempty(value)
+                me.log.error(dbstack,sprintf('"%s" is not a valid input',str));
+                return;
+            end
+            me.scfg.triggerEverySubstep = value;
+        end
         function setDoEdCalculations(me,value)
             me.scfg.doEdCalculations = value;
         end

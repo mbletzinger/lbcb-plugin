@@ -22,6 +22,7 @@ classdef StepConfigDao < handle
         edCalculationFunction
         ddCalculationFunction
         ddCorrectionFunction
+        triggerEverySubstep
     end
     properties
         dt;
@@ -96,6 +97,12 @@ classdef StepConfigDao < handle
         end
         function set.ddCorrectionFunction(me,value)
             me.dt.setString('step.dd.correction.function',value);
+        end
+        function result = get.triggerEverySubstep(me)
+             result = me.dt.getInt('step.triggerEveryStep',0);
+        end
+        function set.triggerEverySubstep(me,value)
+            me.dt.setInt('step.triggerEveryStep',value);
         end
     end
 end

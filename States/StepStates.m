@@ -5,6 +5,7 @@ classdef StepStates < SimStates
         gcpOm = [];
         fakeGcp = [];
         arch = [];
+        brdcstRsp = [];
         gettingInitialPosition;
         currentAction = StateEnum({...
             'NEXT STEP',...
@@ -15,11 +16,13 @@ classdef StepStates < SimStates
             'DONE'
             });
         prevAction
+        doTriggering
         log = Logger('StepStates');
     end
     methods
         function me = StepStates()
             me.prevAction = 0;
+            me.doTriggering = false;
         end
         function start(me,steps)
             me.nxtStep.steps = steps;
@@ -113,12 +116,18 @@ classdef StepStates < SimStates
                     me.pResp.isDone();
                     me.arch.archive(me.dat.curStepData);
                     me.gui.ddisp.update(me.dat.curStepData);
-                    me.currentAction.setState('BROADCAST TRIGGER');
-                    
-                case 'BROADCAST TRIGGER'
                     if me.gettingInitialPosition
                         me.currentAction.setState('DONE');
+                    elseif needsTriggering()
+                        me.brdcstRsp.start();
+                        me.currentAction.setState('BROADCAST TRIGGER');
                     else
+                        me.currentAction.setState('NEXT STEP');
+                    end
+                    
+                case 'BROADCAST TRIGGER'
+                    bdone = me.brdcstRsp.isDone();
+                    if bdone
                         me.currentAction.setState('NEXT STEP');
                     end
                 case 'DONE'
@@ -131,6 +140,21 @@ classdef StepStates < SimStates
         function yes = isFake(me)
             ocfg = OmConfigDao(me.cdp.cfg);
             yes = ocfg.useFakeOm;
+        end
+    end
+    methods (Access='private')
+        function needsTriggering = needsTriggering(me)
+            needsTriggering = false;
+            if me.doTriggering == false
+                return;
+            end
+            if isempty(me.dat.curStepData)
+                return;
+            end
+            if me.dat.curStepData.needsTriggering == false
+                return;
+            end
+            needsTriggering = true;
         end
     end
 end

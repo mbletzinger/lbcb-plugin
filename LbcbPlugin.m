@@ -22,7 +22,7 @@ function varargout = LbcbPlugin(varargin)
 
 % Edit the above text to modify the response to help LbcbPlugin
 
-% Last Modified by GUIDE v2.5 12-Jan-2010 14:53:53
+% Last Modified by GUIDE v2.5 31-Mar-2010 19:06:59
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -130,7 +130,8 @@ handles.actions.processEditTarget();
 
 % --- Executes on button press in StartTriggering.
 function StartTriggering_Callback(hObject, eventdata, handles)
-disp('Not Implemented');
+val = get(hObject,'Value');
+handles.actions.processTriggering(val);
 
 function DxL1_Callback(hObject, eventdata, handles)
 % hObject    handle to DxL1 (see GCBO)
@@ -1215,3 +1216,7 @@ else
     handles.actions.hfact.gui.ddisp.startRyVsDx(1);
     set(hObject,'Checked','on');
 end
+
+
+% --- Executes on button press in vamping.
+function vamping_Callback(hObject, eventdata, handles)
