@@ -1,5 +1,5 @@
 function  colorRunButton(me,bs)
-if isempty(me.handles)
+if isempty(me.handles) || me.shuttingDown
     me.log.info(dbstack,sprintf('Run Hold Button is %s',bs));
     return;
 end

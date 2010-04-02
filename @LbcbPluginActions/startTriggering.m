@@ -1,10 +1,10 @@
 
 function startTriggering(obj, event,me) %#ok<INUSL>
 a = me.startTriggeringAction.getState();
-if rem(me.csimcorTimerCnt,100) == 0
-    me.log.debug(dbstack,'Connect SimCor Timer Executing')
+if rem(me.ctriggerTimerCnt,10) == 0
+    me.log.debug(dbstack,'Trigger Timer Executing')
 end
-me.csimcorTimerCnt = me.csimcorTimerCnt + 1;
+me.ctriggerTimerCnt = me.ctriggerTimerCnt + 1;
 
 switch a
     case 'START TRIGGERING'
@@ -12,7 +12,6 @@ switch a
         if done
             if me.hfact.ssBrdcst.isReady()
                 me.log.info(dbstack,'Triggering server has started');
-                me.hfact.tgtEx.targetSource.setState('UI SIMCOR');
             end
             me.startTriggeringAction.setState('DONE');
         end
@@ -21,7 +20,6 @@ switch a
         if done
             if me.hfact.ssBrdcst.isReady()
                 me.log.info(dbstack,'Triggering server has stopped');
-                me.hfact.tgtEx.targetSource.setState('NONE');
             end
             me.startTriggeringAction.setState('DONE');
         end
@@ -30,6 +28,9 @@ switch a
     otherwise
         me.log.error(dbstack,sprintf('%s action not recognized',action));
 end
-me.hfact.gui.updateGui();
+if me.shuttingDown == false
+    me.hfact.gui.updateGui();
+end
+
 end
 

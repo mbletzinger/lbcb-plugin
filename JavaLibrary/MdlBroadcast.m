@@ -95,8 +95,10 @@ classdef MdlBroadcast < handle
         % Start to shut down the broadcast service
         function shutdown(me)
             if isempty(me.simcorTcp)
+                me.log.debug(dbstack,'skipping shutdown');
                 return;
             end
+            me.log.debug(dbstack,'starting shutdown');
             me.simcorTcp.shutdown();
             me.action.setState('STOP LISTENER');
             me.state.setState('BUSY');
@@ -108,6 +110,7 @@ classdef MdlBroadcast < handle
             tf = me.simcorTcp.getTf();
             timeout = ncfg.msgTimeout;
             jmsg = tf.createBroadcastTransaction(stepNum.step, stepNum.subStep, stepNum.correctionStep, timeout);
+%            me.log.debug(dbstack,char(jmsg.toString()));
             me.simcorTcp.startTransaction(jmsg);
             me.dbgWin.addMsg(char(jmsg.toString));
             me.action.setState('BROADCASTING');
@@ -128,9 +131,7 @@ classdef MdlBroadcast < handle
                 case 'ERRORS_EXIST'
                     me.state.setState('ERRORS EXIST');
                     me.action.setState('NONE');
-                    me.log.error(dbstack(),char(me.simcorTcp.getTransaction().getError().getText()));
                     me.simcorTcp.isReady();
-                    me.simcorTcp.shutdown();
                 case 'READY'
                     me.state.setState('READY');
                     me.action.setState('NONE');
@@ -157,7 +158,6 @@ classdef MdlBroadcast < handle
                     me.simcorTcp.isReady();
                     me.state.setState('ERRORS EXIST');
                     me.action.setState('NONE');
-                    me.log.error(dbstack(),char(me.simcorTcp.getTransaction().getError().getText()));
                     me.simcorTcp.shutdown();
                 case {'TRANSACTION_DONE' 'BROADCAST_CLOSE_COMMAND' 'CLOSE_TRIGGER_CONNECTIONS' 'STOP_LISTENER'}
                 otherwise
@@ -167,10 +167,11 @@ classdef MdlBroadcast < handle
         function result = errorsExist(me,state)
             jerror = me.simcorTcp.getTransaction().getError();
             if jerror.errorsExist()
-                me.log.error(dbstack,char(jerror.getText()));
                 if jerror.isClientsAddedMsg()
+                    me.log.info(dbstack,char(jerror.getText()));
                     result = state;
                 else
+                    me.log.error(dbstack,char(jerror.getText()));
                     result = 'ERRORS_EXIST';
                 end
             else

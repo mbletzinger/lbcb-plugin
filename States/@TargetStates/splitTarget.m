@@ -4,6 +4,7 @@ steps.steps = { me.dat.curTarget };
 sn = me.dat.curTarget.stepNum.step;
 if me.cdp.doStepSplitting == false
     me.setCorrectionFlag(me.dat.curTarget);
+    me.setTriggeringFlag(me.dat.curTarget);
     return;
 end
 stpSize = ones(12,1);  % hack around divide by zero problem

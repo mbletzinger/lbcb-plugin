@@ -152,21 +152,22 @@ classdef HandleFactory <  handle
                 me.simStates{c}.sdf = me.sdf;
                 me.simStates{c}.ddisp = me.ddisp;
             end
-            me.simStates{1}.fakeGcp = me.fakeGcp;
-            me.simStates{1}.peOm = me.peOm;
-            me.simStates{1}.gcpOm = me.gcpOm;
-            me.simStates{1}.pResp = me.pResp;
-            me.simStates{1}.arch = me.arch;
+            me.stpEx.fakeGcp = me.fakeGcp;
+            me.stpEx.peOm = me.peOm;
+            me.stpEx.gcpOm = me.gcpOm;
+            me.stpEx.pResp = me.pResp;
+            me.stpEx.arch = me.arch;
+            me.stpEx.brdcstRsp = me.brdcstRsp;
             
-            me.simStates{2}.stpEx = me.simStates{1};
-            me.simStates{2}.prcsTgt = me.simStates{3};
-            me.simStates{2}.inF = me.inF;
-            me.simStates{2}.tgtRsp = me.tgtRsp;
-            me.simStates{2}.ocSimCor = me.ocSimCor;
+            me.tgtEx.stpEx = me.stpEx;
+            me.tgtEx.prcsTgt = me.simStates{3};
+            me.tgtEx.inF = me.inF;
+            me.tgtEx.tgtRsp = me.tgtRsp;
+            me.tgtEx.ocSimCor = me.ocSimCor;
             me.simStates{3}.lc = lc;
             
-            dbgWin.stpEx = me.simStates{1}; 
-            dbgWin.tgtEx = me.simStates{2};
+            dbgWin.stpEx = me.stpEx; 
+            dbgWin.tgtEx = me.tgtEx;
             dbgWin.prcsTgt = me.simStates{3};          
 
             for c =1:length(me.simCorStates)

@@ -6,7 +6,8 @@ classdef LbcbPluginActions < handle
         ctriggerTimer = [];
         simTimerCnt = [];
         comTimerCnt = [];
-        csimcorTimerCnt = [];
+        csimcorTimerCnt;
+        ctriggerTimerCnt;
         hfact = [];
         currentSimExecute = StateEnum({...
             'RUN SIMULATION',...
@@ -33,6 +34,7 @@ classdef LbcbPluginActions < handle
         prevExecute
         ocSimCor
         ocOm
+        shuttingDown
         
     end
     methods
@@ -62,6 +64,7 @@ classdef LbcbPluginActions < handle
             me.simTimerCnt = 0;
             me.comTimerCnt = 0;
             me.csimcorTimerCnt = 0;
+            me.ctriggerTimerCnt = 0;
             me.simTimer = timer('Period',0.05, 'TasksToExecute',1000000,'ExecutionMode','fixedSpacing','Name','SimulationTimer');
             me.simTimer.TimerFcn = { 'LbcbPluginActions.executeSim', me };
             me.comTimer = timer('Period',0.05, 'TasksToExecute',1000000,'ExecutionMode','fixedSpacing','Name','ConnectOmTimer');
@@ -74,6 +77,7 @@ classdef LbcbPluginActions < handle
             me.connectSimCorAction.setState('DONE');
             me.connectOmAction.setState('DONE');
             me.startStep = 1;
+            me.shuttingDown = false;
         end
         processRunHold(me,on)
         processConnectOm(me,on)
