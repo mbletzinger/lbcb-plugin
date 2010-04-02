@@ -3,7 +3,7 @@ if me.stpEx.isDone() == false
     return;
 end
 if me.stpEx.hasErrors()
-    me.ocOm.connectionError();
+%    me.ocOm.connectionError();
     me.statusErrored();
     me.currentAction.setState('DONE');
     return;

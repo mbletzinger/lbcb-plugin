@@ -1,7 +1,7 @@
 
 function connectSimCor(obj, event,me) %#ok<INUSL>
 a = me.connectSimCorAction.getState();
-if rem(me.csimcorTimerCnt,100) == 0
+if rem(me.csimcorTimerCnt,10) == 0
     me.log.debug(dbstack,'Connect SimCor Timer Executing')
 end
 me.csimcorTimerCnt = me.csimcorTimerCnt + 1;
@@ -30,6 +30,9 @@ switch a
     otherwise
         me.log.error(dbstack,sprintf('%s action not recognized',action));
 end
-me.hfact.gui.updateGui();
+if me.shuttingDown == false
+    me.hfact.gui.updateGui();
+end
+
 end
 

@@ -1,5 +1,5 @@
 function  colorButton(me,buttonName,bs)
-if isempty(me.handles)
+if isempty(me.handles) || me.shuttingDown
     me.log.info(dbstack,sprintf('Button=%s is %s',buttonName,bs));
     return;
 end

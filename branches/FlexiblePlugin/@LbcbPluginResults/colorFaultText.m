@@ -1,5 +1,5 @@
 function colorFaultText(me,hndl,fault,isLbcb1,f)
-if isempty(hndl)
+if isempty(hndl) || me.shuttingDown
     if fault
         me.log.info(dbstack,sprintf('%s dof %s is at fault',...
             me.lLabel{1 + (isLbcb1 == 0)},me.dofLabel{f}));

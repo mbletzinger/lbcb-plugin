@@ -1,5 +1,5 @@
 function addMessage(me,msg)
-if isempty(me.msgHandle)
+if isempty(me.msgHandle) || me.shuttingDown
     me.log.info(dbstack,sprintf('Msg=%s',msg));
     return;
 end

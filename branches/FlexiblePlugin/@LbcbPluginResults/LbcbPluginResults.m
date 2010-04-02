@@ -20,6 +20,7 @@ classdef LbcbPluginResults < handle
         stepHandles = cell(2,1);
         msgHandle = [];
         cmdTableHandle = [];
+        shuttingDown;
         
         log = Logger('LbcbPluginResults');
         buttonStatus = StateEnum({...
@@ -42,6 +43,7 @@ classdef LbcbPluginResults < handle
         function me  = LbcbPluginResults(handles,hfact)
             me.handles = handles;
             me.hfact = hfact;
+            me.shuttingDown = false;
         end
         initialize(me)
         updateLimits(me,cl,il)

@@ -118,7 +118,7 @@ classdef StepStates < SimStates
                     me.gui.ddisp.update(me.dat.curStepData);
                     if me.gettingInitialPosition
                         me.currentAction.setState('DONE');
-                    elseif needsTriggering()
+                    elseif me.needsTriggering()
                         me.brdcstRsp.start();
                         me.currentAction.setState('BROADCAST TRIGGER');
                     else
@@ -128,6 +128,13 @@ classdef StepStates < SimStates
                 case 'BROADCAST TRIGGER'
                     bdone = me.brdcstRsp.isDone();
                     if bdone
+                            if me.brdcstRsp.hasErrors()
+                                me.gui.colorRunButton('BROKEN'); % Pause the simulation
+                                me.statusErrored();
+                                me.currentAction.setState('DONE');
+                                done = 1;
+                                return;
+                            end
                         me.currentAction.setState('NEXT STEP');
                     end
                 case 'DONE'

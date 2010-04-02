@@ -30,6 +30,8 @@ switch a
     otherwise
         me.log.error(dbstack,sprintf('%s action not recognized',action));
 end
-me.hfact.gui.updateGui();
+if me.shuttingDown == false
+    me.hfact.gui.updateGui();
+end
 end
 

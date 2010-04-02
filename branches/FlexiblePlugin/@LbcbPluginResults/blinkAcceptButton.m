@@ -1,5 +1,5 @@
 function blinkAcceptButton(me,on)
-if isempty(me.handles)
+if isempty(me.handles) || me.shuttingDown
     me.log.info(dbstack,sprintf('Blink=%d',on));
     return;
 end

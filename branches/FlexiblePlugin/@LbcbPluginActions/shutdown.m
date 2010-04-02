@@ -1,4 +1,7 @@
 function shutdown(me)
+me.shuttingDown = true;
+me.hfact.gui.shuttingDown = true;
+Logger.setMsgHandle([]);
 me.processRunHold(false)
 me.processConnectOm(false);
 me.processConnectSimCor(false);
@@ -29,4 +32,5 @@ while someOn
     if rem(cnt,100) == 0
         me.log.debug(dbstack, sprintf('Waiting for %s to shut down',link));
     end
+    cnt = cnt + 1;
 end
