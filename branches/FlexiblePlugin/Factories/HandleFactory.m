@@ -21,7 +21,7 @@ classdef HandleFactory <  handle
         omStates = cell(5,1);
         simStates = cell(3,1);
         simCorStates = cell(2,1);
-        brdcstStates = cell(2,1);
+        brdcstStates = cell(3,1);
         
         %Display update instance
         gui = [];
@@ -68,6 +68,7 @@ classdef HandleFactory <  handle
         % Broadcast Trigger States
         ssBrdcst
         brdcstRsp
+        vmpChk
         
     end
     methods
@@ -94,6 +95,7 @@ classdef HandleFactory <  handle
             me.mdlBroadcast = MdlBroadcast(me.cfg);
             me.brdcstStates{1} = StartStopBroadcaster;
             me.brdcstStates{2} = BroadcastResponses;
+            me.brdcstStates{3} = VampCheck;
             
             lc = LimitChecks;
             me.il = IncrementLimits(me.cfg);
@@ -240,6 +242,9 @@ classdef HandleFactory <  handle
         end
         function c = get.brdcstRsp(me)
             c= me.brdcstStates{2};
+        end
+        function c = get.vmpChk(me)
+            c= me.brdcstStates{3};
         end
    end
 end

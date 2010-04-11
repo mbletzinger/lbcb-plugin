@@ -29,7 +29,7 @@ function varargout = NetworkConfig(varargin)
 
 % Edit the above text to modify the response to help NetworkConfig
 
-% Last Modified by GUIDE v2.5 24-Mar-2010 07:01:32
+% Last Modified by GUIDE v2.5 02-Apr-2010 08:42:21
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -145,3 +145,8 @@ handles.dao.executeMsgTimeout = sscanf(get(hObject,'String'),'%d');
 
 function systemDescription_Callback(hObject, eventdata, handles)
 handles.dao.systemDescription = get(hObject,'String');
+
+
+
+function vampInterval_Callback(hObject, eventdata, handles)
+handles.dao.vampInterval = sscanf(get(hObject,'String'),'%d');

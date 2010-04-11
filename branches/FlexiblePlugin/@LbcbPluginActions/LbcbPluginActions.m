@@ -4,10 +4,12 @@ classdef LbcbPluginActions < handle
         comTimer = [];
         csimcorTimer = [];
         ctriggerTimer = [];
+        vampTimer = [];
         simTimerCnt = [];
         comTimerCnt = [];
         csimcorTimerCnt;
         ctriggerTimerCnt;
+        vampTimerCnt;
         hfact = [];
         currentSimExecute = StateEnum({...
             'RUN SIMULATION',...
@@ -65,6 +67,7 @@ classdef LbcbPluginActions < handle
             me.comTimerCnt = 0;
             me.csimcorTimerCnt = 0;
             me.ctriggerTimerCnt = 0;
+            me.vampTimerCnt = 0;
             me.simTimer = timer('Period',0.05, 'TasksToExecute',1000000,'ExecutionMode','fixedSpacing','Name','SimulationTimer');
             me.simTimer.TimerFcn = { 'LbcbPluginActions.executeSim', me };
             me.comTimer = timer('Period',0.05, 'TasksToExecute',1000000,'ExecutionMode','fixedSpacing','Name','ConnectOmTimer');
@@ -73,6 +76,8 @@ classdef LbcbPluginActions < handle
             me.csimcorTimer.TimerFcn = { 'LbcbPluginActions.connectSimCor', me };
             me.ctriggerTimer = timer('Period',0.05, 'TasksToExecute',1000000,'ExecutionMode','fixedSpacing','Name','StartTriggerTimer');
             me.ctriggerTimer.TimerFcn = { 'LbcbPluginActions.startTriggering', me };
+            me.vampTimer = timer('Period',0.05, 'TasksToExecute',1000000,'ExecutionMode','fixedSpacing','Name','StartTriggerTimer');
+            me.vampTimer.TimerFcn = { 'LbcbPluginActions.vampCheck', me };
             me.currentSimExecute.setState('DONE');
             me.connectSimCorAction.setState('DONE');
             me.connectOmAction.setState('DONE');
@@ -104,5 +109,6 @@ classdef LbcbPluginActions < handle
         connectOm(obj, event, me)
         connectSimCor(obj, event, me)
         startTriggering(obj, event, me)
+        vampCheck(obj, event, me)
     end
 end
