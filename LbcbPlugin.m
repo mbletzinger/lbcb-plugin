@@ -1220,3 +1220,5 @@ end
 
 % --- Executes on button press in vamping.
 function vamping_Callback(hObject, eventdata, handles)
+val = get(hObject,'Value');
+handles.actions.processVamping(val);

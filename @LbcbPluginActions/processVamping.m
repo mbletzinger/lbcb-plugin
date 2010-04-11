@@ -1,11 +1,11 @@
 function processVamping(me,on)
 if on
-    me.vampTimer = timer('Period',0.05, 'TasksToExecute',1000000,'ExecutionMode','fixedSpacing','Name','SimulationTimer');
-    me.vampTimer.TimerFcn = { 'LbcbPluginActions.executeSim', me };
-    me.hfact.gui.colorButton('VAMPING','ON');
+    me.hfact.vmpChk.start(0);
 else
-    me.hfact.gui.colorButton('VAMPING','OFF');
-    stop(me.vamTimer);
+    me.hfact.vmpChk.start(1);
 end
-me.hfact.gui.colorVampingButton(on);
+isOn = get(me.vampTimer,'Running');
+if strcmp(isOn,'off')
+    start(me.vampTimer);
+end
 end

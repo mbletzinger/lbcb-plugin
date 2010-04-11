@@ -20,6 +20,7 @@ classdef NetworkConfigDao < handle
         executeMsgTimeout
         address
         systemDescription
+        vampInterval
     end
     properties
         dt;
@@ -81,6 +82,12 @@ classdef NetworkConfigDao < handle
         end
         function set.systemDescription(me,value)
             me.dt.setString('network.system.description',value);
+        end
+        function result = get.vampInterval(me)
+            result = me.dt.getInt('network.vampInterval',30);
+        end
+        function set.vampInterval(me,value)
+            me.dt.setInt('network.vampInterval',value);
         end
     end
 end

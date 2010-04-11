@@ -29,11 +29,15 @@ classdef MdlBroadcast < handle
             'START LISTENER', ...
             'STOP LISTENER', ...
             'BROADCASTING',...
+            'STOP VAMP',...
+            'CHECK VAMP',...
             'NONE'...
             });
         prevAction;
         cfg
         dbgWin
+        simcorVamp
+        vampErrorFound
     end
     methods
         function me = MdlBroadcast(cfg)
@@ -41,6 +45,7 @@ classdef MdlBroadcast < handle
             me.state.setState('READY');
             me.prevState = StateEnum(me.state.states);
             me.prevAction = StateEnum(me.action.states);
+            me.vampErrorFound = false;
         end
         
         % Continue executing the current action
@@ -58,6 +63,25 @@ classdef MdlBroadcast < handle
                     me.broadcastAction();
                 case 'NONE'
                     done = 1;
+                case 'STOP VAMP'
+                    vdone = me.simcorVamp.stopVamp();
+                    if vdone
+                        me.state.setState('READY');
+                        me.action.setState('NONE');
+                    end
+                case 'CHECK VAMP'
+                    jerror = me.simcorVamp.getError();
+                    if jerror.errorsExist() && me.vampErrorFound == false;
+                        if jerror.isClientsAddedMsg()
+                            me.log.info(dbstack,char(jerror.getText()));
+                        else
+                            me.log.error(dbstack,char(jerror.getText()));
+                        end
+                        me.vampErrorFound = true;
+                    elseif jerror.errorsExist() == false
+                        me.vampErrorFound = false;
+                    end
+                    
                 otherwise
                     me.log.error(dbstack,sprintf('State %s not recognized',s));
             end
@@ -110,11 +134,24 @@ classdef MdlBroadcast < handle
             tf = me.simcorTcp.getTf();
             timeout = ncfg.msgTimeout;
             jmsg = tf.createBroadcastTransaction(stepNum.step, stepNum.subStep, stepNum.correctionStep, timeout);
-%            me.log.debug(dbstack,char(jmsg.toString()));
+            %            me.log.debug(dbstack,char(jmsg.toString()));
             me.simcorTcp.startTransaction(jmsg);
             me.dbgWin.addMsg(char(jmsg.toString));
             me.action.setState('BROADCASTING');
             me.state.setState('BUSY');
+        end
+        function startStopVamp(me,stopIt)
+            ncfg = NetworkConfigDao(me.cfg);
+            me.state.setState('BUSY');
+            if(stopIt)
+                me.simcorVamp.stopVamp();
+                me.action.setState('STOP VAMP');
+            else
+                me.simcorVamp = org.nees.uiuc.simcor.TriggerBroadcastVamp(...
+                me.simcorTcp);
+                me.simcorVamp.startVamp(ncfg.vampInterval,ncfg.msgTimeout);
+                me.action.setState('CHECK VAMP');
+            end
         end
     end
     
@@ -149,7 +186,7 @@ classdef MdlBroadcast < handle
             ts.setState(char(me.simcorTcp.isReady()));
             csS = ts.getState();
             csS = me.errorsExist(csS);
-            me.log.debug(dbstack,sprintf('Transaction state is %s',csS));
+%            me.log.debug(dbstack,sprintf('Transaction state is %s',csS));
             switch csS
                 case {'READY' }
                     me.state.setState('READY');
@@ -177,6 +214,6 @@ classdef MdlBroadcast < handle
             else
                 result = state;
             end
-        end     
+        end
     end
 end

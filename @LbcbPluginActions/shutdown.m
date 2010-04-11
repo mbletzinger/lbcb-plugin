@@ -5,6 +5,7 @@ Logger.setMsgHandle([]);
 me.processRunHold(false)
 me.processConnectOm(false);
 me.processConnectSimCor(false);
+me.processVamping(false);
 me.processTriggering(false);
 cnt = 0;
 someOn = false;
@@ -28,6 +29,11 @@ while someOn
     if strcmp(isOn,'on')
         someOn = true;
         link = 'Trigger Server';
+    end
+    isOn = get(me.vampTimer,'Running');
+    if strcmp(isOn,'on')
+        someOn = true;
+        link = 'Vamping';
     end
     if rem(cnt,100) == 0
         me.log.debug(dbstack, sprintf('Waiting for %s to shut down',link));
