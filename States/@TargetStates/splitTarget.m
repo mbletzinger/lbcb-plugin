@@ -7,9 +7,14 @@ if me.cdp.doStepSplitting == false
     me.setTriggeringFlag(me.dat.curTarget);
     return;
 end
-stpSize = ones(12,1);  % hack around divide by zero problem
-stpSize(1:6) = me.cdp.getSubstepInc(1).disp;
-stpSize(7:12) = me.cdp.getSubstepInc(0).disp;
+if me.cdp.numLbcbs() > 1
+    stpSize = ones(12,1);  % hack around divide by zero problem
+    stpSize(1:6) = me.cdp.getSubstepInc(1).disp;
+    stpSize(7:12) = me.cdp.getSubstepInc(0).disp;
+else
+    stpSize = ones(6,1);  % hack around divide by zero problem
+    stpSize(1:6) = me.cdp.getSubstepInc(1).disp;
+end
 [ initialDisp initialDispDofs initialForce initialForceDofs ] = ...
     me.dat.prevTarget.cmdData(); %#ok<NASGU,ASGLU>
 [ finalDisp finalDispDofs finalForce finalForceDofs ] = ...

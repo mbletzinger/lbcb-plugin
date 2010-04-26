@@ -73,7 +73,7 @@ classdef SimSharedData < handle
                     if d > 6
                         sd = d - 6;
                     end
-                    labels{idx} = dofO.label(sd, d < 6); %#ok<AGROW>
+                    labels{idx} = dofO.label(sd, d <= 6); %#ok<AGROW>
                     idx = idx + 1;
                 end
             end
@@ -85,7 +85,7 @@ classdef SimSharedData < handle
                     if d > 6
                         sd = d - 6;
                     end
-                    labels{idx} = dofO.label(sd + 6, d < 6); %#ok<AGROW>
+                    labels{idx} = dofO.label(sd + 6, d <= 6); %#ok<AGROW>
                     idx = idx + 1;
                     idxF = idxF + 1;
                 end

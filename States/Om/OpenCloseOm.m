@@ -82,12 +82,12 @@ classdef OpenCloseOm < OmState
             address = me.cdp.getAddress();
             if isempty(address)
                 me.log.error(dbstack,'SimCor Address is not set in the OM Configuration');
-                me.connectionStatus.setState('ERRORED');
-                me.omActions.setState('DONE');
+                me.connectionError();
                 return;
             end
             me.connectionStatus.setState('CONNECTED');
             me.omActions.setState('DONE');
+            me.gui.colorButton('CONNECT OM','ON');
         end
         function disconnect(me)
             me.connectionStatus.setState('DISCONNECTED');
