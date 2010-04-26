@@ -47,5 +47,8 @@ classdef ResponseMessage < handle
                 contents = me.jresponse.getContent();
             end
         end
+        function str = toString(me)
+            str = char(me.jresponse.toString());
+        end
     end
 end
