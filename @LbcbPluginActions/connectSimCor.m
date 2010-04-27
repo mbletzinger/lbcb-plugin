@@ -14,6 +14,7 @@ switch a
                 me.log.info(dbstack,'UI-SimCor is connected');
                 me.hfact.tgtEx.targetSource.setState('UI SIMCOR');
             end
+            me.alreadyStarted = false;
             me.connectSimCorAction.setState('DONE');
         end
     case 'CLOSE SIMCOR CONNECTION'

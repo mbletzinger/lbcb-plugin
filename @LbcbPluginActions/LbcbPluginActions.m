@@ -32,7 +32,7 @@ classdef LbcbPluginActions < handle
             'DONE'...
             });
         log = Logger('LbcbPluginActions');
-        startStep
+        alreadyStarted
         prevExecute
         ocSimCor
         ocOm
@@ -81,7 +81,7 @@ classdef LbcbPluginActions < handle
             me.currentSimExecute.setState('DONE');
             me.connectSimCorAction.setState('DONE');
             me.connectOmAction.setState('DONE');
-            me.startStep = 1;
+            me.alreadyStarted = false;
             me.shuttingDown = false;
         end
         processRunHold(me,on)

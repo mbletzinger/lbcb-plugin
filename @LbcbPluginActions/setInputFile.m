@@ -8,6 +8,7 @@ end
 if done
     me.hfact.tgtEx.inF = iF;
     me.hfact.tgtEx.targetSource.setState('INPUT FILE');
+    me.alreadyStarted = false;
 else
     me.hfact.tgtEx.targetSource.setState('NONE');
     
