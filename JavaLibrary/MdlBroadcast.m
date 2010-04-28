@@ -206,6 +206,7 @@ classdef MdlBroadcast < handle
             if jerror.errorsExist()
                 if jerror.isClientsAddedMsg()
                     me.log.info(dbstack,char(jerror.getText()));
+                    me.simcorTcp.getTransaction().clearError();
                     result = state;
                 else
                     me.log.error(dbstack,char(jerror.getText()));
