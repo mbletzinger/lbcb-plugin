@@ -22,7 +22,7 @@ function varargout = LbcbPlugin(varargin)
 
 % Edit the above text to modify the response to help LbcbPlugin
 
-% Last Modified by GUIDE v2.5 28-Apr-2010 05:38:38
+% Last Modified by GUIDE v2.5 28-Apr-2010 05:46:28
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -1069,21 +1069,6 @@ function editCommand_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 handles.actions.processEditTarget();
 
-% --------------------------------------------------------------------
-function Archive_Callback(hObject, eventdata, handles)
-% hObject    handle to Archive (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-if strcmp(get(hObject, 'Checked'),'on')
-    handles.actions.processArchiveOnOff(0);
-    set(hObject,'Checked','off');
-else 
-    handles.actions.processArchiveOnOff(1);
-    set(hObject,'Checked','on');
-end
-handles.actions.processArchiveOnOff(get(hObject,'Checked'));
-
-
 
 function startStep_Callback(hObject, eventdata, handles)
 % hObject    handle to startStep (see GCBO)
@@ -1222,3 +1207,15 @@ end
 function vamping_Callback(hObject, eventdata, handles)
 val = get(hObject,'Value');
 handles.actions.processVamping(val);
+
+
+% --------------------------------------------------------------------
+function ArchiveOnOff_Callback(hObject, eventdata, handles)
+if strcmp(get(hObject, 'Checked'),'on')
+    handles.actions.processArchiveOnOff(0);
+    set(hObject,'Checked','off');
+else 
+    handles.actions.processArchiveOnOff(1);
+    set(hObject,'Checked','on');
+end
+handles.actions.processArchiveOnOff(get(hObject,'Checked'));
