@@ -58,6 +58,13 @@ classdef StepConfigActions < handle
             if idx > 0
                set(me.handles.ddCorrectFunction,'Value',idx);
             end
+            set(me.handles.substepTriggering,'String',sprintf('%d',me.scfg.triggerEverySubstep));
+            yes = 0;
+            if me.scfg.triggerEverySubstep > 0
+                
+                yes = 1;
+            end
+            set(me.handles.doSubstepTriggering,'Value',yes);
 
         end
         function setDoStepSplitting(me,value)
