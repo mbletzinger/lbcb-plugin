@@ -7,5 +7,8 @@ classdef UiSimCorState < States
         sdf = [];
     end
     methods
+        function me = UiSimCorState()
+            me = me@States();
+        end
     end
 end

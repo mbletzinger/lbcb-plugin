@@ -1,9 +1,7 @@
 function done = isDone(me)
 done = 0;
 a = me.currentAction.getState();
-if me.currentAction.idx ~= me.prevAction
-    me.log.debug(dbstack,sprintf('Executing action %s',a));
-    me.prevAction = me.currentAction.idx;
+if me.stateChanged()
     me.ddisp.dbgWin.setTargetState(me.currentAction.idx);
 end
 switch a

@@ -1,22 +1,22 @@
 classdef VampCheck < BroadcasterState
     properties
-        vampActions = StateEnum({...
-            'CHECKING',...
-            'STOPPING',...
-            });
         closeIt = 0;
         log = Logger('VampCheck');
-        prevAction
-          vampStatus = StateEnum({'VAMPING','STOPPED'});
-  end
+        vampStatus = StateEnum({'VAMPING','STOPPED'});
+    end
     methods
         function me = VampCheck()
-            me.vampActions.setState('STOPPING');
+            me = me@BroadcasterState();
+            me.currentAction = StateEnum({...
+                'CHECKING',...
+                'STOPPING',...
+                });
+            me.currentAction.setState('STOPPING');
             me.vampStatus.setState('STOPPED');
         end
         function aborted = start(me, closeIt)
             me.closeIt = closeIt;
-                aborted = false;
+            aborted = false;
             if closeIt && me.vampStatus.isState('STOPPED')
                 me.log.error(dbstack,'Vamp Check already stopped');
                 aborted = true;
@@ -30,7 +30,7 @@ classdef VampCheck < BroadcasterState
             if me.closeIt
                 if me.vampStatus.isState('VAMPING')  % There are no errors
                     me.mdlBroadcast.startStopVamp(1);
-                    me.vampActions.setState('STOPPING');
+                    me.currentAction.setState('STOPPING');
                 end
             else
                 me.mdlBroadcast.startStopVamp(0);

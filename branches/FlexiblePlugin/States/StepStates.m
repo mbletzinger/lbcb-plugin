@@ -7,22 +7,21 @@ classdef StepStates < SimStates
         arch = [];
         brdcstRsp = [];
         gettingInitialPosition;
-        currentAction = StateEnum({...
-            'NEXT STEP',...
-            'OM PROPOSE EXECUTE',...
-            'OM GET CONTROL POINTS',...
-            'PROCESS OM RESPONSE',...
-            'BROADCAST TRIGGER',...
-            'DONE'
-            });
-        prevAction
         doTriggering
         log = Logger('StepStates');
     end
     methods
         function me = StepStates()
-            me.prevAction = 0;
+            me = me@SimStates();
             me.doTriggering = false;
+            me.currentAction = StateEnum({...
+                'NEXT STEP',...
+                'OM PROPOSE EXECUTE',...
+                'OM GET CONTROL POINTS',...
+                'PROCESS OM RESPONSE',...
+                'BROADCAST TRIGGER',...
+                'DONE'
+                });
         end
         function start(me,steps)
             me.nxtStep.steps = steps;
@@ -48,12 +47,10 @@ classdef StepStates < SimStates
         function done = isDone(me)
             done = 0;
             a = me.currentAction.getState();
-            if me.currentAction.idx ~= me.prevAction
-                me.log.debug(dbstack,sprintf('Executing action %s',a));
-                me.prevAction = me.currentAction.idx;
+            if me.stateChanged()
                 me.ddisp.dbgWin.setStepState(me.currentAction.idx);
             end
-            switch me.currentAction.getState()
+            switch a
                 case'NEXT STEP'
                     odone = me.nxtStep.isDone();
                     if odone % Next target is ready
@@ -128,13 +125,13 @@ classdef StepStates < SimStates
                 case 'BROADCAST TRIGGER'
                     bdone = me.brdcstRsp.isDone();
                     if bdone
-                            if me.brdcstRsp.hasErrors()
-                                me.gui.colorRunButton('BROKEN'); % Pause the simulation
-                                me.statusErrored();
-                                me.currentAction.setState('DONE');
-                                done = 1;
-                                return;
-                            end
+                        if me.brdcstRsp.hasErrors()
+                            me.gui.colorRunButton('BROKEN'); % Pause the simulation
+                            me.statusErrored();
+                            me.currentAction.setState('DONE');
+                            done = 1;
+                            return;
+                        end
                         me.currentAction.setState('NEXT STEP');
                     end
                 case 'DONE'

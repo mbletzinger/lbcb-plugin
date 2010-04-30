@@ -1,22 +1,22 @@
 classdef StartStopBroadcaster < BroadcasterState
     properties
-        simCorActions = StateEnum({...
-            'STARTING',...
-            'STOPPING',...
-            'DONE',...
-            });
-         connectionStatus = StateEnum({'CONNECTED','DISCONNECTED','ERRORED'});
+        connectionStatus = StateEnum({'CONNECTED','DISCONNECTED','ERRORED'});
         closeIt = 0;
         log = Logger('StartStopBroadcastTrigger');
-        prevAction
-   end
+    end
     methods
         function me = StartStopBroadcaster()
+            me = me@BroadcasterState();
             me.connectionStatus.setState('DISCONNECTED');
+            me.currentAction = StateEnum({...
+                'STARTING',...
+                'STOPPING',...
+                'DONE',...
+                });
         end
         function aborted = start(me, closeIt)
             me.closeIt = closeIt;
-                aborted = false;
+            aborted = false;
             if closeIt && me.connectionStatus.isState('DISCONNECTED')
                 me.log.error(dbstack,'Trigger Broadcaster already stopped');
                 aborted = true;
@@ -30,32 +30,33 @@ classdef StartStopBroadcaster < BroadcasterState
             if me.closeIt
                 if me.connectionStatus.isState('CONNECTED')  % There are no errors
                     me.mdlBroadcast.shutdown();
-                    me.simCorActions.setState('STOPPING');
+                    me.currentAction.setState('STOPPING');
                 end
             else
                 me.mdlBroadcast.startup();
-                me.simCorActions.setState('STARTING');
+                me.currentAction.setState('STARTING');
                 me.connectionStatus.setState('CONNECTED');
             end
         end
         function done = isDone(me)
             done = 0;
+            me.stateChanged()
             mlDone = me.mdlBroadcast.isDone();
             if mlDone == 0
                 return;
             end
-
+            
             if me.mdlBroadcast.state.isState('ERRORS EXIST')
                 done = 1;
                 me.connectionError();
                 return;
             end
-            a = me.simCorActions.getState();
-            if me.simCorActions.idx ~= me.prevAction
+            a = me.currentAction.getState();
+            if me.currentAction.idx ~= me.prevAction
                 me.log.debug(dbstack,sprintf('Executing action %s',a));
-                me.prevAction = me.simCorActions.idx;
+                me.prevAction = me.currentAction.idx;
             end
-
+            
             switch a
                 case 'STARTING'
                     me.startBroadcaster();
@@ -71,23 +72,24 @@ classdef StartStopBroadcaster < BroadcasterState
         end
         function connectionError(me)
             me.connectionStatus.setState('ERRORED');
+            me.statusErrored();
             me.gui.colorRunButton('BROKEN'); % Pause the simulation
             me.gui.colorButton('TRIGGER','BROKEN');
-                        me.simCorActions.setState('DONE');            
+            me.currentAction.setState('DONE');
             me.log.error(dbstack,...
-                sprintf('Trigger Broadcaster has been shut down due to errors')); 
+                sprintf('Trigger Broadcaster has been shut down due to errors'));
         end
     end
     methods (Access=private)
         function startBroadcaster(me)
             me.gui.colorButton('TRIGGER','ON');
             me.connectionStatus.setState('CONNECTED');
-            me.simCorActions.setState('DONE');
+            me.currentAction.setState('DONE');
         end
         function stopBroadcaster(me)
             me.connectionStatus.setState('DISCONNECTED');
             me.gui.colorButton('TRIGGER','OFF');
-            me.simCorActions.setState('DONE');            
+            me.currentAction.setState('DONE');
         end
     end
 end

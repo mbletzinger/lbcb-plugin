@@ -7,8 +7,12 @@ classdef SimStates < States
         nxtStep = [];
         sdf = [];
         ddisp = [];
-
+        
     end
     methods
+        function me = SimStates()
+            me = me@States();
+        end
+        
     end
 end

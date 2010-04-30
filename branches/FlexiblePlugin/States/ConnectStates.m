@@ -1,16 +1,19 @@
 classdef ConnectStates < SimStates
     properties
-        currentAction = StateEnum({...
-            'OPEN OM CONNECTION',...
-            'CLOSE OM CONNECTION',...
-            'OPEN SIMCOR CONNECTION',...
-            'CLOSE SIMCOR CONNECTION'...
-            });
         prevAction
         ocSimCor
         log = Logger('ConnectStates');
     end
     methods
+        function me = ConnectStates()
+            me = me@SimStates();
+            me.currentAction = StateEnum({...
+                'OPEN OM CONNECTION',...
+                'CLOSE OM CONNECTION',...
+                'OPEN SIMCOR CONNECTION',...
+                'CLOSE SIMCOR CONNECTION'...
+                });
+        end
         function start(me,action)
             switch action
                 case 'OPEN OM CONNECTION'
@@ -29,10 +32,7 @@ classdef ConnectStates < SimStates
         end
         function done = isDone(me)
             a = me.currentAction.getState();
-            if me.currentAction.idx ~= me.prevAction
-                me.log.debug(dbstack,sprintf('Executing action %s',a));
-                me.prevAction = me.currentAction.idx;
-            end
+            me.stateChanged()
             switch a
                 case 'OPEN OM CONNECTION'
                     done = me.ocOm.isDone();

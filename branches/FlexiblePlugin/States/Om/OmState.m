@@ -9,5 +9,9 @@ classdef OmState < States
         sdf = [];
     end
     methods
+        function me = OmState()
+            me = me@States();
+        end
+        
     end
 end
