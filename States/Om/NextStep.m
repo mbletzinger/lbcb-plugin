@@ -18,6 +18,9 @@ classdef NextStep < OmState
         
     end
     methods
+        function me = NextStep()
+            me = me@OmState();
+        end
         function start(me)
             me.stepsCompleted = false;
         end

@@ -6,7 +6,7 @@
 %  curStep - The current LbcbStep
 %  nextStep - The next LbcbStep as calculated by this class
 %
-% $LastChangedDate: 2009-06-01 15:30:46 -0500 (Mon, 01 Jun 2009) $ 
+% $LastChangedDate: 2009-06-01 15:30:46 -0500 (Mon, 01 Jun 2009) $
 % $Author: mbletzin $
 % =====================================================================================================================
 classdef ProcessResponse < OmState
@@ -14,6 +14,9 @@ classdef ProcessResponse < OmState
         log = Logger('ProcessResponse');
     end
     methods
+        function me = ProcessResponse()
+            me = me@OmState();
+        end
         function start(me)
             me.edCalculate();
             me.derivedDofCalculate();
@@ -33,10 +36,10 @@ classdef ProcessResponse < OmState
                     pcps = {};
                     if isempty(me.dat.prevStepData) == 0
                         pcps = me.dat.prevStepData.lbcbCps{l};
-                    end                
+                    end
                     me.ed{l}.calculate(ccps,pcps);
-%                     me.dat.curStepData.lbcbCps{l}.response.ed = ...
-%                         me.dat.curStepData.lbcbCps{l}.response.lbcb;
+                    %                     me.dat.curStepData.lbcbCps{l}.response.ed = ...
+                    %                         me.dat.curStepData.lbcbCps{l}.response.lbcb;
                 end
             end
         end

@@ -1,9 +1,5 @@
 classdef BroadcastResponses < BroadcasterState
     properties
-        action = StateEnum({ ...
-            'DONE'...
-            'BROADCASTING', ...
-            });
         id = {}
         target
         log = Logger('BroadcastResponses');
@@ -11,15 +7,21 @@ classdef BroadcastResponses < BroadcasterState
     end
     methods
         function me = BroadcastResponses()
+            me = me@BroadcasterState();
             me.abort = false;
+        me.currentAction = StateEnum({ ...
+            'DONE'...
+            'BROADCASTING', ...
+            });
         end
         function start(me)
             me.mdlBroadcast.start(me.dat.curStepData.stepNum);
             me.statusBusy();
-            me.action.setState('BROADCASTING');
+            me.currentAction.setState('BROADCASTING');
         end
         function done = isDone(me)
             done = 0;
+            me.stateChanged()
             if me.mdlBroadcast.isDone() == 0
                 return;
             end
@@ -28,14 +30,14 @@ classdef BroadcastResponses < BroadcasterState
                 done = 1;
                 return;
             end
-            a = me.action.getState();
+            a = me.currentAction.getState();
             me.log.debug(dbstack,sprintf('action is %s',a));
             switch a
                 case 'DONE'
                     done = 1;
                     me.statusReady();
                 case {'BROADCASTING'}
-                    me.action.setState('DONE');
+                    me.currentAction.setState('DONE');
                 otherwise
                     str = sprintf('%s not recognized',a);
                     disp(str);

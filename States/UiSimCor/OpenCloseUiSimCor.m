@@ -1,20 +1,20 @@
 classdef OpenCloseUiSimCor < UiSimCorState
     properties
-        simCorActions = StateEnum({...
-            'CONNECTING',...
-            'DISCONNECTING',...
-            'WAIT FOR SET PARAMETER COMMAND',...
-            'WAIT FOR SET PARAMETER RESPONSE',...
-            'DONE',...
-            });
         connectionStatus = StateEnum({'CONNECTED','DISCONNECTED','ERRORED'});
         closeIt = 0;
         log = Logger('OpenCloseUiSimCor');
-        prevAction
     end
     methods
         function me = OpenCloseUiSimCor()
+            me = me@UiSimCorState();
             me.connectionStatus.setState('DISCONNECTED');
+            me.currentAction = StateEnum({...
+                'CONNECTING',...
+                'DISCONNECTING',...
+                'WAIT FOR SET PARAMETER COMMAND',...
+                'WAIT FOR SET PARAMETER RESPONSE',...
+                'DONE',...
+                });
         end
         function aborted = start(me, closeIt)
             me.closeIt = closeIt;
@@ -32,16 +32,17 @@ classdef OpenCloseUiSimCor < UiSimCorState
             if me.closeIt
                 if me.connectionStatus.isState('CONNECTED')  % There are no errors
                     me.mdlUiSimCor.close();
-                    me.simCorActions.setState('DISCONNECTING');
+                    me.currentAction.setState('DISCONNECTING');
                 end
             else
                 me.mdlUiSimCor.open();
-                me.simCorActions.setState('CONNECTING');
+                me.currentAction.setState('CONNECTING');
                 me.connectionStatus.setState('CONNECTED');
             end
         end
         function done = isDone(me)
             done = 0;
+            me.stateChanged()
             mlDone = me.mdlUiSimCor.isDone();
             if mlDone == 0
                 return;
@@ -52,10 +53,10 @@ classdef OpenCloseUiSimCor < UiSimCorState
                 me.connectionError();
                 return;
             end
-            a = me.simCorActions.getState();
-            if me.simCorActions.idx ~= me.prevAction
+            a = me.currentAction.getState();
+            if me.currentAction.idx ~= me.prevAction
                 me.log.debug(dbstack,sprintf('Executing action %s',a));
-                me.prevAction = me.simCorActions.idx;
+                me.prevAction = me.currentAction.idx;
             end
             
             switch a
@@ -79,7 +80,8 @@ classdef OpenCloseUiSimCor < UiSimCorState
             me.connectionStatus.setState('ERRORED');
             me.gui.colorRunButton('BROKEN'); % Pause the simulation
             me.gui.colorButton('CONNECT SIMCOR','BROKEN');
-            me.simCorActions.setState('DONE');
+            me.currentAction.setState('DONE');
+            me.statusErrored();
             me.log.error(dbstack,...
                 sprintf('UI-SimCor link has been disconnected due to errors'));
         end
@@ -89,27 +91,27 @@ classdef OpenCloseUiSimCor < UiSimCorState
             address = me.cdp.getAddress();
             jmsg = me.mdlUiSimCor.createResponse(address,[],'LBCB Plugin initialized');
             me.mdlUiSimCor.respond(jmsg);
-            me.simCorActions.setState('WAIT FOR SET PARAMETER RESPONSE');
+            me.currentAction.setState('WAIT FOR SET PARAMETER RESPONSE');
         end
         function setParameterResponse(me)
             me.gui.colorButton('CONNECT SIMCOR','ON');
-            me.simCorActions.setState('DONE');
+            me.currentAction.setState('DONE');
         end
         function connect(me)
             address = me.cdp.getAddress();
             if isempty(address)
                 me.log.error(dbstack,'SimCor Address is not set in the SIMCOR Configuration');
                 me.connectionStatus.setState('ERRORED');
-                me.simCorActions.setState('DONE');
+                me.currentAction.setState('DONE');
                 return;
             end
             me.mdlUiSimCor.start();
-            me.simCorActions.setState('WAIT FOR SET PARAMETER COMMAND');
+            me.currentAction.setState('WAIT FOR SET PARAMETER COMMAND');
         end
         function disconnect(me)
             me.connectionStatus.setState('DISCONNECTED');
             me.gui.colorButton('CONNECT SIMCOR','OFF');
-            me.simCorActions.setState('DONE');
+            me.currentAction.setState('DONE');
         end
     end
 end

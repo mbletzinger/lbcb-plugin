@@ -1,23 +1,22 @@
 classdef OpenCloseOm < OmState
     properties
-        omActions = StateEnum({...
-            'CONNECTING',...
-            'DISCONNECTING',...
-            'DONE',...
-            });
-        prevAction
         connectionStatus = StateEnum({'CONNECTED','DISCONNECTED','ERRORED'});
         closeIt = 0;
         log = Logger('OpenCloseOm');
     end
     methods
         function me = OpenCloseOm()
+            me = me@OmState();
             me.connectionStatus.setState('DISCONNECTED');
-            me.prevAction = 0;
+            me.currentAction = StateEnum({...
+                'CONNECTING',...
+                'DISCONNECTING',...
+                'DONE',...
+                });
         end
         function aborted = start(me, closeIt)
             me.closeIt = closeIt;
-                aborted = false;
+            aborted = false;
             if closeIt && me.connectionStatus.isState('DISCONNECTED')
                 me.log.error(dbstack,'OM Connection already disconnected');
                 aborted = true;
@@ -29,27 +28,24 @@ classdef OpenCloseOm < OmState
                 return;
             end
             if me.closeIt
-                    me.mdlLbcb.close();
-                    me.omActions.setState('DISCONNECTING');
+                me.mdlLbcb.close();
+                me.currentAction.setState('DISCONNECTING');
             else
                 me.mdlLbcb.open();
                 me.statusBusy();
-                me.omActions.setState('CONNECTING');
+                me.currentAction.setState('CONNECTING');
             end
         end
         function done = isDone(me)
             done = 0;
-            a = me.omActions.getState();
-            if me.omActions.idx ~= me.prevAction
-                me.log.debug(dbstack,sprintf('Executing action %s',a));
-                me.prevAction = me.omActions.idx;
-            end
+            a = me.currentAction.getState();
+            me.stateChanged()
             mlDone = me.mdlLbcb.isDone();
             if mlDone == 0
                 return;
             end
             
-            if me.mdlLbcb.state.isState('ERRORS EXIST') && me.omActions.isState('CLOSING_SESSION') == false
+            if me.mdlLbcb.state.isState('ERRORS EXIST') && me.currentAction.isState('CLOSING_SESSION') == false
                 done = 1;
                 me.connectionError();
                 return;
@@ -71,7 +67,7 @@ classdef OpenCloseOm < OmState
             me.connectionStatus.setState('ERRORED');
             me.gui.colorRunButton('BROKEN'); % Pause the simulation
             me.gui.colorButton('CONNECT OM','BROKEN');
-            me.omActions.setState('DONE');
+            me.currentAction.setState('DONE');
             me.statusErrored();
             me.log.error(dbstack,...
                 sprintf('OM link has been disconnected due to errors'));
@@ -86,13 +82,13 @@ classdef OpenCloseOm < OmState
                 return;
             end
             me.connectionStatus.setState('CONNECTED');
-            me.omActions.setState('DONE');
+            me.currentAction.setState('DONE');
             me.gui.colorButton('CONNECT OM','ON');
         end
         function disconnect(me)
             me.connectionStatus.setState('DISCONNECTED');
             me.gui.colorButton('CONNECT OM','OFF');
-            me.omActions.setState('DONE');
+            me.currentAction.setState('DONE');
         end
     end
 end

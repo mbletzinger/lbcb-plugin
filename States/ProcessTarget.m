@@ -1,11 +1,5 @@
 classdef ProcessTarget < SimStates
     properties
-        currentAction = StateEnum({...
-            'CHECK LIMITS',...
-            'WAIT FOR ACCEPT',...
-            'DONE'
-            });
-        prevAction
         lc
         accepted;
         autoAccept;
@@ -14,9 +8,14 @@ classdef ProcessTarget < SimStates
     end
     methods
         function me = ProcessTarget()
+            me = me@SimStates();
             me.accepted = false;
             me.autoAccept = false;
-            me.prevAction = 0;
+            me.currentAction = StateEnum({...
+                'CHECK LIMITS',...
+                'WAIT FOR ACCEPT',...
+                'DONE'
+                });
         end
         function start(me,target)
             me.target = target;
@@ -38,11 +37,8 @@ classdef ProcessTarget < SimStates
         function done = isDone(me)
             done = 0;
             a = me.currentAction.getState();
-            if me.currentAction.idx ~= me.prevAction
-                me.log.debug(dbstack,sprintf('Executing action %s',a));
-                me.prevAction = me.currentAction.idx;
+            if me.stateChanged()
                 me.ddisp.dbgWin.setProcessState(me.currentAction.idx);
-
             end
             switch a
                 case 'CHECK LIMITS'

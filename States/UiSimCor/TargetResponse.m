@@ -1,11 +1,5 @@
 classdef TargetResponse < UiSimCorState
     properties
-        action = StateEnum({ ...
-            'DONE'...
-            'WAIT_FOR_TARGET',...
-            'SEND_RESPONSE', ...
-            'CLOSE_SESSION_RECEIVED',...
-            });
         id = {}
         target
         log = Logger('TargetResponse');
@@ -13,22 +7,30 @@ classdef TargetResponse < UiSimCorState
     end
     methods
         function me = TargetResponse()
+            me = me@UiSimCorState();
             me.abort = false;
+            me.currentAction = StateEnum({ ...
+                'DONE'...
+                'WAIT_FOR_TARGET',...
+                'SEND_RESPONSE', ...
+                'CLOSE_SESSION_RECEIVED',...
+                });
         end
         function start(me)
             me.mdlUiSimCor.start();
             me.statusBusy();
-            me.action.setState('WAIT_FOR_TARGET');
+            me.currentAction.setState('WAIT_FOR_TARGET');
         end
         function respond(me)
             jmsg = me.dat.curTarget.generateSimCorResponseMsg();
             me.log.debug(dbstack,sprintf('Sending %s',char(jmsg)));
             me.mdlUiSimCor.respond(jmsg);
             me.statusBusy();
-            me.action.setState('SEND_RESPONSE');
+            me.currentAction.setState('SEND_RESPONSE');
         end
         function done = isDone(me)
             done = 0;
+            me.stateChanged()
             if me.mdlUiSimCor.isDone() == 0
                 return;
             end
@@ -38,7 +40,7 @@ classdef TargetResponse < UiSimCorState
                 done = 1;
                 return;
             end
-            a = me.action.getState();
+            a = me.currentAction.getState();
             me.log.debug(dbstack,sprintf('action is %s',a));
             switch a
                 case 'DONE'
@@ -47,7 +49,7 @@ classdef TargetResponse < UiSimCorState
                 case 'WAIT_FOR_TARGET'
                     command = me.mdlUiSimCor.command;
                     if strcmp(command.getCommand(),'close-session')
-                        me.action.setState('CLOSE_SESSION_RECEIVED');
+                        me.currentAction.setState('CLOSE_SESSION_RECEIVED');
                         address = me.cdp.getAddress();
                         jmsg = me.mdlUiSimCor.createResponse(address,[],'GoodBye');
                         me.mdlUiSimCor.respond(jmsg);
@@ -56,9 +58,9 @@ classdef TargetResponse < UiSimCorState
                     end
                     me.target = me.sdf.uisimcorMsg2Step(command);
                     me.target.needsCorrection = true;
-                    me.action.setState('DONE');
+                    me.currentAction.setState('DONE');
                 case {'SEND_RESPONSE', 'CLOSE_SESSION_RECEIVED' }
-                    me.action.setState('DONE');
+                    me.currentAction.setState('DONE');
                 otherwise
                     str = sprintf('%s not recognized',a);
                     disp(str);

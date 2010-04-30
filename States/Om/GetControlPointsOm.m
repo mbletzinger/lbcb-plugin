@@ -12,6 +12,7 @@ classdef GetControlPointsOm < OmState
     end
     methods
         function me = GetControlPointsOm()
+            me = me@OmState();
             me.prevCps = 0;
         end
         function start(me)
