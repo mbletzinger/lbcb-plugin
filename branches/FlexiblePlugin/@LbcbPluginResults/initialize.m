@@ -1,6 +1,6 @@
 function initialize(me)
 
-if isempty(me.handles) == 0    
+if isempty(me.handles) == 0
     me.commandLimitsHandles1 = cell(12,2);
     me.commandLimitsHandles1{1,1} = me.handles.DxL1;
     me.commandLimitsHandles1{2,1} = me.handles.DyL1;
@@ -55,7 +55,7 @@ if isempty(me.handles) == 0
     me.commandLimitsHandles2{11,2} = me.handles.MyU2;
     me.commandLimitsHandles2{12,2} = me.handles.MzU2;
     
-        
+    
     me.commandCurrentValueHandles1 = cell(12,1);
     me.commandCurrentValueHandles1{1} = me.handles.DxCV1;
     me.commandCurrentValueHandles1{2} = me.handles.DyCV1;
@@ -112,7 +112,7 @@ if isempty(me.handles) == 0
     me.commandTolerancesHandles2{11} = me.handles.MyT2;
     me.commandTolerancesHandles2{12} = me.handles.MzT2;
     
-       
+    
     me.toleranceCurrentValueHandles1 = cell(12,1);
     me.toleranceCurrentValueHandles1{1} = me.handles.DxTCV1;
     me.toleranceCurrentValueHandles1{2} = me.handles.DyTCV1;
@@ -205,7 +205,20 @@ if isempty(me.handles) == 0
     me.stepHandles{3} = me.handles.CorrectionStep;
     me.msgHandle = me.handles.Messages;
     me.cmdTableHandle = me.handles.CommandTable;
-    me.fillInLimits()
+    me.fillInLimits();
+    titleIm = imread('images/LbcbPluginBanner.png');
+    axes(me.handles.titleImage);
+    image(titleIm);
+    axis off;
+    titleIm = imread('images/LBCB.png');
+    axes(me.handles.lbcbImage);
+    image(titleIm);
+    axis off;
+    titleIm = imread('images/UIUC_I.png');
+    axes(me.handles.uiucImage);
+    image(titleIm);
+    axis off;
+    me.updateSource(3);
 end
 me.colorRunButton('OFF');
 end

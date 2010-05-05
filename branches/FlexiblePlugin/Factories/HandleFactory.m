@@ -46,7 +46,7 @@ classdef HandleFactory <  handle
         % Display Windows
         ddisp = []
         
-      
+        
     end
     properties (Dependent = true)
         % Simulation states
@@ -87,11 +87,11 @@ classdef HandleFactory <  handle
             me.simStates{1} = StepStates;
             me.simStates{2} = TargetStates;
             me.simStates{3} = ProcessTarget;
-
+            
             me.mdlUiSimCor = MdlUiSimCor(me.cfg);
             me.simCorStates{1} = OpenCloseUiSimCor;
             me.simCorStates{2} = TargetResponse;
-
+            
             me.mdlBroadcast = MdlBroadcast(me.cfg);
             me.brdcstStates{1} = StartStopBroadcaster;
             me.brdcstStates{2} = BroadcastResponses;
@@ -102,9 +102,19 @@ classdef HandleFactory <  handle
             me.cl = CommandLimits(me.cfg);
             lc.cl = me.cl;
             lc.il = me.il;
-
+            
             me.dat = SimSharedData;
             me.gui = LbcbPluginResults(handle,me);
+            if isempty(handle)
+                bsimst = ButtonManagementGroup([]);
+                me.gui.bsimst = bsimst;
+                bstpst = ButtonManagementGroup([]);
+                me.gui.bstpst = bstpst;
+                bsrc = ButtonManagementGroup([]);
+                me.gui.bsrc = bsrc;
+            else
+                me.fillButtons(handle)
+            end
             DataDisplay.setMenuHandle(handle);
             
             me.ed{1} = ElasticDeformation(cdp,1);
@@ -120,14 +130,14 @@ classdef HandleFactory <  handle
             me.inF = InputFile(me.sdf);
             
             me.arch = Archiver(cdp);
-
+            
             me.omStates{4}.st = me.st;
-
+            
             for c =1:length(me.omStates)
                 me.omStates{c}.cdp = cdp;
                 me.omStates{c}.dd = me.dd;
                 me.omStates{c}.ed = me.ed;
-                me.omStates{c}.gui = me.gui;                
+                me.omStates{c}.gui = me.gui;
                 me.omStates{c}.dat = me.dat;
                 me.omStates{c}.sdf = me.sdf;
                 me.omStates{c}.mdlLbcb = me.mdlLbcb;
@@ -168,10 +178,10 @@ classdef HandleFactory <  handle
             me.tgtEx.ocSimCor = me.ocSimCor;
             me.simStates{3}.lc = lc;
             
-            dbgWin.stpEx = me.stpEx; 
+            dbgWin.stpEx = me.stpEx;
             dbgWin.tgtEx = me.tgtEx;
-            dbgWin.prcsTgt = me.simStates{3};          
-
+            dbgWin.prcsTgt = me.simStates{3};
+            
             for c =1:length(me.simCorStates)
                 me.simCorStates{c}.cdp = cdp;
                 me.simCorStates{c}.gui = me.gui;
@@ -191,9 +201,10 @@ classdef HandleFactory <  handle
         end
         function setGuiHandle(me, handle)
             me.gui = LbcbPluginResults(handle,me);
+            me.fillButtons(handle)
             me.gui.ddisp = me.ddisp;
             for c =1:length(me.omStates)
-                me.omStates{c}.gui = me.gui;                                
+                me.omStates{c}.gui = me.gui;
             end
             for c =1:length(me.simStates)
                 me.simStates{c}.gui = me.gui;
@@ -246,5 +257,37 @@ classdef HandleFactory <  handle
         function c = get.vmpChk(me)
             c= me.brdcstStates{3};
         end
-   end
+        function fillButtons(me,handle)
+            bsimst = ButtonGroupManagement(handle.simStatesPanel);
+            bsimst.childHandles = {...
+                handle.ipButton,...
+                handle.wftButton,...
+                handle.ptButton,...
+                handle.esButton,...
+                handle.strButton,...
+                handle.dButton...
+                };
+            bsimst.init()
+            me.gui.bsimst = bsimst;
+            bstpst = ButtonGroupManagement(handle.stepStatesPanel);
+            bstpst.childHandles = {...
+                handle.nsButton,...
+                handle.peButton,...
+                handle.gcpButton,...
+                handle.prButton,...
+                handle.btButton,...
+                handle.dButton...
+                };
+            bstpst.init()
+            me.gui.bstpst = bstpst;
+            bsrc = ButtonGroupManagement(handle.sourcePanel);
+            bsrc.childHandles = {...
+                handle.ifButton,...
+                handle.scorButton,... 
+                handle.nButton,...
+                };
+            bsrc.init()
+            me.gui.bsrc = bsrc;
+        end
+    end
 end
