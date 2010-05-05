@@ -49,6 +49,7 @@ classdef StepStates < SimStates
             a = me.currentAction.getState();
             if me.stateChanged()
                 me.ddisp.dbgWin.setStepState(me.currentAction.idx);
+                me.gui.updateStepState(me.currentAction.idx)
             end
             switch a
                 case'NEXT STEP'

@@ -13,6 +13,7 @@ switch a
             if me.hfact.ocSimCor.isReady()
                 me.log.info(dbstack,'UI-SimCor is connected');
                 me.hfact.tgtEx.targetSource.setState('UI SIMCOR');
+                me.hfact.gui.updateSource(2);
             end
             me.alreadyStarted = false;
             me.connectSimCorAction.setState('DONE');
@@ -23,6 +24,7 @@ switch a
             if me.hfact.ocSimCor.isReady()
                 me.log.info(dbstack,'UI-SimCor is no longer connected');
                 me.hfact.tgtEx.targetSource.setState('NONE');
+                me.hfact.gui.updateSource(3);
             end
             me.connectSimCorAction.setState('DONE');
         end

@@ -37,6 +37,9 @@ classdef LbcbPluginResults < handle
         dofLabel = {'Dx' 'Dy' 'Dz' 'Rx' 'Ry' 'Rz' 'Fx' 'Fy' 'Fz' 'Mx' 'My' 'Mz' };
         cmdTable
         ddisp
+        bsimst
+        bstpst
+        bsrc
 
     end
     methods
@@ -58,7 +61,9 @@ classdef LbcbPluginResults < handle
         setLimit(me,hndl,dof,used,limit)
         fillInLimits(me)
         colorAutoAcceptButton(me,on)
-        
+        updateStepState(me,idx)
+        updateSimState(me,idx)
+        updateSource(me,idx)        
     end
     methods (Access=private)
         colorFaultText(me,hndl,fault,isLbcb1,f)
