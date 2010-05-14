@@ -59,7 +59,6 @@ classdef StepStates < SimStates
                             me.log.info(dbstack,'Substeps are done');
                             me.statusReady();
                             me.currentAction.setState('DONE');
-                            done = 1;
                         else % Execute next step
                             me.currentAction.setState('OM PROPOSE EXECUTE');
                             if me.isFake() == false
@@ -81,7 +80,6 @@ classdef StepStates < SimStates
                                 me.ocOm.connectionError();
                                 me.statusErrored();
                                 me.currentAction.setState('DONE');
-                                done = 1;
                                 return;
                             end
                             me.dat.stepShift();
@@ -102,7 +100,6 @@ classdef StepStates < SimStates
                                 me.ocOm.connectionError();
                                 me.statusErrored();
                                 me.currentAction.setState('DONE');
-                                done = 1;
                                 return;
                             end
                             me.pResp.start();
@@ -130,13 +127,13 @@ classdef StepStates < SimStates
                             me.gui.colorRunButton('BROKEN'); % Pause the simulation
                             me.statusErrored();
                             me.currentAction.setState('DONE');
-                            done = 1;
                             return;
                         end
                         me.currentAction.setState('NEXT STEP');
                     end
                 case 'DONE'
                     me.statusReady();
+                    me.gui.updateStepState(me.currentAction.idx)
                     done = 1;
                 otherwise
                     me.log.error(dbstack,sprintf('%s action not recognized',me.currentAction.getState()));
