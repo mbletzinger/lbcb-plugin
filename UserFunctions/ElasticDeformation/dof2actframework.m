@@ -27,3 +27,4 @@ for i = 1:size(p0,2)
     pin2pin = deltas(1:3) - (eye(3) - psi)*r0 + p0(:,i) - q0(:,i);
     lengths(i) = norm(pin2pin);
 end
+%
