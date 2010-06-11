@@ -9,7 +9,7 @@ classdef RyVsDx < handle
     end
     methods
         function me = RyVsDx(isLbcb1)
-            me.plot = XyPlots(sprintf('LBCB %d  Ry vs Dx',1 + (isLbcb1 == false)));
+            me.plot = XyPlots(sprintf('LBCB %d  Ry vs Dx',1 + (isLbcb1 == false)),{});
             me.isLbcb1 = isLbcb1;
             me.plot.figNum = 1 + (isLbcb1 == false);
         end

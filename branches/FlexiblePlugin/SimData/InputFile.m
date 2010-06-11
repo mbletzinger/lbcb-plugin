@@ -5,6 +5,7 @@ classdef  InputFile < Substeps
     commandDofs = [];
     log = Logger('InputFile');
     sdf = [];
+    cdp
     end
     methods
         function me = InputFile(sdf)
@@ -37,13 +38,17 @@ classdef  InputFile < Substeps
             me.commandDofs(1,1:length(cmdDofs)) = cmdDofs;
         end
         function loadSteps(me,tgts)
+            % Due to slowing down issue, an itermediate variable called
+            % "intermVar" is defined and assigned to "me.steps" at the end
+            % of the for loop.
+            tic; 
             [lgth dummy] = size(tgts); %#ok<NASGU>
-            me.steps = cell(lgth,1);
+%             me.steps = cell(lgth,1);
             for t = 1:lgth
                 tgt1 = Target;
                 tgt2 = Target;
                 i = 0;
-                for d = 1:24
+                for d = 1:24 
                     if me.commandDofs(d) == 0
                         continue;
                     end
@@ -70,12 +75,15 @@ classdef  InputFile < Substeps
                 else
                     targets = {tgt1};
                 end
-                me.steps{t} = me.sdf.target2StepData(targets,t,0);
-                me.steps{t}.needsCorrection = true;
+                intermVar{t}=me.sdf.target2StepData(targets,t,0);
+%                 me.steps{t} = me.sdf.target2StepData(targets,t,0);
+%                 me.steps{t}.needsCorrection = true;
 %                me.log.debug(dbstack,sprintf('Created step=%s',me.steps{t}.toString()));
             end
+            me.steps=intermVar;
             me.started = false;
             me.log.info(dbstack,sprintf('Loaded %d steps',lgth));
+            toc;
         end
     end
 end

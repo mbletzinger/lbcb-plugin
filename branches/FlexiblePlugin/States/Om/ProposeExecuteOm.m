@@ -18,7 +18,7 @@ classdef ProposeExecuteOm < OmState
         end
         function done = isDone(me)
             a = me.currentAction.getState();
-            me.stateChanged()
+            me.stateChanged();
             done = 0;
             if me.mdlLbcb.isDone() == 0
                 return;

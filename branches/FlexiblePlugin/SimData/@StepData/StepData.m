@@ -13,6 +13,7 @@ classdef StepData < handle
         needsCorrection;
         containsModelCps;
         needsTriggering;
+        stepTimes; % BG
     end
     methods
         function me = StepData()
@@ -28,7 +29,7 @@ classdef StepData < handle
             me.needsCorrection = false;
             me.containsModelCps = 0;
             me.needsTriggering = false;
-
+            me.stepTimes=[];
         end
         str = toString(me)
         jmsg = generateOmProposeMsg(me)

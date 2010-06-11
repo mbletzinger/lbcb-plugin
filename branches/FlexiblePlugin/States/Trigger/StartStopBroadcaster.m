@@ -40,7 +40,7 @@ classdef StartStopBroadcaster < BroadcasterState
         end
         function done = isDone(me)
             done = 0;
-            me.stateChanged()
+            me.stateChanged();
             mlDone = me.mdlBroadcast.isDone();
             if mlDone == 0
                 return;

@@ -34,7 +34,7 @@ classdef ProcessResponse < OmState
                 for l = 1: me.cdp.numLbcbs()
                     ccps = me.dat.curStepData.lbcbCps{l};
                     pcps = {};
-                    if isempty(me.dat.prevStepData) == 0
+                    if isempty(me.dat.prevStepData) == false
                         pcps = me.dat.prevStepData.lbcbCps{l};
                     end
                     me.ed{l}.calculate(ccps,pcps);

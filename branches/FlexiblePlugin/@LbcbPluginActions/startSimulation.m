@@ -5,4 +5,5 @@ if me.alreadyStarted
 end
     me.hfact.tgtEx.start();
     me.alreadyStarted = true;
+    me.hfact.gui.startTimer();
 end

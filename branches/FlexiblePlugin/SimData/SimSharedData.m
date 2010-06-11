@@ -9,6 +9,7 @@ classdef SimSharedData < handle
         nextStepData = [];
         sdf = [];
         log = Logger('SimSharedData');
+        cdp;
     end
     methods
         function stepShift(me)
@@ -18,6 +19,7 @@ classdef SimSharedData < handle
         function targetShift(me,target)
             me.prevTarget = me.curTarget;
             me.curTarget = target;
+            me.prevStepData = me.curTarget;
         end
         function clearSteps(me)
             me.correctionTarget = [];
@@ -26,9 +28,14 @@ classdef SimSharedData < handle
             me.curStepData = [];
             me.nextStepData = [];
         end
-        function nextCorrectionStep(me) 
-                me.nextStepData = me.sdf.target2StepData({ me.curStepData.lbcbCps{1}.command ...
-                    me.curStepData.lbcbCps{2}.command }, me.curStepData.stepNum.step, ...
+        function nextCorrectionStep(me)
+            cmd1 = me.curStepData.lbcbCps{1}.command;
+            cmd2 = [];
+            if me.cdp.numLbcbs() > 1
+                cmd2 = me.curStepData.lbcbCps{2}.command;
+            end
+                me.nextStepData = me.sdf.target2StepData({ cmd1, ...
+                    cmd2 }, me.curStepData.stepNum.step, ...
                     me.curStepData.stepNum.subStep);
                 me.nextStepData.stepNum = me.curStepData.stepNum.next(2);
                 me.nextStepData.needsCorrection = true;

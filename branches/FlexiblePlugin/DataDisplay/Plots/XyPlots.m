@@ -8,22 +8,28 @@ classdef XyPlots < DisplayControl
         name
     end
     methods
-        function me = XyPlots(name)
+        function me = XyPlots(name,lgnds)
+            me=me@DisplayControl();
             me.name = name;
             me.xdata = cell(8,1);
             me.ydata = cell(8,1);
             me.lineSeries = [];
-            me.legends = {};
-            me.figNum = [];
+            me.legends = lgnds;
+            me.figNum = [];            
         end
         function displayMe(me)
-            me.fig = figure('DeleteFcn',{'DataDisplay.checkOff', me.figNum }, 'Name',me.name);
-            xys = plot(0,0,'k',0,0,'b',0,0,'r',0,0,'g',0,0,'m',0,0,':k',0,0,':b',0,0,':r');
+            name=me.name;
+            indice=findstr(name,'vs');
+            ylab=name(indice(1)-3:indice(1)-2);
+            xlab=name(indice(1)+3:indice(1)+4);
+            me.fig = figure('DeleteFcn',{'DataDisplay.checkOff', me.figNum }, 'Name',me.name);            
+            xys = plot(0,0,'b',0,0,'--r',0,0,'r',0,0,'g',0,0,'m',0,0,':k',0,0,':b',0,0,':r');
+            xlabel(xlab); ylabel(ylab);
             me.lineSeries = xys;
             if isempty(me.legends) ==false
-                legend(series,me.legends);
+                legend(xys,me.legends);
             end
-            me.isDisplayed = true;
+            me.displayMe2();
         end
         function update(me,d,idx)
             me.ydata{idx} = d(1,:);

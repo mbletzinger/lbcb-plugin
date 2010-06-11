@@ -39,7 +39,7 @@ classdef OpenCloseOm < OmState
         function done = isDone(me)
             done = 0;
             a = me.currentAction.getState();
-            me.stateChanged()
+            me.stateChanged();
             mlDone = me.mdlLbcb.isDone();
             if mlDone == 0
                 return;

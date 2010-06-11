@@ -30,7 +30,7 @@ classdef TargetResponse < UiSimCorState
         end
         function done = isDone(me)
             done = 0;
-            me.stateChanged()
+            me.stateChanged();
             if me.mdlUiSimCor.isDone() == 0
                 return;
             end

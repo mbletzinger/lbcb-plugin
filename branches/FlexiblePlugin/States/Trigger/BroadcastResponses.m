@@ -21,7 +21,7 @@ classdef BroadcastResponses < BroadcasterState
         end
         function done = isDone(me)
             done = 0;
-            me.stateChanged()
+            me.stateChanged();
             if me.mdlBroadcast.isDone() == 0
                 return;
             end

@@ -22,7 +22,7 @@ function varargout = LbcbPlugin(varargin)
 
 % Edit the above text to modify the response to help LbcbPlugin
 
-% Last Modified by GUIDE v2.5 28-Apr-2010 21:36:03
+% Last Modified by GUIDE v2.5 05-Jun-2010 14:19:59
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -74,6 +74,7 @@ if(nargin > 3)
 end
 
 handles.actions = LbcbPluginActions(handles,hfact);
+handles.actions.processArchiveOnOff('on');
 handles.log = Logger('LbcbPlugin');
 % Update handles structure
 guidata(hObject, handles);
@@ -105,10 +106,9 @@ if handles.notimer
     if handles.actions.currentSimExecute.isState('DONE')
     handles.actions.startSimulation();
     end
-    LbcbPluginActions.executeSim([],[],handles.actions);
-
+    LbcbPluginActions.executeSim([],[],handles.actions);    
 else
-    handles.actions.processRunHold(get(hObject,'Value'));
+    handles.actions.processRunHold(get(hObject,'Value'));    
 end
 
 % --- Executes on button press in Connect2Om.
@@ -1212,10 +1212,10 @@ handles.actions.processVamping(val);
 % --------------------------------------------------------------------
 function ArchiveOnOff_Callback(hObject, eventdata, handles)
 if strcmp(get(hObject, 'Checked'),'on')
-    handles.actions.processArchiveOnOff(0);
+%     handles.actions.processArchiveOnOff(0);
     set(hObject,'Checked','off');
 else 
-    handles.actions.processArchiveOnOff(1);
+%     handles.actions.processArchiveOnOff(1);
     set(hObject,'Checked','on');
 end
 handles.actions.processArchiveOnOff(get(hObject,'Checked'));
@@ -1228,3 +1228,27 @@ function togglebutton13_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 % Hint: get(hObject,'Value') returns toggle state of togglebutton13
+
+
+% --------------------------------------------------------------------
+function FxVsLbcb1Dx_Callback(hObject, eventdata, handles)
+% hObject    handle to FxVsLbcb1Dx (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+if strcmp(get(hObject,'Checked'),'on')
+    handles.actions.hfact.gui.ddisp.stopFxVsDx(0);
+    set(hObject,'Checked','off');
+else 
+    handles.actions.hfact.gui.ddisp.startFxVsDx(1);
+    set(hObject,'Checked','on');
+end
+
+
+
+function Step_Callback(hObject, eventdata, handles)
+% hObject    handle to Step (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of Step as text
+%        str2double(get(hObject,'String')) returns contents of Step as a double

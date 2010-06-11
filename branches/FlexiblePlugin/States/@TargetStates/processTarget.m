@@ -7,7 +7,7 @@ end
 if done == false
     return;
 end
-me.dat.clearSteps();
+%me.dat.clearSteps();
 steps = me.splitTarget();
 me.currentAction.setState('EXECUTE SUBSTEPS');
 me.stpEx.start(steps);

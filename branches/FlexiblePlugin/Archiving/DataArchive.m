@@ -18,7 +18,7 @@ classdef DataArchive < handle
             fclose(fid);
         end
         function writeHeaders(me)
-            fid = fopen(me.path,'w');
+            fid = fopen(me.path,'a');
             for i=1:length (me.headers)
                 fprintf(fid,'%s	',me.headers{i});
             end
