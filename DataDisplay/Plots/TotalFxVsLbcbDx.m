@@ -9,7 +9,7 @@ classdef TotalFxVsLbcbDx < handle
     end
     methods
         function me = TotalFxVsLbcbDx(isLbcb1)
-            me.plot = XyPlots(sprintf('Total Fx vs LBCB %d Dx',1 + (isLbcb1 == false)));
+            me.plot = XyPlots(sprintf('Total Fx vs LBCB %d Dx',1 + (isLbcb1 == false)),{});
             me.isLbcb1 = isLbcb1;
             me.plot.figNum = 1 + (isLbcb1 == false);
         end

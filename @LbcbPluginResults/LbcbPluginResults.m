@@ -18,6 +18,7 @@ classdef LbcbPluginResults < handle
         incrementCurrentValueHandles2 = {};
 
         stepHandles = cell(2,1);
+        stepTimes = []; % BG
         msgHandle = [];
         cmdTableHandle = [];
         shuttingDown;
@@ -47,11 +48,14 @@ classdef LbcbPluginResults < handle
             me.handles = handles;
             me.hfact = hfact;
             me.shuttingDown = false;
+            me.stepTimes = zeros(1,3);
         end
         initialize(me)
         updateLimits(me,cl,il)
         updateStepTolerances(me,st)
         updateStepsDisplay(me,simStep)
+        updateTimer(me); %BG
+        startTimer(me); %BG
         updateCommandTable(me)
         colorButton(me,buttonName,bs)
         addMessage(me,msg)

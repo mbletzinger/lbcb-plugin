@@ -103,7 +103,6 @@ classdef HandleFactory <  handle
             lc.cl = me.cl;
             lc.il = me.il;
             
-            me.dat = SimSharedData;
             me.gui = LbcbPluginResults(handle,me);
             if isempty(handle)
                 bsimst = ButtonManagementGroup([]);
@@ -129,6 +128,9 @@ classdef HandleFactory <  handle
             me.sdf.mdlUiSimCor = me.mdlUiSimCor;
             me.inF = InputFile(me.sdf);
             
+            me.dat = SimSharedData;
+            me.dat.sdf = me.sdf;
+            me.dat.cdp = cdp;
             me.arch = Archiver(cdp);
             
             me.omStates{4}.st = me.st;

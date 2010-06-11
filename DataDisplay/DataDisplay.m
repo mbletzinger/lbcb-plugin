@@ -9,6 +9,8 @@ classdef DataDisplay < handle
         MyVsDxL2 = {};
         RyVsDxL1 = {};
         RyVsDxL2 = {};
+        FxVsDxL1 = {};
+        FxVsDxL2 = {};
         log = Logger('DataDisplay');
         dat
         dbgWin
@@ -26,6 +28,8 @@ classdef DataDisplay < handle
             me.MyVsDxL2 = MyVsDx(0);
             me.RyVsDxL1 = RyVsDx(1);
             me.RyVsDxL2 = RyVsDx(0);
+            me.FxVsDxL1 = FxVsDx(1);
+            me.FxVsDxL2 = FxVsDx(0);
         end
         function startDataTable(me)
             me.dataTable.displayMe();
@@ -95,11 +99,26 @@ classdef DataDisplay < handle
                 DataDisplay.deleteDisplay(9);
             end
         end
+        function startFxVsDx(me,isLbcb1)
+            if isLbcb1
+                me.FxVsDxL1.displayMe();
+            else
+                me.FxVsDxL2.displayMe();
+            end
+        end
+        function stopFxVsDx(me,isLbcb1)
+            if isLbcb1
+                DataDisplay.deleteDisplay(10);
+            else
+                DataDisplay.deleteDisplay(11);
+            end
+        end        
         function update(me,target)
             me.log.debug(dbstack, sprintf('Displaying %s',target.toString()));
             me.dataTable.update(target);
             me.MyVsDxL1.update(target);
             me.RyVsDxL1.update(target);
+            me.FxVsDxL1.update(target);
             if me.cdp.numLbcbs() > 1
                 me.totalFxVsLbcbDxL1.update(target);
                 me.totalFxVsLbcbDxL2.update(target);
@@ -139,6 +158,10 @@ classdef DataDisplay < handle
                     ddMe.RyVsDxL1.undisplayMe();
                 case 9
                     ddMe.RyVsDxL2.undisplayMe();
+                case 10
+                    ddMe.FxVsDxL1.undisplayMe();
+                case 11
+                    ddMe.FxVsDxL2.undisplayMe();
                 otherwise
                     me.log.error(dbstack, sprintf('Case %d not recognized',display));
             end
@@ -174,6 +197,10 @@ classdef DataDisplay < handle
                     set(mhndl.RyVsLbcb1Dx,'Checked','off');
                 case 9
                     set(mhndl.RyVsLbcb2Dx,'Checked','off');
+                case 10
+                    set(mhndl.FxVsLbcb1Dx,'Checked','off');
+                case 11
+                    set(mhndl.FxVsLbcb2Dx,'Checked','off');
                 otherwise
                     me.log.error(dbstack, sprintf('Case %d not recognized',c));
             end

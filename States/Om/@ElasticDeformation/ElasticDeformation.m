@@ -20,6 +20,8 @@ classdef ElasticDeformation < handle
         plat = [];
         previousLengths = [];
         currentLengths = [];
+	    initialExtensions = [];
+        initialLengths = [];
         jacobian = [];
         calcPlatCtr = [];
         MeasPltCtr = [];

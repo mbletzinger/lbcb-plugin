@@ -2,7 +2,12 @@ function processRunHold(me,on)
 if on
     me.hfact.gui.colorRunButton('ON');
     if me.currentSimExecute.isState('DONE')
-        me.startSimulation()
+        me.startSimulation();
+    end
+    if me.currentSimExecute.isState('ERROR')
+        me.hfact.tgtEx.recover();
+        me.hfact.stpEx.recover();
+        me.hfact.stpEx.resetOmStates();
     end
     me.hfact.tgtEx.statusReady();
     isOn = get(me.simTimer,'Running');

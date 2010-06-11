@@ -7,6 +7,9 @@ classdef DisplayControl < handle
         function me = DisplayControl()
             me.isDisplayed = false;
         end
+        function displayMe2(me)
+            me.isDisplayed = true;
+        end
         function undisplayMe(me)
             if me.isDisplayed
                 delete(me.fig);

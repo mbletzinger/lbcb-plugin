@@ -52,7 +52,7 @@ classdef Archiver < handle
             if length(step.lbcbCps) > 1
                 values = [ values step.lbcbCps{2}.response.ed.disp' step.lbcbCps{2}.response.ed.force' ];
             end
-            me.lbcbReadA.write(step.stepNum.toString(),values,'');
+            me.edReadA.write(step.stepNum.toString(),values,'');
             me.extSensA.write(step.stepNum.toString(),step.externalSensorsRaw,'');
         end
     end

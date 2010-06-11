@@ -42,7 +42,7 @@ classdef OpenCloseUiSimCor < UiSimCorState
         end
         function done = isDone(me)
             done = 0;
-            me.stateChanged()
+            me.stateChanged();
             mlDone = me.mdlUiSimCor.isDone();
             if mlDone == 0
                 return;

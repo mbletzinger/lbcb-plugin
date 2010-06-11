@@ -15,6 +15,7 @@ if done
 end
 if me.hfact.tgtEx.hasErrors()
     me.hfact.gui.colorRunButton('BROKEN');
+    me.currentSimExecute.setState('ERROR');
     stop(me.simTimer)
 end
 

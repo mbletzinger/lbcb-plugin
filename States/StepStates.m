@@ -58,7 +58,7 @@ classdef StepStates < SimStates
                         if me.nxtStep.stepsCompleted  %  No more targets
                             me.log.info(dbstack,'Substeps are done');
                             me.statusReady();
-                            me.currentAction.setState('DONE');
+                            me.currentAction.setState('DONE');                            
                         else % Execute next step
                             me.currentAction.setState('OM PROPOSE EXECUTE');
                             if me.isFake() == false
@@ -79,7 +79,7 @@ classdef StepStates < SimStates
                             if me.peOm.hasErrors()
                                 me.ocOm.connectionError();
                                 me.statusErrored();
-                                me.currentAction.setState('DONE');
+                                done = 1;
                                 return;
                             end
                             me.dat.stepShift();
@@ -99,7 +99,7 @@ classdef StepStates < SimStates
                             if me.gcpOm.hasErrors()
                                 me.ocOm.connectionError();
                                 me.statusErrored();
-                                me.currentAction.setState('DONE');
+                                done = 1;
                                 return;
                             end
                             me.pResp.start();
@@ -135,6 +135,7 @@ classdef StepStates < SimStates
                     me.statusReady();
                     me.gui.updateStepState(me.currentAction.idx)
                     done = 1;
+                    me.gui.updateTimer(); %BG
                 otherwise
                     me.log.error(dbstack,sprintf('%s action not recognized',me.currentAction.getState()));
             end
@@ -142,6 +143,17 @@ classdef StepStates < SimStates
         function yes = isFake(me)
             ocfg = OmConfigDao(me.cdp.cfg);
             yes = ocfg.useFakeOm;
+        end
+        function resetOmStates(me)
+            switch me.currentAction.getState()
+                case 'OM PROPOSE EXECUTE'
+                    me.peOm.statusReady();
+                    me.peOm.start();
+                case 'OM GET CONTROL POINTS'
+                    me.gcpOm.statusReady();
+                    me.gcpOm.start();
+                otherwise
+            end
         end
     end
     methods (Access='private')
