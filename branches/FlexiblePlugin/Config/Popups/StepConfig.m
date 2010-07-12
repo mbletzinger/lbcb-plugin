@@ -22,7 +22,7 @@ function varargout = StepConfig(varargin)
 
 % Edit the above text to modify the response to help StepConfig
 
-% Last Modified by GUIDE v2.5 01-Apr-2010 12:30:37
+% Last Modified by GUIDE v2.5 11-Jul-2010 19:03:55
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -90,13 +90,7 @@ function varargout = StepConfig_OutputFcn(hObject, eventdata, handles)  %#ok<*IN
 varargout{1} = handles.output;
 
 
-% --- Executes on button press in DoStepSplitting.
 function DoStepSplitting_Callback(hObject, eventdata, handles) %#ok<*INUSD,*DEFNU>
-% hObject    handle to DoStepSplitting (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hint: get(hObject,'Value') returns toggle state of DoStepSplitting
 handles.actions.setDoStepSplitting(get(hObject,'Value'));
 
 % --- Executes when entered data in editable cell(s) in SubStepIncrements.
@@ -111,52 +105,12 @@ function SubStepIncrements_CellEditCallback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 handles.actions.setSsICell(eventdata.Indices,eventdata.EditData);
 
-% --- Executes on button press in DoEdCalc.
-function DoEdCalc_Callback(hObject, eventdata, handles)
-handles.actions.setDoEdCalculations(get(hObject,'Value'));
-
-% --- Executes on button press in DoEdCorrection.
-function DoEdCorrection_Callback(hObject, eventdata, handles)
-handles.actions.setDoEdCorrection(get(hObject,'Value'));
-
-% --- Executes on button press in doDdCalc.
-function doDdCalc_Callback(hObject, eventdata, handles)
-handles.actions.setDoDdofCalculations(get(hObject,'Value'));
-
-% --- Executes on button press in DoDdCorrection.
-function DoDdCorrection_Callback(hObject, eventdata, handles)
-handles.actions.setDoDdofCorrection(get(hObject,'Value'));
-
-
 function CorrectionPerSubstep_Callback(hObject, eventdata, handles)
 handles.actions.setCorrectionPerSubstep(get(hObject,'String'));
 
 % --- Executes on button press in OK.
 function OK_Callback(hObject, eventdata, handles)
 delete(handles.StepConfig);
-
-
-% --- Executes on selection change in edCalcFunction.
-function edCalcFunction_Callback(hObject, eventdata, handles)
-% hObject    handle to edCalcFunction (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: contents = get(hObject,'String') returns edCalcFunction contents as cell array
-%        contents{get(hObject,'Value')} returns selected item from edCalcFunction
-handles.actions.setEdCalcFunction(get(hObject,'Value'));
-
-
-% --- Executes on selection change in ddCalcFunction.
-function ddCalcFunction_Callback(hObject, eventdata, handles)
-% hObject    handle to ddCalcFunction (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: contents = get(hObject,'String') returns ddCalcFunction contents as cell array
-%        contents{get(hObject,'Value')} returns selected item from
-%        ddCalcFunction
-handles.actions.setDdCalcFunction(get(hObject,'Value'));
 
 
 % --- Executes on button press in doSubstepCorrection.
@@ -171,17 +125,6 @@ if get(hObject,'Value')
 end
 handles.actions.setCorrectionPerSubstep('0');
 
-% --- Executes on selection change in ddCorrectFunction.
-function ddCorrectFunction_Callback(hObject, eventdata, handles)
-% hObject    handle to ddCorrectFunction (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: contents = get(hObject,'String') returns ddCorrectFunction contents as cell array
-%        contents{get(hObject,'Value')} returns selected item from ddCorrectFunction
-handles.actions.setDdCorrectFunction(get(hObject,'Value'));
-
-
 
 function substepTriggering_Callback(hObject, eventdata, handles)
 handles.actions.setTriggeringPerSubstep(get(hObject,'String'));
@@ -193,3 +136,20 @@ if get(hObject,'Value')
     return;
 end
 handles.actions.setTriggeringPerSubstep('0');
+
+
+% --- Executes when entered data in editable cell(s) in CorrectionTable.
+function CorrectionTable_CellEditCallback(hObject, eventdata, handles)
+% handles    structure with handles and user data (see GUIDATA)
+handles.actions.setCorrectionCell(eventdata.Indices,eventdata.EditData);
+
+
+% --- Executes on selection change in PrelimAdjust.
+function PrelimAdjust_Callback(hObject, eventdata, handles)
+% hObject    handle to PrelimAdjust (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: contents = cellstr(get(hObject,'String')) returns PrelimAdjust contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from PrelimAdjust
+handles.actions.setPrelimAdjust(get(hObject,'Value'));
