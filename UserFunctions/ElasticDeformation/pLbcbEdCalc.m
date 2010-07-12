@@ -1,24 +1,37 @@
-function coupledWallEdCalculate(me, curLbcbCP,prevLbcbCP)
+function pLbcbEdCalc(me, curLbcbCP,prevLbcbCP)
 me.loadConfig();
 lbcbR = curLbcbCP.response;
 % offsets=[0.218 -0.260 -0.246]';
-% offsets=[0.25 -0.25 -0.3]';
-offsets=[0.2253 -0.2631 -0.2415]';
+% startPos=[-0.1451 -0.0729 0.07398 0.000517 0.00825 0.000979]';
+% startPos=[-0.202745 -0.0617 0.06319 -0.0002146 0.010765 0.0018288]'; % SL 06-05-10
+% startPos=[-0.04981 -0.31464 0.14494 -0.000912 -0.02346 -0.003395]';
+% startPos=[-0.0913 -0.2439 0.00804 0.01115 -0.005277 -0.006937]'; %Bora
+% startPos=[0.37824 -0.360187 0.110031 -0.0027765 -0.0158647 0.00819773]'; % SLL Old Alu Col 070710
+% startPos=[0.07165 -0.33009 0.164277 -0.0014379 -0.015128 -0.0052758]'; % SLL Old Alu Col 070910
+% startPos=[0.162529 -0.362854 0.171278 0 -0.0193131 -0.00264615]'; % SLL Old Alu Col 070910 wo K
+% startPos=[0.160478 -0.366679 0.170903 -0.000177649 -0.0215802 -0.00296793]'; % SLL Old Alu Col 070910 wo K & G
+startPos=[-0.096414 0 0.176143 -0.00230184 0.0207437 0]'; % SLL Old Alu Col 071010 wo K 
 
+% v0 = [1 0 2.75]'; %Bora
+v0 = [1.5 0 0.75]'; % SLL Old Alu Col
+% v0 = [0 0 0]';
 activeDOFs = me.activeDofs;
-me.base=me.base-offsets*ones(1,length(activeDOFs));
+% me.base=me.base-offsets*ones(1,length(activeDOFs));
 
 % me.log.debug(dbstack,sprintf('ED Step: %s',curLbcbCP.toString()));
 
 Extensions = curLbcbCP.externalSensors; % was lengths
 
-v0 = [0 0 0]';
+
 maxnumiter=500;
 
 % Input checker for first step
 if isempty(prevLbcbCP)
     % firstStep is nested function found below for getting first SP disps
-    [prevLengths, actualLengths, prevDisplacement] = firstStep(me);
+%     [prevLengths, actualLengths, prevDisplacement] = firstStep(me,v0,startPos);
+    actualLengths=dof2act(startPos,v0,me.plat,me.base);
+    prevLengths=actualLengths;
+    prevDisplacement=startPos-startPos;
     me.initialExtensions=Extensions;
     me.initialLengths=actualLengths;
 else
@@ -40,7 +53,7 @@ lbcbR.ed.disp = lbcbR.lbcb.disp;
 % Setting delta(i) to last known delta(i) for disp-controlled DOFs
 delta = [0 0 0 0 0 0]';
 for i = 1:length(activeDOFs)
-    delta(activeDOFs(i)) = prevDisplacement(activeDOFs(i));
+    delta(activeDOFs(i)) = startPos(activeDOFs(i))+prevDisplacement(activeDOFs(i));
 end
 
 % me.log.debug(dbstack,sprintf('deltas [%s]',dumpVector(delta)));
@@ -71,7 +84,7 @@ deltaest = (Jacobian\(actualLengths - prevLengths)')';
 % Defining Cartesian displacements: estimated change + previous disp
 delta = [0 0 0 0 0 0]';
 for d = 1:length(activeDOFs)
-    delta(activeDOFs(d)) = deltaest(d) + prevDisplacement(activeDOFs(d));
+    delta(activeDOFs(d)) = deltaest(d) + prevDisplacement(activeDOFs(d)) + startPos(activeDOFs(d));
 end
 
 % Calculating SP lengths based on first delta approximation
@@ -93,7 +106,7 @@ while pass == 0 && counter<maxnumiter;
     deltaest = (Jacobian\(actualLengths - lengthscalc)')' + deltaest;
     
     for d = 1:length(activeDOFs)
-        delta(activeDOFs(d)) = deltaest(d) + prevDisplacement(activeDOFs(d));
+        delta(activeDOFs(d)) = deltaest(d) + prevDisplacement(activeDOFs(d)) + startPos(activeDOFs(d));
     end
     
     lengthscalc = dof2act(delta,v0,me.plat,me.base);
@@ -131,19 +144,18 @@ end
 %% Store the resulting cartesian displacement
 curLbcbCP.response.ed.disp = zeros(6,1);
 for i = 1:length(activeDOFs)
-    curLbcbCP.response.ed.disp(activeDOFs(i)) = deltaest(i);
+    curLbcbCP.response.ed.disp(activeDOFs(i)) = deltaest(i) - startPos(activeDOFs(i));
 end
 
 % me.log.debug(dbstack,sprintf('ed control point: %s',curLbcbCP.toString()))
 
 
 %% Nested function to calculate Cartesian displacement at startup:
-    function [prevLengths, actualLengths, prevDisplacement] = firstStep(me)
+    function [prevLengths, actualLengths, prevDisplacement] = firstStep(me,v0,startPos)
        
-       v0 = [0 0 0]';
-       activeDOFs = me.activeDofs;       
-       
-       actualLengths = dof2act(zeros(6,1),v0,me.plat,me.base);
+       activeDOFs = me.activeDofs;
+     
+       actualLengths = dof2act(startPos,v0,me.plat,me.base);
        prevLengths = actualLengths;
        prevDisplacement = zeros(6,1);       
 %        activeDOFs = [1 3 5];
@@ -151,7 +163,8 @@ end
        
        %% Calculating displacement Jacobian for unknown startup position
        % Setting delta(i) to zeros since nothing is known at startup
-       delta = [0 0 0 0 0 0]';      
+%        delta = [0 0 0 0 0 0]';   
+       delta=startPos;
 %        me.log.debug(dbstack,sprintf('activeDOFS [%s]',dumpVector(activeDOFs)));
 %        me.log.debug(dbstack,sprintf('perturbations [%s]',dumpVector(me.perturbations)));
 %        me.log.debug(dbstack,sprintf('actualLengths [%s]',dumpVector(actualLengths)));
