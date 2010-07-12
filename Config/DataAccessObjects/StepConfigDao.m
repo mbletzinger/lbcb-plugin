@@ -20,8 +20,9 @@ classdef StepConfigDao < handle
         substepIncL1
         substepIncL2
         edCalculationFunction
+        ddNeedsCorrectionFunctions
         ddCalculationFunction
-        ddCorrectionFunction
+        ddAdjustTargetFunction
         triggerEverySubstep
     end
     properties
@@ -92,11 +93,17 @@ classdef StepConfigDao < handle
         function set.ddCalculationFunction(me,value)
             me.dt.setString('step.dd.calculation.function',value);
         end
-        function result = get.ddCorrectionFunction(me)
-             result = me.dt.getString('step.dd.correction.function','noDdAdjustTarget');
+        function result = get.ddAdjustTargetFunction(me)
+             result = me.dt.getString('step.dd.adjustTarget.function','noDdAdjustTarget');
         end
-        function set.ddCorrectionFunction(me,value)
-            me.dt.setString('step.dd.correction.function',value);
+        function set.ddAdjustTargetFunction(me,value)
+            me.dt.setString('step.dd.adjustTarget.function',value);
+        end
+        function result = get.ddNeedsCorrectionFunctions(me)
+             result = me.dt.getStringVector('step.dd.needsCorrection.function','noDdNeedsCorrectionTarget');
+        end
+        function set.ddNeedsCorrectionFunctions(me,value)
+            me.dt.setStringVector('step.dd.needsCorrection.function',value);
         end
         function result = get.triggerEverySubstep(me)
              result = me.dt.getInt('step.triggerEveryStep',0);
