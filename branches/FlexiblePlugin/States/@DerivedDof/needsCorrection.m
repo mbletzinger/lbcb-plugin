@@ -1,11 +1,11 @@
 % generate a new LbcbStep based on the current step
-function calculate(me,cstep)
+function yes = needsCorrection(me,step)
 me.loadCfg();
 scfg = StepCorrectionConfigDao(me.cdp.cfg);
-funcs = scfg.ddCalculationFunctions;
+funcs = scfg.needsCorrectionFunctions;
 if strcmp(funcs{2 + level},'<NONE>')
     return;
 end
-ddCalc = str2func(funcs{2 + level});
-ddCalc(me,cstep);
+ddCorrect = str2func(funcs{2 + level});
+yes = ddCorrect(me,step);
 end

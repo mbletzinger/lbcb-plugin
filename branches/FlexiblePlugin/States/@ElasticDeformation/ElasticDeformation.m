@@ -14,7 +14,7 @@
 % $LastChangedDate: 2009-05-31 07:19:36 -0500 (Sun, 31 May 2009) $
 % $Author: mbletzin $
 % =====================================================================================================================
-classdef ElasticDeformation < handle
+classdef ElasticDeformation < Corrections
     properties
         base = [];
         plat = [];
@@ -35,20 +35,14 @@ classdef ElasticDeformation < handle
     end
     methods
         function me = ElasticDeformation(cdp,isLbcb1)
-            me.cdp = cdp;
+            me = me@Corrections(cdp);
             me.isLbcb1 = isLbcb1;
         end
         function deltaDiff(me,command,response)
             me.correctionDeltas = response.disp - command.disp;
         end
-        function adjustTarget(me,curLbcbCp)
-            me.log.debug(dbstack,'ed Adjustment here*******************');
-            curLbcbCp.command.disp = curLbcbCp.command.disp - me.correctionDeltas;
-            curLbcbCp.correctionDeltas = me.correctionDeltas;
-            curLbcbCp.command.clearNonControlDofs();
-        end
+        adjustTarget(me,curLbcbCp)
         % calculate LBCB position based on external sensor readings.
         calculate(me, curLbcbCp,prevLbcbCp)
-        loadConfig(me)
     end
 end
