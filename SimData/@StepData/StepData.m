@@ -4,7 +4,7 @@ classdef StepData < handle
         modelCps;
         stepNum;
         externalSensorsRaw;
-        dData;
+        cData;
         log = Logger('StepData');
         jid;
         mdlLbcb;
@@ -21,7 +21,7 @@ classdef StepData < handle
             me.modelCps = {}; % Instances of model control points
             me.stepNum = {}; % StepNumber instance
             me.externalSensorsRaw = [];
-            me.dData = DerivedData;
+            me.cData = CorrectionData;
             me.jid = {};
             me.mdlLbcb = [];
             me.mdlUiSimCor = [];

@@ -4,6 +4,7 @@ classdef Archiver < handle
         extSensA;
         lbcbReadA;
         edReadA;
+        corDataA
         archiveOn
     end
     methods
@@ -12,6 +13,7 @@ classdef Archiver < handle
             me.extSensA = DataArchive('ExternalSensors');
             me.lbcbReadA = DataArchive('LbcbReadings');
             me.edReadA = DataArchive('ElasticDefReadings');
+            me.corDataA = DataArchive('CorrectionData');
             me.archiveOn = false;
             me.commandA.headers = ...
                 {'Step','LBCB1 Dx','LBCB1 Dy','LBCB1 Dz','LBCB1 Rx','LBCB1 Ry','LBCB1 Rz',...
@@ -30,6 +32,7 @@ classdef Archiver < handle
                 me.lbcbReadA.writeHeaders();
                 me.edReadA.writeHeaders();
                 me.extSensA.writeHeaders();
+                me.corDataA.writeHeaders();
             end
         end
         function archive(me,step)
@@ -54,6 +57,9 @@ classdef Archiver < handle
             end
             me.edReadA.write(step.stepNum.toString(),values,'');
             me.extSensA.write(step.stepNum.toString(),step.externalSensorsRaw,'');
+        end
+        function setCorDataHeaders(me,step)
+            me.corDataA.headers = list;
         end
     end
 end
