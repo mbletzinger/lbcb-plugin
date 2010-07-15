@@ -8,7 +8,7 @@ classdef CorrectionSettingsConfigActions < handle
     methods
         function me = CorrectionSettingsConfigActions(cfg)
             me.ccfg = CorrectionsSettingsDao(cfg);
-            me.table = cell(20,4);
+            me.table = cell(20,2);
             me.fillTable();
         end
         function setCell(me,indices,data,errString)
@@ -32,14 +32,6 @@ classdef CorrectionSettingsConfigActions < handle
                     cols = me.ccfg.cfgValues;
                     cols(indices(1)) = data;
                     me.ccfg.cfgValues = cols;
-                case 3
-                    cols = me.ccfg.datLabels;
-                    cols{indices(1)} = data;
-                    me.ccfg.datLabels = cols;
-                case 4
-                    cols = me.ccfg.archLabels;
-                    cols{indices(1)} = data;
-                    me.ccfg.archLabels = cols;
                 otherwise
                     me.log.error(dbstack,sprintf('Cannot handle column %d',indices(2)));
             end
@@ -47,35 +39,25 @@ classdef CorrectionSettingsConfigActions < handle
         function initialize(me,handles)
             me.handles = handles;
             set(me.handles.CfgSettings,'Data',me.table);
-            format = {'char','numeric','char','char'};
+            format = {'char','numeric'};
             set(me.handles.CfgSettings,'ColumnFormat',format);
         end
         function fillTable(me)
             for i = 1:20
                 me.table{i,1} = '';
                 me.table{i,2} = 0.0;
-                me.table{i,3} = '';
-                me.table{i,4} = '';
             end
             if isempty(me.ccfg.cfgLabels)
                 return;
             end
             cfgLabels = me.ccfg.cfgLabels;
             cfgValues = me.ccfg.cfgValues;
-            datLabels = me.ccfg.datLabels;
-            archLabels = me.ccfg.archLabels;
             sz = size(cfgLabels,1);
             for i = 1:sz
                 if isempty(cfgLabels{i}) == false
                     me.table{i,1} = cfgLabels{i};
                 end
                 me.table{i,2} = cfgValues(i);
-                if isempty(datLabels{i}) == false
-                    me.table{i,3} = datLabels{i};
-                end
-                if isempty(archLabels{i}) == false
-                    me.table{i,4} = archLabels{i};
-                end
             end
         end
     end

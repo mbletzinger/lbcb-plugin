@@ -9,13 +9,13 @@
 % $LastChangedDate: 2009-06-01 15:30:46 -0500 (Mon, 01 Jun 2009) $
 % $Author: mbletzin $
 % =====================================================================================================================
-classdef ProcessResponse < OmState
+classdef ProcessResponse < Step
     properties
         log = Logger('ProcessResponse');
     end
     methods
         function me = ProcessResponse()
-            me = me@OmState();
+            me = me@Step();
         end
         function start(me)
             me.edCalculate();

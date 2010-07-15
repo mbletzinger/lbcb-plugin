@@ -8,9 +8,11 @@ if me.steps.started == false
 end
 if me.needsCorrection()
     me.dat.nextCorrectionStep();
-    me.edAdjust();
-    me.derivedDofAdjust();
+    me.adjustTarget(me.dat.nextStepData);
     me.log.info(dbstack,'Generating correction step');
+    if me.ddlevel > 1 % ED needs to move to new DD target
+        me.dat.correctionTarget = me.dat.nextStepData;
+    end
 else
     % get next input step
     stp = me.steps.next();
