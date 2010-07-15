@@ -1,11 +1,11 @@
 % generate a new LbcbStep based on the current step
-function adjustTarget(me,step)
+function adjustTarget(me,lbcbCps)
 me.loadCfg();
 scfg = StepCorrectionConfigDao(me.cdp.cfg);
 funcs = scfg.adjustTargetFunctions;
-if strcmp(funcs{2 + level},'<NONE>')
+if strcmp(funcs{1},'<NONE>')
     return;
 end
-ddAdjust = str2func(funcs{2 + level});
-ddAdjust(me,step);
+edAdjust = str2func(funcs{1});
+edAdjust(me,lbcbCps);
 end
