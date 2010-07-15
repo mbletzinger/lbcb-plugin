@@ -4,7 +4,6 @@ classdef Corrections < handle
         cfgH
         datH
         archH
-        su
     end
     methods
         function me = Corrections(cdp)

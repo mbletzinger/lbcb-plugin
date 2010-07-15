@@ -15,13 +15,14 @@ classdef HandleFactory <  handle
         
         % Corrections
         ed = cell(2,1);
-        dd = [];
+        dd = cell(4,1);
         
         % Simulation States and Executors
-        omStates = cell(5,1);
+        omStates = cell(3,1);
         simStates = cell(3,1);
         simCorStates = cell(2,1);
         brdcstStates = cell(3,1);
+        stpStates = cell(2,1);
         
         %Display update instance
         gui = [];
@@ -81,8 +82,9 @@ classdef HandleFactory <  handle
             me.omStates{1} = OpenCloseOm;
             me.omStates{2} = ProposeExecuteOm;
             me.omStates{3} = GetControlPointsOm;
-            me.omStates{4} = NextStep;
-            me.omStates{5} = ProcessResponse;
+
+            me.stpStates{1} = NextStep;
+            me.stpStates{2} = ProcessResponse;
             
             me.simStates{1} = StepStates;
             me.simStates{2} = TargetStates;
@@ -118,7 +120,9 @@ classdef HandleFactory <  handle
             
             me.ed{1} = ElasticDeformation(cdp,1);
             me.ed{2} = ElasticDeformation(cdp,0);
-            me.dd = DerivedDof(cdp);
+            for i = 1:4
+                me.dd{i} = DerivedDof(cdp,i - 1);
+            end
             me.st{1} = StepTolerances(me.cfg,1);
             me.st{2} = StepTolerances(me.cfg,0);
             
@@ -133,17 +137,30 @@ classdef HandleFactory <  handle
             me.dat.cdp = cdp;
             me.arch = Archiver(cdp);
             
-            me.omStates{4}.st = me.st;
+            me.ed{1}.st = me.st;
+            me.ed{2}.st = me.st;
             
             for c =1:length(me.omStates)
                 me.omStates{c}.cdp = cdp;
-                me.omStates{c}.dd = me.dd;
-                me.omStates{c}.ed = me.ed;
                 me.omStates{c}.gui = me.gui;
                 me.omStates{c}.dat = me.dat;
-                me.omStates{c}.sdf = me.sdf;
                 me.omStates{c}.mdlLbcb = me.mdlLbcb;
-                
+            end
+            
+            for c =1:length(me.stpStates)
+                me.stpStates{c}.cdp = cdp;
+                me.stpStates{c}.gui = me.gui;
+                me.stpStates{c}.dat = me.dat;
+                me.stpStates{c}.sdf = me.sdf;
+                me.stpStates{c}.ed = me.ed;
+                me.stpStates{c}.dd = me.dd;
+            end
+            
+            for c =1:4
+                me.dd{c}.cdp = cdp;
+                if c < 3
+                me.ed{c}.cdp = cdp;
+                end
             end
             
             me.fakeGcp = GetControlPointsFake(cdp);
@@ -230,10 +247,10 @@ classdef HandleFactory <  handle
             c= me.omStates{3};
         end
         function c = get.nxtStep(me)
-            c= me.omStates{4};
+            c= me.stpStates{1};
         end
         function c = get.pResp(me)
-            c= me.omStates{5};
+            c= me.stpStates{2};
         end
         function c = get.stpEx(me)
             c= me.simStates{1};

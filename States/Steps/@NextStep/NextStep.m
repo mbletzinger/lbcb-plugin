@@ -9,27 +9,28 @@
 % $LastChangedDate: 2009-06-01 15:30:46 -0500 (Mon, 01 Jun 2009) $
 % $Author: mbletzin $
 % =====================================================================================================================
-classdef NextStep < States
+classdef NextStep < Step
     properties
         steps = [];
         stepsCompleted = 0;
-        st = [];
         log = Logger('NextStep');
-        
+        ddlevel
+        edCorrect
     end
     methods
         function me = NextStep()
-            me = me@States();
+            me = me@Step();
         end
         function start(me)
             me.stepsCompleted = false;
+            me.ddlevel = 1;
+            me.edCorrect = false;
         end
         done = isDone(me)
     end
     methods (Access='private')
         needsCorrection = needsCorrection(me)
-        edAdjust(me)
-        prelimAdjust(me)
-        derivedDofAdjust(me)
+        adjustTarget(me,target)
+        prelimAdjust(me,target)
     end
 end

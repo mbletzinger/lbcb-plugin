@@ -13,8 +13,6 @@ classdef CorrectionsSettingsDao < handle
     properties (Dependent = true)
         cfgLabels
         cfgValues
-        datLabels
-        archLabels
     end
     properties
         dt;
@@ -34,18 +32,6 @@ classdef CorrectionsSettingsDao < handle
         end
         function set.cfgValues(me,value)
             me.dt.setDoubleVector('correctionSettings.values.cfg',value);
-        end
-        function result = get.datLabels(me)
-             result = me.dt.getStringVector('correctionSettings.labels.dat',[]);
-        end
-        function set.datLabels(me,value)
-            me.dt.setStringVector('correctionSettings.labels.dat',value);
-        end
-        function result = get.archLabels(me)
-             result = me.dt.getStringVector('correctionSettings.labels.arch',[]);
-        end
-        function set.archLabels(me,value)
-            me.dt.setStringVector('correctionSettings.labels.arch',value);
         end
     end
 end

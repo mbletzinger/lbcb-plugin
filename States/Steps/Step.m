@@ -1,12 +1,14 @@
-classdef OmState < States
+classdef Step < States
     properties
-        mdlLbcb = [];
         cdp = [];
+        ed = cell(2,1);
+        dd = cell(4,1);
         gui = [];
         dat = [];
+        sdf = [];
     end
     methods
-        function me = OmState()
+        function me = Step()
             me = me@States();
         end
         
