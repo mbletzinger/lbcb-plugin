@@ -11,19 +11,6 @@ classdef Corrections < handle
             me.cfgH = org.nees.uiuc.simcor.matlab.HashTable();
             me.datH = org.nees.uiuc.simcor.matlab.HashTable();
             me.archH = org.nees.uiuc.simcor.matlab.HashTable();
-            me.su = StringListUtils();
-            ccfg = CorrectionsSettingsDao(me.cdp.cfg);
-            datL = ccfg.datLabels;
-            lt = length(datL);
-            for v = 1:lt
-                me.datH.put(datL{v},0.00);
-            end
-            archL = ccfg.archLabels;
-            lt = length(archL);
-            for v = 1:lt
-                me.datH.put(archL{v},0.00);
-            end
-            
         end
         function val = getCfg(me,lbl)
             val = me.cfgH.get(lbl);

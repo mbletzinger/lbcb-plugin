@@ -22,7 +22,7 @@ function varargout = LbcbPlugin(varargin)
 
 % Edit the above text to modify the response to help LbcbPlugin
 
-% Last Modified by GUIDE v2.5 05-Jun-2010 14:19:59
+% Last Modified by GUIDE v2.5 16-Jul-2010 09:10:05
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -1096,11 +1096,11 @@ TargetConfig('cfg',handles.actions.hfact.cfg);
 
 
 % --------------------------------------------------------------------
-function DerivedDofFactors_Callback(hObject, eventdata, handles)
-% hObject    handle to DerivedDofFactors (see GCBO)
+function CorrectionSettings_Callback(hObject, eventdata, handles)
+% hObject    handle to CorrectionSettings (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-DerivedDofConfig('cfg',handles.actions.hfact.cfg);
+CorrectionSettingsConfig('cfg',handles.actions.hfact.cfg);
 
 
 % --------------------------------------------------------------------
