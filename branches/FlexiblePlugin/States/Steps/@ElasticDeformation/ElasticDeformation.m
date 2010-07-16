@@ -18,17 +18,9 @@ classdef ElasticDeformation < Corrections
     properties
         base = [];
         plat = [];
-        previousLengths = [];
-        currentLengths = [];
-	    initialExtensions = [];
-        initialLengths = [];
-        jacobian = [];
-        calcPlatCtr = [];
-        MeasPltCtr = [];
         perturbations = [];
         potTol = [];
         activeDofs = [];
-        correctionDeltas = zeros(6,1);
         st = [];
         log = Logger('ElasticDeformation');
         isLbcb1 = 0;
@@ -37,9 +29,6 @@ classdef ElasticDeformation < Corrections
         function me = ElasticDeformation(cdp,isLbcb1)
             me = me@Corrections(cdp);
             me.isLbcb1 = isLbcb1;
-        end
-        function deltaDiff(me,command,response)
-            me.correctionDeltas = response.disp - command.disp;
         end
         adjustTarget(me,curLbcbCp)
         % calculate LBCB position based on external sensor readings.
