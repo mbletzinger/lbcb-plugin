@@ -1,5 +1,5 @@
 function coupledWallEdCalculate(me, curLbcbCP,prevLbcbCP)
-me.loadConfig();
+
 lbcbR = curLbcbCP.response;
 
 % me.log.debug(dbstack,sprintf('ED Step: %s',curLbcbCP.toString()));
@@ -117,6 +117,13 @@ end
 curLbcbCP.response.ed.disp = zeros(6,1);
 for i = 1:length(activeDOFs)
     curLbcbCP.response.ed.disp(activeDOFs(i)) = deltaest(i);
+end
+
+correctionDeltas = curLbcbCP.response.ed.disp - curLbcbCP.command.disp;
+ls = {'Dx' 'Dy' 'Dz' 'Rx' 'Ry' 'Rz'};
+for d = 1:6
+    lbl = sprintf('corDelta%s',ls{d});
+    me.putDat{lbl} = correctionDeltas(d);
 end
 
 % me.log.debug(dbstack,sprintf('ed control point: %s',curLbcbCP.toString()))
