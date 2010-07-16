@@ -41,7 +41,7 @@ classdef LbcbPluginResults < handle
         bsimst
         bstpst
         bsrc
-
+        bcor
     end
     methods
         function me  = LbcbPluginResults(handles,hfact)
@@ -68,6 +68,7 @@ classdef LbcbPluginResults < handle
         updateStepState(me,idx)
         updateSimState(me,idx)
         updateSource(me,idx)        
+        updateCorrections(me,nc,ed,dd)        
     end
     methods (Access=private)
         colorFaultText(me,hndl,fault,isLbcb1,f)
