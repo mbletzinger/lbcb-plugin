@@ -33,5 +33,7 @@ classdef ElasticDeformation < Corrections
         adjustTarget(me,curLbcbCp)
         % calculate LBCB position based on external sensor readings.
         calculate(me, curLbcbCp,prevLbcbCp)
+        loadConfig(me)
+        yes = needsCorrection(me,lbcbCps,targetCps)
     end
 end
