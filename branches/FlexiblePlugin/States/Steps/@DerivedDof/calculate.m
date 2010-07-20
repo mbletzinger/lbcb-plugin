@@ -2,10 +2,7 @@
 function calculate(me,cstep)
 me.loadCfg();
 scfg = StepCorrectionConfigDao(me.cdp.cfg);
-if scfg.doCalculations{2+ level} == false
-    return;
-end
-funcs = scfg.ddCalculationFunctions;
+funcs = scfg.calculationFunctions;
 if strcmp(funcs{2 + level},'<NONE>')
     return;
 end

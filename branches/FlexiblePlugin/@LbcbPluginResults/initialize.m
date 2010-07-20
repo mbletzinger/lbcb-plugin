@@ -219,6 +219,7 @@ if isempty(me.handles) == 0
     image(titleIm);
     axis off;
     me.updateSource(3);
+    me.updateCorrections(false,false,false);
 end
 me.colorRunButton('OFF');
 end

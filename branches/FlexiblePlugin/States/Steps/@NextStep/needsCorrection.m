@@ -10,6 +10,9 @@ if me.dat.curStepData.needsCorrection == false
 end
 scfg = StepCorrectionConfigDao(me.cdp.cfg);
 doCorrections = scfg.doCorrections;
+if isempty(doCorrections)
+    return;
+end
 for lv = 1:length(doCorrections)
     if doCorrections{lv} == true;
         switch lv

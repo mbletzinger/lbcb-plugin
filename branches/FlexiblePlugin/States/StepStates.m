@@ -9,6 +9,7 @@ classdef StepStates < SimStates
         gettingInitialPosition;
         doTriggering
         log = Logger('StepStates');
+        st
     end
     methods
         function me = StepStates()
@@ -64,7 +65,7 @@ classdef StepStates < SimStates
                             if me.isFake() == false
                                 me.peOm.start()
                             end
-                            me.gui.updateStepTolerances(me.nxtStep.st);
+                            me.gui.updateStepTolerances(me.st);
                             me.gui.updateCommandTable();
                             me.gui.updateStepsDisplay(me.dat.nextStepData.stepNum);
                         end

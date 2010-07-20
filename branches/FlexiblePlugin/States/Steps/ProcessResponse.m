@@ -29,6 +29,11 @@ classdef ProcessResponse < Step
     methods (Access='private')
         function edCalculate(me)
                 %calculate elastic deformations
+                ccfg = StepCorrectionConfigDao(me.cdp.cfg);
+                doC = ccfg.doCalculations;
+                if isempty(doC) || doC(1) == false
+                    return;
+                end
                 for l = 1: me.cdp.numLbcbs()
                     ccps = me.dat.curStepData.lbcbCps{l};
                     pcps = {};
@@ -41,6 +46,11 @@ classdef ProcessResponse < Step
         end
         function derivedDofCalculate(me)
             for d = 1:4
+                ccfg = StepCorrectionConfigDao(me.cdp.cfg);
+                doC = ccfg.doCalculations;
+                if isempty(doC) || doC(1 + d) == false
+                    continue;
+                end
                 me.dd{d}.calculate(me.dat.curStepData);
                 me.dd{d}.saveData(me.dat.curStepData);
             end
