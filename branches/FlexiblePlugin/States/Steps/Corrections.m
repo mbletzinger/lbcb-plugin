@@ -67,11 +67,13 @@ classdef Corrections < handle
             keys = me.archH.keys();
             lt = length(keys);
             labels = cell(lt,1);
+            values = zeros(lt,1);
             for v = 1:lt
-                labels{v} = char(keys{v});
+                labels{v} = char(keys(v));
+                values(v) = me.archH.get(labels{v});
             end
             step.cData.labels = labels;
-            step.cData.values = me.archH.values();
+            step.cData.values = values;
         end
     end
 end
