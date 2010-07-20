@@ -6,7 +6,7 @@ if me.steps.started == false
     me.dat.correctionTarget = me.dat.nextStepData;
     return;
 end
-if me.needsCorrection(2 + me.ddlevel)
+if me.needsCorrection()
     me.dat.nextCorrectionStep();
     me.adjustTarget(me.dat.nextStepData);
     me.log.info(dbstack,'Generating correction step');

@@ -24,10 +24,10 @@ classdef TotalFxVsLbcbDx < handle
             if me.isLbcb1
                 cpsidx = 1;
             end
-            if isempty(step.dData.values)
+            if isempty(step.cData.values)
                 return;
             end
-            tfx = step.dData.values(1);
+            tfx = step.cData.values(1);
             cdx = step.lbcbCps{cpsidx}.command.disp(1);
             mdx = step.lbcbCps{cpsidx}.response.disp(1);
             if(me.haveData)
