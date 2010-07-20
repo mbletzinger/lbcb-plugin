@@ -123,7 +123,7 @@ correctionDeltas = curLbcbCP.response.ed.disp - curLbcbCP.command.disp;
 ls = {'Dx' 'Dy' 'Dz' 'Rx' 'Ry' 'Rz'};
 for d = 1:6
     lbl = sprintf('corDelta%s',ls{d});
-    me.putDat{lbl} = correctionDeltas(d);
+    me.putArch(lbl,correctionDeltas(d));
 end
 
 % me.log.debug(dbstack,sprintf('ed control point: %s',curLbcbCP.toString()))

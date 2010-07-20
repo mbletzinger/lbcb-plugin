@@ -20,8 +20,6 @@ classdef CorrectionSettingsConfigActions < handle
             if old < 1
                 me.ccfg.cfgLabels = repmat({''},20,1);
                 me.ccfg.cfgValues = zeros(20,1);
-                me.ccfg.datLabels = repmat({''},20,1);
-                me.ccfg.archLabels = repmat({''},20,1);
             end
             switch indices(2)
                 case 1
