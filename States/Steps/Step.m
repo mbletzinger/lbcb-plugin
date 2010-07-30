@@ -3,6 +3,7 @@ classdef Step < States
         cdp = [];
         ed = cell(2,1);
         dd = cell(4,1);
+        pa = []
         gui = [];
         dat = [];
         sdf = [];

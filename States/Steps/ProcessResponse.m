@@ -20,6 +20,7 @@ classdef ProcessResponse < Step
         function start(me)
             me.edCalculate();
             me.derivedDofCalculate();
+            me.ed{1}.saveData(me.dat.curStepData);
         end
         function done = isDone(me)
             me.statusReady();
@@ -41,7 +42,6 @@ classdef ProcessResponse < Step
                         pcps = me.dat.prevStepData.lbcbCps{l};
                     end
                     me.ed{l}.calculate(ccps,pcps);
-                    me.ed{l}.saveData(me.dat.curStepData);
                 end
         end
         function derivedDofCalculate(me)
@@ -52,7 +52,6 @@ classdef ProcessResponse < Step
                     continue;
                 end
                 me.dd{d}.calculate(me.dat.curStepData);
-                me.dd{d}.saveData(me.dat.curStepData);
             end
         end
     end

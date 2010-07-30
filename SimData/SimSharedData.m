@@ -34,12 +34,21 @@ classdef SimSharedData < handle
             if me.cdp.numLbcbs() > 1
                 cmd2 = me.curStepData.lbcbCps{2}.command;
             end
-                me.nextStepData = me.sdf.target2StepData({ cmd1, ...
-                    cmd2 }, me.curStepData.stepNum.step, ...
-                    me.curStepData.stepNum.subStep);
-                me.nextStepData.stepNum = me.curStepData.stepNum.next(stype);
-                me.nextStepData.needsCorrection = true;
-                me.correctionStepData = me.nextStepData;
+            me.nextStepData = me.sdf.target2StepData({ cmd1, ...
+                cmd2 }, me.curStepData.stepNum.step, ...
+                me.curStepData.stepNum.subStep);
+            me.nextStepData.stepNum = me.curStepData.stepNum.next(stype);
+            me.nextStepData.needsCorrection = true;
+            me.correctionStepData = me.nextStepData;
+        end
+        function step = curTarget2Step(me)
+            cmd1 = me.curTarget.lbcbCps{1}.command;
+            cmd2 = [];
+            if me.cdp.numLbcbs() > 1
+                cmd2 = me.curTarget.lbcbCps{2}.command;
+            end
+            step = me.sdf.target2StepData({ cmd1, ...
+                cmd2 }, me.curTarget.stepNum.step,0);
         end
         function table = cmdTable(me)
             lbls = {'Current Target','Previous Target','Correction Target',...

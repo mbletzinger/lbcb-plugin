@@ -8,9 +8,6 @@ classdef Corrections < handle
     methods
         function me = Corrections(cdp)
             me.cdp = cdp;
-            me.cfgH = org.nees.uiuc.simcor.matlab.HashTable();
-            me.datH = org.nees.uiuc.simcor.matlab.HashTable();
-            me.archH = org.nees.uiuc.simcor.matlab.HashTable();
         end
         function val = getCfg(me,lbl)
             val = me.cfgH.get(lbl);

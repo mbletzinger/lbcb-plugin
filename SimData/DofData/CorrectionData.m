@@ -6,7 +6,6 @@ classdef CorrectionData < handle
     methods
         function set.labels(me,lbls)
             me.labels = lbls;
-            me.values = zeros(size(me.labels)); %#ok<MCSUP>
         end
         function clone = clone(me)
             clone = DerivedData;

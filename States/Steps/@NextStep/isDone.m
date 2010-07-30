@@ -3,11 +3,12 @@ done = 1;
 me.statusReady();
 if me.steps.started == false
     me.dat.nextStepData = me.steps.next();
+    me.prelimAdjust();
     me.dat.correctionTarget = me.dat.nextStepData;
     return;
 end
 if me.needsCorrection()
-    me.dat.nextCorrectionStep();
+    me.dat.nextCorrectionStep(2 + me.ddlevel);
     me.adjustTarget(me.dat.nextStepData);
     me.log.info(dbstack,'Generating correction step');
     if me.ddlevel > 1 % ED needs to move to new DD target
@@ -22,7 +23,7 @@ else
     else
         me.dat.nextStepData = stp;
         me.prelimAdjust();
-        me.dat.correctionTarget = stp;
+        me.dat.correctionTarget = me.dat.nextStepData;
     end
 end
 me.log.debug(dbstack,sprintf('Next Step is %s',me.dat.nextStepData.toString()));
