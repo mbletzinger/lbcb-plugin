@@ -120,9 +120,14 @@ for i = 1:length(activeDOFs)
 end
 
 correctionDeltas = curLbcbCP.response.ed.disp - curLbcbCP.command.disp;
+
 ls = {'Dx' 'Dy' 'Dz' 'Rx' 'Ry' 'Rz'};
+lb = 'L2';
+if me.isLbcb1
+    lb = 'L1';
+end
 for d = 1:6
-    lbl = sprintf('corDelta%s',ls{d});
+    lbl = sprintf('%scorDelta%s',lb,ls{d});
     me.putArch(lbl,correctionDeltas(d));
 end
 

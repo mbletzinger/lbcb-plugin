@@ -16,6 +16,7 @@ classdef HandleFactory <  handle
         % Corrections
         ed = cell(2,1);
         dd = cell(4,1);
+        pa = [];
         
         % Simulation States and Executors
         omStates = cell(3,1);
@@ -82,7 +83,7 @@ classdef HandleFactory <  handle
             me.omStates{1} = OpenCloseOm;
             me.omStates{2} = ProposeExecuteOm;
             me.omStates{3} = GetControlPointsOm;
-
+            
             me.stpStates{1} = NextStep;
             me.stpStates{2} = ProcessResponse;
             
@@ -119,12 +120,27 @@ classdef HandleFactory <  handle
                 me.fillButtons(handle)
             end
             DataDisplay.setMenuHandle(handle);
+            cfgH = org.nees.uiuc.simcor.matlab.HashTable();
+            datH = org.nees.uiuc.simcor.matlab.HashTable();
+            archH = org.nees.uiuc.simcor.matlab.HashTable();
+            for i = 1:2
+                me.ed{i} = ElasticDeformation(cdp,(i == 1));
+                me.ed{i}.cfgH = cfgH;
+                me.ed{i}.datH = datH;
+                me.ed{i}.archH = archH;
+            end
             
-            me.ed{1} = ElasticDeformation(cdp,1);
-            me.ed{2} = ElasticDeformation(cdp,0);
             for i = 1:4
                 me.dd{i} = DerivedDof(cdp,i - 1);
+                me.dd{i}.cfgH = cfgH;
+                me.dd{i}.datH = datH;
+                me.dd{i}.archH = archH;
             end
+            me.pa = PrelimAdjustment(cdp);
+            me.pa.cfgH = cfgH;
+            me.pa.datH = datH;
+            me.pa.archH = archH;
+            
             me.st{1} = StepTolerances(me.cfg,1);
             me.st{2} = StepTolerances(me.cfg,0);
             
@@ -156,12 +172,13 @@ classdef HandleFactory <  handle
                 me.stpStates{c}.sdf = me.sdf;
                 me.stpStates{c}.ed = me.ed;
                 me.stpStates{c}.dd = me.dd;
+                me.stpStates{c}.pa = me.pa;
             end
             
             for c =1:4
                 me.dd{c}.cdp = cdp;
                 if c < 3
-                me.ed{c}.cdp = cdp;
+                    me.ed{c}.cdp = cdp;
                 end
             end
             
@@ -305,7 +322,7 @@ classdef HandleFactory <  handle
             bsrc = ButtonGroupManagement(handle.sourcePanel);
             bsrc.childHandles = {...
                 handle.ifButton,...
-                handle.scorButton,... 
+                handle.scorButton,...
                 handle.srcnButton,...
                 };
             bsrc.init()
@@ -313,7 +330,7 @@ classdef HandleFactory <  handle
             bcor = CorrectionButtonGroupManagement(handle.correctionPanel);
             bcor.childHandles = {...
                 handle.edButton,...
-                handle.ddButton,... 
+                handle.ddButton,...
                 handle.cornButton,...
                 };
             bcor.init()

@@ -1,7 +1,11 @@
 function needsCorrection = genEdNeedsCorrection(me,lbcbCps, target)
 needsCorrection = false;
-if isempty(me.dat.curStepData)
+if isempty(lbcbCps)
     return;
 end
-needsCorrection = me.st{1}.withinTolerances(target.command,lbcbCps.response);
+st = me.st{2};
+if me.isLbcb1
+    st = me.st{1};
+end
+needsCorrection = (st.withinTolerances(target.command,lbcbCps.response)) == false;
 end

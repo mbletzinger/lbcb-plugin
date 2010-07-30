@@ -1,10 +1,11 @@
 function steps = splitTarget(me)
 steps = Substeps();
-steps.steps = { me.dat.curTarget };
+stp = me.dat.curTarget2Step();
+steps.steps = { stp };
 sn = me.dat.curTarget.stepNum.step;
 if me.cdp.doStepSplitting == false
-    me.setCorrectionFlag(me.dat.curTarget);
-    me.setTriggeringFlag(me.dat.curTarget);
+    me.setCorrectionFlag(stp);
+    me.setTriggeringFlag(stp);
     return;
 end
 if me.cdp.numLbcbs() > 1
@@ -23,8 +24,8 @@ end
 numSteps = abs(finalDisp - initialDisp) ./ stpSize;
 maxNumSteps = max(ceil(numSteps));
 if maxNumSteps < 2
-    me.setCorrectionFlag(me.dat.curTarget);
-    me.setTriggeringFlag(me.dat.curTarget);
+    me.setCorrectionFlag(stp);
+    me.setTriggeringFlag(stp);
     return;
 end
 inc = (finalDisp - initialDisp) / maxNumSteps;
