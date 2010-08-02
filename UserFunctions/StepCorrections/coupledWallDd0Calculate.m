@@ -8,38 +8,38 @@ lbcb2Fz = cstep.lbcbCps{2}.response.force(3);
 lbcb1My = cstep.lbcbCps{1}.response.force(5);
 lbcb2My = cstep.lbcbCps{2}.response.force(5);
 
-kfactor = me.getCfg('kfactor');
-Fztarget = me.getCfg('Fztarget');
-dxlbcb1 = me.getCfg('dxlbcb1');
-dxlbcb2 = me.getCfg('dxlbcb2');
+kFactor = me.getCfg('kFactor');
+FzTarget = me.getCfg('FzTarget');
+dxLbcb1 = me.getCfg('dxLbcb1');
+dxLbcb2 = me.getCfg('dxLbcb2');
 
 % Calculating target moment move to calculate function
-Fxtot = lbcb1Fx + lbcb2Fx;
-MyTarget = Fxtot*kfactor;
+FxTotal = lbcb1Fx + lbcb2Fx;
+MyTarget = Fxtot*kFactor;
 
 % Calculating Fz error
-Fzerr = Fztarget - lbcb1Fz - lbcb2Fz;
+FzError = FzTarget - lbcb1Fz - lbcb2Fz;
 
 % Correcting Fz error
-Fz1tar = lbcb1Fz + Fzerr/2;
-Fz2tar = lbcb2Fz + Fzerr/2;
+Fz1Target = lbcb1Fz + FzError/2;
+Fz2Target = lbcb2Fz + FzError/2;
 
 % Calculating My error
 MyMy = lbcb1My + lbcb2My;   % Moment from individual pier bending
-MyFz = -dxlbcb1*Fz1tar - dxlbcb2*Fz2tar;    % Moment from axial loading
+MyFz = -dxLbcb1*lbcb1Fz - dxLbcb2*lbcb2Fz;    % Moment from axial loading
 MyActual = MyMy + MyFz;
-Myerr = MyTarget - MyActual;
+MyError = MyTarget - MyActual;
 
 % Correcting My error
-Fz1tar = Fz1tar + Myerr/(2*dxlbcb1);
-Fz2tar = Fz2tar + Myerr/(2*dxlbcb2);
+Fz1Target = Fz1Target + MyError/(2*dxLbcb1);
+Fz2Target = Fz2Target + MyError/(2*dxLbcb2);
 
-me.putDat('Fz1tar',Fz1tar);
-me.putDat('Fz2tar',Fz2tar);
-me.putArch('Fx total',Fxtot);
+me.putDat('Fz1Target',Fz1Target);
+me.putDat('Fz2Target',Fz2Target);
+me.putArch('Fx total',FxTotal);
 me.putArch('MyTarget',MyTarget);
 me.putArch('MyActual',MyActual);
-me.putDat('Myerr',Myerr);
+me.putDat('MyError',MyError);
 me.log.debug(dbstack, sprintf('Fx Corrections %s\n',me.dat2String()));
 me.log.debug(dbstack, sprintf('Total Force %s\n',me.arch2String()));
 end
