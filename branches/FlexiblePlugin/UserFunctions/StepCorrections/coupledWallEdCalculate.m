@@ -1,4 +1,4 @@
-function coupledWallEdCalculate(me, curLbcbCP,prevLbcbCP)
+function coupledWallEdCalculate(me, curLbcbCP,prevLbcbCP,tcps)
 
 lbcbR = curLbcbCP.response;
 
@@ -119,7 +119,7 @@ for i = 1:length(activeDOFs)
     curLbcbCP.response.ed.disp(activeDOFs(i)) = deltaest(i);
 end
 
-correctionDeltas = curLbcbCP.response.ed.disp - curLbcbCP.command.disp;
+correctionDeltas = curLbcbCP.response.ed.disp - tcps.command.disp;
 
 ls = {'Dx' 'Dy' 'Dz' 'Rx' 'Ry' 'Rz'};
 lb = 'L2';

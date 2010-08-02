@@ -5,8 +5,8 @@ FxL = cstep.lbcbCps{1}.response.force(1);
 FxR = cstep.lbcbCps{2}.response.force(1);
 
 yieldDelta = me.getCfg('yieldDelta');
-dxlbcb1 = me.getCfg('dxlbcb1');
-dxlbcb2 = me.getCfg('dxlbcb2');
+dxlbcb1 = me.getCfg('dxLbcb1');
+dxlbcb2 = me.getCfg('dxLbcb2');
 F1Factor = me.getCfg('F1Factor');
 F2Factor = me.getCfg('F2Factor');
 sideMountFactor = me.getCfg('sideMountFactor');

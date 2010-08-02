@@ -41,7 +41,13 @@ classdef ProcessResponse < Step
                     if isempty(me.dat.prevStepData) == false
                         pcps = me.dat.prevStepData.lbcbCps{l};
                     end
-                    me.ed{l}.calculate(ccps,pcps);
+                    if isempty(me.dat.curTarget)
+                        tcps = ccps;
+                    else
+                        tcps = me.dat.curTarget.lbcbCps{l};
+                    end
+                    
+                    me.ed{l}.calculate(ccps,pcps,tcps);
                 end
         end
         function derivedDofCalculate(me)
