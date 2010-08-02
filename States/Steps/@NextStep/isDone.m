@@ -4,7 +4,6 @@ me.statusReady();
 if me.steps.started == false
     me.dat.nextStepData = me.steps.next();
     me.prelimAdjust();
-    me.dat.correctionTarget = me.dat.nextStepData;
     return;
 end
 if me.needsCorrection()

@@ -15,14 +15,22 @@ classdef PrelimAdjustment < Corrections
             me = me@Corrections(cdp);
             me.log = Logger('PrelimAdjustment');
         end
-        function prelimAdjust(me,curStep, nextStep)
+        function edPrelimAdjust(me,curStep,nextStep)
+            me.prelimAdjust(curStep,nextStep,1);
+        end
+        function ddPrelimAdjust(me,curStep,nextStep)
+            me.prelimAdjust(curStep,nextStep,2);
+        end
+    end
+    methods (Access=private)
+        function prelimAdjust(me,curStep, nextStep,idx)
             me.loadCfg();
             scfg = StepCorrectionConfigDao(me.cdp.cfg);
             func = scfg.prelimAdjustTargetFunction;
-            if strcmp(func,'<NONE>')
+            if strcmp(func{idx},'<NONE>')
                 return;
             end
-            pAdjust = str2func(func);
+            pAdjust = str2func(func{idx});
             pAdjust(me,curStep, nextStep);
         end
     end

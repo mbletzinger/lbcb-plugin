@@ -1,3 +1,5 @@
 function prelimAdjust(me)
-    me.pa.prelimAdjust(me.dat.curStepData, me.dat.nextStepData);
+    me.pa.ddPrelimAdjust(me.dat.curStepData, me.dat.nextStepData);
+    me.dat.correctionTarget = me.dat.nextStepData;
+    me.pa.edPrelimAdjust(me.dat.curStepData, me.dat.nextStepData);
 end
