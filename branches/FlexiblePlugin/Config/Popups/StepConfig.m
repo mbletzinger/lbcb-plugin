@@ -22,7 +22,7 @@ function varargout = StepConfig(varargin)
 
 % Edit the above text to modify the response to help StepConfig
 
-% Last Modified by GUIDE v2.5 11-Jul-2010 19:03:55
+% Last Modified by GUIDE v2.5 30-Jul-2010 18:56:18
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -144,12 +144,11 @@ function CorrectionTable_CellEditCallback(hObject, eventdata, handles)
 handles.actions.setCorrectionCell(eventdata.Indices,eventdata.EditData);
 
 
-% --- Executes on selection change in PrelimAdjust.
-function PrelimAdjust_Callback(hObject, eventdata, handles)
-% hObject    handle to PrelimAdjust (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
+% --- Executes on selection change in edPrelimAdjust.
+function edPrelimAdjust_Callback(hObject, eventdata, handles)
+handles.actions.setPrelimAdjust(get(hObject,'Value'),1);
 
-% Hints: contents = cellstr(get(hObject,'String')) returns PrelimAdjust contents as cell array
-%        contents{get(hObject,'Value')} returns selected item from PrelimAdjust
-handles.actions.setPrelimAdjust(get(hObject,'Value'));
+
+% --- Executes on selection change in ddPrelimAdjust.
+function ddPrelimAdjust_Callback(hObject, eventdata, handles)
+handles.actions.setPrelimAdjust(get(hObject,'Value'),2);

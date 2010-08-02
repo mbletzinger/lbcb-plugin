@@ -44,9 +44,21 @@ classdef StepConfigActions < handle
             set(me.handles.CorrectionTable,'Data',me.correctionTable);
             format = {me.blist,me.blist,me.flist,me.flist,me.flist};
             set(me.handles.CorrectionTable,'ColumnFormat',format);
-            set(me.handles.PrelimAdjust,'String',me.flist);
-            val = me.locate(me.flist,me.sccfg.prelimAdjustTargetFunction);
-            set(me.handles.PrelimAdjust,'Value',val);
+            patf = me.sccfg.prelimAdjustTargetFunctions;
+            set(me.handles.edPrelimAdjust,'String',me.flist);
+            if isempty(patf) == false
+                val = me.locate(me.flist,patf{1});
+            else
+                val = 1;
+            end
+            set(me.handles.edPrelimAdjust,'Value',val);
+            set(me.handles.ddPrelimAdjust,'String',me.flist);
+            if isempty(patf) == false
+                val = me.locate(me.flist,patf{2});
+            else
+                val = 1;
+            end
+            set(me.handles.ddPrelimAdjust,'Value',val);
             
             yes = 0;
             if me.stcfg.correctEverySubstep > 0
@@ -114,8 +126,10 @@ classdef StepConfigActions < handle
             %	Error: error string when failed to convert EditData to appropriate value for Data
             me.saveValue(indices(1), indices(2),str);
         end
-        function setPrelimAdjust(me,str)
-            me.sccfg.prelimAdjustTargetFunction = me.flist{str};
+        function setPrelimAdjust(me,str,idx)
+            patf = me.sccfg.prelimAdjustTargetFunctions;
+            patf{idx} = me.flist{str};
+            me.sccfg.prelimAdjustTargetFunctions = patf;
         end
         function saveValue(me,row,column,value)
             cfg = me.sccfg;
