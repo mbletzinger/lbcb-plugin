@@ -18,11 +18,11 @@ for lv = 1:length(doCorrections)
         switch lv
             case 1
                 n1 = me.ed{1}.needsCorrection(me.dat.curStepData.lbcbCps{1},...
-                    me.dat.correctionTarget.lbcbCps{1});
+                    me.dat.curTarget.lbcbCps{1});
                 n2 = 0;
                 if me.cdp.numLbcbs() == 2
                     n2 = me.ed{2}.needsCorrection(me.dat.curStepData.lbcbCps{2},...
-                        me.dat.correctionTarget.lbcbCps{2});
+                        me.dat.curTarget.lbcbCps{2});
                 end
                 me.edCorrect = (n1 + n2) > 0;
                 needsCorrection = me.edCorrect;
