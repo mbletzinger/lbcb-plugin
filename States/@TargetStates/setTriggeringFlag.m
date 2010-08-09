@@ -1,5 +1,5 @@
 function setTriggeringFlag(me,step)
-scfg = StepConfigDao(me.cdp.cfg);
+scfg = StepTimingConfigDao(me.cdp.cfg);
 substep = step.stepNum.subStep;
 cess =  scfg.triggerEverySubstep;
 

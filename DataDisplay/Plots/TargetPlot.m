@@ -77,6 +77,10 @@ classdef TargetPlot < DisplayControl
                 ls = get(grp,'Children');
                 xd = me.xdata{li};
                 xlst = length(xd);
+                if xlst == 0
+                    me.log.debug(dbstack,'No data to plot');
+                    return;
+                end
                 yd = me.ydata{li};
                 set(ls(2),'XData',xd,'YData',yd);
                 set(ls(1),'XData',xd(xlst),'YData',yd(xlst));

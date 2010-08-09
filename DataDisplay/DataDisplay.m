@@ -13,6 +13,10 @@ classdef DataDisplay < handle
         FxVsDxL2 = {};
         DxStepL1 = {};
         DxStepL2 = {};
+        RyStepL1 = {};
+        RyStepL2 = {};
+        DzStepL1 = {};
+        DzStepL2 = {};
         log = Logger('DataDisplay');
         dat
         dbgWin
@@ -34,11 +38,15 @@ classdef DataDisplay < handle
             me.FxVsDxL2 = FxVsDx(0);
             me.DxStepL1 = OneDofStepPlot(1,me.dat,1);
             me.DxStepL2 = OneDofStepPlot(0,me.dat,1);
+            me.RyStepL1 = OneDofStepPlot(1,me.dat,5);
+            me.RyStepL2 = OneDofStepPlot(0,me.dat,5);
+            me.DzStepL1 = OneDofStepPlot(1,me.dat,3);
+            me.DzStepL2 = OneDofStepPlot(0,me.dat,3);
         end
         function startDataTable(me)
             me.dataTable.displayMe();
         end
-        function stopDataTable(me)
+        function stopDataTable(me) %#ok<*MANU>
             DataDisplay.deleteDisplay(0);
         end
         function startDebugWindow(me)
@@ -131,6 +139,34 @@ classdef DataDisplay < handle
                 DataDisplay.deleteDisplay(13);
             end
         end        
+        function startRyStep(me,isLbcb1)
+            if isLbcb1
+                me.RyStepL1.displayMe();
+            else
+                me.RyStepL2.displayMe();
+            end
+        end
+        function stopRyStep(me,isLbcb1)
+            if isLbcb1
+                DataDisplay.deleteDisplay(14);
+            else
+                DataDisplay.deleteDisplay(15);
+            end
+        end        
+        function startDzStep(me,isLbcb1)
+            if isLbcb1
+                me.DzStepL1.displayMe();
+            else
+                me.DzStepL2.displayMe();
+            end
+        end
+        function stopDzStep(me,isLbcb1)
+            if isLbcb1
+                DataDisplay.deleteDisplay(16);
+            else
+                DataDisplay.deleteDisplay(17);
+            end
+        end        
         function update(me)
             target = me.dat.curStepData;
             me.log.debug(dbstack, sprintf('Displaying %s',target.toString()));
@@ -139,6 +175,8 @@ classdef DataDisplay < handle
             me.RyVsDxL1.update(target);
             me.FxVsDxL1.update(target);
             me.DxStepL1.update();
+            me.RyStepL1.update();
+            me.DzStepL1.update();
             if me.cdp.numLbcbs() > 1
                 me.totalFxVsLbcbDxL1.update(target);
                 me.totalFxVsLbcbDxL2.update(target);
@@ -147,6 +185,8 @@ classdef DataDisplay < handle
                 me.MyVsDxL2.update(target);
                 me.RyVsDxL2.update(target);
                 me.DxStepL2.update();
+                me.RyStepL2.update();
+                me.DzStepL2.update();
             end
         end
         function setCdp(me,cdp)
@@ -157,6 +197,10 @@ classdef DataDisplay < handle
             me.dat = dt;
             me.DxStepL1.dat = dt; %#ok<*MCSUP>
             me.DxStepL2.dat = dt;
+            me.RyStepL1.dat = dt;
+            me.RyStepL2.dat = dt;
+            me.DzStepL1.dat = dt;
+            me.DzStepL2.dat = dt;
         end
         
     end
@@ -192,6 +236,14 @@ classdef DataDisplay < handle
                     ddMe.DxStepL1.undisplayMe();
                 case 13
                     ddMe.DxStepL2.undisplayMe();
+                case 14
+                    ddMe.RyStepL1.undisplayMe();
+                case 15
+                    ddMe.RyStepL2.undisplayMe();
+                case 16
+                    ddMe.DzStepL1.undisplayMe();
+                case 17
+                    ddMe.DzStepL2.undisplayMe();
                 otherwise
                     me.log.error(dbstack, sprintf('Case %d not recognized',display));
             end
@@ -204,7 +256,7 @@ classdef DataDisplay < handle
             global mhndl;
             mhndl = hndl;
         end
-        function checkOff(obj,event,c)
+        function checkOff(obj,event,c) %#ok<*INUSD,*INUSL>
             global mhndl;
             switch c
                 case 0
@@ -214,7 +266,7 @@ classdef DataDisplay < handle
                 case 2
                     set(mhndl.TotalFxVsLbcb2Dx,'Checked','off');
                 case 3
-                    set(mhndl.DebugWindow,'Checked','off');
+%                    set(mhndl.DebugWindow,'Checked','off');
                 case 4
                     set(mhndl.TotalMyVsLbcb1Dx,'Checked','off');
                 case 5
@@ -232,9 +284,17 @@ classdef DataDisplay < handle
                 case 11
                     set(mhndl.FxVsLbcb2Dx,'Checked','off');
                 case 12
-                    set(mhndl.Lbcb1DxStep,'Checked','off');
+                    set(mhndl.DxStepL1,'Checked','off');
                 case 13
-                    set(mhndl.Lbcb2DxStep,'Checked','off');
+                    set(mhndl.DxStepL2,'Checked','off');
+                case 14
+                    set(mhndl.RyStepL1,'Checked','off');
+                case 15
+                    set(mhndl.RyStepL2,'Checked','off');
+                case 16
+                    set(mhndl.DzStepL1,'Checked','off');
+                case 17
+                    set(mhndl.DzStepL2,'Checked','off');
                 otherwise
                     me.log.error(dbstack, sprintf('Case %d not recognized',c));
             end

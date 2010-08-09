@@ -40,7 +40,7 @@ classdef Corrections < handle
             str = '';
             keys = me.datH.keys();
             for v = 1:length(keys)
-                k = char(keys{v});
+                k = char(keys(v));
                 str = sprintf('%s/%s=%f',str,k,me.datH.get(k));
             end
         end
@@ -48,7 +48,7 @@ classdef Corrections < handle
             str = '';
             keys = me.archH.keys();
             for v = 1:length(keys)
-                k = char(keys{v});
+                k = char(keys(v));
                 str = sprintf('%s/%s=%f',str,k,me.archH.get(k));
             end
         end
@@ -56,7 +56,7 @@ classdef Corrections < handle
             str = '';
             keys = me.cfgH.keys();
             for v = 1:length(keys)
-                k = char(keys{v});
+                k = char(keys(v));
                 str = sprintf('%s/%s=%f',str,k,me.cfgH.get(k));
             end
         end
