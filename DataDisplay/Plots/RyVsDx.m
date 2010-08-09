@@ -9,12 +9,12 @@ classdef RyVsDx < handle
     end
     methods
         function me = RyVsDx(isLbcb1)
-            me.plot = XyPlots(sprintf('LBCB %d  Ry vs Dx',1 + (isLbcb1 == false)),{});
+            me.plot = XyPlots(sprintf('LBCB %d  Ry vs Dx',1 + (isLbcb1 == false)),{'ed','lbcb'});
             me.isLbcb1 = isLbcb1;
             me.plot.figNum = 1 + (isLbcb1 == false);
         end
         function displayMe(me)
-                me.plot.displayMe();
+                me.plot.displayMe('Dx','Ry');
         end
         function undisplayMe(me)
                 me.plot.undisplayMe();

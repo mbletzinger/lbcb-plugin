@@ -1,11 +1,7 @@
 function genStepConfigSettings(me,requireCorrection,doStepSplitting)
-scfg = StepConfigDao(me.cfg);
-scfg.doEdCalculations = requireCorrection;
-scfg.doEdCorrection = requireCorrection;
-scfg.doDdofCalculations = requireCorrection;
-scfg.doDdofCorrection = requireCorrection;
-scfg.doStepSplitting = doStepSplitting;
-scfg.correctEverySubstep = doStepSplitting * 3;
+stcfg = StepTimingConfigDao(me.cfg);
+stcfg.doStepSplitting = doStepSplitting;
+stcfg.correctEverySubstep = doStepSplitting * 3;
 inc = Target;
 if doStepSplitting
     for d = 1 : 6
@@ -13,9 +9,13 @@ if doStepSplitting
         inc.setDispDof(d,m * 0.2);
     end
 end
-scfg.substepIncL1 = inc;
-scfg.substepIncL2 = inc;
-scfg.edCalculationFunction = 'noEdCalculate';
-scfg.ddCalculationFunction = 'noDdCalculate';
-scfg.ddCorrectionFunction = 'noDdAdjustTarget';
+stcfg.substepIncL1 = inc;
+stcfg.substepIncL2 = inc;
+sccfg = StepCorrectionConfigDao(me.cfg);
+sccfg.doCalculations = [requireCorrection, requireCorrection,0,0,0,0];
+sccfg.doCorrections = [0,0,0,0,0,0];
+sccfg.calculationFunctions = {'noEdCalculate','noDdCalculate','<NONE>','<NONE>','<NONE>','<NONE>'};
+sccfg.needsCorrectionFunctions = {'<NONE>','<NONE>','<NONE>','<NONE>','<NONE>','<NONE>'};
+sccfg.adjustTargetFunctions = {'<NONE>','<NONE>','<NONE>','<NONE>','<NONE>','<NONE>'};
+sccfg.prelimAdjustTargetFunctions = {'<NONE>','<NONE>'};
 end

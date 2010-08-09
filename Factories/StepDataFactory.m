@@ -7,6 +7,12 @@ classdef StepDataFactory < handle
         tgtNumber;
     end
     methods
+        function clone = createEmptyStepData(me,step,sub,cor)
+            clone = StepData;
+            stepNum = StepNumber(step,sub,cor);
+            clone.stepNum = stepNum;
+            me.addProtocol(clone);
+        end
         function clone = stepNumber2StepData(me,stepNum)
             clone = StepData;
             clone.stepNum = stepNum;

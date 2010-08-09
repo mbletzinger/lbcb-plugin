@@ -108,13 +108,13 @@ classdef HandleFactory <  handle
             
             me.gui = LbcbPluginResults(handle,me);
             if isempty(handle)
-                bsimst = ButtonManagementGroup([]);
+                bsimst = ButtonGroupManagement([]);
                 me.gui.bsimst = bsimst;
-                bstpst = ButtonManagementGroup([]);
+                bstpst = ButtonGroupManagement([]);
                 me.gui.bstpst = bstpst;
-                bsrc = ButtonManagementGroup([]);
+                bsrc = ButtonGroupManagement([]);
                 me.gui.bsrc = bsrc;
-                bcor = CorrectionButtonManagementGroup([]);
+                bcor = CorrectionButtonGroupManagement([]);
                 me.gui.bcor = bcor;
             else
                 me.fillButtons(handle)
