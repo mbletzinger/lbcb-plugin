@@ -11,6 +11,8 @@ classdef DataDisplay < handle
         RyVsDxL2 = {};
         FxVsDxL1 = {};
         FxVsDxL2 = {};
+        DxStepL1 = {};
+        DxStepL2 = {};
         log = Logger('DataDisplay');
         dat
         dbgWin
@@ -30,6 +32,8 @@ classdef DataDisplay < handle
             me.RyVsDxL2 = RyVsDx(0);
             me.FxVsDxL1 = FxVsDx(1);
             me.FxVsDxL2 = FxVsDx(0);
+            me.DxStepL1 = OneDofStepPlot(1,me.dat,1);
+            me.DxStepL2 = OneDofStepPlot(0,me.dat,1);
         end
         function startDataTable(me)
             me.dataTable.displayMe();
@@ -113,6 +117,20 @@ classdef DataDisplay < handle
                 DataDisplay.deleteDisplay(11);
             end
         end        
+        function startDxStep(me,isLbcb1)
+            if isLbcb1
+                me.DxStepL1.displayMe();
+            else
+                me.DxStepL2.displayMe();
+            end
+        end
+        function stopDxStep(me,isLbcb1)
+            if isLbcb1
+                DataDisplay.deleteDisplay(12);
+            else
+                DataDisplay.deleteDisplay(13);
+            end
+        end        
         function update(me)
             target = me.dat.curStepData;
             me.log.debug(dbstack, sprintf('Displaying %s',target.toString()));
@@ -120,6 +138,7 @@ classdef DataDisplay < handle
             me.MyVsDxL1.update(target);
             me.RyVsDxL1.update(target);
             me.FxVsDxL1.update(target);
+            me.DxStepL1.update();
             if me.cdp.numLbcbs() > 1
                 me.totalFxVsLbcbDxL1.update(target);
                 me.totalFxVsLbcbDxL2.update(target);
@@ -127,11 +146,17 @@ classdef DataDisplay < handle
                 me.totalMyVsLbcbDxL2.update(target);
                 me.MyVsDxL2.update(target);
                 me.RyVsDxL2.update(target);
+                me.DxStepL2.update();
             end
         end
         function setCdp(me,cdp)
             me.cdp = cdp;
             me.dataTable.cdp = cdp;
+        end
+        function set.dat(me,dt)
+            me.dat = dt;
+            me.DxStepL1.dat = dt; %#ok<*MCSUP>
+            me.DxStepL2.dat = dt;
         end
         
     end
@@ -163,6 +188,10 @@ classdef DataDisplay < handle
                     ddMe.FxVsDxL1.undisplayMe();
                 case 11
                     ddMe.FxVsDxL2.undisplayMe();
+                case 12
+                    ddMe.DxStepL1.undisplayMe();
+                case 13
+                    ddMe.DxStepL2.undisplayMe();
                 otherwise
                     me.log.error(dbstack, sprintf('Case %d not recognized',display));
             end
@@ -202,6 +231,10 @@ classdef DataDisplay < handle
                     set(mhndl.FxVsLbcb1Dx,'Checked','off');
                 case 11
                     set(mhndl.FxVsLbcb2Dx,'Checked','off');
+                case 12
+                    set(mhndl.Lbcb1DxStep,'Checked','off');
+                case 13
+                    set(mhndl.Lbcb2DxStep,'Checked','off');
                 otherwise
                     me.log.error(dbstack, sprintf('Case %d not recognized',c));
             end

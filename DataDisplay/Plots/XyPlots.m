@@ -44,6 +44,7 @@ classdef XyPlots < DisplayControl
                 set(get(get(grp,'Annotation'),'LegendInformation'),'IconDisplayStyle','on');
                 me.groups(i) = grp;
             end
+            legend(me.legends);
             hold off;
             xlabel(xlab); ylabel(ylab);
             me.displayData();
@@ -54,12 +55,6 @@ classdef XyPlots < DisplayControl
             me.xdata{idx} = d(2,:);
             if me.isDisplayed
                 me.displayData();
-            end
-        end
-        function setLegends(me,lgnds)
-            me.legends = lgnds;
-            if me.isDisplayed && isempty(lgnds) == false
-                legend(me.groups,lgnds);
             end
         end
     end
