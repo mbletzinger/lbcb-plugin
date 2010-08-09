@@ -1,11 +1,11 @@
 classdef  InputFile < Substeps
     properties
-    filename = '';
-    specfilename = '';
-    commandDofs = [];
-    log = Logger('InputFile');
-    sdf = [];
-    cdp
+        filename = '';
+        specfilename = '';
+        commandDofs = [];
+        log = Logger('InputFile');
+        sdf = [];
+        cdp
     end
     methods
         function me = InputFile(sdf)
@@ -41,19 +41,19 @@ classdef  InputFile < Substeps
             % Due to slowing down issue, an itermediate variable called
             % "intermVar" is defined and assigned to "me.steps" at the end
             % of the for loop.
-            tic; 
+            tic;
             [lgth dummy] = size(tgts); %#ok<NASGU>
-%             me.steps = cell(lgth,1);
+            intermVar = cell(lgth,1);
             for t = 1:lgth
                 tgt1 = Target;
                 tgt2 = Target;
                 i = 0;
-                for d = 1:24 
+                for d = 1:24
                     if me.commandDofs(d) == 0
                         continue;
                     end
                     i = i+1;
-%                    me.log.debug(dbstack,sprintf('d=%d i=%d',d,i)); 
+                    %                    me.log.debug(dbstack,sprintf('d=%d i=%d',d,i));
                     if d < 7
                         tgt1.setDispDof(d,tgts(t,i));
                         continue;
@@ -71,14 +71,12 @@ classdef  InputFile < Substeps
                 me.log.debug(dbstack,sprintf('Created tgt1=%s',tgt1.toString()));
                 if me.sdf.cdp.numLbcbs() > 1
                     targets = { tgt1; tgt2 };
-%                    me.log.debug(dbstack,sprintf('Created tgt2=%s',tgt2.toString()));
+                    me.log.debug(dbstack,sprintf('Created tgt2=%s',tgt2.toString()));
                 else
                     targets = {tgt1};
                 end
                 intermVar{t}=me.sdf.target2StepData(targets,t,0);
-%                 me.steps{t} = me.sdf.target2StepData(targets,t,0);
-%                 me.steps{t}.needsCorrection = true;
-%                me.log.debug(dbstack,sprintf('Created step=%s',me.steps{t}.toString()));
+                intermVar{t}.needsCorrection = true;
             end
             me.steps=intermVar;
             me.started = false;

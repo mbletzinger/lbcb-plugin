@@ -22,7 +22,7 @@ function varargout = LbcbPlugin(varargin)
 
 % Edit the above text to modify the response to help LbcbPlugin
 
-% Last Modified by GUIDE v2.5 16-Jul-2010 09:10:05
+% Last Modified by GUIDE v2.5 09-Aug-2010 17:08:28
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -1236,19 +1236,81 @@ function FxVsLbcb1Dx_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 if strcmp(get(hObject,'Checked'),'on')
-    handles.actions.hfact.gui.ddisp.stopFxVsDx(0);
+    handles.actions.hfact.gui.ddisp.stopFxVsDx(1);
     set(hObject,'Checked','off');
 else 
     handles.actions.hfact.gui.ddisp.startFxVsDx(1);
     set(hObject,'Checked','on');
 end
 
+% --------------------------------------------------------------------
+function FxVsLbcb2Dx_Callback(hObject, eventdata, handles)
+if strcmp(get(hObject,'Checked'),'on')
+    handles.actions.hfact.gui.ddisp.stopFxVsDx(0);
+    set(hObject,'Checked','off');
+else 
+    handles.actions.hfact.gui.ddisp.startFxVsDx(0);
+    set(hObject,'Checked','on');
+end
+
+% --------------------------------------------------------------------
+function DxStepL1_Callback(hObject, eventdata, handles)
+if strcmp(get(hObject,'Checked'),'on')
+    handles.actions.hfact.gui.ddisp.stopDxStep(1);
+    set(hObject,'Checked','off');
+else 
+    handles.actions.hfact.gui.ddisp.startDxStep(1);
+    set(hObject,'Checked','on');
+end
 
 
-function Step_Callback(hObject, eventdata, handles)
-% hObject    handle to Step (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
+% --------------------------------------------------------------------
+function RyStepL1_Callback(hObject, eventdata, handles)
+if strcmp(get(hObject,'Checked'),'on')
+    handles.actions.hfact.gui.ddisp.stopRyStep(1);
+    set(hObject,'Checked','off');
+else 
+    handles.actions.hfact.gui.ddisp.startRyStep(1);
+    set(hObject,'Checked','on');
+end
 
-% Hints: get(hObject,'String') returns contents of Step as text
-%        str2double(get(hObject,'String')) returns contents of Step as a double
+% --------------------------------------------------------------------
+function DzStepL1_Callback(hObject, eventdata, handles)
+if strcmp(get(hObject,'Checked'),'on')
+    handles.actions.hfact.gui.ddisp.stopDzStep(1);
+    set(hObject,'Checked','off');
+else 
+    handles.actions.hfact.gui.ddisp.startDzStep(1);
+    set(hObject,'Checked','on');
+end
+
+% --------------------------------------------------------------------
+function DxStepL2_Callback(hObject, eventdata, handles)
+if strcmp(get(hObject,'Checked'),'on')
+    handles.actions.hfact.gui.ddisp.stopDxStep(0);
+    set(hObject,'Checked','off');
+else 
+    handles.actions.hfact.gui.ddisp.startDxStep(0);
+    set(hObject,'Checked','on');
+end
+
+
+% --------------------------------------------------------------------
+function RyStepL2_Callback(hObject, eventdata, handles)
+if strcmp(get(hObject,'Checked'),'on')
+    handles.actions.hfact.gui.ddisp.stopRyStep(0);
+    set(hObject,'Checked','off');
+else 
+    handles.actions.hfact.gui.ddisp.startRyStep(0);
+    set(hObject,'Checked','on');
+end
+
+% --------------------------------------------------------------------
+function DzStepL2_Callback(hObject, eventdata, handles)
+if strcmp(get(hObject,'Checked'),'on')
+    handles.actions.hfact.gui.ddisp.stopDzStep(0);
+    set(hObject,'Checked','off');
+else 
+    handles.actions.hfact.gui.ddisp.startDzStep(0);
+    set(hObject,'Checked','on');
+end

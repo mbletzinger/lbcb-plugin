@@ -1,9 +1,8 @@
 function setCorrectionFlag(me,step)
-scfg = StepConfigDao(me.cdp.cfg);
+scfg = StepTimingConfigDao(me.cdp.cfg);
 substep = step.stepNum.subStep;
 cess =  scfg.correctEverySubstep;
-ces = scfg.doEdCalculations;
-
+ces = me.cdp.useEd();
 if  ces == 0
     step.needsCorrection = false;
     return;
