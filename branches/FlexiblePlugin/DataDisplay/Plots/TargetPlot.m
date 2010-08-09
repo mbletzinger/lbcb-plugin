@@ -47,6 +47,7 @@ classdef TargetPlot < DisplayControl
                 me.groups(i) = grp;
             end
             hold off;
+            legend(me.legends);
             xlabel('Step'); ylabel(ylab);
             me.displayData();
             me.displayMe2();
@@ -77,10 +78,8 @@ classdef TargetPlot < DisplayControl
                 xd = me.xdata{li};
                 xlst = length(xd);
                 yd = me.ydata{li};
-                set(ls(2),'XData',xd);
-                set(ls(1),'XData',xd(xlst));
-                set(ls(2),'YData',yd);
-                set(ls(1),'YData',yd(xlst));
+                set(ls(2),'XData',xd,'YData',yd);
+                set(ls(1),'XData',xd(xlst),'YData',yd(xlst));
             end
         end
     end

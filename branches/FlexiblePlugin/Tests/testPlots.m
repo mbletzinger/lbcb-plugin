@@ -46,7 +46,7 @@ momz = cs * 1200;
 
 lgth = length(sn);
 sub = 0;
-cor = 0;
+cor = 5;
 step = 0;
 
 dat = hfact.dat;
@@ -64,32 +64,8 @@ for s = 1:lgth
     disp( [ stepC(:) subC(:) corC(:) ])
     
     cor = cor + 1;
-    corD = sdf.createEmptyStepData(step, sub,cor);
-    l1 = corD.lbcbCps{1};
-    l2 = corD.lbcbCps{2};
-    l1.response.lbcb.disp = lbcbR';
-    l1.response.lbcb.force = forceR';
-    l1.response.ed.disp = edR';
-    l1.response.ed.force = forceR';
-    l1.command.disp = corC';
-    l1.command.force = forceC';
-    l1.command.dispDofs = ones(6,1);
-    l1.command.forceDofs = ones(6,1);
-    
-    l2.response.lbcb.disp = lbcbR';
-    l2.response.lbcb.force = forceR';
-    l2.response.ed.disp = edR';
-    l2.response.ed.force = forceR';
-    l2.command.disp = corC';
-    l2.command.force = forceC';
-    l2.command.dispDofs = ones(6,1);
-    l2.command.forceDofs = ones(6,1);
-    dat.prevStepData = dat.curStepData;
-    dat.curStepData = corD;
-    dat.nextStepData = corD;
     if cor > 4
         cor = 0;
-        sub = sub + 1;
         subD = sdf.createEmptyStepData(step, sub,0);
         l1 = subD.lbcbCps{1};
         l2 = subD.lbcbCps{2};
@@ -139,14 +115,42 @@ for s = 1:lgth
             dat.prevTarget = dat.curTarget;
             dat.curTarget = stepD;
         end
+        sub = sub + 1;
     end
+    
+    corD = sdf.createEmptyStepData(step, sub,cor);
+    l1 = corD.lbcbCps{1};
+    l2 = corD.lbcbCps{2};
+    l1.response.lbcb.disp = lbcbR';
+    l1.response.lbcb.force = forceR';
+    l1.response.ed.disp = edR';
+    l1.response.ed.force = forceR';
+    l1.command.disp = corC';
+    l1.command.force = forceC';
+    l1.command.dispDofs = ones(6,1);
+    l1.command.forceDofs = ones(6,1);
+    
+    l2.response.lbcb.disp = lbcbR';
+    l2.response.lbcb.force = forceR';
+    l2.response.ed.disp = edR';
+    l2.response.ed.force = forceR';
+    l2.command.disp = corC';
+    l2.command.force = forceC';
+    l2.command.dispDofs = ones(6,1);
+    l2.command.forceDofs = ones(6,1);
+    dat.prevStepData = dat.curStepData;
+    dat.curStepData = corD;
+    dat.nextStepData = corD;
+
+    ddisp.update();
+
     if s == 1
         ddisp.startMyVsDx(1);
         ddisp.startMyVsDx(0);
         ddisp.startRyVsDx(1);
         ddisp.startFxVsDx(1);
         ddisp.startDataTable();
+        ddisp.startDxStep(1);
     end
-    ddisp.update();
     pause(.5);
 end
