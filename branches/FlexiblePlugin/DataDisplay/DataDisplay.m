@@ -113,7 +113,8 @@ classdef DataDisplay < handle
                 DataDisplay.deleteDisplay(11);
             end
         end        
-        function update(me,target)
+        function update(me)
+            target = me.dat.curStepData;
             me.log.debug(dbstack, sprintf('Displaying %s',target.toString()));
             me.dataTable.update(target);
             me.MyVsDxL1.update(target);

@@ -60,15 +60,15 @@ classdef ConfigDaoProvider < handle
             a = aa(1:il - 1);
         end
         function yes = useEd(me)
-            scfg = StepConfigDao(me.cfg);
-            yes = scfg.doEdCalculations;
+            scfg = StepCorrectionConfigDao(me.cfg);
+            yes = scfg.doCalculations(1);
         end
         function yes = doStepSplitting(me)
-            scfg = StepConfigDao(me.cfg);
+            scfg = StepTimingConfigDao(me.cfg);
             yes = scfg.doStepSplitting; 
         end
         function inc = getSubstepInc(me,isLbcb1)
-            scfg = StepConfigDao(me.cfg);
+            scfg = StepTimingConfigDao(me.cfg);
             if isLbcb1
                 inc = scfg.substepIncL1;
             else

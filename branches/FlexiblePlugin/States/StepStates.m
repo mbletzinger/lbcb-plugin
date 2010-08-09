@@ -111,7 +111,7 @@ classdef StepStates < SimStates
                 case 'PROCESS OM RESPONSE'
                     me.pResp.isDone();
                     me.arch.archive(me.dat.curStepData);
-                    me.gui.ddisp.update(me.dat.curStepData);
+                    me.gui.ddisp.update();
                     if me.gettingInitialPosition
                         me.currentAction.setState('DONE');
                     elseif me.needsTriggering()

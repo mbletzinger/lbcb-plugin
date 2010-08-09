@@ -2,6 +2,9 @@ function yes = needsCorrection(me,lbcbCps,targetCps)
 me.loadCfg();
 scfg = StepCorrectionConfigDao(me.cdp.cfg);
 funcs = scfg.needsCorrectionFunctions;
+if isempty(funcs)
+    return;
+end
 if scfg.doCorrections(1) == false
     return;
 end

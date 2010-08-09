@@ -4,6 +4,9 @@ me.loadCfg();
 me.loadConfig();
 scfg = StepCorrectionConfigDao(me.cdp.cfg);
 funcs = scfg.calculationFunctions;
+if isempty(funcs)
+    return;
+end
 if strcmp(funcs{1},'<NONE>')
     return;
 end

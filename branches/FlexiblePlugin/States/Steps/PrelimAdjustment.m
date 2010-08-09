@@ -27,6 +27,9 @@ classdef PrelimAdjustment < Corrections
             me.loadCfg();
             scfg = StepCorrectionConfigDao(me.cdp.cfg);
             func = scfg.prelimAdjustTargetFunctions;
+            if isempty(func)
+                return;
+            end
             if strcmp(func{idx},'<NONE>')
                 return;
             end

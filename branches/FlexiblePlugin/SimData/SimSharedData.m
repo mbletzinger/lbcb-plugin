@@ -19,7 +19,7 @@ classdef SimSharedData < handle
         function targetShift(me,target)
             me.prevTarget = me.curTarget;
             me.curTarget = target;
-            me.prevStepData = me.curTarget;
+%            me.prevStepData = me.curTarget;
         end
         function clearSteps(me)
             me.correctionTarget = [];
@@ -49,6 +49,13 @@ classdef SimSharedData < handle
             end
             step = me.sdf.target2StepData({ cmd1, ...
                 cmd2 }, me.curTarget.stepNum.step,0);
+        end
+        function collectTargetResponse(me)
+            me.curTarget.lbcbCps{1}.response = me.curStepData.lbcbCps{1}.response.clone();
+            if me.cdp.numLbcbs() > 1
+                me.curTarget.lbcbCps{2}.response = me.curStepData.lbcbCps{2}.response.clone();
+            end
+            me.curTarget.transformResponse();
         end
         function table = cmdTable(me)
             lbls = {'Current Target','Previous Target','Correction Target',...

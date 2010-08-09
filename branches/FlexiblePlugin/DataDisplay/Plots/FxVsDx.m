@@ -15,7 +15,7 @@ classdef FxVsDx < handle
 %             me.legends = XyPlots.setLegends({'ed','lbcb'});
         end
         function displayMe(me)
-                me.plot.displayMe();
+                me.plot.displayMe('Dx','Fx');
         end
         function undisplayMe(me)
                 me.plot.undisplayMe();

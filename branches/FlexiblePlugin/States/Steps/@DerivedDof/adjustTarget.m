@@ -3,6 +3,9 @@ function adjustTarget(me,step)
 me.loadCfg();
 scfg = StepCorrectionConfigDao(me.cdp.cfg);
 funcs = scfg.adjustTargetFunctions;
+if isempty(funcs)
+    return;
+end
 if strcmp(funcs{2 + me.level},'<NONE>')
     return;
 end

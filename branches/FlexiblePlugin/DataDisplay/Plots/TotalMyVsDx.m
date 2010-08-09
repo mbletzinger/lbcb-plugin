@@ -14,7 +14,7 @@ classdef TotalMyVsDx < handle
             me.plot.figNum = 1 + (isLbcb1 == false);
         end
         function displayMe(me)
-                me.plot.displayMe();
+                me.plot.displayMe('Dx','My');
         end
         function undisplayMe(me)
                 me.plot.undisplayMe();
