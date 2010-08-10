@@ -17,6 +17,8 @@ classdef DataDisplay < handle
         RyStepL2 = {};
         DzStepL1 = {};
         DzStepL2 = {};
+        FzStepL1 = {};
+        FzStepL2 = {};
         log = Logger('DataDisplay');
         dat
         dbgWin
@@ -42,7 +44,10 @@ classdef DataDisplay < handle
             me.RyStepL2 = OneDofStepPlot(0,me.dat,5);
             me.DzStepL1 = OneDofStepPlot(1,me.dat,3);
             me.DzStepL2 = OneDofStepPlot(0,me.dat,3);
+            me.FzStepL1 = OneDofStepPlot(1,me.dat,9);
+            me.FzStepL2 = OneDofStepPlot(0,me.dat,9);
         end
+        update(me)
         function startDataTable(me)
             me.dataTable.displayMe();
         end
@@ -167,7 +172,20 @@ classdef DataDisplay < handle
                 DataDisplay.deleteDisplay(17);
             end
         end
-        update(me)
+        function startFzStep(me,isLbcb1)
+            if isLbcb1
+                me.FzStepL1.displayMe();
+            else
+                me.FzStepL2.displayMe();
+            end
+        end
+        function stopFzStep(me,isLbcb1)
+            if isLbcb1
+                DataDisplay.deleteDisplay(18);
+            else
+                DataDisplay.deleteDisplay(19);
+            end
+        end
         function set.cdp(me,cdp)
             me.cdp = cdp;
             me.dataTable.cdp = cdp;
@@ -180,6 +198,8 @@ classdef DataDisplay < handle
             me.RyStepL2.dat = dt;
             me.DzStepL1.dat = dt;
             me.DzStepL2.dat = dt;
+            me.FzStepL1.dat = dt;
+            me.FzStepL2.dat = dt;
         end
         
     end

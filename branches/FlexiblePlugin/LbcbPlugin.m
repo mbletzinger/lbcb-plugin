@@ -1285,6 +1285,16 @@ else
 end
 
 % --------------------------------------------------------------------
+function FzStepL1_Callback(hObject, eventdata, handles)
+if strcmp(get(hObject,'Checked'),'on')
+    handles.actions.hfact.gui.ddisp.stopFzStep(1);
+    set(hObject,'Checked','off');
+else 
+    handles.actions.hfact.gui.ddisp.startFzStep(1);
+    set(hObject,'Checked','on');
+end
+
+% --------------------------------------------------------------------
 function DxStepL2_Callback(hObject, eventdata, handles)
 if strcmp(get(hObject,'Checked'),'on')
     handles.actions.hfact.gui.ddisp.stopDxStep(0);
@@ -1312,5 +1322,15 @@ if strcmp(get(hObject,'Checked'),'on')
     set(hObject,'Checked','off');
 else 
     handles.actions.hfact.gui.ddisp.startDzStep(0);
+    set(hObject,'Checked','on');
+end
+
+% --------------------------------------------------------------------
+function FzStepL2_Callback(hObject, eventdata, handles)
+if strcmp(get(hObject,'Checked'),'on')
+    handles.actions.hfact.gui.ddisp.stopFzStep(0);
+    set(hObject,'Checked','off');
+else 
+    handles.actions.hfact.gui.ddisp.startFzStep(0);
     set(hObject,'Checked','on');
 end
