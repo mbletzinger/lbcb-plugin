@@ -124,7 +124,7 @@ classdef DataDisplay < handle
             else
                 DataDisplay.deleteDisplay(11);
             end
-        end        
+        end
         function startDxStep(me,isLbcb1)
             if isLbcb1
                 me.DxStepL1.displayMe();
@@ -138,7 +138,7 @@ classdef DataDisplay < handle
             else
                 DataDisplay.deleteDisplay(13);
             end
-        end        
+        end
         function startRyStep(me,isLbcb1)
             if isLbcb1
                 me.RyStepL1.displayMe();
@@ -152,7 +152,7 @@ classdef DataDisplay < handle
             else
                 DataDisplay.deleteDisplay(15);
             end
-        end        
+        end
         function startDzStep(me,isLbcb1)
             if isLbcb1
                 me.DzStepL1.displayMe();
@@ -166,30 +166,9 @@ classdef DataDisplay < handle
             else
                 DataDisplay.deleteDisplay(17);
             end
-        end        
-        function update(me)
-            target = me.dat.curStepData;
-            me.log.debug(dbstack, sprintf('Displaying %s',target.toString()));
-            me.dataTable.update(target);
-            me.MyVsDxL1.update(target);
-            me.RyVsDxL1.update(target);
-            me.FxVsDxL1.update(target);
-            me.DxStepL1.update();
-            me.RyStepL1.update();
-            me.DzStepL1.update();
-            if me.cdp.numLbcbs() > 1
-                me.totalFxVsLbcbDxL1.update(target);
-                me.totalFxVsLbcbDxL2.update(target);
-                me.totalMyVsLbcbDxL1.update(target);
-                me.totalMyVsLbcbDxL2.update(target);
-                me.MyVsDxL2.update(target);
-                me.RyVsDxL2.update(target);
-                me.DxStepL2.update();
-                me.RyStepL2.update();
-                me.DzStepL2.update();
-            end
         end
-        function setCdp(me,cdp)
+        update(me)
+        function set.cdp(me,cdp)
             me.cdp = cdp;
             me.dataTable.cdp = cdp;
         end
@@ -205,100 +184,9 @@ classdef DataDisplay < handle
         
     end
     methods (Static)
-        function deleteDisplay(display)
-            global ddMe;
-            switch display
-                case 0
-                    ddMe.dataTable.undisplayMe();
-                case 1
-                    ddMe.totalFxVsLbcbDxL1.undisplayMe();
-                case 2
-                    ddMe.totalFxVsLbcbDxL2.undisplayMe();
-                case 3
-                    ddMe.dbgWin.undisplayMe();
-                case 4
-                    ddMe.totalMyVsLbcbDxL1.undisplayMe();
-                case 5
-                    ddMe.totalMyVsLbcbDxL2.undisplayMe();
-                case 6
-                    ddMe.MyVsDxL1.undisplayMe();
-                case 7
-                    ddMe.MyVsDxL2.undisplayMe();
-                case 8
-                    ddMe.RyVsDxL1.undisplayMe();
-                case 9
-                    ddMe.RyVsDxL2.undisplayMe();
-                case 10
-                    ddMe.FxVsDxL1.undisplayMe();
-                case 11
-                    ddMe.FxVsDxL2.undisplayMe();
-                case 12
-                    ddMe.DxStepL1.undisplayMe();
-                case 13
-                    ddMe.DxStepL2.undisplayMe();
-                case 14
-                    ddMe.RyStepL1.undisplayMe();
-                case 15
-                    ddMe.RyStepL2.undisplayMe();
-                case 16
-                    ddMe.DzStepL1.undisplayMe();
-                case 17
-                    ddMe.DzStepL2.undisplayMe();
-                otherwise
-                    me.log.error(dbstack, sprintf('Case %d not recognized',display));
-            end
-        end
-        function setDataDisplayHandle(mMe)
-            global ddMe;
-            ddMe = mMe;
-        end
-        function setMenuHandle(hndl)
-            global mhndl;
-            mhndl = hndl;
-        end
-        function checkOff(obj,event,c) %#ok<*INUSD,*INUSL>
-            global mhndl;
-            switch c
-                case 0
-                    set(mhndl.DataTable,'Checked','off');
-                case 1
-                    set(mhndl.TotalFxVsLbcb1Dx,'Checked','off');
-                case 2
-                    set(mhndl.TotalFxVsLbcb2Dx,'Checked','off');
-                case 3
-%                    set(mhndl.DebugWindow,'Checked','off');
-                case 4
-                    set(mhndl.TotalMyVsLbcb1Dx,'Checked','off');
-                case 5
-                    set(mhndl.TotalMyVsLbcb2Dx,'Checked','off');
-                case 6
-                    set(mhndl.MyVsLbcb1Dx,'Checked','off');
-                case 7
-                    set(mhndl.MyVsLbcb2Dx,'Checked','off');
-                case 8
-                    set(mhndl.RyVsLbcb1Dx,'Checked','off');
-                case 9
-                    set(mhndl.RyVsLbcb2Dx,'Checked','off');
-                case 10
-                    set(mhndl.FxVsLbcb1Dx,'Checked','off');
-                case 11
-                    set(mhndl.FxVsLbcb2Dx,'Checked','off');
-                case 12
-                    set(mhndl.DxStepL1,'Checked','off');
-                case 13
-                    set(mhndl.DxStepL2,'Checked','off');
-                case 14
-                    set(mhndl.RyStepL1,'Checked','off');
-                case 15
-                    set(mhndl.RyStepL2,'Checked','off');
-                case 16
-                    set(mhndl.DzStepL1,'Checked','off');
-                case 17
-                    set(mhndl.DzStepL2,'Checked','off');
-                otherwise
-                    me.log.error(dbstack, sprintf('Case %d not recognized',c));
-            end
-            DataDisplay.deleteDisplay(c);
-        end
+        deleteDisplay(display)
+        setDataDisplayHandle(mMe)
+        setMenuHandle(hndl)
+        checkOff(obj,event,c) %#ok<*INUSD,*INUSL>
     end
 end
