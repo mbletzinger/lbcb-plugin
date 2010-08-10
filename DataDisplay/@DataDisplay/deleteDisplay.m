@@ -37,6 +37,10 @@ switch display
         ddMe.DzStepL1.undisplayMe();
     case 17
         ddMe.DzStepL2.undisplayMe();
+    case 18
+        ddMe.FzStepL1.undisplayMe();
+    case 19
+        ddMe.FzStepL2.undisplayMe();
     otherwise
         me.log.error(dbstack, sprintf('Case %d not recognized',display));
 end

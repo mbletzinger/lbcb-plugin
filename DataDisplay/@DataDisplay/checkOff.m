@@ -37,6 +37,10 @@ switch c
         set(mhndl.DzStepL1,'Checked','off');
     case 17
         set(mhndl.DzStepL2,'Checked','off');
+    case 18
+        set(mhndl.FzStepL1,'Checked','off');
+    case 19
+        set(mhndl.FzStepL2,'Checked','off');
     otherwise
         me.log.error(dbstack, sprintf('Case %d not recognized',c));
 end
