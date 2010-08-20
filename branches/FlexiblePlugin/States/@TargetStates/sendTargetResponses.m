@@ -12,6 +12,6 @@ if me.targetSource.isState('UI SIMCOR')
         return;
     end
 end
-me.dat.prevTarget = me.dat.curTarget;
+me.dat.prevStepTgt = me.dat.curStepTgt;
 me.currentAction.setState('WAIT FOR TARGET');
 end

@@ -1,8 +1,8 @@
 function steps = splitTarget(me)
 steps = Substeps();
-stp = me.dat.curTarget2Step();
+stp = me.dat.curStepTgt2Step();
 steps.steps = { stp };
-sn = me.dat.curTarget.stepNum.step;
+sn = me.dat.curStepTgt.stepNum.step;
 if me.cdp.doStepSplitting == false
     me.setCorrectionFlag(stp);
     me.setTriggeringFlag(stp);
@@ -17,9 +17,9 @@ else
     stpSize(1:6) = me.cdp.getSubstepInc(1).disp;
 end
 [ initialDisp initialDispDofs initialForce initialForceDofs ] = ...
-    me.dat.prevTarget.cmdData(); %#ok<NASGU,ASGLU>
+    me.dat.prevStepTgt.cmdData(); %#ok<NASGU,ASGLU>
 [ finalDisp finalDispDofs finalForce finalForceDofs ] = ...
-    me.dat.curTarget.cmdData();
+    me.dat.curStepTgt.cmdData();
 % numSteps = abs(finalDisp - (initialDisp & finalDispDofs)) ./ stpSize;
 numSteps = abs(finalDisp - initialDisp) ./ stpSize;
 maxNumSteps = max(ceil(numSteps));

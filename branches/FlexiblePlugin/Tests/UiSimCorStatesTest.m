@@ -11,7 +11,7 @@ s.setTest('UPPER');
 NetworkConfig('cfg',s.cfg);
 step = s.infile.steps{2};
 mdlUiSimCor = hfact.mdlUiSimCor;
-hfact.dat.curTarget = step;
+hfact.dat.curStepTgt = step;
 ocSimCor = hfact.ocSimCor;
 tgtRsp = hfact.tgtRsp;
 

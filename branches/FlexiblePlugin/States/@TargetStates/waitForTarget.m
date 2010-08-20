@@ -5,7 +5,7 @@ if me.targetSource.isState('INPUT FILE')
         me.currentAction.setState('DONE');
         return;
     end
-%    me.dat.curTarget.transformCommand();
+%    me.dat.curStepTgt.transformCommand();
     me.prcsTgt.start(target);
     me.currentAction.setState('PROCESS TARGET');
     return;

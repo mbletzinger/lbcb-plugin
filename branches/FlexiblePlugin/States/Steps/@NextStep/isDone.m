@@ -14,9 +14,9 @@ if me.needsCorrection()
     me.dat.nextCorrectionStep(2 + ddl);
     me.adjustTarget(me.dat.nextStepData,me.dat.correctionTarget);
     me.log.info(dbstack,'Generating correction step');
-%     if me.ddlevel > 1 % ED needs to move to new DD target
-%         me.dat.correctionTarget = me.dat.nextStepData;
-%     end
+    %     if me.ddlevel > 1 % ED needs to move to new DD target
+    %         me.dat.correctionTarget = me.dat.nextStepData;
+    %     end
     me.gui.updateCorrections(false,me.edCorrect,ddl);
 else
     % get next input step
@@ -26,9 +26,8 @@ else
     if me.stepsCompleted
         return;
     else
-        me.dat.nextStepData = stp;
+        me.dat.substepTgtShift(stp);
         me.prelimAdjust();
-        me.dat.correctionTarget = me.dat.nextStepData;
     end
 end
 me.log.debug(dbstack,sprintf('Correction Target L1 is %s',me.dat.correctionTarget.lbcbCps{1}.command.toString()));

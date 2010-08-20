@@ -1,7 +1,9 @@
 classdef SimSharedData < handle
     properties
-        prevTarget = [];
-        curTarget = [];
+        prevStepTgt = [];
+        curStepTgt = [];
+        prevSubstepTgt = [];
+        curSubstepTgt = [];
         correctionTarget = [];
         prevStepData = [];
         curStepData = [];
@@ -15,16 +17,15 @@ classdef SimSharedData < handle
             me.prevStepData = me.curStepData;
             me.curStepData = me.nextStepData;
         end
-        function targetShift(me,target)
-            me.prevTarget = me.curTarget;
-            me.curTarget = target;
-%            me.prevStepData = me.curTarget;
+        function stepTgtShift(me,target)
+            me.prevStepTgt = me.curStepTgt;
+            me.curStepTgt = target;
         end
-        function clearSteps(me)
-            me.correctionTarget = [];
-            me.prevStepData = [];
-            me.curStepData = [];
-            me.nextStepData = [];
+        function substepTgtShift(me,target)
+            me.prevSubstepTgt = me.curSubstepTgt;
+            me.curSubstepTgt = target;
+            me.nextStepData = target;
+            me.correctionTarget = target;
         end
         function nextCorrectionStep(me,stype)
             cmd1 = me.curStepData.lbcbCps{1}.command;
@@ -38,26 +39,26 @@ classdef SimSharedData < handle
             me.nextStepData.stepNum = me.curStepData.stepNum.next(stype);
             me.nextStepData.needsCorrection = true;
         end
-        function step = curTarget2Step(me)
-            cmd1 = me.curTarget.lbcbCps{1}.command;
+        function step = curStepTgt2Step(me)
+            cmd1 = me.curStepTgt.lbcbCps{1}.command;
             cmd2 = [];
             if me.cdp.numLbcbs() > 1
-                cmd2 = me.curTarget.lbcbCps{2}.command;
+                cmd2 = me.curStepTgt.lbcbCps{2}.command;
             end
             step = me.sdf.target2StepData({ cmd1, ...
-                cmd2 }, me.curTarget.stepNum.step,0);
+                cmd2 }, me.curStepTgt.stepNum.step,0);
         end
         function collectTargetResponse(me)
-            me.curTarget.lbcbCps{1}.response = me.curStepData.lbcbCps{1}.response.clone();
+            me.curStepTgt.lbcbCps{1}.response = me.curStepData.lbcbCps{1}.response.clone();
             if me.cdp.numLbcbs() > 1
-                me.curTarget.lbcbCps{2}.response = me.curStepData.lbcbCps{2}.response.clone();
+                me.curStepTgt.lbcbCps{2}.response = me.curStepData.lbcbCps{2}.response.clone();
             end
-            me.curTarget.transformResponse();
+            me.curStepTgt.transformResponse();
         end
         function table = cmdTable(me)
-            lbls = {'Current Target','Previous Target','Correction Target',...
+            lbls = {'Step Target','Substep Target','Correction Target',...
                 'Next Step','Current Step','Previous Step'};
-            steps = { me.curTarget, me.prevTarget, me.correctionTarget,  ...
+            steps = { me.curStepTgt, me.curSubstepTgt, me.correctionTarget,  ...
                 me.nextStepData,  me.curStepData, me.prevStepData};
             [ didx, fidx, labels ] = me.cmdTableHeaders();
             table = cell(6,length(labels));
@@ -80,11 +81,11 @@ classdef SimSharedData < handle
             didx = [];
             fidx = [];
             labels = {};
-            if isempty(me.curTarget)
+            if isempty(me.curStepTgt)
                 return;
             end
-            dofO = me.curTarget.lbcbCps{1}.response.lbcb; % for the label functions
-            [ disp dDofs force fDofs] = me.curTarget.cmdData();
+            dofO = me.curStepTgt.lbcbCps{1}.response.lbcb; % for the label functions
+            [ disp dDofs force fDofs] = me.curStepTgt.cmdData();
             idx = 1;
             for d = 1 : length(disp)
                 if dDofs(d)
