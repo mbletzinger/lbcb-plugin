@@ -11,6 +11,6 @@ end
 [ disp(1:6) force(1:6) ] = me.lbcbCps{1}.respData();
 
 if me.cdp.numLbcbs > 1
-    [ disp(7:12) force(7:12) ] = me.lbcbCps{1}.respData();
+    [ disp(7:12) force(7:12) ] = me.lbcbCps{2}.respData();
 end
 end

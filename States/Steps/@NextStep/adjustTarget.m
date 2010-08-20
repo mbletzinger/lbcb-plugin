@@ -1,4 +1,4 @@
-function adjustTarget(me, target)
+function adjustTarget(me, target, tcps)
 if me.edCorrect
     me.ed{1}.adjustTarget(target.lbcbCps{1});
     if me.cdp.numLbcbs() == 2
@@ -7,6 +7,5 @@ if me.edCorrect
 end
 
 if me.ddlevel > 0
-    me.dd{me.ddlevel}.adjustTarget(target);
+    me.dd{me.ddlevel}.adjustTarget(target,tcps);
 end
-me.gui.updateCorrections((me.edCorrect || me.ddlevel),me.edCorrect,(me.ddlevel))

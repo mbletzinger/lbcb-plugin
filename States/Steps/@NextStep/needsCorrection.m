@@ -18,21 +18,23 @@ for lv = 1:length(doCorrections)
         switch lv
             case 1
                 n1 = me.ed{1}.needsCorrection(me.dat.curStepData.lbcbCps{1},...
-                    me.dat.curTarget.lbcbCps{1});
+                    me.dat.correctionTarget.lbcbCps{1});
                 n2 = 0;
                 if me.cdp.numLbcbs() == 2
                     n2 = me.ed{2}.needsCorrection(me.dat.curStepData.lbcbCps{2},...
-                        me.dat.curTarget.lbcbCps{2});
+                        me.dat.correctionTarget.lbcbCps{2});
                 end
                 me.edCorrect = (n1 + n2) > 0;
                 needsCorrection = me.edCorrect;
             case { 2 3 4 5 }
-                needsCorrection = me.dd{lv-1}.needsCorrection(me.dat.curStepData);
-                if needsCorrection
+                ddCorrect = me.dd{lv-1}.needsCorrection();
+                if ddCorrect
                     me.ddlevel = lv-1;
+                    needsCorrection = ddCorrect;
                     return;
                 end
-                if lv == 2 && me.correctEd % Only do first level DD with ED
+                needsCorrection = me.edCorrect;
+                if lv == 2 && me.edCorrect % Only do first level DD with ED
                     return;
                 end
         end

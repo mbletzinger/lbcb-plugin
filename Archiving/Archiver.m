@@ -6,6 +6,7 @@ classdef Archiver < handle
         edReadA;
         corDataA
         archiveOn
+        wroteCorDataHeaders
     end
     methods
         function me = Archiver(cdp)
@@ -24,6 +25,7 @@ classdef Archiver < handle
             me.edReadA.headers = me.commandA.headers;
             [n se a] = cdp.getExtSensors(); %#ok<NASGU,MCNPN>
             me.extSensA.headers = {'Step' n{:} };
+            me.wroteCorDataHeaders = false;
         end
         function setArchiveOn(me,on)
             me.archiveOn = on;
@@ -32,7 +34,6 @@ classdef Archiver < handle
                 me.lbcbReadA.writeHeaders();
                 me.edReadA.writeHeaders();
                 me.extSensA.writeHeaders();
-                me.corDataA.writeHeaders();
             end
         end
         function archive(me,step)
@@ -57,9 +58,18 @@ classdef Archiver < handle
             end
             me.edReadA.write(step.stepNum.toString(),values,'');
             me.extSensA.write(step.stepNum.toString(),step.externalSensorsRaw,'');
+            if isempty(step.cData.values) == false
+                me.corDataA.write(step.stepNum.toString(),step.cData.values,'');
+                me.setCorDataHeaders(step);
+            end
         end
         function setCorDataHeaders(me,step)
-            me.corDataA.headers = list;
+            if me.wroteCorDataHeaders
+                return;
+            end
+            me.corDataA.headers = step.cData.labels;
+            me.corDataA.writeHeaders();
+            me.wroteCorDataHeaders = true;
         end
     end
 end

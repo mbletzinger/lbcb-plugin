@@ -16,15 +16,15 @@ classdef DataTable < DisplayControl
         end
         function displayMe(me)
             mnames = me.modelHeaders();
-            me.fig = figure('Position',[100 100 1080 340], 'Name', me.name,'DeleteFcn',{'DataDisplay.checkOff',0 });
+            me.fig = figure('Position',[100 100 1075 220], 'Name', me.name,'DeleteFcn',{'DataDisplay.checkOff',0 });
             me.table = uitable('ColumnName',me.cnames,'RowName',{ me.rnames{:} mnames{:} },...
-                'Parent',me.fig,'Position',[5 5 1070 300],'ColumnFormat',repmat({'numeric'},1,length(me.cnames)));
-            static1 = uicontrol('Style','text','Position',[5 315 50 18],'Parent',me.fig,'String','Step');
-            me.steps{1} = uicontrol('Style','edit','Position',[60 315 50 18],'Parent',me.fig);
-            static2 = uicontrol('Style','text','Position',[115 315 50 18],'Parent',me.fig,'String','Substep');
-            me.steps{2} = uicontrol('Style','edit','Position',[170 315 50 18],'Parent',me.fig);
-            static3 = uicontrol('Style','text','Position',[225 315 50 25],'Parent',me.fig,'String','Correction Step');
-            me.steps{3} = uicontrol('Style','edit','Position',[280 315 50 18],'Parent',me.fig);
+                'Parent',me.fig,'Position',[5 5 1065 180],'ColumnFormat',repmat({'numeric'},1,length(me.cnames)));
+            static1 = uicontrol('Style','text','Position',[5 195 50 18],'Parent',me.fig,'String','Step');
+            me.steps{1} = uicontrol('Style','edit','Position',[60 195 50 18],'Parent',me.fig);
+            static2 = uicontrol('Style','text','Position',[115 195 50 18],'Parent',me.fig,'String','Substep');
+            me.steps{2} = uicontrol('Style','edit','Position',[170 195 50 18],'Parent',me.fig);
+            static3 = uicontrol('Style','text','Position',[225 195 100 18],'Parent',me.fig,'String','Correction Step');
+            me.steps{3} = uicontrol('Style','edit','Position',[330 195 50 18],'Parent',me.fig);
             me.isDisplayed = true;
             set(me.table,'Data',me.data);
         end

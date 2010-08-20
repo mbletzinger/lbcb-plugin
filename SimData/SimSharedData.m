@@ -3,7 +3,6 @@ classdef SimSharedData < handle
         prevTarget = [];
         curTarget = [];
         correctionTarget = [];
-        correctionStepData = [];
         prevStepData = [];
         curStepData = [];
         nextStepData = [];
@@ -23,7 +22,6 @@ classdef SimSharedData < handle
         end
         function clearSteps(me)
             me.correctionTarget = [];
-            me.correctionStepData = [];
             me.prevStepData = [];
             me.curStepData = [];
             me.nextStepData = [];
@@ -39,7 +37,6 @@ classdef SimSharedData < handle
                 me.curStepData.stepNum.subStep);
             me.nextStepData.stepNum = me.curStepData.stepNum.next(stype);
             me.nextStepData.needsCorrection = true;
-            me.correctionStepData = me.nextStepData;
         end
         function step = curTarget2Step(me)
             cmd1 = me.curTarget.lbcbCps{1}.command;
@@ -59,16 +56,16 @@ classdef SimSharedData < handle
         end
         function table = cmdTable(me)
             lbls = {'Current Target','Previous Target','Correction Target',...
-                'Correction Step','Next Step','Current Step','Previous Step'};
+                'Next Step','Current Step','Previous Step'};
             steps = { me.curTarget, me.prevTarget, me.correctionTarget,  ...
-                me.correctionStepData, me.nextStepData,  me.curStepData, me.prevStepData};
+                me.nextStepData,  me.curStepData, me.prevStepData};
             [ didx, fidx, labels ] = me.cmdTableHeaders();
             table = cell(6,length(labels));
             for s = 1 : 6
                 if isempty(steps{s})
                     continue;
                 end
-                me.log.debug(dbstack,sprintf('%s: %s',lbls{s},steps{s}.toString()));
+%                me.log.debug(dbstack,sprintf('%s: %s',lbls{s},steps{s}.toString()));
                 [ disp dDofs force fDofs] = steps{s}.cmdData(); %#ok<NASGU,ASGLU>
                 for d = 1 : length(didx)
                     table{s,d} = disp(didx(d));
