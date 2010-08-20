@@ -14,7 +14,7 @@ classdef CorrectionButtonGroupManagement < handle
             me.offColor = get(me.childHandles{1},'BackgroundColor');
         end
         function setState(me,nc,ed,dd)
-            if nc
+            if nc == false
                 if ed
                     me.on(1);
                 else

@@ -9,6 +9,7 @@
 classdef PrelimAdjustment < Corrections
     properties
         log
+        dat
     end
     methods
         function me = PrelimAdjustment(cdp)

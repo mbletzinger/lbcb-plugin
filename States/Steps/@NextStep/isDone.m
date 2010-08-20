@@ -2,7 +2,7 @@ function done = isDone(me)
 done = 1;
 me.statusReady();
 if me.steps.started == false
-    me.dat.nextStepData = me.steps.next();
+    me.dat.substepTgtShift(me.steps.next());
     me.prelimAdjust();
     return;
 end
@@ -14,9 +14,6 @@ if me.needsCorrection()
     me.dat.nextCorrectionStep(2 + ddl);
     me.adjustTarget(me.dat.nextStepData,me.dat.correctionTarget);
     me.log.info(dbstack,'Generating correction step');
-    %     if me.ddlevel > 1 % ED needs to move to new DD target
-    %         me.dat.correctionTarget = me.dat.nextStepData;
-    %     end
     me.gui.updateCorrections(false,me.edCorrect,ddl);
 else
     % get next input step
