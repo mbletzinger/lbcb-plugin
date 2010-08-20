@@ -119,15 +119,29 @@ classdef HandleFactory <  handle
             else
                 me.fillButtons(handle)
             end
+                        
+            me.sdf = StepDataFactory;
+            me.sdf.cdp = cdp;
+            me.sdf.mdlLbcb = me.mdlLbcb;
+            me.sdf.mdlUiSimCor = me.mdlUiSimCor;
+            me.inF = InputFile(me.sdf);
+
+            me.dat = SimSharedData;
+            me.dat.sdf = me.sdf;
+            me.dat.cdp = cdp;
+            me.arch = Archiver(cdp);
+
             DataDisplay.setMenuHandle(handle);
             cfgH = org.nees.uiuc.simcor.matlab.HashTable();
             datH = org.nees.uiuc.simcor.matlab.HashTable();
             archH = org.nees.uiuc.simcor.matlab.HashTable();
             for i = 1:2
                 me.ed{i} = ElasticDeformation(cdp,(i == 1));
+                me.st{i} = StepTolerances(me.cfg,i == 1);
                 me.ed{i}.cfgH = cfgH;
                 me.ed{i}.datH = datH;
                 me.ed{i}.archH = archH;
+                me.ed{i}.st = me.st;
             end
             
             for i = 1:4
@@ -136,27 +150,12 @@ classdef HandleFactory <  handle
                 me.dd{i}.datH = datH;
                 me.dd{i}.archH = archH;
             end
+            
             me.pa = PrelimAdjustment(cdp);
             me.pa.cfgH = cfgH;
             me.pa.datH = datH;
+            me.pa.dat = me.dat;
             me.pa.archH = archH;
-            
-            me.st{1} = StepTolerances(me.cfg,1);
-            me.st{2} = StepTolerances(me.cfg,0);
-            
-            me.sdf = StepDataFactory;
-            me.sdf.cdp = cdp;
-            me.sdf.mdlLbcb = me.mdlLbcb;
-            me.sdf.mdlUiSimCor = me.mdlUiSimCor;
-            me.inF = InputFile(me.sdf);
-            
-            me.dat = SimSharedData;
-            me.dat.sdf = me.sdf;
-            me.dat.cdp = cdp;
-            me.arch = Archiver(cdp);
-            
-            me.ed{1}.st = me.st;
-            me.ed{2}.st = me.st;
             
             for c =1:length(me.omStates)
                 me.omStates{c}.cdp = cdp;

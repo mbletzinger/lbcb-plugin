@@ -20,9 +20,5 @@ tcps.lbcbCps{1}.command.disp(1) = tcps.lbcbCps{1}.command.disp(1) - ddx;
 tcps.lbcbCps{2}.command.disp(3) = tcps.lbcbCps{2}.command.disp(3) - ddx;
 tcps.lbcbCps{1}.command.disp(5) = tcps.lbcbCps{1}.command.disp(1)*dx2ry;
 tcps.lbcbCps{2}.command.disp(5) = -tcps.lbcbCps{2}.command.disp(3)*dx2ry;
-
-me.putDat('finalTarget1',tcps.lbcbCps{1}.command.disp(1));
-me.putDat('finalTarget2',-tcps.lbcbCps{2}.command.disp(3));
-
 me.putDat('dd1Flag',1);
 end

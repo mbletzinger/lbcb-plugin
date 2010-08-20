@@ -3,6 +3,7 @@ classdef SimSharedData < handle
         prevStepTgt = [];
         curStepTgt = [];
         prevSubstepTgt = [];
+        prev1SubstepTgt = [];
         curSubstepTgt = [];
         correctionTarget = [];
         prevStepData = [];
@@ -22,6 +23,7 @@ classdef SimSharedData < handle
             me.curStepTgt = target;
         end
         function substepTgtShift(me,target)
+            me.prev1SubstepTgt = me.prevSubstepTgt;
             me.prevSubstepTgt = me.curSubstepTgt;
             me.curSubstepTgt = target;
             me.nextStepData = target;

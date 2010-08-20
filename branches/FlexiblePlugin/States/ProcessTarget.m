@@ -19,7 +19,7 @@ classdef ProcessTarget < SimStates
         end
         function start(me,target)
             me.target = target;
-            me.dat.targetShift(me.target);
+            me.dat.stepTgtShift(me.target);
             me.currentAction.setState('CHECK LIMITS');
             me.statusBusy();
             me.accepted = me.autoAccept;
