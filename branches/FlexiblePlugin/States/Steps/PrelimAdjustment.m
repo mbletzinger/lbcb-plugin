@@ -16,25 +16,30 @@ classdef PrelimAdjustment < Corrections
             me.log = Logger('PrelimAdjustment');
         end
         function edPrelimAdjust(me,curStep,nextStep)
-            me.prelimAdjust(curStep,nextStep,1);
-        end
-        function ddPrelimAdjust(me,curStep,nextStep)
-            me.prelimAdjust(curStep,nextStep,2);
-        end
-    end
-    methods (Access=private)
-        function prelimAdjust(me,curStep, nextStep,idx)
             me.loadCfg();
             scfg = StepCorrectionConfigDao(me.cdp.cfg);
             func = scfg.prelimAdjustTargetFunctions;
             if isempty(func)
                 return;
             end
-            if strcmp(func{idx},'<NONE>')
+            if strcmp(func{1},'<NONE>')
                 return;
             end
-            pAdjust = str2func(func{idx});
+            pAdjust = str2func(func{1});
             pAdjust(me,curStep, nextStep);
+        end
+        function ddPrelimAdjust(me)
+            me.loadCfg();
+            scfg = StepCorrectionConfigDao(me.cdp.cfg);
+            func = scfg.prelimAdjustTargetFunctions;
+            if isempty(func)
+                return;
+            end
+            if strcmp(func{2},'<NONE>')
+                return;
+            end
+            pAdjust = str2func(func{2});
+            pAdjust(me);
         end
     end
 end

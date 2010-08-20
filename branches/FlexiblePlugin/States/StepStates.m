@@ -65,10 +65,10 @@ classdef StepStates < SimStates
                             if me.isFake() == false
                                 me.peOm.start()
                             end
-                            me.gui.updateStepTolerances(me.st);
                             me.gui.updateCommandTable();
                             me.gui.updateStepsDisplay(me.dat.nextStepData.stepNum);
                         end
+                        me.gui.updateStepTolerances(me.st);
                     end
                 case 'OM PROPOSE EXECUTE'
                     if me.isFake()
@@ -135,6 +135,7 @@ classdef StepStates < SimStates
                 case 'DONE'
                     me.statusReady();
                     me.gui.updateStepState(me.currentAction.idx)
+                    me.gui.updateStepTolerances(me.st);
                     done = 1;
                     me.gui.updateTimer(); %BG
                 otherwise

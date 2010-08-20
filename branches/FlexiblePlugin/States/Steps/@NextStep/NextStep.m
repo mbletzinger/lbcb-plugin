@@ -30,7 +30,7 @@ classdef NextStep < Step
     end
     methods (Access='private')
         needsCorrection = needsCorrection(me)
-        adjustTarget(me,target)
+        adjustTarget(me,target,tcps)
         prelimAdjust(me,target)
     end
 end

@@ -14,7 +14,13 @@ prevOMcommandR = curStep.lbcbCps{2}.command.disp;
 positionL = curStep.lbcbCps{1}.response.ed.disp;
 positionR = curStep.lbcbCps{2}.response.ed.disp;
 
-nextStep.lbcbCps{1}.command.disp = prevOMcommandL + (targetL - positionL);
-nextStep.lbcbCps{2}.command.disp = prevOMcommandR + (targetR - positionR);
-    
+newOMcommandL = prevOMcommandL + (targetL - positionL);
+newOMcommandR = prevOMcommandR + (targetR - positionR);
+
+nextStep.lbcbCps{1}.command.disp([1 5]) = newOMcommandL([1 5]);
+nextStep.lbcbCps{2}.command.disp([3 5]) = newOMcommandR([3 5]);
+
+nextStep.lbcbCps{1}.command.setForceDof(3,me.getDat('Fz1Target'));
+nextStep.lbcbCps{2}.command.setForceDof(1,me.getDat('Fz2Target'));
+
 end

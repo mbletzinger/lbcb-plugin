@@ -41,10 +41,10 @@ classdef ProcessResponse < Step
                     if isempty(me.dat.prevStepData) == false
                         pcps = me.dat.prevStepData.lbcbCps{l};
                     end
-                    if isempty(me.dat.curTarget)
+                    if isempty(me.dat.correctionTarget)
                         tcps = ccps;
                     else
-                        tcps = me.dat.curTarget.lbcbCps{l};
+                        tcps = me.dat.correctionTarget.lbcbCps{l};
                     end
                     
                     me.ed{l}.calculate(ccps,pcps,tcps);
