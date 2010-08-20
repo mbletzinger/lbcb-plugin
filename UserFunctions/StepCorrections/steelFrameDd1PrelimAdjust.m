@@ -1,14 +1,16 @@
 function steelFrameDd1PrelimAdjust(me)
 
-step = nextStep.stepNum.step;
-
-oldOMCommand1 = curStep.lbcbCps{1}.command.disp(1);
-oldOMCommand2 = curStep.lbcbCps{2}.command.disp(3);
+dat = me.dat;
+step = dat.curSubstepTgt.stepNum.step;
 
 %% Getting next step displacement increment
 
-newInputFileTarget1 = nextStep.lbcbCps{1}.command.disp(1);
-newInputFileTarget2 = -nextStep.lbcbCps{2}.command.disp(3);
+newInputFileTarget1 = dat.curSubstepTgt.lbcbCps{1}.command.disp(1);
+newInputFileTarget2 = dat.curSubstepTgt.lbcbCps{2}.command.disp(3);
+oldInputFileTarget1 = dat.prevSubstepTgt.lbcbCps{1}.command.disp(1);
+oldInputFileTarget2 = dat.prevSubstepTgt.lbcbCps{2}.command.disp(3);
+correctionTarget1 = dat.correctionTarget.lbcbCps{1}.command.disp(1);
+correctionTarget2 = dat.correctionTarget.lbcbCps{2}.command.disp(3);
 
 targetIncrement1 = newInputFileTarget1;
 targetIncrement2 = newInputFileTarget2;
@@ -16,12 +18,11 @@ targetIncrement2 = newInputFileTarget2;
 if step > 1
     oldIncrement1 = me.getDat('targetIncrement1');
     oldIncrement2 = me.getDat('targetIncrement2');
-        
-    oldInputFileTarget1 = me.getDat('newInputFileTarget1');
-    oldInputFileTarget2 = me.getDat('newInputFileTarget2');
     
     targetIncrement1 = newInputFileTarget1 - oldInputFileTarget1;
     targetIncrement2 = newInputFileTarget2 - oldInputFileTarget2;
+    correctionIncrement1 = correctionTarget1 - newInputFileTarget1;
+    correctionIncrement2 = correctionTarget2 - newInputFileTarget2;
 end
 
 me.putDat('targetIncrement1',targetIncrement1);

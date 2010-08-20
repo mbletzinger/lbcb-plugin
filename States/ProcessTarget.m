@@ -66,7 +66,7 @@ classdef ProcessTarget < SimStates
             end
         end
         function yes = withinLimits(me)
-            yes = me.lc.withinLimits(me.dat.curTarget,me.dat.prevTarget );
+            yes = me.lc.withinLimits(me.dat.curStepTgt,me.dat.prevStepTgt );
         end
         
     end

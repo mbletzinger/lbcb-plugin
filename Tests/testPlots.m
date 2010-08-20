@@ -112,8 +112,8 @@ for s = 1:lgth
             l2.command.force = forceC';
             l2.command.dispDofs = ones(6,1);
             l2.command.forceDofs = ones(6,1);
-            dat.prevTarget = dat.curTarget;
-            dat.curTarget = stepD;
+            dat.prevStepTgt = dat.curStepTgt;
+            dat.curStepTgt = stepD;
         end
         sub = sub + 1;
     end

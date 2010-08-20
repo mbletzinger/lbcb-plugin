@@ -205,6 +205,7 @@ if isempty(me.handles) == 0
     me.stepHandles{3} = me.handles.CorrectionStep;
     me.msgHandle = me.handles.Messages;
     me.cmdTableHandle = me.handles.CommandTable;
+    
     me.fillInLimits();
     titleIm = imread('images/LbcbPluginBanner.png');
     axes(me.handles.titleImage);

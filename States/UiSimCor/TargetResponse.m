@@ -22,7 +22,7 @@ classdef TargetResponse < UiSimCorState
             me.currentAction.setState('WAIT_FOR_TARGET');
         end
         function respond(me)
-            jmsg = me.dat.curTarget.generateSimCorResponseMsg();
+            jmsg = me.dat.curStepTgt.generateSimCorResponseMsg();
             me.log.debug(dbstack,sprintf('Sending %s',char(jmsg)));
             me.mdlUiSimCor.respond(jmsg);
             me.statusBusy();

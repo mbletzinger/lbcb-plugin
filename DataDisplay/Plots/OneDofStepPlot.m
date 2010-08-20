@@ -4,6 +4,7 @@ classdef OneDofStepPlot < handle
         cmdData = [];
         corData = [];
         tgtData = [];
+        subData = [];
         rspData = [];
         isLbcb1 = 1;
         haveData = 0;
@@ -16,7 +17,7 @@ classdef OneDofStepPlot < handle
             me.dof = dof;
             me.dat = dat;
             me.plot = TargetPlot(sprintf('LBCB %d  %s Steps',1 + (isLbcb1 == false),me.lbl{dof}),...
-                {'command','correct target', 'target','response'});
+                {'command','correct target', 'step','substep','response'});
             me.isLbcb1 = isLbcb1;
             me.plot.figNum = 1 + (isLbcb1 == false);
         end
@@ -37,7 +38,8 @@ classdef OneDofStepPlot < handle
             end
             cmdS = me.dat.curStepData;
             corS = me.dat.correctionTarget;
-            tgtS = me.dat.curTarget;
+            tgtS = me.dat.curStepTgt;
+            subS = me.dat.curSubstepTgt;
 
             d = me.dof;
             isForce = false;
@@ -52,29 +54,34 @@ classdef OneDofStepPlot < handle
                 rsp = cmdS.lbcbCps{cpsidx}.response.force(d);
                 cor = corS.lbcbCps{cpsidx}.command.force(d);
                 tgt = tgtS.lbcbCps{cpsidx}.command.force(d);
+                sub = subS.lbcbCps{cpsidx}.command.force(d);
             else
                 cmd = cmdS.lbcbCps{cpsidx}.command.disp(d);
                 rsp = cmdS.lbcbCps{cpsidx}.response.disp(d);
                 cor = corS.lbcbCps{cpsidx}.command.disp(d);
                 tgt = tgtS.lbcbCps{cpsidx}.command.disp(d);
+                sub = subS.lbcbCps{cpsidx}.command.disp(d);
             end
             
             if(me.haveData)
                 me.cmdData = cat(1, me.cmdData,cmd);
                 me.corData = cat(1, me.corData,cor);
                 me.tgtData = cat(1, me.tgtData,tgt);
+                me.subData = cat(1, me.subData,sub);
                 me.rspData = cat(1, me.rspData,rsp);
             else
                 me.haveData = 1;
                 me.cmdData = cmd;
                 me.corData = cor;
                 me.tgtData = tgt;
+                me.subData = sub;
                 me.rspData = rsp;
             end
             me.plot.update(me.cmdData,1);
             me.plot.update(me.corData,2);
             me.plot.update(me.tgtData,3);
-            me.plot.update(me.rspData,4);
+            me.plot.update(me.subData,4);
+            me.plot.update(me.rspData,5);
         end
     end
 end
