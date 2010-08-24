@@ -30,7 +30,7 @@ classdef TargetPlot < DisplayControl
             me.figNum = [];
         end
         function displayMe(me,ylab)
-            me.fig = figure('DeleteFcn',{'DataDisplay.checkOff', me.figNum }, 'Name',me.name);
+            me.fig = figure('DeleteFcn',{'DisplayFactory.dispDeleted', me.name }, 'Name',me.name);
             me.axis = axes();
             lgth = length(me.legends);
             hold on;
