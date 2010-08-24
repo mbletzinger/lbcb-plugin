@@ -9,25 +9,23 @@ classdef OneDofStepPlot < handle
         isLbcb1 = 1;
         haveData = 0;
         dof
-        lbl = { 'Dx','Dy', 'Dz', 'Rx','Ry', 'Rz','cmd','Fy', 'Fz', 'Mx','My', 'Mz' }; 
         dat
     end
     methods
-        function me = OneDofStepPlot(isLbcb1,dat, dof)
+        function me = OneDofStepPlot(name,isLbcb1,dat, dof)
             me.dof = dof;
             me.dat = dat;
-            me.plot = TargetPlot(sprintf('LBCB %d  %s Steps',1 + (isLbcb1 == false),me.lbl{dof}),...
-                {'command','correct target', 'step','substep','response'});
+            me.plot = TargetPlot(name,{'command','correct target', 'step','substep','response'});
             me.isLbcb1 = isLbcb1;
             me.plot.figNum = 1 + (isLbcb1 == false);
         end
         function displayMe(me)
-                me.plot.displayMe(me.lbl{me.dof});
+                me.plot.displayMe(me.plot.lbl{me.dof});
         end
         function undisplayMe(me)
                 me.plot.undisplayMe();
         end
-        function update(me)
+        function update(me,ignored) %#ok<INUSD>
             stepNum = me.dat.curStepData.stepNum;
             if stepNum.step == 0
                 return; %initial position no commands
@@ -80,8 +78,8 @@ classdef OneDofStepPlot < handle
             me.plot.update(me.cmdData,1);
             me.plot.update(me.corData,2);
             me.plot.update(me.tgtData,3);
-            me.plot.update(me.subData,4);
-            me.plot.update(me.rspData,5);
+            me.plot.update(me.rspData,4);
+            me.plot.update(me.subData,5);
         end
     end
 end
