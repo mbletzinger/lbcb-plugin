@@ -7,9 +7,9 @@ end
 
 % Defining local varbiables from me structure
 lbcb1Fx = cstep.lbcbCps{1}.response.force(1);
-lbcb2Fx = -cstep.lbcbCps{2}.response.force(3);
+lbcb2Fx = cstep.lbcbCps{2}.response.force(1);
 lbcb1Dx = cstep.lbcbCps{1}.response.disp(1);
-lbcb2Dx = -cstep.lbcbCps{2}.response.disp(3);
+lbcb2Dx = cstep.lbcbCps{2}.response.disp(1);
 
 % Calculating shear load differential
 dF = lbcb2Fx - lbcb1Fx;
@@ -41,6 +41,8 @@ end
 
 %% Calculating required correction step, ddx
 ddx = dFError/k_dF;
+
+ddx = ddx*me.getCfg('ddxGain');
 
 me.putArch('ddx',ddx);
 me.putArch('k_dF',k_dF);
