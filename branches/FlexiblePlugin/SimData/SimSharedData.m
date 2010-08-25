@@ -26,8 +26,20 @@ classdef SimSharedData < handle
             me.prev1SubstepTgt = me.prevSubstepTgt;
             me.prevSubstepTgt = me.curSubstepTgt;
             me.curSubstepTgt = target;
-            me.nextStepData = target;
-            me.correctionTarget = target;
+            cmd1 = target.lbcbCps{1}.command;
+            cmd2 = [];
+            if me.cdp.numLbcbs() > 1
+                cmd2 = target.lbcbCps{2}.command;
+            end
+            me.nextStepData = me.sdf.target2StepData({ cmd1, ...
+                cmd2 }, target.stepNum.step,0);
+            me.nextStepData.needsCorrection = target.needsCorrection;
+
+            if me.curStepData.stepNum.step == 0
+                me.correctionTarget = me.sdf.target2StepData({ cmd1, ...
+                cmd2 }, target.stepNum.step,0);
+                me.correctionTarget.needsCorrection = target.needsCorrection;
+            end
         end
         function nextCorrectionStep(me,stype)
             cmd1 = me.curStepData.lbcbCps{1}.command;
