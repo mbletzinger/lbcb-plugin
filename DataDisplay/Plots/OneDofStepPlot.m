@@ -10,12 +10,13 @@ classdef OneDofStepPlot < handle
         haveData = 0;
         dof
         dat
+        cdp
     end
     methods
         function me = OneDofStepPlot(name,isLbcb1,dat, dof)
             me.dof = dof;
             me.dat = dat;
-            me.plot = TargetPlot(name,{'command','correct target', 'step','substep','response'});
+            me.plot = TargetPlot(name,{'command','correct target', 'step','response','substep'});
             me.isLbcb1 = isLbcb1;
             me.plot.figNum = 1 + (isLbcb1 == false);
         end

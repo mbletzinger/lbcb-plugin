@@ -197,7 +197,11 @@ if isempty(me.handles) == 0
     me.incrementCurrentValueHandles2{10} = me.handles.MxICV2;
     me.incrementCurrentValueHandles2{11} = me.handles.MyICV2;
     me.incrementCurrentValueHandles2{12} = me.handles.MzICV2;
-    
+    bsimst.init()
+    bstpst.init()
+    bsrc.init()
+    bcor.init()
+
     Logger.setMsgHandle(me.handles.Messages);
     
     me.stepHandles{1} = me.handles.Step;

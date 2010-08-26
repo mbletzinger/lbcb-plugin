@@ -2,18 +2,14 @@ classdef AllStepsCommandTable < DataTable
     properties
     end
     methods
-        function me = AllStepsCommandTable(name)
-            me = me@DataTable(name);
+        function me = AllStepsCommandTable(name,isLbcb1)
+            me = me@DataTable(name,isLbcb1);
         end
         function row = genRow(me, step)
+            cpsidx = (me.isLbcb1 == false) + 1;
             lt = length(me.cnames);
             row = cell(1,lt);
-            if me.cdp.numLbcbs() == 2
-                r = [ step.lbcbCps{1}.command.disp' step.lbcbCps{1}.command.force' ...
-                    step.lbcbCps{2}.command.disp' step.lbcbCps{2}.command.force' ];
-            else
-                r = [ step.lbcbCps{1}.command.disp' step.lbcbCps{1}.command.force' ];
-            end
+                r = [ step.lbcbCps{cpsidx}.command.disp' step.lbcbCps{cpsidx}.command.force' ];
             for i = 1:lt
                 row{i} = sprintf('%+12.7e',r(i));
             end

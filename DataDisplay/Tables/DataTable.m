@@ -1,7 +1,6 @@
 classdef DataTable < handle
     properties
         name = '';
-        table = [];
         steps = cell(3,1);
         cnames = { 'Dx','Dy','Dz','Rx','Ry','Rz','Fx','Fy','Fz','Mx','My','Mz'};
         rnames
@@ -9,36 +8,52 @@ classdef DataTable < handle
         cdp
         plot
         rowsize
+        idx
+        isLbcb1
     end
     methods
-        function me = DataTable(name)
+        function me = DataTable(name,isLbcb1)
             me.name = name;
-            if me.cdp.numLbcbs() == 2
-                lt = length(me.cnames);
-                cn = cell(lt * 2,1);
-                for i = 1: lt
-                    cn{i} = sprintf('L1 %s',me.cnames{i});
-                    cn{i + lt} = sprintf('L2 %s',me.cnames{i});
-                end
-            else
-                cn = me.cnames;
-            end
-            me.plot = DataTable(name,cn);
-            me.rowsize = 40;
+            me.isLbcb1 = isLbcb1;
+            lt = length(me.cnames);
+            me.plot = DisplayTable(name,me.cnames);
+            me.rowsize = 20;
+            me.data = cell(me.rowsize,lt);
+            me.idx = 0;
+        end
+        function displayMe(me)
+            me.plot.displayMe();
+        end
+        function undisplayMe(me)
+            me.plot.undisplayMe();
         end
         function update(me,step)
-            sz = size(me.data,1);
             row = me.genRow(step);
-            if sz <= me.rowsize
-                me.data{2:sz + 1,:} = me.data{1:sz,:};
-                me.rnames{2:sz,1} = me.rnames{1:sz,1};
+            if me.idx == 0
+                me.data(1,:) = row;
+                me.rnames{1} =  regexprep(step.stepNum.toString(),'\t',',');
+                me.idx = me.idx + 1;
+                return;
+            end
+            if me.idx < me.rowsize
+                me.data(2:me.idx + 1,:) = me.data(1:me.idx,:);
+                me.rnames(2:me.idx+1,1) = me.rnames(1:me.idx,1);
+                me.idx = me.idx + 1;
             else
-                me.data{2:me.rowsize,:} = me.data{1:(me.rowsize - 1),:};
-                me.rnames{2:me.rowsize,1} = me.rnames{1:(me.rowsize - 1),1};
+                me.data(2:me.rowsize,:) = me.data(1:(me.rowsize - 1),:);
+                me.rnames(2:me.rowsize,1) = me.rnames(1:(me.rowsize - 1),1);
             end
             me.data(1,:) = row;
-            me.rnames{1} = step.stepNum.toString();
+            me.rnames{1} = regexprep(step.stepNum.toString(),'\t',',');
             me.plot.update(me.data,me.rnames);
+        end
+        function setCnames(me,cnames)
+            me.cnames = cnames;
+            me.data = cell(me.rowsize,length(me.cnames));
+            if me.plot.isDisplayed
+                set(me.plot.table,'ColumnName',cnames);
+            end
+            me.plot.cnames = cnames;
         end
     end
     methods (Abstract)

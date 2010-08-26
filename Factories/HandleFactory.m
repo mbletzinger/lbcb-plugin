@@ -105,21 +105,7 @@ classdef HandleFactory <  handle
             me.cl = CommandLimits(me.cfg);
             lc.cl = me.cl;
             lc.il = me.il;
-            
-            me.gui = LbcbPluginResults(handle,me);
-            if isempty(handle)
-                bsimst = ButtonGroupManagement([]);
-                me.gui.bsimst = bsimst;
-                bstpst = ButtonGroupManagement([]);
-                me.gui.bstpst = bstpst;
-                bsrc = ButtonGroupManagement([]);
-                me.gui.bsrc = bsrc;
-                bcor = CorrectionButtonGroupManagement([]);
-                me.gui.bcor = bcor;
-            else
-                me.fillButtons(handle)
-            end
-                        
+
             me.sdf = StepDataFactory;
             me.sdf.cdp = cdp;
             me.sdf.mdlLbcb = me.mdlLbcb;
@@ -131,7 +117,6 @@ classdef HandleFactory <  handle
             me.dat.cdp = cdp;
             me.arch = Archiver(cdp);
 
-            DataDisplay.setMenuHandle(handle);
             cfgH = org.nees.uiuc.simcor.matlab.HashTable();
             datH = org.nees.uiuc.simcor.matlab.HashTable();
             archH = org.nees.uiuc.simcor.matlab.HashTable();
@@ -183,18 +168,17 @@ classdef HandleFactory <  handle
             
             me.fakeGcp = GetControlPointsFake(cdp);
             me.fakeGcp.dat = me.dat;
-            me.ddisp = DataDisplay;
+            me.ddisp = DisplayFactory(handle);
             me.ddisp.cdp = cdp;
-            dbgWin = DebugWindow;
+%            dbgWin = DebugWindow;
             me.ddisp.dat = me.dat;
-            me.ddisp.dbgWin = dbgWin;
+%            me.ddisp.dbgWin = dbgWin;
             me.gui.ddisp = me.ddisp;
-            me.mdlLbcb.dbgWin = dbgWin;
-            me.mdlBroadcast.dbgWin = dbgWin;
+%            me.mdlLbcb.dbgWin = dbgWin;
+%            me.mdlBroadcast.dbgWin = dbgWin;
             
             for c =1:length(me.simStates)
                 me.simStates{c}.cdp = cdp;
-                me.simStates{c}.gui = me.gui;
                 me.simStates{c}.ocOm = me.ocOm;
                 me.simStates{c}.dat = me.dat;
                 me.simStates{c}.nxtStep = me.nxtStep;
@@ -216,13 +200,12 @@ classdef HandleFactory <  handle
             me.tgtEx.ocSimCor = me.ocSimCor;
             me.simStates{3}.lc = lc;
             
-            dbgWin.stpEx = me.stpEx;
-            dbgWin.tgtEx = me.tgtEx;
-            dbgWin.prcsTgt = me.simStates{3};
+%             dbgWin.stpEx = me.stpEx;
+%             dbgWin.tgtEx = me.tgtEx;
+%             dbgWin.prcsTgt = me.simStates{3};
             
             for c =1:length(me.simCorStates)
                 me.simCorStates{c}.cdp = cdp;
-                me.simCorStates{c}.gui = me.gui;
                 me.simCorStates{c}.mdlUiSimCor = me.mdlUiSimCor;
                 me.simCorStates{c}.dat = me.dat;
                 me.simCorStates{c}.sdf = me.sdf;
@@ -230,17 +213,32 @@ classdef HandleFactory <  handle
             
             for c =1:length(me.brdcstStates)
                 me.brdcstStates{c}.cdp = cdp;
-                me.brdcstStates{c}.gui = me.gui;
                 me.brdcstStates{c}.mdlBroadcast = me.mdlBroadcast;
                 me.brdcstStates{c}.dat = me.dat;
                 me.brdcstStates{c}.sdf = me.sdf;
             end
             
+            if isempty(handle)
+                me.gui = LbcbPluginResults(handle,me);
+                bsimst = ButtonGroupManagement([]);
+                me.gui.bsimst = bsimst;
+                bstpst = ButtonGroupManagement([]);
+                me.gui.bstpst = bstpst;
+                bsrc = ButtonGroupManagement([]);
+                me.gui.bsrc = bsrc;
+                bcor = CorrectionButtonGroupManagement([]);
+                me.gui.bcor = bcor;
+            else
+                me.setGuiHandle(handle);
+            end
+                                    
         end
         function setGuiHandle(me, handle)
             me.gui = LbcbPluginResults(handle,me);
             me.fillButtons(handle)
             me.gui.ddisp = me.ddisp;
+            me.ddisp.initialize(handle);
+            
             for c =1:length(me.omStates)
                 me.omStates{c}.gui = me.gui;
             end
@@ -253,7 +251,6 @@ classdef HandleFactory <  handle
             for c =1:length(me.brdcstStates)
                 me.brdcstStates{c}.gui = me.gui;
             end
-            DataDisplay.setMenuHandle(handle);
         end
         
         function c = get.ocOm(me)
@@ -305,7 +302,6 @@ classdef HandleFactory <  handle
                 handle.strButton,...
                 handle.simdButton...
                 };
-            bsimst.init()
             me.gui.bsimst = bsimst;
             bstpst = ButtonGroupManagement(handle.stepStatesPanel);
             bstpst.childHandles = {...
@@ -316,7 +312,6 @@ classdef HandleFactory <  handle
                 handle.btButton,...
                 handle.stpdButton...
                 };
-            bstpst.init()
             me.gui.bstpst = bstpst;
             bsrc = ButtonGroupManagement(handle.sourcePanel);
             bsrc.childHandles = {...
@@ -324,7 +319,6 @@ classdef HandleFactory <  handle
                 handle.scorButton,...
                 handle.srcnButton,...
                 };
-            bsrc.init()
             me.gui.bsrc = bsrc;
             bcor = CorrectionButtonGroupManagement(handle.correctionPanel);
             bcor.childHandles = {...
@@ -332,7 +326,6 @@ classdef HandleFactory <  handle
                 handle.ddButton,...
                 handle.cornButton,...
                 };
-            bcor.init()
             me.gui.bcor = bcor;
         end
     end

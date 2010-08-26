@@ -35,7 +35,7 @@ classdef MdlBroadcast < handle
             });
         prevAction;
         cfg
-        dbgWin
+%        dbgWin
         simcorVamp
         vampErrorFound
     end
@@ -210,7 +210,7 @@ classdef MdlBroadcast < handle
                     result = state;
                 else
                     me.log.error(dbstack,char(jerror.getText()));
-                    result = 'ERRORS_EXIST';
+                    result = 'ERRORS_EXIST'; %#ok<UNRCH>
                 end
             else
                 result = state;

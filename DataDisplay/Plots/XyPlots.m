@@ -48,7 +48,6 @@ classdef XyPlots < DisplayControl
             hold off;
             xlabel(xlab); ylabel(ylab);
             me.displayData();
-            me.displayMe2();
         end
         function update(me,d,idx)
             me.ydata{idx} = d(1,:);

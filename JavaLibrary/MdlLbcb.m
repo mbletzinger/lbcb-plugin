@@ -33,7 +33,6 @@ classdef MdlLbcb < handle
             });
         prevAction;
         cfg
-        dbgWin
     end
     methods
         function me = MdlLbcb(cfg)
@@ -157,13 +156,13 @@ classdef MdlLbcb < handle
                     me.state.setState('ERRORS EXIST');
                     me.action.setState('NONE');
                     me.log.error(dbstack(),char(me.simcorTcp.getTransaction().getError().getText()));
-                    me.simcorTcp.isReady();
+                    me.simcorTcp.isReady(); %#ok<UNRCH>
                     me.simcorTcp.shutdown();
                 case 'RESPONSE_AVAILABLE'
                     %                    me.state.setState('READY');
                     transaction = me.simcorTcp.pickupTransaction();
                     jresponse = transaction.getResponse();
-                    me.dbgWin.addMsg(char(jresponse.toString));
+%                    me.dbgWin.addMsg(char(jresponse.toString));
                     me.response = ResponseMessage(jresponse);
                 case 'READY'
                     me.state.setState('READY');
@@ -190,7 +189,7 @@ classdef MdlLbcb < handle
                     transaction = me.simcorTcp.pickupTransaction();
                     jresponse = transaction.getResponse();
                     if isempty(jresponse) == false
-                        me.dbgWin.addMsg(char(jresponse.toString));
+%                         me.dbgWin.addMsg(char(jresponse.toString));
                         me.response = ResponseMessage(jresponse);
                     end
                     me.simcorTcp.isReady();
@@ -200,7 +199,7 @@ classdef MdlLbcb < handle
                     me.state.setState('ERRORS EXIST');
                     me.action.setState('NONE');
                     me.log.error(dbstack(),char(me.simcorTcp.getTransaction().getError().getText()));
-                    me.simcorTcp.shutdown();
+                    me.simcorTcp.shutdown(); %#ok<UNRCH>
                 case {'CLOSING_CONNECTION' 'OPENING_CONNECTION' 'CHECK_OPEN_CONNECTION' ...
                         'ASSEMBLE_OPEN_COMMAND' 'SENDING_COMMAND' 'SETUP_READ_RESPONSE'...
                         'SENDING_CLOSE_COMMAND' 'WAIT_FOR_RESPONSE' 'TRANSACTION_DONE'}

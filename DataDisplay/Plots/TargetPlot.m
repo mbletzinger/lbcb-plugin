@@ -50,7 +50,6 @@ classdef TargetPlot < DisplayControl
             legend(me.legends);
             xlabel('Step'); ylabel(ylab);
             me.displayData();
-            me.displayMe2();
         end
         function update(me,d,idx)
             lst = length(d);
@@ -71,7 +70,7 @@ classdef TargetPlot < DisplayControl
                 mx = me.maxStp;
                 mn = me.maxStp - 50;
             end
-            set(me.axis,'XLim',[mn mx]);
+%            set(me.axis,'XLim',[mn mx]);
             for li = 1:lst
                 grp = me.groups(li);
                 ls = get(grp,'Children');

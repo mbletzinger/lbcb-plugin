@@ -7,6 +7,7 @@ classdef VsPlot < handle
         isLbcb1
         xdof
         ydof
+        cdp
     end
     methods
         function me = VsPlot(name,isLbcb1,xdof,ydof)
@@ -33,11 +34,11 @@ classdef VsPlot < handle
                 yd = step.lbcbCps{cpsidx}.response.disp(me.ydof);
             end
             if me.xdof > 6
-                xmd = step.lbcbCps{cpsidx}.response.force(me.ydof - 6);
-                xcd = step.lbcbCps{cpsidx}.command.force(me.ydof - 6);
+                xmd = step.lbcbCps{cpsidx}.response.force(me.xdof - 6);
+                xcd = step.lbcbCps{cpsidx}.command.force(me.xdof - 6);
             else
-                xmd = step.lbcbCps{cpsidx}.response.disp(me.ydof);
-                xcd = step.lbcbCps{cpsidx}.command.disp(me.ydof);
+                xmd = step.lbcbCps{cpsidx}.response.disp(me.xdof);
+                xcd = step.lbcbCps{cpsidx}.command.disp(me.xdof);
             end
             if isempty(me.measuredY) == false
                 me.measuredY = cat(1, me.measuredY,yd);
