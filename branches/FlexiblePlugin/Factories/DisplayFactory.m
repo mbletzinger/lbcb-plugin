@@ -5,6 +5,8 @@ classdef DisplayFactory < handle
         disps
         idx
         checkHndls
+        dat
+        cdp
     end
     methods
         function me = DisplayFactory(handle)
@@ -12,37 +14,88 @@ classdef DisplayFactory < handle
             me.idx = 1;
             me.dispIdxs = org.nees.uiuc.simcor.matlab.HashTable();
             me.disps = {};
-            DataDisplay.setMe(me);
+            DisplayFactory.setMe(me);
         end
         function addDisplay(me,name,ref,chkhndl)
             me.dispIdxs.put(name,me.idx);
-            dsp = { me.disps{1:(me.idx - 1)}, ref};
-            me.disps{me.idx} = dsp;
+            me.disps{me.idx} = ref;
             me.checkHndls{me.idx} = chkhndl;
             me.idx = me.idx + 1;
         end
-        function initialize(me)
-            ref = DataTable('Step DOF Data','DataTable');
-            me.addDisplay('DataTable',ref,me.mainDisp.DataTable);
-            ref = DataTable('Step DOF Data','DataTable');
+        function initialize(me,handle)
+            me.mainDisp = handle;
+            ref = ArchPlot('TotalFxVsLbcb1Dx',1,1,'Fx total');
+            ref.cdp = me.cdp;
             me.addDisplay('TotalFxVsLbcb1Dx',ref,me.mainDisp.TotalFxVsLbcb1Dx);
+            ref = ArchPlot('TotalFxVsLbcb2Dx',0,1,'Fx total');
+            ref.cdp = me.cdp;
             me.addDisplay('TotalFxVsLbcb2Dx',ref,me.mainDisp.TotalFxVsLbcb2Dx);
+            ref = ArchPlot('TotalMyVsLbcb1Dx',1,1,'My total');
+            ref.cdp = me.cdp;
             me.addDisplay('TotalMyVsLbcb1Dx',ref,me.mainDisp.TotalMyVsLbcb1Dx);
+            ref = ArchPlot('TotalMyVsLbcb2Dx',0,1,'My total');
+            ref.cdp = me.cdp;
             me.addDisplay('TotalMyVsLbcb2Dx',ref,me.mainDisp.TotalMyVsLbcb2Dx);
+            ref = VsPlot('MyVsLbcb1Dx',1,1,11);
+            ref.cdp = me.cdp;
             me.addDisplay('MyVsLbcb1Dx',ref,me.mainDisp.MyVsLbcb1Dx);
+            ref = VsPlot('MyVsLbcb2Dx',0,1,11);
+            ref.cdp = me.cdp;
             me.addDisplay('MyVsLbcb2Dx',ref,me.mainDisp.MyVsLbcb2Dx);
+            ref = VsPlot('RyVsLbcb1Dx',1,1,5);
+            ref.cdp = me.cdp;
             me.addDisplay('RyVsLbcb1Dx',ref,me.mainDisp.RyVsLbcb1Dx);
+            ref = VsPlot('RyVsLbcb2Dx',0,1,5);
+            ref.cdp = me.cdp;
             me.addDisplay('RyVsLbcb2Dx',ref,me.mainDisp.RyVsLbcb2Dx);
+            ref = VsPlot('FxVsLbcb1Dx',1,1,7);
+            ref.cdp = me.cdp;
             me.addDisplay('FxVsLbcb1Dx',ref,me.mainDisp.FxVsLbcb1Dx);
+            ref = VsPlot('FxVsLbcb2Dx',0,1,7);
+            ref.cdp = me.cdp;
             me.addDisplay('FxVsLbcb2Dx',ref,me.mainDisp.FxVsLbcb2Dx);
+            ref = OneDofStepPlot('DxStepL1',1,me.dat,1);
+            ref.cdp = me.cdp;
             me.addDisplay('DxStepL1',ref,me.mainDisp.DxStepL1);
+            ref = OneDofStepPlot('DxStepL2',0,me.dat,1);
+            ref.cdp = me.cdp;
             me.addDisplay('DxStepL2',ref,me.mainDisp.DxStepL2);
+            ref = OneDofStepPlot('RyStepL1',1,me.dat,5);
+            ref.cdp = me.cdp;
             me.addDisplay('RyStepL1',ref,me.mainDisp.RyStepL1);
+            ref = OneDofStepPlot('RyStepL2',0,me.dat,5);
+            ref.cdp = me.cdp;
             me.addDisplay('RyStepL2',ref,me.mainDisp.RyStepL2);
+            ref = OneDofStepPlot('DzStepL1',1,me.dat,3);
+            ref.cdp = me.cdp;
             me.addDisplay('DzStepL1',ref,me.mainDisp.DzStepL1);
+            ref = OneDofStepPlot('DzStepL2',0,me.dat,3);
+            ref.cdp = me.cdp;
             me.addDisplay('DzStepL2',ref,me.mainDisp.DzStepL2);
+            ref = OneDofStepPlot('FzStepL1',1,me.dat,9);
+            ref.cdp = me.cdp;
             me.addDisplay('FzStepL1',ref,me.mainDisp.FzStepL1);
+            ref = OneDofStepPlot('FzStepL2',0,me.dat,9);
+            ref.cdp = me.cdp;
             me.addDisplay('FzStepL2',ref,me.mainDisp.FzStepL2);
+            ref = ResponseTable('L1ResponseTable',1);
+            me.addDisplay('L1ResponseTable',ref,me.mainDisp.ResponseTable);
+            ref = ResponseTable('L2ResponseTable',0);
+            me.addDisplay('L2ResponseTable',ref,me.mainDisp.ResponseTable);
+            ref = AllStepsCommandTable('L1CommandTable',1);
+            me.addDisplay('L1CommandTable',ref,me.mainDisp.CommandTable);
+            ref = AllStepsCommandTable('L2CommandTable',0);
+            me.addDisplay('L2CommandTable',ref,me.mainDisp.CommandTable);
+            ref = SubstepsCommandTable('L1SubstepsTable',1);
+            me.addDisplay('L1SubstepsTable',ref,me.mainDisp.SubstepsTable);
+            ref = SubstepsCommandTable('L2SubstepsTable',0);
+            me.addDisplay('L2SubstepsTable',ref,me.mainDisp.SubstepsTable);
+            ref = LbcbReadingsTable('L1ReadingsTable',1);
+            me.addDisplay('L1ReadingsTable',ref,me.mainDisp.ReadingsTable);
+            ref = LbcbReadingsTable('L2ReadingsTable',0);
+            me.addDisplay('L2ReadingsTable',ref,me.mainDisp.ReadingsTable);
+            ref = ArchTable('DerivedTable');
+            me.addDisplay('DerivedTable',ref,me.mainDisp.DerivedTable);
         end
         function yes = isDisplaying(me,name)
             ref = me.disps{me.dispIdxs.get(name)};
@@ -53,15 +106,19 @@ classdef DisplayFactory < handle
             ref = me.disps{i};
             ref.undisplayMe();
             hndl = me.checkHndls{i};
-            set(hndl,'Checked','off');
+            if hdnl ~= 0
+                set(hndl,'Checked','off');
+            end
         end
         function openDisplay(me,name)
             i = me.dispIdxs.get(name);
             ref = me.disps{i};
             ref.displayMe();
-            ref.isDisplayed = true;
+            ref.plot.isDisplayed = true;
             hndl = me.checkHndls{i};
-            set(hndl,'Checked','on');
+            if hndl ~= 0
+                set(hndl,'Checked','on');
+            end
         end
         function updateDisplay(me,name,target)
             ref = me.disps{me.dispIdxs.get(name)};
@@ -87,7 +144,9 @@ classdef DisplayFactory < handle
             ref = mySelf.disps{i};
             ref.plot.isDisplayed = false;
             hndl = mySelf.checkHndls{i};
-            set(hndl,'Checked','off');            
+            if hndl ~= 0
+                set(hndl,'Checked','off');
+            end
         end
     end
 end
