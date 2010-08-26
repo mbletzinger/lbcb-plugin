@@ -79,21 +79,21 @@ classdef DisplayFactory < handle
             ref.cdp = me.cdp;
             me.addDisplay('FzStepL2',ref,me.mainDisp.FzStepL2);
             ref = ResponseTable('L1ResponseTable',1);
-            me.addDisplay('L1ResponseTable',ref,me.mainDisp.ResponseTable);
+            me.addDisplay('L1ResponseTable',ref,me.mainDisp.L1ResponseTable);
             ref = ResponseTable('L2ResponseTable',0);
-            me.addDisplay('L2ResponseTable',ref,me.mainDisp.ResponseTable);
+            me.addDisplay('L2ResponseTable',ref,me.mainDisp.L2ResponseTable);
             ref = AllStepsCommandTable('L1CommandTable',1);
-            me.addDisplay('L1CommandTable',ref,me.mainDisp.CommandTable);
+            me.addDisplay('L1CommandTable',ref,me.mainDisp.L1CommandTable);
             ref = AllStepsCommandTable('L2CommandTable',0);
-            me.addDisplay('L2CommandTable',ref,me.mainDisp.CommandTable);
+            me.addDisplay('L2CommandTable',ref,me.mainDisp.L2CommandTable);
             ref = SubstepsCommandTable('L1SubstepsTable',1);
-            me.addDisplay('L1SubstepsTable',ref,me.mainDisp.SubstepsTable);
+            me.addDisplay('L1SubstepsTable',ref,me.mainDisp.L1SubstepsTable);
             ref = SubstepsCommandTable('L2SubstepsTable',0);
-            me.addDisplay('L2SubstepsTable',ref,me.mainDisp.SubstepsTable);
+            me.addDisplay('L2SubstepsTable',ref,me.mainDisp.L2SubstepsTable);
             ref = LbcbReadingsTable('L1ReadingsTable',1);
-            me.addDisplay('L1ReadingsTable',ref,me.mainDisp.ReadingsTable);
+            me.addDisplay('L1ReadingsTable',ref,me.mainDisp.L1ReadingsTable);
             ref = LbcbReadingsTable('L2ReadingsTable',0);
-            me.addDisplay('L2ReadingsTable',ref,me.mainDisp.ReadingsTable);
+            me.addDisplay('L2ReadingsTable',ref,me.mainDisp.L2ReadingsTable);
             ref = ArchTable('DerivedTable');
             me.addDisplay('DerivedTable',ref,me.mainDisp.DerivedTable);
         end
@@ -106,7 +106,7 @@ classdef DisplayFactory < handle
             ref = me.disps{i};
             ref.undisplayMe();
             hndl = me.checkHndls{i};
-            if hdnl ~= 0
+            if hndl ~= 0
                 set(hndl,'Checked','off');
             end
         end
@@ -130,6 +130,16 @@ classdef DisplayFactory < handle
             for v = 1:lt
                 name = char(keys(v));
                 me.updateDisplay(name,target);
+            end
+        end
+        function closeAll(me)
+            keys = me.dispIdxs.keys();
+            lt = length(keys);
+            for v = 1:lt
+                name = char(keys(v));
+                if me.isDisplaying(name)
+                    me.closeDisplay(name);
+                end
             end
         end
     end

@@ -75,6 +75,7 @@ end
 
 handles.actions = LbcbPluginActions(handles,hfact);
 handles.actions.processArchiveOnOff('on');
+handles.ddisp = handles.actions.hfact.ddisp;
 handles.log = Logger('LbcbPlugin');
 % Update handles structure
 guidata(hObject, handles);
@@ -1014,9 +1015,7 @@ function LbcbPlugin_DeleteFcn(hObject, eventdata, handles)
 if isfield(handles,'actions')
     disp('Shutting Down');
     handles.actions.shutdown();
-    for d = 0 : 3
-        DataDisplay.checkOff([],[],d);
-    end
+    handles.ddisp.closeAll();
 end
 
 
@@ -1025,12 +1024,10 @@ function TotalFxVsLbcb1Dx_Callback(hObject, eventdata, handles)
 % hObject    handle to TotalFxVsLbcb1Dx (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-if strcmp(get(hObject,'Checked'),'on')
-    handles.actions.hfact.gui.ddisp.stopTotalFxVsLbcbDx(0);
-    set(hObject,'Checked','off');
-else 
-    handles.actions.hfact.gui.ddisp.startTotalFxVsLbcbDx(1);
-    set(hObject,'Checked','on');
+if handles.ddisp.isDisplaying('TotalFxVsLbcb1Dx')
+    handles.ddisp.closeDisplay('TotalFxVsLbcb1Dx');
+else
+    handles.ddisp.openDisplay('TotalFxVsLbcb1Dx');
 end
 
 
@@ -1039,12 +1036,10 @@ function TotalFxVsLbcb2Dx_Callback(hObject, eventdata, handles)
 % hObject    handle to TotalFxVsLbcb2Dx (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-if strcmp(get(hObject,'Checked'),'on')
-    handles.actions.hfact.gui.ddisp.stopTotalFxVsLbcbDx(0);
-    set(hObject,'Checked','off');
-else 
-    handles.actions.hfact.gui.ddisp.startTotalFxVsLbcbDx(1);
-    set(hObject,'Checked','on');
+if handles.ddisp.isDisplaying('TotalFxVsLbcb2Dx')
+    handles.ddisp.closeDisplay('TotalFxVsLbcb2Dx');
+else
+    handles.ddisp.openDisplay('TotalFxVsLbcb2Dx');
 end
 
 % --- Executes on button press in l1commandtable.
@@ -1123,12 +1118,10 @@ function TotalMyVsLbcb1Dx_Callback(hObject, eventdata, handles)
 % hObject    handle to TotalMyVsLbcb1Dx (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-if strcmp(get(hObject,'Checked'),'on')
-    handles.actions.hfact.gui.ddisp.stopTotalMyVsLbcbDx(0);
-    set(hObject,'Checked','off');
-else 
-    handles.actions.hfact.gui.ddisp.startTotalMyVsLbcbDx(1);
-    set(hObject,'Checked','on');
+if handles.ddisp.isDisplaying('TotalMyVsLbcb1Dx')
+    handles.ddisp.closeDisplay('TotalMyVsLbcb1Dx');
+else
+    handles.ddisp.openDisplay('TotalMyVsLbcb1Dx');
 end
 
 
@@ -1137,12 +1130,10 @@ function TotalMyVsLbcb2Dx_Callback(hObject, eventdata, handles)
 % hObject    handle to TotalMyVsLbcb2Dx (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-if strcmp(get(hObject,'Checked'),'on')
-    handles.actions.hfact.gui.ddisp.stopTotalMyVsLbcbDx(0);
-    set(hObject,'Checked','off');
-else 
-    handles.actions.hfact.gui.ddisp.startTotalMyVsLbcbDx(1);
-    set(hObject,'Checked','on');
+if handles.ddisp.isDisplaying('TotalMyVsLbcb2Dx')
+    handles.ddisp.closeDisplay('TotalMyVsLbcb2Dx');
+else
+    handles.ddisp.openDisplay('TotalMyVsLbcb2Dx');
 end
 
 
@@ -1151,12 +1142,10 @@ function MyVsLbcb1Dx_Callback(hObject, eventdata, handles)
 % hObject    handle to MyVsLbcb1Dx (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-if strcmp(get(hObject,'Checked'),'on')
-    handles.actions.hfact.gui.ddisp.stopMyVsDx(0);
-    set(hObject,'Checked','off');
-else 
-    handles.actions.hfact.gui.ddisp.startMyVsDx(1);
-    set(hObject,'Checked','on');
+if handles.ddisp.isDisplaying('MyVsLbcb1Dx')
+    handles.ddisp.closeDisplay('MyVsLbcb1Dx');
+else
+    handles.ddisp.openDisplay('MyVsLbcb1Dx');
 end
 
 
@@ -1165,12 +1154,10 @@ function MyVsLbcb2Dx_Callback(hObject, eventdata, handles)
 % hObject    handle to MyVsLbcb2Dx (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-if strcmp(get(hObject,'Checked'),'on')
-    handles.actions.hfact.gui.ddisp.stopMyVsDx(0);
-    set(hObject,'Checked','off');
-else 
-    handles.actions.hfact.gui.ddisp.startMyVsDx(1);
-    set(hObject,'Checked','on');
+if handles.ddisp.isDisplaying('MyVsLbcb2Dx')
+    handles.ddisp.closeDisplay('MyVsLbcb2Dx');
+else
+    handles.ddisp.openDisplay('MyVsLbcb2Dx');
 end
 
 
@@ -1179,12 +1166,10 @@ function RyVsLbcb1Dx_Callback(hObject, eventdata, handles)
 % hObject    handle to RyVsLbcb1Dx (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-if strcmp(get(hObject,'Checked'),'on')
-    handles.actions.hfact.gui.ddisp.stopRyVsDx(0);
-    set(hObject,'Checked','off');
-else 
-    handles.actions.hfact.gui.ddisp.startRyVsDx(1);
-    set(hObject,'Checked','on');
+if handles.ddisp.isDisplaying('RyVsLbcb1Dx')
+    handles.ddisp.closeDisplay('RyVsLbcb1Dx');
+else
+    handles.ddisp.openDisplay('RyVsLbcb1Dx');
 end
 
 
@@ -1194,12 +1179,10 @@ function RyVsLbcb2Dx_Callback(hObject, eventdata, handles)
 % hObject    handle to RyVsLbcb2Dx (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-if strcmp(get(hObject,'Checked'),'on')
-    handles.actions.hfact.gui.ddisp.stopRyVsDx(0);
-    set(hObject,'Checked','off');
-else 
-    handles.actions.hfact.gui.ddisp.startRyVsDx(1);
-    set(hObject,'Checked','on');
+if handles.ddisp.isDisplaying('RyVsLbcb2Dx')
+    handles.ddisp.closeDisplay('RyVsLbcb2Dx');
+else
+    handles.ddisp.openDisplay('RyVsLbcb2Dx');
 end
 
 
@@ -1225,165 +1208,163 @@ function FxVsLbcb1Dx_Callback(hObject, eventdata, handles)
 % hObject    handle to FxVsLbcb1Dx (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-if strcmp(get(hObject,'Checked'),'on')
-    handles.actions.hfact.gui.ddisp.stopFxVsDx(1);
-    set(hObject,'Checked','off');
-else 
-    handles.actions.hfact.gui.ddisp.startFxVsDx(1);
-    set(hObject,'Checked','on');
+if handles.ddisp.isDisplaying('FxVsLbcb1Dx')
+    handles.ddisp.closeDisplay('FxVsLbcb1Dx');
+else
+    handles.ddisp.openDisplay('FxVsLbcb1Dx');
 end
 
 % --------------------------------------------------------------------
 function FxVsLbcb2Dx_Callback(hObject, eventdata, handles)
-if strcmp(get(hObject,'Checked'),'on')
-    handles.actions.hfact.gui.ddisp.stopFxVsDx(0);
-    set(hObject,'Checked','off');
-else 
-    handles.actions.hfact.gui.ddisp.startFxVsDx(0);
-    set(hObject,'Checked','on');
+if handles.ddisp.isDisplaying('FxVsLbcb2Dx')
+    handles.ddisp.closeDisplay('FxVsLbcb2Dx');
+else
+    handles.ddisp.openDisplay('FxVsLbcb2Dx');
 end
 
 % --------------------------------------------------------------------
 function DxStepL1_Callback(hObject, eventdata, handles)
-if strcmp(get(hObject,'Checked'),'on')
-    handles.actions.hfact.gui.ddisp.stopDxStep(1);
-    set(hObject,'Checked','off');
-else 
-    handles.actions.hfact.gui.ddisp.startDxStep(1);
-    set(hObject,'Checked','on');
+if handles.ddisp.isDisplaying('DxStepL1')
+    handles.ddisp.closeDisplay('DxStepL1');
+else
+    handles.ddisp.openDisplay('DxStepL1');
 end
 
 
 % --------------------------------------------------------------------
 function RyStepL1_Callback(hObject, eventdata, handles)
-if strcmp(get(hObject,'Checked'),'on')
-    handles.actions.hfact.gui.ddisp.stopRyStep(1);
-    set(hObject,'Checked','off');
-else 
-    handles.actions.hfact.gui.ddisp.startRyStep(1);
-    set(hObject,'Checked','on');
+if handles.ddisp.isDisplaying('RyStepL1')
+    handles.ddisp.closeDisplay('RyStepL1');
+else
+    handles.ddisp.openDisplay('RyStepL1');
 end
 
 % --------------------------------------------------------------------
 function DzStepL1_Callback(hObject, eventdata, handles)
-if strcmp(get(hObject,'Checked'),'on')
-    handles.actions.hfact.gui.ddisp.stopDzStep(1);
-    set(hObject,'Checked','off');
-else 
-    handles.actions.hfact.gui.ddisp.startDzStep(1);
-    set(hObject,'Checked','on');
+if handles.ddisp.isDisplaying('DzStepL1')
+    handles.ddisp.closeDisplay('DzStepL1');
+else
+    handles.ddisp.openDisplay('DzStepL1');
 end
 
 % --------------------------------------------------------------------
 function FzStepL1_Callback(hObject, eventdata, handles)
-if strcmp(get(hObject,'Checked'),'on')
-    handles.actions.hfact.gui.ddisp.stopFzStep(1);
-    set(hObject,'Checked','off');
-else 
-    handles.actions.hfact.gui.ddisp.startFzStep(1);
-    set(hObject,'Checked','on');
+if handles.ddisp.isDisplaying('FzStepL1')
+    handles.ddisp.closeDisplay('FzStepL1');
+else
+    handles.ddisp.openDisplay('FzStepL1');
 end
 
 % --------------------------------------------------------------------
 function DxStepL2_Callback(hObject, eventdata, handles)
-if strcmp(get(hObject,'Checked'),'on')
-    handles.actions.hfact.gui.ddisp.stopDxStep(0);
-    set(hObject,'Checked','off');
-else 
-    handles.actions.hfact.gui.ddisp.startDxStep(0);
-    set(hObject,'Checked','on');
+if handles.ddisp.isDisplaying('DxStepL2')
+    handles.ddisp.closeDisplay('DxStepL2');
+else
+    handles.ddisp.openDisplay('DxStepL2');
 end
 
 
 % --------------------------------------------------------------------
 function RyStepL2_Callback(hObject, eventdata, handles)
-if strcmp(get(hObject,'Checked'),'on')
-    handles.actions.hfact.gui.ddisp.stopRyStep(0);
-    set(hObject,'Checked','off');
-else 
-    handles.actions.hfact.gui.ddisp.startRyStep(0);
-    set(hObject,'Checked','on');
+if handles.ddisp.isDisplaying('RyStepL2')
+    handles.ddisp.closeDisplay('RyStepL2');
+else
+    handles.ddisp.openDisplay('RyStepL2');
 end
 
 % --------------------------------------------------------------------
 function DzStepL2_Callback(hObject, eventdata, handles)
-if strcmp(get(hObject,'Checked'),'on')
-    handles.actions.hfact.gui.ddisp.stopDzStep(0);
-    set(hObject,'Checked','off');
-else 
-    handles.actions.hfact.gui.ddisp.startDzStep(0);
-    set(hObject,'Checked','on');
+if handles.ddisp.isDisplaying('DzStepL2')
+    handles.ddisp.closeDisplay('DzStepL2');
+else
+    handles.ddisp.openDisplay('DzStepL2');
 end
 
 % --------------------------------------------------------------------
 function FzStepL2_Callback(hObject, eventdata, handles)
-if strcmp(get(hObject,'Checked'),'on')
-    handles.actions.hfact.gui.ddisp.stopFzStep(0);
-    set(hObject,'Checked','off');
-else 
-    handles.actions.hfact.gui.ddisp.startFzStep(0);
-    set(hObject,'Checked','on');
+if handles.ddisp.isDisplaying('FzStepL2')
+    handles.ddisp.closeDisplay('FzStepL2');
+else
+    handles.ddisp.openDisplay('FzStepL2');
 end
 
 
 % --------------------------------------------------------------------
 function L1ResponseTable_Callback(hObject, eventdata, handles)
-% hObject    handle to L1ResponseTable (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
+if handles.ddisp.isDisplaying('L1ResponseTable')
+    handles.ddisp.closeDisplay('L1ResponseTable');
+else
+    handles.ddisp.openDisplay('L1ResponseTable');
+end
 
 
 % --------------------------------------------------------------------
 function L1CommandTable_Callback(hObject, eventdata, handles)
-% hObject    handle to L1CommandTable (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
+if handles.ddisp.isDisplaying('L1CommandTable')
+    handles.ddisp.closeDisplay('L1CommandTable');
+else
+    handles.ddisp.openDisplay('L1CommandTable');
+end
 
 
 % --------------------------------------------------------------------
 function L1SubstepsTable_Callback(hObject, eventdata, handles)
-% hObject    handle to L1SubstepsTable (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
+if handles.ddisp.isDisplaying('L1SubstepsTable')
+    handles.ddisp.closeDisplay('L1SubstepsTable');
+else
+    handles.ddisp.openDisplay('L1SubstepsTable');
+end
 
 
 % --------------------------------------------------------------------
 function DerivedTable_Callback(hObject, eventdata, handles)
-% hObject    handle to DerivedTable (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
+if handles.ddisp.isDisplaying('DerivedTable')
+    handles.ddisp.closeDisplay('DerivedTable');
+else
+    handles.ddisp.openDisplay('DerivedTable');
+end
 
 
 % --------------------------------------------------------------------
 function L1ReadingsTable_Callback(hObject, eventdata, handles)
-% hObject    handle to L1ReadingsTable (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
+if handles.ddisp.isDisplaying('L1ReadingsTable')
+    handles.ddisp.closeDisplay('L1ReadingsTable');
+else
+    handles.ddisp.openDisplay('L1ReadingsTable');
+end
 
 
 % --------------------------------------------------------------------
 function L2ResponseTable_Callback(hObject, eventdata, handles)
-% hObject    handle to L2ResponseTable (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
+if handles.ddisp.isDisplaying('L2ResponseTable')
+    handles.ddisp.closeDisplay('L2ResponseTable');
+else
+    handles.ddisp.openDisplay('L2ResponseTable');
+end
 
 
 % --------------------------------------------------------------------
 function L2CommandTable_Callback(hObject, eventdata, handles)
-% hObject    handle to L2CommandTable (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
+if handles.ddisp.isDisplaying('L2CommandTable')
+    handles.ddisp.closeDisplay('L2CommandTable');
+else
+    handles.ddisp.openDisplay('L2CommandTable');
+end
 
 
 % --------------------------------------------------------------------
 function L2SubstepsTable_Callback(hObject, eventdata, handles)
-% hObject    handle to L2SubstepsTable (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
+if handles.ddisp.isDisplaying('L2SubstepsTable')
+    handles.ddisp.closeDisplay('L2SubstepsTable');
+else
+    handles.ddisp.openDisplay('L2SubstepsTable');
+end
 
 
 % --------------------------------------------------------------------
 function L2ReadingsTable_Callback(hObject, eventdata, handles)
-% hObject    handle to L2ReadingsTable (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
+if handles.ddisp.isDisplaying('L2ReadingsTable')
+    handles.ddisp.closeDisplay('L2ReadingsTable');
+else
+    handles.ddisp.openDisplay('L2ReadingsTable');
+end
