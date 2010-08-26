@@ -22,7 +22,7 @@ function varargout = LbcbPlugin(varargin)
 
 % Edit the above text to modify the response to help LbcbPlugin
 
-% Last Modified by GUIDE v2.5 09-Aug-2010 17:08:28
+% Last Modified by GUIDE v2.5 26-Aug-2010 12:42:14
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -117,7 +117,7 @@ val = get(hObject,'Value');
 if val == false
     if get(handles.RunHold, 'Value')
         handles.log.error(dbstack,'Need to stop the Simulation before disconnecting');
-        set(hObject,'Value',true);
+        set(hObject,'Value',true); %#ok<UNRCH>
         return;
     end
 end
@@ -1047,9 +1047,9 @@ else
     set(hObject,'Checked','on');
 end
 
-% --- Executes on button press in commandtable.
+% --- Executes on button press in l1commandtable.
 function AutoAccept_Callback(hObject, eventdata, handles)
-% hObject    handle to commandtable (see GCBO)
+% hObject    handle to l1commandtable (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 handles.actions.processAutoAccept(get(hObject,'Value'));
@@ -1220,16 +1220,6 @@ else
 end
 handles.actions.processArchiveOnOff(get(hObject,'Checked'));
 
-
-% --- Executes on button press in togglebutton13.
-function togglebutton13_Callback(hObject, eventdata, handles)
-% hObject    handle to togglebutton13 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hint: get(hObject,'Value') returns toggle state of togglebutton13
-
-
 % --------------------------------------------------------------------
 function FxVsLbcb1Dx_Callback(hObject, eventdata, handles)
 % hObject    handle to FxVsLbcb1Dx (see GCBO)
@@ -1334,3 +1324,66 @@ else
     handles.actions.hfact.gui.ddisp.startFzStep(0);
     set(hObject,'Checked','on');
 end
+
+
+% --------------------------------------------------------------------
+function L1ResponseTable_Callback(hObject, eventdata, handles)
+% hObject    handle to L1ResponseTable (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --------------------------------------------------------------------
+function L1CommandTable_Callback(hObject, eventdata, handles)
+% hObject    handle to L1CommandTable (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --------------------------------------------------------------------
+function L1SubstepsTable_Callback(hObject, eventdata, handles)
+% hObject    handle to L1SubstepsTable (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --------------------------------------------------------------------
+function DerivedTable_Callback(hObject, eventdata, handles)
+% hObject    handle to DerivedTable (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --------------------------------------------------------------------
+function L1ReadingsTable_Callback(hObject, eventdata, handles)
+% hObject    handle to L1ReadingsTable (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --------------------------------------------------------------------
+function L2ResponseTable_Callback(hObject, eventdata, handles)
+% hObject    handle to L2ResponseTable (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --------------------------------------------------------------------
+function L2CommandTable_Callback(hObject, eventdata, handles)
+% hObject    handle to L2CommandTable (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --------------------------------------------------------------------
+function L2SubstepsTable_Callback(hObject, eventdata, handles)
+% hObject    handle to L2SubstepsTable (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --------------------------------------------------------------------
+function L2ReadingsTable_Callback(hObject, eventdata, handles)
+% hObject    handle to L2ReadingsTable (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
