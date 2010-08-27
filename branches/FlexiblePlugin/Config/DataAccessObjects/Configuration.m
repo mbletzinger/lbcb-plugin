@@ -67,7 +67,9 @@ classdef Configuration < handle
             end
             me.error = result;
             done = 0;
-        end
+            step = me.dat.curStepData;
+            me.arch.storeNote(sprintf('Config file %s was loaded',name),step);
+       end
         function done = saveFile(me,name)
             result = me.props.save(name);
             if isempty(result)
@@ -77,6 +79,8 @@ classdef Configuration < handle
             end
             me.error = result;
             done = 0;
+            step = me.dat.curStepData;
+            me.arch.storeNote(sprintf('Config file %s was saved',name),step);
         end
         function logValueChange(me,key,value)
             step = me.dat.curStepData;
