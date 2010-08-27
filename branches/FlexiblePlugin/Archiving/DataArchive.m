@@ -1,6 +1,7 @@
 classdef DataArchive < handle
     properties
     path = '';
+    hpath
     headers={};
     end
     methods
@@ -13,12 +14,12 @@ classdef DataArchive < handle
             for i=1:length (data)
                 fprintf(fid,'%+12.7e	',data(i));
             end
-            fprintf(fid,'%s	',note);
+            fprintf(fid,'%s',note);
             fprintf(fid,'\r\n');
             fclose(fid);
         end
         function writeHeaders(me)
-            fid = fopen(me.path,'a');
+            fid = fopen(me.hpath,'w');
             for i=1:length (me.headers)
                 fprintf(fid,'%s	',me.headers{i});
             end
@@ -38,8 +39,10 @@ classdef DataArchive < handle
             if isdir( pth ) ==false
                 mkdir(pth); 
             end
-            name = strcat(name,me.dateSuffix(),'.txt');
-            me.path = fullfile(pth,name);
+            pname = strcat(name,me.dateSuffix(),'.txt');
+            me.path = fullfile(pth,pname);
+            pname = strcat(name,'_hdr.txt');
+            me.hpath = fullfile(pth,pname);
         end
     end
 end

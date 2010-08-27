@@ -73,10 +73,13 @@ if(nargin > 3)
     end
 end
 
-handles.actions = LbcbPluginActions(handles,hfact);
-handles.actions.processArchiveOnOff('on');
-handles.ddisp = handles.actions.hfact.ddisp;
-handles.log = Logger('LbcbPlugin');
+actions = LbcbPluginActions(handles,hfact);
+actions.processArchiveOnOff('on');
+ddisp = actions.hfact.ddisp;
+log = Logger('LbcbPlugin');
+setappdata(hObject,'actions',actions);
+setappdata(hObject,'ddisp',ddisp);
+setappdata(hObject,'log',log);
 % Update handles structure
 guidata(hObject, handles);
 % h = handles
@@ -101,866 +104,459 @@ function RunHold_Callback(hObject, eventdata, handles) %#ok<*INUSD,*DEFNU>
 % hObject    handle to RunHold (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+actions = getappdata(getLp(hObject),'actions');
 if handles.notimer
     % Used for debugging the software
     disp('no timer execution');
-    if handles.actions.currentSimExecute.isState('DONE')
-    handles.actions.startSimulation();
+    if actions.currentSimExecute.isState('DONE')
+    actions.startSimulation();
     end
-    LbcbPluginActions.executeSim([],[],handles.actions);    
+    LbcbPluginActions.executeSim([],[],actions);    
 else
-    handles.actions.processRunHold(get(hObject,'Value'));    
+    actions.processRunHold(get(hObject,'Value'));    
 end
 
 % --- Executes on button press in Connect2Om.
 function Connect2Om_Callback(hObject, eventdata, handles)
 val = get(hObject,'Value');
+actions = getappdata(getLp(hObject),'actions');
+log = getappdata(getLp(hObject),'log');
 if val == false
     if get(handles.RunHold, 'Value')
-        handles.log.error(dbstack,'Need to stop the Simulation before disconnecting');
+        log.error(dbstack,'Need to stop the Simulation before disconnecting');
         set(hObject,'Value',true); %#ok<UNRCH>
         return;
     end
 end
-handles.actions.processConnectOm(val);
+actions.processConnectOm(val);
 
 
 % --- Executes on button press in ManualInput.
 function ManualInput_Callback(hObject, eventdata, handles)
-handles.actions.processEditTarget();
+actions = getappdata(getLp(hObject),'actions');
+actions.processEditTarget();
 
 % --- Executes on button press in StartTriggering.
 function StartTriggering_Callback(hObject, eventdata, handles)
 val = get(hObject,'Value');
-handles.actions.processTriggering(val);
+actions = getappdata(getLp(hObject),'actions');
+actions.processTriggering(val);
 
 function DxL1_Callback(hObject, eventdata, handles)
-% hObject    handle to DxL1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of DxL1 as text
-%        str2double(get(hObject,'String')) returns contents of DxL1 as a double
-handles.actions.setCommandLimit(1,1,1,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setCommandLimit(1,1,1,get(hObject,'String'));
 
 
 function DxU1_Callback(hObject, eventdata, handles)
-% hObject    handle to DxU1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of DxU1 as text
-%        str2double(get(hObject,'String')) returns contents of DxU1 as a double
-handles.actions.setCommandLimit(1,1,0,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setCommandLimit(1,1,0,get(hObject,'String'));
 
 
 function DyL1_Callback(hObject, eventdata, handles)
-% hObject    handle to DyL1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of DyL1 as text
-%        str2double(get(hObject,'String')) returns contents of DyL1 as a double
-handles.actions.setCommandLimit(2,1,1,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setCommandLimit(2,1,1,get(hObject,'String'));
 
 function DyU1_Callback(hObject, eventdata, handles)
-% hObject    handle to DyU1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of DyU1 as text
-%        str2double(get(hObject,'String')) returns contents of DyU1 as a double
-handles.actions.setCommandLimit(2,1,0,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setCommandLimit(2,1,0,get(hObject,'String'));
 
 function DzL1_Callback(hObject, eventdata, handles)
-% hObject    handle to DzL1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of DzL1 as text
-%        str2double(get(hObject,'String')) returns contents of DzL1 as a double
-handles.actions.setCommandLimit(3,1,1,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setCommandLimit(3,1,1,get(hObject,'String'));
 
 function DzU1_Callback(hObject, eventdata, handles)
-% hObject    handle to DzU1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of DzU1 as text
-%        str2double(get(hObject,'String')) returns contents of DzU1 as a double
-handles.actions.setCommandLimit(3,1,0,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setCommandLimit(3,1,0,get(hObject,'String'));
 
 function RxL1_Callback(hObject, eventdata, handles)
-% hObject    handle to RxL1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of RxL1 as text
-%        str2double(get(hObject,'String')) returns contents of RxL1 as a double
-handles.actions.setCommandLimit(4,1,1,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setCommandLimit(4,1,1,get(hObject,'String'));
 
 function RxU1_Callback(hObject, eventdata, handles)
-% hObject    handle to RxU1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of RxU1 as text
-%        str2double(get(hObject,'String')) returns contents of RxU1 as a double
-handles.actions.setCommandLimit(4,1,0,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setCommandLimit(4,1,0,get(hObject,'String'));
 
 function RyL1_Callback(hObject, eventdata, handles)
-% hObject    handle to RyL1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of RyL1 as text
-%        str2double(get(hObject,'String')) returns contents of RyL1 as a double
-handles.actions.setCommandLimit(5,1,1,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setCommandLimit(5,1,1,get(hObject,'String'));
 
 function RyU1_Callback(hObject, eventdata, handles)
-% hObject    handle to RyU1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of RyU1 as text
-%        str2double(get(hObject,'String')) returns contents of RyU1 as a double
-handles.actions.setCommandLimit(5,1,0,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setCommandLimit(5,1,0,get(hObject,'String'));
 
 function RzL1_Callback(hObject, eventdata, handles)
-% hObject    handle to RzL1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-handles.actions.setCommandLimit(6,1,1,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setCommandLimit(6,1,1,get(hObject,'String'));
 
 function RzU1_Callback(hObject, eventdata, handles)
-% hObject    handle to RzU1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of RzU1 as text
-%        str2double(get(hObject,'String')) returns contents of RzU1 as a double
-handles.actions.setCommandLimit(6,1,0,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setCommandLimit(6,1,0,get(hObject,'String'));
 
 function DxL2_Callback(hObject, eventdata, handles)
-% hObject    handle to DxL2 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of DxL2 as text
-%        str2double(get(hObject,'String')) returns contents of DxL2 as a double
-handles.actions.setCommandLimit(1,2,1,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setCommandLimit(1,2,1,get(hObject,'String'));
 
 function DxU2_Callback(hObject, eventdata, handles)
-% hObject    handle to DxU2 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of DxU2 as text
-%        str2double(get(hObject,'String')) returns contents of DxU2 as a double
-handles.actions.setCommandLimit(1,2,0,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setCommandLimit(1,2,0,get(hObject,'String'));
 
 function DyL2_Callback(hObject, eventdata, handles)
-% hObject    handle to DyL2 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of DyL2 as text
-%        str2double(get(hObject,'String')) returns contents of DyL2 as a double
-handles.actions.setCommandLimit(2,2,1,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setCommandLimit(2,2,1,get(hObject,'String'));
 
 function DyU2_Callback(hObject, eventdata, handles)
-% hObject    handle to DyU2 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of DyU2 as text
-%        str2double(get(hObject,'String')) returns contents of DyU2 as a double
-handles.actions.setCommandLimit(2,2,0,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setCommandLimit(2,2,0,get(hObject,'String'));
 
 function DzL2_Callback(hObject, eventdata, handles)
-% hObject    handle to DzL2 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of DzL2 as text
-%        str2double(get(hObject,'String')) returns contents of DzL2 as a double
-handles.actions.setCommandLimit(3,2,1,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setCommandLimit(3,2,1,get(hObject,'String'));
 
 function DzU2_Callback(hObject, eventdata, handles)
-% hObject    handle to DzU2 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of DzU2 as text
-%        str2double(get(hObject,'String')) returns contents of DzU2 as a double
-handles.actions.setCommandLimit(3,2,0,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setCommandLimit(3,2,0,get(hObject,'String'));
 
 function RxL2_Callback(hObject, eventdata, handles)
-% hObject    handle to RxL2 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of RxL2 as text
-%        str2double(get(hObject,'String')) returns contents of RxL2 as a double
-handles.actions.setCommandLimit(4,2,1,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setCommandLimit(4,2,1,get(hObject,'String'));
 
 function RxU2_Callback(hObject, eventdata, handles)
-% hObject    handle to RxU2 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of RxU2 as text
-%        str2double(get(hObject,'String')) returns contents of RxU2 as a double
-handles.actions.setCommandLimit(4,2,0,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setCommandLimit(4,2,0,get(hObject,'String'));
 
 function RyL2_Callback(hObject, eventdata, handles)
-% hObject    handle to RyL2 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of RyL2 as text
-%        str2double(get(hObject,'String')) returns contents of RyL2 as a double
-handles.actions.setCommandLimit(5,2,1,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setCommandLimit(5,2,1,get(hObject,'String'));
 
 function RyU2_Callback(hObject, eventdata, handles)
-% hObject    handle to RyU2 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of RyU2 as text
-%        str2double(get(hObject,'String')) returns contents of RyU2 as a double
-handles.actions.setCommandLimit(5,2,0,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setCommandLimit(5,2,0,get(hObject,'String'));
 
 function RzL2_Callback(hObject, eventdata, handles)
-% hObject    handle to RzL2 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of RzL2 as text
-%        str2double(get(hObject,'String')) returns contents of RzL2 as a double
-handles.actions.setCommandLimit(6,2,1,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setCommandLimit(6,2,1,get(hObject,'String'));
 
 function RzU2_Callback(hObject, eventdata, handles)
-% hObject    handle to RzU2 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of RzU2 as text
-%        str2double(get(hObject,'String')) returns contents of RzU2 as a double
-handles.actions.setCommandLimit(6,2,0,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setCommandLimit(6,2,0,get(hObject,'String'));
 
 function FxL1_Callback(hObject, eventdata, handles)
-% hObject    handle to FxL1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of FxL1 as text
-%        str2double(get(hObject,'String')) returns contents of FxL1 as a double
-handles.actions.setCommandLimit(7,1,1,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setCommandLimit(7,1,1,get(hObject,'String'));
 
 function FxU1_Callback(hObject, eventdata, handles)
-% hObject    handle to FxU1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of FxU1 as text
-%        str2double(get(hObject,'String')) returns contents of FxU1 as a double
-handles.actions.setCommandLimit(7,1,0,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setCommandLimit(7,1,0,get(hObject,'String'));
 
 function FyL1_Callback(hObject, eventdata, handles)
-% hObject    handle to FyL1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of FyL1 as text
-%        str2double(get(hObject,'String')) returns contents of FyL1 as a double
-handles.actions.setCommandLimit(8,1,1,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setCommandLimit(8,1,1,get(hObject,'String'));
 
 function FyU1_Callback(hObject, eventdata, handles)
-% hObject    handle to FyU1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of FyU1 as text
-%        str2double(get(hObject,'String')) returns contents of FyU1 as a double
-handles.actions.setCommandLimit(8,1,0,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setCommandLimit(8,1,0,get(hObject,'String'));
 
 function FzL1_Callback(hObject, eventdata, handles)
-% hObject    handle to FzL1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of FzL1 as text
-%        str2double(get(hObject,'String')) returns contents of FzL1 as a double
-handles.actions.setCommandLimit(9,1,1,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setCommandLimit(9,1,1,get(hObject,'String'));
 
 function FzU1_Callback(hObject, eventdata, handles)
-% hObject    handle to FzU1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of FzU1 as text
-%        str2double(get(hObject,'String')) returns contents of FzU1 as a double
-handles.actions.setCommandLimit(9,1,0,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setCommandLimit(9,1,0,get(hObject,'String'));
 
 function MxL1_Callback(hObject, eventdata, handles)
-% hObject    handle to MxL1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of MxL1 as text
-%        str2double(get(hObject,'String')) returns contents of MxL1 as a double
-handles.actions.setCommandLimit(10,1,1,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setCommandLimit(10,1,1,get(hObject,'String'));
 
 function MxU1_Callback(hObject, eventdata, handles)
-% hObject    handle to MxU1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of MxU1 as text
-%        str2double(get(hObject,'String')) returns contents of MxU1 as a double
-handles.actions.setCommandLimit(10,1,0,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setCommandLimit(10,1,0,get(hObject,'String'));
 
 function MyL1_Callback(hObject, eventdata, handles)
-% hObject    handle to MyL1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of MyL1 as text
-%        str2double(get(hObject,'String')) returns contents of MyL1 as a double
-handles.actions.setCommandLimit(11,1,1,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setCommandLimit(11,1,1,get(hObject,'String'));
 
 function MyU1_Callback(hObject, eventdata, handles)
-% hObject    handle to MyU1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of MyU1 as text
-%        str2double(get(hObject,'String')) returns contents of MyU1 as a double
-handles.actions.setCommandLimit(11,1,0,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setCommandLimit(11,1,0,get(hObject,'String'));
 
 function MzL1_Callback(hObject, eventdata, handles)
-% hObject    handle to MzL1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of MzL1 as text
-%        str2double(get(hObject,'String')) returns contents of MzL1 as a double
-handles.actions.setCommandLimit(12,1,1,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setCommandLimit(12,1,1,get(hObject,'String'));
 
 function MzU1_Callback(hObject, eventdata, handles)
-% hObject    handle to MzU1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of MzU1 as text
-%        str2double(get(hObject,'String')) returns contents of MzU1 as a double
-handles.actions.setCommandLimit(12,1,0,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setCommandLimit(12,1,0,get(hObject,'String'));
 
 function FxL2_Callback(hObject, eventdata, handles)
-% hObject    handle to FxL2 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of FxL2 as text
-%        str2double(get(hObject,'String')) returns contents of FxL2 as a double
-handles.actions.setCommandLimit(7,2,1,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setCommandLimit(7,2,1,get(hObject,'String'));
 
 function FxU2_Callback(hObject, eventdata, handles)
-% hObject    handle to FxU2 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of FxU2 as text
-%        str2double(get(hObject,'String')) returns contents of FxU2 as a double
-handles.actions.setCommandLimit(7,2,0,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setCommandLimit(7,2,0,get(hObject,'String'));
 
 function FyL2_Callback(hObject, eventdata, handles)
-% hObject    handle to FyL2 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of FyL2 as text
-%        str2double(get(hObject,'String')) returns contents of FyL2 as a double
-handles.actions.setCommandLimit(8,2,1,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setCommandLimit(8,2,1,get(hObject,'String'));
 
 function FyU2_Callback(hObject, eventdata, handles)
-% hObject    handle to FyU2 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of FyU2 as text
-%        str2double(get(hObject,'String')) returns contents of FyU2 as a double
-handles.actions.setCommandLimit(8,2,0,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setCommandLimit(8,2,0,get(hObject,'String'));
 
 function FzL2_Callback(hObject, eventdata, handles)
-% hObject    handle to FzL2 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of FzL2 as text
-%        str2double(get(hObject,'String')) returns contents of FzL2 as a double
-handles.actions.setCommandLimit(9,2,1,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setCommandLimit(9,2,1,get(hObject,'String'));
 
 function FzU2_Callback(hObject, eventdata, handles)
-% hObject    handle to FzU2 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of FzU2 as text
-%        str2double(get(hObject,'String')) returns contents of FzU2 as a double
-handles.actions.setCommandLimit(9,2,0,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setCommandLimit(9,2,0,get(hObject,'String'));
 
 function MxL2_Callback(hObject, eventdata, handles)
-% hObject    handle to MxL2 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-handles.actions.setCommandLimit(10,2,1,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setCommandLimit(10,2,1,get(hObject,'String'));
 
 function MxU2_Callback(hObject, eventdata, handles)
-% hObject    handle to MxU2 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of MxU2 as text
-%        str2double(get(hObject,'String')) returns contents of MxU2 as a double
-handles.actions.setCommandLimit(10,2,0,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setCommandLimit(10,2,0,get(hObject,'String'));
 
 function MyL2_Callback(hObject, eventdata, handles)
-% hObject    handle to MyL2 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of MyL2 as text
-%        str2double(get(hObject,'String')) returns contents of MyL2 as a double
-handles.actions.setCommandLimit(11,2,1,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setCommandLimit(11,2,1,get(hObject,'String'));
 
 function MyU2_Callback(hObject, eventdata, handles)
-% hObject    handle to MyU2 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of MyU2 as text
-%        str2double(get(hObject,'String')) returns contents of MyU2 as a double
-handles.actions.setCommandLimit(1,2,0,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setCommandLimit(1,2,0,get(hObject,'String'));
 
 function MzL2_Callback(hObject, eventdata, handles)
-% hObject    handle to MzL2 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of MzL2 as text
-%        str2double(get(hObject,'String')) returns contents of MzL2 as a double
-handles.actions.setCommandLimit(12,2,1,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setCommandLimit(12,2,1,get(hObject,'String'));
 
 function MzU2_Callback(hObject, eventdata, handles)
-% hObject    handle to MzU2 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of MzU2 as text
-%        str2double(get(hObject,'String')) returns contents of MzU2 as a double
-handles.actions.setCommandLimit(12,2,0,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setCommandLimit(12,2,0,get(hObject,'String'));
 
 function DxT1_Callback(hObject, eventdata, handles)
-% hObject    handle to DxT1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of DxT1 as text
-%        str2double(get(hObject,'String')) returns contents of DxT1 as a double
-handles.actions.setStepTolerance(1,1,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setStepTolerance(1,1,get(hObject,'String'));
 
 function DyT1_Callback(hObject, eventdata, handles)
-% hObject    handle to DyT1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of DyT1 as text
-%        str2double(get(hObject,'String')) returns contents of DyT1 as a double
-handles.actions.setStepTolerance(2,1,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setStepTolerance(2,1,get(hObject,'String'));
 
 function DzT1_Callback(hObject, eventdata, handles)
-% hObject    handle to DzT1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of DzT1 as text
-%        str2double(get(hObject,'String')) returns contents of DzT1 as a double
-handles.actions.setStepTolerance(3,1,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setStepTolerance(3,1,get(hObject,'String'));
 
 function RxT1_Callback(hObject, eventdata, handles)
-% hObject    handle to RxT1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of RxT1 as text
-%        str2double(get(hObject,'String')) returns contents of RxT1 as a double
-handles.actions.setStepTolerance(4,1,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setStepTolerance(4,1,get(hObject,'String'));
 
 function RyT1_Callback(hObject, eventdata, handles)
-% hObject    handle to RyT1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of RyT1 as text
-%        str2double(get(hObject,'String')) returns contents of RyT1 as a double
-handles.actions.setStepTolerance(5,1,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setStepTolerance(5,1,get(hObject,'String'));
 
 function RzT1_Callback(hObject, eventdata, handles)
-% hObject    handle to RzT1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of RzT1 as text
-%        str2double(get(hObject,'String')) returns contents of RzT1 as a double
-handles.actions.setStepTolerance(6,1,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setStepTolerance(6,1,get(hObject,'String'));
 
 function DxT2_Callback(hObject, eventdata, handles)
-% hObject    handle to DxT2 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of DxT2 as text
-%        str2double(get(hObject,'String')) returns contents of DxT2 as a double
-handles.actions.setStepTolerance(1,2,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setStepTolerance(1,2,get(hObject,'String'));
 
 function DyT2_Callback(hObject, eventdata, handles)
-% hObject    handle to DyT2 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of DyT2 as text
-%        str2double(get(hObject,'String')) returns contents of DyT2 as a double
-handles.actions.setStepTolerance(2,2,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setStepTolerance(2,2,get(hObject,'String'));
 
 function DzT2_Callback(hObject, eventdata, handles)
-% hObject    handle to DzT2 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of DzT2 as text
-%        str2double(get(hObject,'String')) returns contents of DzT2 as a double
-handles.actions.setStepTolerance(3,2,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setStepTolerance(3,2,get(hObject,'String'));
 
 function RxT2_Callback(hObject, eventdata, handles)
-% hObject    handle to RxT2 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of RxT2 as text
-%        str2double(get(hObject,'String')) returns contents of RxT2 as a double
-handles.actions.setStepTolerance(4,2,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setStepTolerance(4,2,get(hObject,'String'));
 
 function RyT2_Callback(hObject, eventdata, handles)
-% hObject    handle to RyT2 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of RyT2 as text
-%        str2double(get(hObject,'String')) returns contents of RyT2 as a double
-handles.actions.setStepTolerance(5,2,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setStepTolerance(5,2,get(hObject,'String'));
 
 function RzT2_Callback(hObject, eventdata, handles)
-handles.actions.setStepTolerance(6,2,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setStepTolerance(6,2,get(hObject,'String'));
 
 function FxT1_Callback(hObject, eventdata, handles)
-handles.actions.setStepTolerance(7,1,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setStepTolerance(7,1,get(hObject,'String'));
 
 function FyT1_Callback(hObject, eventdata, handles)
-handles.actions.setStepTolerance(8,1,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setStepTolerance(8,1,get(hObject,'String'));
 
 function FzT1_Callback(hObject, eventdata, handles)
-handles.actions.setStepTolerance(9,1,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setStepTolerance(9,1,get(hObject,'String'));
 
 function MxT1_Callback(hObject, eventdata, handles)
-handles.actions.setStepTolerance(10,1,get(hObject,'String'));
-
+actions = getappdata(getLp(hObject),'actions');
+actions.setStepTolerance(10,1,get(hObject,'String'));
 
 function MyT1_Callback(hObject, eventdata, handles)
-handles.actions.setStepTolerance(11,1,get(hObject,'String'));
-
+actions = getappdata(getLp(hObject),'actions');
+actions.setStepTolerance(11,1,get(hObject,'String'));
 
 function MzT1_Callback(hObject, eventdata, handles)
-handles.actions.setStepTolerance(12,1,get(hObject,'String'));
-
+actions = getappdata(getLp(hObject),'actions');
+actions.setStepTolerance(12,1,get(hObject,'String'));
 
 function FxT2_Callback(hObject, eventdata, handles)
-handles.actions.setStepTolerance(7,2,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setStepTolerance(7,2,get(hObject,'String'));
 
 function FyT2_Callback(hObject, eventdata, handles)
-handles.actions.setStepTolerance(8,2,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setStepTolerance(8,2,get(hObject,'String'));
 
 function FzT2_Callback(hObject, eventdata, handles)
-handles.actions.setStepTolerance(9,2,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setStepTolerance(9,2,get(hObject,'String'));
 
 function MxT2_Callback(hObject, eventdata, handles)
-handles.actions.setStepTolerance(10,2,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setStepTolerance(10,2,get(hObject,'String'));
 
 function MyT2_Callback(hObject, eventdata, handles)
-handles.actions.setStepTolerance(11,2,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setStepTolerance(11,2,get(hObject,'String'));
 
 function MzT2_Callback(hObject, eventdata, handles)
-handles.actions.setStepTolerance(12,2,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setStepTolerance(12,2,get(hObject,'String'));
 
 function DxI1_Callback(hObject, eventdata, handles)
-% hObject    handle to DxI1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of DxI1 as text
-%        str2double(get(hObject,'String')) returns contents of DxI1 as a double
-handles.actions.setIncrementLimit(1,1,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setIncrementLimit(1,1,get(hObject,'String'));
 
 function DyI1_Callback(hObject, eventdata, handles)
-% hObject    handle to DyI1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of DyI1 as text
-%        str2double(get(hObject,'String')) returns contents of DyI1 as a double
-handles.actions.setIncrementLimit(2,1,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setIncrementLimit(2,1,get(hObject,'String'));
 
 function DzI1_Callback(hObject, eventdata, handles)
-% hObject    handle to DzI1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of DzI1 as text
-%        str2double(get(hObject,'String')) returns contents of DzI1 as a double
-handles.actions.setIncrementLimit(3,1,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setIncrementLimit(3,1,get(hObject,'String'));
 
 function RxI1_Callback(hObject, eventdata, handles)
-% hObject    handle to RxI1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of RxI1 as text
-%        str2double(get(hObject,'String')) returns contents of RxI1 as a double
-handles.actions.setIncrementLimit(4,1,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setIncrementLimit(4,1,get(hObject,'String'));
 
 function RyI1_Callback(hObject, eventdata, handles)
-% hObject    handle to RyI1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of RyI1 as text
-%        str2double(get(hObject,'String')) returns contents of RyI1 as a double
-handles.actions.setIncrementLimit(5,1,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setIncrementLimit(5,1,get(hObject,'String'));
 
 function RzI1_Callback(hObject, eventdata, handles)
-% hObject    handle to RzI1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of RzI1 as text
-%        str2double(get(hObject,'String')) returns contents of RzI1 as a double
-handles.actions.setIncrementLimit(6,1,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setIncrementLimit(6,1,get(hObject,'String'));
 
 function DxI2_Callback(hObject, eventdata, handles)
-% hObject    handle to DxI2 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of DxI2 as text
-%        str2double(get(hObject,'String')) returns contents of DxI2 as a double
-handles.actions.setIncrementLimit(1,2,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setIncrementLimit(1,2,get(hObject,'String'));
 
 function DyI2_Callback(hObject, eventdata, handles)
-% hObject    handle to DyI2 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of DyI2 as text
-%        str2double(get(hObject,'String')) returns contents of DyI2 as a double
-handles.actions.setIncrementLimit(2,2,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setIncrementLimit(2,2,get(hObject,'String'));
 
 function DzI2_Callback(hObject, eventdata, handles)
-% hObject    handle to DzI2 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of DzI2 as text
-%        str2double(get(hObject,'String')) returns contents of DzI2 as a double
-handles.actions.setIncrementLimit(3,2,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setIncrementLimit(3,2,get(hObject,'String'));
 
 function RxI2_Callback(hObject, eventdata, handles)
-% hObject    handle to RxI2 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of RxI2 as text
-%        str2double(get(hObject,'String')) returns contents of RxI2 as a double
-handles.actions.setIncrementLimit(4,2,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setIncrementLimit(4,2,get(hObject,'String'));
 
 function RyI2_Callback(hObject, eventdata, handles)
-% hObject    handle to RyI2 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of RyI2 as text
-%        str2double(get(hObject,'String')) returns contents of RyI2 as a double
-handles.actions.setIncrementLimit(5,2,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setIncrementLimit(5,2,get(hObject,'String'));
 
 function RzI2_Callback(hObject, eventdata, handles)
-% hObject    handle to RzI2 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of RzI2 as text
-%        str2double(get(hObject,'String')) returns contents of RzI2 as a double
-handles.actions.setIncrementLimit(6,2,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setIncrementLimit(6,2,get(hObject,'String'));
 
 function FxI1_Callback(hObject, eventdata, handles)
-% hObject    handle to FxI1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of FxI1 as text
-%        str2double(get(hObject,'String')) returns contents of FxI1 as a double
-handles.actions.setIncrementLimit(7,1,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setIncrementLimit(7,1,get(hObject,'String'));
 
 function FyI1_Callback(hObject, eventdata, handles)
-% hObject    handle to FyI1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of FyI1 as text
-%        str2double(get(hObject,'String')) returns contents of FyI1 as a double
-handles.actions.setIncrementLimit(8,1,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setIncrementLimit(8,1,get(hObject,'String'));
 
 function FzI1_Callback(hObject, eventdata, handles)
-% hObject    handle to FzI1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of FzI1 as text
-%        str2double(get(hObject,'String')) returns contents of FzI1 as a double
-handles.actions.setIncrementLimit(9,1,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setIncrementLimit(9,1,get(hObject,'String'));
 
 function MxI1_Callback(hObject, eventdata, handles)
-% hObject    handle to MxI1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of MxI1 as text
-%        str2double(get(hObject,'String')) returns contents of MxI1 as a double
-handles.actions.setIncrementLimit(10,1,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setIncrementLimit(10,1,get(hObject,'String'));
 
 function MyI1_Callback(hObject, eventdata, handles)
-% hObject    handle to MyI1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of MyI1 as text
-%        str2double(get(hObject,'String')) returns contents of MyI1 as a double
-handles.actions.setIncrementLimit(11,1,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setIncrementLimit(11,1,get(hObject,'String'));
 
 function MzI1_Callback(hObject, eventdata, handles)
-% hObject    handle to MzI1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of MzI1 as text
-%        str2double(get(hObject,'String')) returns contents of MzI1 as a double
-handles.actions.setIncrementLimit(12,1,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setIncrementLimit(12,1,get(hObject,'String'));
 
 function FxI2_Callback(hObject, eventdata, handles)
-% hObject    handle to FxI2 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of FxI2 as text
-%        str2double(get(hObject,'String')) returns contents of FxI2 as a double
-handles.actions.setIncrementLimit(7,2,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setIncrementLimit(7,2,get(hObject,'String'));
 
 function FyI2_Callback(hObject, eventdata, handles)
-% hObject    handle to FyI2 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of FyI2 as text
-%        str2double(get(hObject,'String')) returns contents of FyI2 as a double
-handles.actions.setIncrementLimit(8,2,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setIncrementLimit(8,2,get(hObject,'String'));
 
 function FzI2_Callback(hObject, eventdata, handles)
-% hObject    handle to FzI2 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of FzI2 as text
-%        str2double(get(hObject,'String')) returns contents of FzI2 as a double
-handles.actions.setIncrementLimit(9,2,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setIncrementLimit(9,2,get(hObject,'String'));
 
 function MxI2_Callback(hObject, eventdata, handles)
-% hObject    handle to MxI2 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of MxI2 as text
-%        str2double(get(hObject,'String')) returns contents of MxI2 as a double
-handles.actions.setIncrementLimit(10,2,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setIncrementLimit(10,2,get(hObject,'String'));
 
 function MyI2_Callback(hObject, eventdata, handles)
-% hObject    handle to MyI2 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of MyI2 as text
-%        str2double(get(hObject,'String')) returns contents of MyI2 as a double
-handles.actions.setIncrementLimit(11,2,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setIncrementLimit(11,2,get(hObject,'String'));
 
 function MzI2_Callback(hObject, eventdata, handles)
-% hObject    handle to MzI2 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of MzI2 as text
-%        str2double(get(hObject,'String')) returns contents of MzI2 as a double
-handles.actions.setIncrementLimit(12,2,get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setIncrementLimit(12,2,get(hObject,'String'));
 
 % --------------------------------------------------------------------
 function NetworkConfiguration_Callback(hObject, eventdata, handles)
-% hObject    handle to NetworkConfiguration (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-NetworkConfig('cfg',handles.actions.hfact.cfg);
+actions = getappdata(getLp(hObject),'actions');
+NetworkConfig('cfg',actions.hfact.cfg);
 
 % --------------------------------------------------------------------
 function OmConfiguration_Callback(hObject, eventdata, handles)
-% hObject    handle to OmConfiguration (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-OmConfig('cfg',handles.actions.hfact.cfg);
+actions = getappdata(getLp(hObject),'actions');
+OmConfig('cfg',actions.hfact.cfg);
 
 % --------------------------------------------------------------------
 function Load_Callback(hObject, eventdata, handles)
-% hObject    handle to Load (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-handles.actions.processConfig('LOAD');
+actions = getappdata(getLp(hObject),'actions');
+actions.processConfig('LOAD');
 
 % --------------------------------------------------------------------
 function Save_Callback(hObject, eventdata, handles)
-% hObject    handle to Save (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-handles.actions.processConfig('SAVE');
+actions = getappdata(getLp(hObject),'actions');
+actions.processConfig('SAVE');
 
 % --------------------------------------------------------------------
 function Import_Callback(hObject, eventdata, handles)
-% hObject    handle to Import (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-handles.actions.processConfig('IMPORT');
+actions = getappdata(getLp(hObject),'actions');
+actions.processConfig('IMPORT');
 
 % --------------------------------------------------------------------
 function Export_Callback(hObject, eventdata, handles)
-% hObject    handle to Export (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-handles.actions.processConfig('EXPORT');
-
+actions = getappdata(getLp(hObject),'actions');
+actions.processConfig('EXPORT');
 
 % --------------------------------------------------------------------
 function Exit_Callback(hObject, eventdata, handles)
@@ -972,399 +568,351 @@ delete(handles.LbcbPlugin);
 
 % --- Executes on button press in InputFile.
 function InputFile_Callback(hObject, eventdata, handles)
-handles.actions.setInputFile({});
+actions = getappdata(getLp(hObject),'actions');
+actions.setInputFile({});
 
 
 % --------------------------------------------------------------------
 function LoggingLevels_Callback(hObject, eventdata, handles)
-% hObject    handle to LoggingLevels (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-LoggerLevels('cfg',handles.actions.hfact.cfg);
-handles.actions.setLoggerLevels();
+actions = getappdata(getLp(hObject),'actions');
+LoggerLevels('cfg',actions.hfact.cfg);
+actions.setLoggerLevels();
 
 
 % --- Executes on button press in StartSimCor.
 function StartSimCor_Callback(hObject, eventdata, handles)
-% hObject    handle to StartSimCor (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-handles.actions.processConnectSimCor(get(hObject,'Value'));
-
-
-% --------------------------------------------------------------------
-function DataTable_Callback(hObject, eventdata, handles)
-% hObject    handle to DataTable (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-if strcmp(get(hObject, 'Checked'),'on')
-    set(hObject,'Checked','off');
-    handles.actions.hfact.gui.ddisp.stopDataTable();
-else 
-    set(hObject,'Checked','on');
-    handles.actions.hfact.gui.ddisp.startDataTable();
-end
+actions = getappdata(getLp(hObject),'actions');
+actions.processConnectSimCor(get(hObject,'Value'));
 
 
 % --- Executes during object deletion, before destroying properties.
 function LbcbPlugin_DeleteFcn(hObject, eventdata, handles)
-% hObject    handle to LbcbPlugin (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-if isfield(handles,'actions')
-    disp('Shutting Down');
-    handles.actions.shutdown();
-    handles.ddisp.closeAll();
-end
+actions = getappdata(hObject,'actions');
+ddisp = getappdata(hObject,'ddisp');
+disp('Shutting Down');
+actions.shutdown();
+ddisp.closeAll();
 
 
 % --------------------------------------------------------------------
 function TotalFxVsLbcb1Dx_Callback(hObject, eventdata, handles)
-% hObject    handle to TotalFxVsLbcb1Dx (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-if handles.ddisp.isDisplaying('TotalFxVsLbcb1Dx')
-    handles.ddisp.closeDisplay('TotalFxVsLbcb1Dx');
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('TotalFxVsLbcb1Dx')
+    ddisp.closeDisplay('TotalFxVsLbcb1Dx');
 else
-    handles.ddisp.openDisplay('TotalFxVsLbcb1Dx');
+    ddisp.openDisplay('TotalFxVsLbcb1Dx');
 end
 
 
 % --------------------------------------------------------------------
 function TotalFxVsLbcb2Dx_Callback(hObject, eventdata, handles)
-% hObject    handle to TotalFxVsLbcb2Dx (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-if handles.ddisp.isDisplaying('TotalFxVsLbcb2Dx')
-    handles.ddisp.closeDisplay('TotalFxVsLbcb2Dx');
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('TotalFxVsLbcb2Dx')
+    ddisp.closeDisplay('TotalFxVsLbcb2Dx');
 else
-    handles.ddisp.openDisplay('TotalFxVsLbcb2Dx');
+    ddisp.openDisplay('TotalFxVsLbcb2Dx');
 end
 
 % --- Executes on button press in l1commandtable.
 function AutoAccept_Callback(hObject, eventdata, handles)
-% hObject    handle to l1commandtable (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-handles.actions.processAutoAccept(get(hObject,'Value'));
+actions = getappdata(getLp(hObject),'actions');
+actions.processAutoAccept(get(hObject,'Value'));
 
 
 % --- Executes on button press in Accept.
 function Accept_Callback(hObject, eventdata, handles)
-% hObject    handle to Accept (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-handles.actions.processAccept(get(hObject,'Value'));
+actions = getappdata(getLp(hObject),'actions');
+actions.processAccept(get(hObject,'Value'));
 
 % --- Executes on button press in editCommand.
 function editCommand_Callback(hObject, eventdata, handles)
-% hObject    handle to editCommand (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-handles.actions.processEditTarget();
+actions = getappdata(getLp(hObject),'actions');
+actions.processEditTarget();
 
 
 function startStep_Callback(hObject, eventdata, handles)
-% hObject    handle to startStep (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of startStep as text
-%        str2double(get(hObject,'String')) returns contents of startStep as a double
-handles.actions.setStartStep(get(hObject,'String'));
+actions = getappdata(getLp(hObject),'actions');
+actions.setStartStep(get(hObject,'String'));
 
 
 % --------------------------------------------------------------------
 function StepConfig_Callback(hObject, eventdata, handles)
-% hObject    handle to StepConfig (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-StepConfig('cfg',handles.actions.hfact.cfg);
+actions = getappdata(getLp(hObject),'actions');
+StepConfig('cfg',actions.hfact.cfg);
 
 % --------------------------------------------------------------------
 function TargetConfig_Callback(hObject, eventdata, handles)
-% hObject    handle to TargetConfig (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-TargetConfig('cfg',handles.actions.hfact.cfg);
+actions = getappdata(getLp(hObject),'actions');
+TargetConfig('cfg',actions.hfact.cfg);
 
 
 % --------------------------------------------------------------------
 function CorrectionSettings_Callback(hObject, eventdata, handles)
-% hObject    handle to CorrectionSettings (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-CorrectionSettingsConfig('cfg',handles.actions.hfact.cfg);
-
-
-% --------------------------------------------------------------------
-function DebugWindow_Callback(hObject, eventdata, handles)
-% hObject    handle to DebugWindow (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-if strcmp(get(hObject, 'Checked'),'on')
-    set(hObject,'Checked','off');
-    handles.actions.hfact.gui.ddisp.stopDebugWindow();
-else 
-    set(hObject,'Checked','on');
-    handles.actions.hfact.gui.ddisp.startDebugWindow();
-end
-handles.actions.processArchiveOnOff(get(hObject,'Checked'));
-
+actions = getappdata(getLp(hObject),'actions');
+CorrectionSettingsConfig('cfg',actions.hfact.cfg);
 
 % --------------------------------------------------------------------
 function TotalMyVsLbcb1Dx_Callback(hObject, eventdata, handles)
-% hObject    handle to TotalMyVsLbcb1Dx (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-if handles.ddisp.isDisplaying('TotalMyVsLbcb1Dx')
-    handles.ddisp.closeDisplay('TotalMyVsLbcb1Dx');
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('TotalMyVsLbcb1Dx')
+    ddisp.closeDisplay('TotalMyVsLbcb1Dx');
 else
-    handles.ddisp.openDisplay('TotalMyVsLbcb1Dx');
+    ddisp.openDisplay('TotalMyVsLbcb1Dx');
 end
 
 
 % --------------------------------------------------------------------
 function TotalMyVsLbcb2Dx_Callback(hObject, eventdata, handles)
-% hObject    handle to TotalMyVsLbcb2Dx (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-if handles.ddisp.isDisplaying('TotalMyVsLbcb2Dx')
-    handles.ddisp.closeDisplay('TotalMyVsLbcb2Dx');
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('TotalMyVsLbcb2Dx')
+    ddisp.closeDisplay('TotalMyVsLbcb2Dx');
 else
-    handles.ddisp.openDisplay('TotalMyVsLbcb2Dx');
+    ddisp.openDisplay('TotalMyVsLbcb2Dx');
 end
 
 
 % --------------------------------------------------------------------
 function MyVsLbcb1Dx_Callback(hObject, eventdata, handles)
-% hObject    handle to MyVsLbcb1Dx (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-if handles.ddisp.isDisplaying('MyVsLbcb1Dx')
-    handles.ddisp.closeDisplay('MyVsLbcb1Dx');
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('MyVsLbcb1Dx')
+    ddisp.closeDisplay('MyVsLbcb1Dx');
 else
-    handles.ddisp.openDisplay('MyVsLbcb1Dx');
+    ddisp.openDisplay('MyVsLbcb1Dx');
 end
 
 
 % --------------------------------------------------------------------
 function MyVsLbcb2Dx_Callback(hObject, eventdata, handles)
-% hObject    handle to MyVsLbcb2Dx (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-if handles.ddisp.isDisplaying('MyVsLbcb2Dx')
-    handles.ddisp.closeDisplay('MyVsLbcb2Dx');
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('MyVsLbcb2Dx')
+    ddisp.closeDisplay('MyVsLbcb2Dx');
 else
-    handles.ddisp.openDisplay('MyVsLbcb2Dx');
+    ddisp.openDisplay('MyVsLbcb2Dx');
 end
 
 
 % --------------------------------------------------------------------
 function RyVsLbcb1Dx_Callback(hObject, eventdata, handles)
-% hObject    handle to RyVsLbcb1Dx (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-if handles.ddisp.isDisplaying('RyVsLbcb1Dx')
-    handles.ddisp.closeDisplay('RyVsLbcb1Dx');
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('RyVsLbcb1Dx')
+    ddisp.closeDisplay('RyVsLbcb1Dx');
 else
-    handles.ddisp.openDisplay('RyVsLbcb1Dx');
+    ddisp.openDisplay('RyVsLbcb1Dx');
 end
 
 
 
 % --------------------------------------------------------------------
 function RyVsLbcb2Dx_Callback(hObject, eventdata, handles)
-% hObject    handle to RyVsLbcb2Dx (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-if handles.ddisp.isDisplaying('RyVsLbcb2Dx')
-    handles.ddisp.closeDisplay('RyVsLbcb2Dx');
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('RyVsLbcb2Dx')
+    ddisp.closeDisplay('RyVsLbcb2Dx');
 else
-    handles.ddisp.openDisplay('RyVsLbcb2Dx');
+    ddisp.openDisplay('RyVsLbcb2Dx');
 end
 
 
 % --- Executes on button press in vamping.
 function vamping_Callback(hObject, eventdata, handles)
 val = get(hObject,'Value');
-handles.actions.processVamping(val);
+actions = getappdata(getLp(hObject),'actions');
+actions.processVamping(val);
 
 
 % --------------------------------------------------------------------
 function ArchiveOnOff_Callback(hObject, eventdata, handles)
+actions = getappdata(getLp(hObject),'actions');
 if strcmp(get(hObject, 'Checked'),'on')
-%     handles.actions.processArchiveOnOff(0);
+%     actions.processArchiveOnOff(0);
     set(hObject,'Checked','off');
 else 
-%     handles.actions.processArchiveOnOff(1);
+%     actions.processArchiveOnOff(1);
     set(hObject,'Checked','on');
 end
-handles.actions.processArchiveOnOff(get(hObject,'Checked'));
+actions.processArchiveOnOff(get(hObject,'Checked'));
 
 % --------------------------------------------------------------------
 function FxVsLbcb1Dx_Callback(hObject, eventdata, handles)
-% hObject    handle to FxVsLbcb1Dx (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-if handles.ddisp.isDisplaying('FxVsLbcb1Dx')
-    handles.ddisp.closeDisplay('FxVsLbcb1Dx');
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('FxVsLbcb1Dx')
+    ddisp.closeDisplay('FxVsLbcb1Dx');
 else
-    handles.ddisp.openDisplay('FxVsLbcb1Dx');
+    ddisp.openDisplay('FxVsLbcb1Dx');
 end
 
 % --------------------------------------------------------------------
 function FxVsLbcb2Dx_Callback(hObject, eventdata, handles)
-if handles.ddisp.isDisplaying('FxVsLbcb2Dx')
-    handles.ddisp.closeDisplay('FxVsLbcb2Dx');
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('FxVsLbcb2Dx')
+    ddisp.closeDisplay('FxVsLbcb2Dx');
 else
-    handles.ddisp.openDisplay('FxVsLbcb2Dx');
+    ddisp.openDisplay('FxVsLbcb2Dx');
 end
 
 % --------------------------------------------------------------------
 function DxStepL1_Callback(hObject, eventdata, handles)
-if handles.ddisp.isDisplaying('DxStepL1')
-    handles.ddisp.closeDisplay('DxStepL1');
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('DxStepL1')
+    ddisp.closeDisplay('DxStepL1');
 else
-    handles.ddisp.openDisplay('DxStepL1');
+    ddisp.openDisplay('DxStepL1');
 end
 
 
 % --------------------------------------------------------------------
 function RyStepL1_Callback(hObject, eventdata, handles)
-if handles.ddisp.isDisplaying('RyStepL1')
-    handles.ddisp.closeDisplay('RyStepL1');
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('RyStepL1')
+    ddisp.closeDisplay('RyStepL1');
 else
-    handles.ddisp.openDisplay('RyStepL1');
+    ddisp.openDisplay('RyStepL1');
 end
 
 % --------------------------------------------------------------------
 function DzStepL1_Callback(hObject, eventdata, handles)
-if handles.ddisp.isDisplaying('DzStepL1')
-    handles.ddisp.closeDisplay('DzStepL1');
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('DzStepL1')
+    ddisp.closeDisplay('DzStepL1');
 else
-    handles.ddisp.openDisplay('DzStepL1');
+    ddisp.openDisplay('DzStepL1');
 end
 
 % --------------------------------------------------------------------
 function FzStepL1_Callback(hObject, eventdata, handles)
-if handles.ddisp.isDisplaying('FzStepL1')
-    handles.ddisp.closeDisplay('FzStepL1');
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('FzStepL1')
+    ddisp.closeDisplay('FzStepL1');
 else
-    handles.ddisp.openDisplay('FzStepL1');
+    ddisp.openDisplay('FzStepL1');
 end
 
 % --------------------------------------------------------------------
 function DxStepL2_Callback(hObject, eventdata, handles)
-if handles.ddisp.isDisplaying('DxStepL2')
-    handles.ddisp.closeDisplay('DxStepL2');
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('DxStepL2')
+    ddisp.closeDisplay('DxStepL2');
 else
-    handles.ddisp.openDisplay('DxStepL2');
+    ddisp.openDisplay('DxStepL2');
 end
 
 
 % --------------------------------------------------------------------
 function RyStepL2_Callback(hObject, eventdata, handles)
-if handles.ddisp.isDisplaying('RyStepL2')
-    handles.ddisp.closeDisplay('RyStepL2');
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('RyStepL2')
+    ddisp.closeDisplay('RyStepL2');
 else
-    handles.ddisp.openDisplay('RyStepL2');
+    ddisp.openDisplay('RyStepL2');
 end
 
 % --------------------------------------------------------------------
 function DzStepL2_Callback(hObject, eventdata, handles)
-if handles.ddisp.isDisplaying('DzStepL2')
-    handles.ddisp.closeDisplay('DzStepL2');
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('DzStepL2')
+    ddisp.closeDisplay('DzStepL2');
 else
-    handles.ddisp.openDisplay('DzStepL2');
+    ddisp.openDisplay('DzStepL2');
 end
 
 % --------------------------------------------------------------------
 function FzStepL2_Callback(hObject, eventdata, handles)
-if handles.ddisp.isDisplaying('FzStepL2')
-    handles.ddisp.closeDisplay('FzStepL2');
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('FzStepL2')
+    ddisp.closeDisplay('FzStepL2');
 else
-    handles.ddisp.openDisplay('FzStepL2');
+    ddisp.openDisplay('FzStepL2');
 end
-
 
 % --------------------------------------------------------------------
 function L1ResponseTable_Callback(hObject, eventdata, handles)
-if handles.ddisp.isDisplaying('L1ResponseTable')
-    handles.ddisp.closeDisplay('L1ResponseTable');
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('L1ResponseTable')
+    ddisp.closeDisplay('L1ResponseTable');
 else
-    handles.ddisp.openDisplay('L1ResponseTable');
+    ddisp.openDisplay('L1ResponseTable');
 end
 
 
 % --------------------------------------------------------------------
 function L1CommandTable_Callback(hObject, eventdata, handles)
-if handles.ddisp.isDisplaying('L1CommandTable')
-    handles.ddisp.closeDisplay('L1CommandTable');
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('L1CommandTable')
+    ddisp.closeDisplay('L1CommandTable');
 else
-    handles.ddisp.openDisplay('L1CommandTable');
+    ddisp.openDisplay('L1CommandTable');
 end
 
 
 % --------------------------------------------------------------------
 function L1SubstepsTable_Callback(hObject, eventdata, handles)
-if handles.ddisp.isDisplaying('L1SubstepsTable')
-    handles.ddisp.closeDisplay('L1SubstepsTable');
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('L1SubstepsTable')
+    ddisp.closeDisplay('L1SubstepsTable');
 else
-    handles.ddisp.openDisplay('L1SubstepsTable');
+    ddisp.openDisplay('L1SubstepsTable');
 end
 
 
 % --------------------------------------------------------------------
 function DerivedTable_Callback(hObject, eventdata, handles)
-if handles.ddisp.isDisplaying('DerivedTable')
-    handles.ddisp.closeDisplay('DerivedTable');
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('DerivedTable')
+    ddisp.closeDisplay('DerivedTable');
 else
-    handles.ddisp.openDisplay('DerivedTable');
+    ddisp.openDisplay('DerivedTable');
 end
-
 
 % --------------------------------------------------------------------
 function L1ReadingsTable_Callback(hObject, eventdata, handles)
-if handles.ddisp.isDisplaying('L1ReadingsTable')
-    handles.ddisp.closeDisplay('L1ReadingsTable');
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('L1ReadingsTable')
+    ddisp.closeDisplay('L1ReadingsTable');
 else
-    handles.ddisp.openDisplay('L1ReadingsTable');
+    ddisp.openDisplay('L1ReadingsTable');
 end
 
 
 % --------------------------------------------------------------------
 function L2ResponseTable_Callback(hObject, eventdata, handles)
-if handles.ddisp.isDisplaying('L2ResponseTable')
-    handles.ddisp.closeDisplay('L2ResponseTable');
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('L2ResponseTable')
+    ddisp.closeDisplay('L2ResponseTable');
 else
-    handles.ddisp.openDisplay('L2ResponseTable');
+    ddisp.openDisplay('L2ResponseTable');
 end
 
 
 % --------------------------------------------------------------------
 function L2CommandTable_Callback(hObject, eventdata, handles)
-if handles.ddisp.isDisplaying('L2CommandTable')
-    handles.ddisp.closeDisplay('L2CommandTable');
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('L2CommandTable')
+    ddisp.closeDisplay('L2CommandTable');
 else
-    handles.ddisp.openDisplay('L2CommandTable');
+    ddisp.openDisplay('L2CommandTable');
 end
 
 
 % --------------------------------------------------------------------
 function L2SubstepsTable_Callback(hObject, eventdata, handles)
-if handles.ddisp.isDisplaying('L2SubstepsTable')
-    handles.ddisp.closeDisplay('L2SubstepsTable');
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('L2SubstepsTable')
+    ddisp.closeDisplay('L2SubstepsTable');
 else
-    handles.ddisp.openDisplay('L2SubstepsTable');
+    ddisp.openDisplay('L2SubstepsTable');
 end
-
 
 % --------------------------------------------------------------------
 function L2ReadingsTable_Callback(hObject, eventdata, handles)
-if handles.ddisp.isDisplaying('L2ReadingsTable')
-    handles.ddisp.closeDisplay('L2ReadingsTable');
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('L2ReadingsTable')
+    ddisp.closeDisplay('L2ReadingsTable');
 else
-    handles.ddisp.openDisplay('L2ReadingsTable');
+    ddisp.openDisplay('L2ReadingsTable');
 end
+function lp = getLp(hObject)
+    lp = hObject;
+    tag = get(lp,'Tag');
+    while strcmp(tag,'LbcbPlugin') == false
+        lp = get(lp,'Parent');
+        tag = get(lp,'Tag');
+    end

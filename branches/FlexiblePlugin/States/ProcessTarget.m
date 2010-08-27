@@ -38,7 +38,7 @@ classdef ProcessTarget < SimStates
             done = 0;
             a = me.currentAction.getState();
             if me.stateChanged()
-                me.ddisp.dbgWin.setProcessState(me.currentAction.idx);
+%                 me.ddisp.dbgWin.setProcessState(me.currentAction.idx);
             end
             switch a
                 case 'CHECK LIMITS'

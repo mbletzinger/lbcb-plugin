@@ -14,6 +14,8 @@ classdef Configuration < handle
         props = org.nees.uiuc.simcor.properties.Props;
         filename = '';
         error = '';
+        arch
+        dat
     end
     methods
         function me = Configuration()
@@ -75,6 +77,14 @@ classdef Configuration < handle
             end
             me.error = result;
             done = 0;
+        end
+        function logValueChange(me,key,value)
+            step = me.dat.curStepData;
+            me.arch.storeNote(sprintf('%s was changed to %s',key,value),step);
+        end
+        function logListChange(me,key,list)
+            step = me.dat.curStepData;
+            me.arch.storeNote(sprintf('%s was changed to %s',key,char(me.props.propertyList2String(list))),step);
         end
     end
 end

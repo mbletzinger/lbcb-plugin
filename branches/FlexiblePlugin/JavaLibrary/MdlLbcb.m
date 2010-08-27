@@ -136,7 +136,7 @@ classdef MdlLbcb < handle
                 timeout = ncfg.executeMsgTimeout;
             end
             me.simcorTcp.startTransaction(jmsg,id,timeout);
-            me.dbgWin.addMsg(char(jmsg.toString));
+%             me.dbgWin.addMsg(char(jmsg.toString));
             me.action.setState('EXECUTING TRANSACTION');
             me.state.setState('BUSY');
         end
