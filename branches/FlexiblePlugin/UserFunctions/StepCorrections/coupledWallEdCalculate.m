@@ -12,10 +12,12 @@ v0 = [0 0 0]';
 if isempty(prevLbcbCP)
     % firstStep is nested function found below for getting first SP disps
     [prevLengths, prevDisplacement] = firstStep(me,actualLengths);
+    commandDisps = prevDisplacement;
 else
 %     prevLengths = me.currentLengths;        % was lengths0
     prevLengths = prevLbcbCP.externalSensors;   % was lengths0
     prevDisplacement = prevLbcbCP.response.disp; % was deltas0
+    commandDisps = tcps.command.disp;
 end
 lbcbR.ed.force = lbcbR.lbcb.force;
 
@@ -119,7 +121,7 @@ for i = 1:length(activeDOFs)
     curLbcbCP.response.ed.disp(activeDOFs(i)) = deltaest(i);
 end
 
-correctionDeltas = curLbcbCP.response.ed.disp - tcps.command.disp;
+correctionDeltas = curLbcbCP.response.ed.disp - commandDisps;
 
 ls = {'Dx' 'Dy' 'Dz' 'Rx' 'Ry' 'Rz'};
 lb = 'L2';
