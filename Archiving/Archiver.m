@@ -7,6 +7,7 @@ classdef Archiver < handle
         corDataA
         archiveOn
         wroteCorDataHeaders
+        notes
     end
     methods
         function me = Archiver(cdp)
@@ -15,6 +16,7 @@ classdef Archiver < handle
             me.lbcbReadA = DataArchive('LbcbReadings');
             me.edReadA = DataArchive('ElasticDefReadings');
             me.corDataA = DataArchive('CorrectionData');
+            me.notes = DataArchive('TestNotes');
             me.archiveOn = false;
             me.commandA.headers = ...
                 {'Step','LBCB1 Dx','LBCB1 Dy','LBCB1 Dz','LBCB1 Rx','LBCB1 Ry','LBCB1 Rz',...
@@ -23,8 +25,8 @@ classdef Archiver < handle
                 'LBCB2 Fx','LBCB2 Fy','LBCB2 Fz','LBCB2 Mx','LBCB1 My','LBCB2 Mz'};
             me.lbcbReadA.headers = me.commandA.headers;
             me.edReadA.headers = me.commandA.headers;
-            [n se a] = cdp.getExtSensors(); %#ok<NASGU,MCNPN>
-            me.extSensA.headers = {'Step' n{:} };
+            [n se a] = cdp.getExtSensors(); %#ok<ASGLU,NASGU>
+            me.extSensA.headers = {'Step' n{:} }; %#ok<CCAT>
             me.wroteCorDataHeaders = false;
         end
         function setArchiveOn(me,on)
@@ -70,6 +72,13 @@ classdef Archiver < handle
             me.corDataA.headers = step.cData.labels;
             me.corDataA.writeHeaders();
             me.wroteCorDataHeaders = true;
+        end
+        function storeNote(me,nt,step)
+            stp = '0\t0\t0';
+            if isempty(step) == false
+                stp = step.stepNum.toString();
+            end
+            me.notes.write(stp,[],nt)
         end
     end
 end

@@ -4,6 +4,7 @@ me.statusReady();
 if me.steps.started == false
     me.dat.substepTgtShift(me.steps.next());
     me.prelimAdjust();
+    me.gui.updateCorrections(true,false,false);
     return;
 end
 if me.needsCorrection()

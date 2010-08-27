@@ -116,6 +116,8 @@ classdef HandleFactory <  handle
             me.dat.sdf = me.sdf;
             me.dat.cdp = cdp;
             me.arch = Archiver(cdp);
+            me.cfg.dat = me.dat;
+            me.cfg.arch = me.arch;
 
             cfgH = org.nees.uiuc.simcor.matlab.HashTable();
             datH = org.nees.uiuc.simcor.matlab.HashTable();
@@ -144,14 +146,12 @@ classdef HandleFactory <  handle
             
             for c =1:length(me.omStates)
                 me.omStates{c}.cdp = cdp;
-                me.omStates{c}.gui = me.gui;
                 me.omStates{c}.dat = me.dat;
                 me.omStates{c}.mdlLbcb = me.mdlLbcb;
             end
             
             for c =1:length(me.stpStates)
                 me.stpStates{c}.cdp = cdp;
-                me.stpStates{c}.gui = me.gui;
                 me.stpStates{c}.dat = me.dat;
                 me.stpStates{c}.sdf = me.sdf;
                 me.stpStates{c}.ed = me.ed;
@@ -250,6 +250,9 @@ classdef HandleFactory <  handle
             end
             for c =1:length(me.brdcstStates)
                 me.brdcstStates{c}.gui = me.gui;
+            end
+            for c =1:length(me.stpStates)
+                me.stpStates{c}.gui = me.gui;
             end
         end
         

@@ -9,7 +9,7 @@ if me.stpEx.hasErrors()
     return;
 end
 me.dat.collectTargetResponse();
-me.gui.ddisp.update();
+me.gui.ddisp.updateAll(me.dat.curStepTgt);
 me.currentAction.setState('SEND TARGET RESPONSE');
 if me.targetSource.isState('UI SIMCOR')
     me.tgtRsp.respond();

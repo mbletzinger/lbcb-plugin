@@ -49,7 +49,7 @@ classdef StepStates < SimStates
             done = 0;
             a = me.currentAction.getState();
             if me.stateChanged()
-                me.ddisp.dbgWin.setStepState(me.currentAction.idx);
+%                 me.ddisp.dbgWin.setStepState(me.currentAction.idx);
                 me.gui.updateStepState(me.currentAction.idx)
             end
             switch a
@@ -111,7 +111,7 @@ classdef StepStates < SimStates
                 case 'PROCESS OM RESPONSE'
                     me.pResp.isDone();
                     me.arch.archive(me.dat.curStepData);
-                    me.gui.ddisp.update();
+                    me.gui.ddisp.updateAll(me.dat.curStepData);
                     if me.gettingInitialPosition
                         me.currentAction.setState('DONE');
                     elseif me.needsTriggering()

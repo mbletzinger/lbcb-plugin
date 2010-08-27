@@ -136,7 +136,7 @@ classdef MdlBroadcast < handle
             jmsg = tf.createBroadcastTransaction(stepNum.step, stepNum.subStep, stepNum.correctionStep, timeout);
             %            me.log.debug(dbstack,char(jmsg.toString()));
             me.simcorTcp.startTransaction(jmsg);
-            me.dbgWin.addMsg(char(jmsg.toString));
+%             me.dbgWin.addMsg(char(jmsg.toString));
             me.action.setState('BROADCASTING');
             me.state.setState('BUSY');
         end

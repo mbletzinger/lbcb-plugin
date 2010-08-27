@@ -29,6 +29,7 @@ classdef DataTypes < handle
         end
         function setInt(me,key,value)
             me.cfg.props.setProperty(key,sprintf('%d',value));
+            me.cfg.logValueChange(key,sprintf('%d',value));
         end
         function result = getDouble(me,key,default)
             str = char(me.cfg.props.getProperty(key));
@@ -40,6 +41,7 @@ classdef DataTypes < handle
         end
         function setDouble(me,key,value)
             me.cfg.props.setProperty(key,sprintf('%f',value));
+            me.cfg.logValueChange(key,sprintf('%f',value));
         end
         function result = getBool(me,key,default)
             str = char(me.cfg.props.getProperty(key));
@@ -51,6 +53,7 @@ classdef DataTypes < handle
         end
         function setBool(me,key,value)
             me.cfg.props.setProperty(key,sprintf('%d',value));
+            me.cfg.logValueChange(key,sprintf('%d',value));
         end
         function result = getString(me,key,default)
             str = char(me.cfg.props.getProperty(key));
@@ -62,6 +65,7 @@ classdef DataTypes < handle
         end
         function setString(me,key,value)
             me.cfg.props.setProperty(key,value);
+            me.cfg.logValueChange(key,value);
         end
         
         function result = getStringVector(me,key,default)
@@ -78,6 +82,7 @@ classdef DataTypes < handle
             end
             valS = me.su.ca2sl(value);
             me.cfg.props.setPropertyList(key,valS);
+            me.cfg.logListChange(key,valS);
         end
         function result = getDoubleVector(me,key,default)
             resultSL = me.cfg.props.getPropertyList(key);
@@ -93,6 +98,7 @@ classdef DataTypes < handle
             end
             valS = me.su.da2sl(value);
             me.cfg.props.setPropertyList(key,valS);
+            me.cfg.logListChange(key,valS);
         end
         function result = getIntVector(me,key,default)
             resultSL = me.cfg.props.getPropertyList(key);
@@ -108,6 +114,7 @@ classdef DataTypes < handle
             end
             valS = me.su.ia2sl(value);
             me.cfg.props.setPropertyList(key,valS);
+            me.cfg.logListChange(key,valS);
         end
         function result = getTarget(me,key)
             result = Target;
@@ -149,6 +156,7 @@ classdef DataTypes < handle
                 end
                 valS = me.su.da2sl(value{i});
                 me.cfg.props.setPropertyList(sprintf('%s.%s%d',key,itemkey,i),valS);
+                me.cfg.logListChange(sprintf('%s.%s%d',key,itemkey,i),valS);
             end
         end
         function result = getDofMatrix(me,key,itemkey,itemSize)
@@ -175,6 +183,7 @@ classdef DataTypes < handle
                 for d = 1:6
                     valS = me.su.da2sl(value{i}(d,:));
                     me.cfg.props.setPropertyList(sprintf('%s.%s%d.%s',key,itemkey,i,me.dofL{d}),valS);
+                    me.cfg.logListChange(sprintf('%s.%s%d.%s',key,itemkey,i,me.dofL{d}),valS);
                 end
             end
         end

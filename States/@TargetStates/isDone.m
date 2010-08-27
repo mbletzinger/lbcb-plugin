@@ -2,7 +2,7 @@ function done = isDone(me)
 done = 0;
 a = me.currentAction.getState();
 if me.stateChanged()
-    me.ddisp.dbgWin.setTargetState(me.currentAction.idx);
+%     me.ddisp.dbgWin.setTargetState(me.currentAction.idx);
     me.gui.updateSimState(me.currentAction.idx)
 end
 switch a
