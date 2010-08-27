@@ -24,6 +24,10 @@ if step == 1
     me.putDat('nCfgOld',me.getCfg('n'));
     me.putDat('correctionTarget1',0);
     me.putDat('correctionTarget2',0);
+    dat.nextStepData.lbcbCps{1}.command.disp(1) = dat.curStepData.lbcbCps{1}.response.lbcb.disp(1);
+    dat.nextStepData.lbcbCps{1}.command.disp(5) = dat.curStepData.lbcbCps{1}.response.lbcb.disp(5);
+    dat.nextStepData.lbcbCps{2}.command.disp(1) = dat.curStepData.lbcbCps{2}.response.lbcb.disp(1);
+    dat.nextStepData.lbcbCps{2}.command.disp(5) = dat.curStepData.lbcbCps{2}.response.lbcb.disp(5);
     return;
 end
 
