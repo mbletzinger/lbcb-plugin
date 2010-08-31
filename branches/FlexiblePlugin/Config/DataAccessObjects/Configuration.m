@@ -83,10 +83,16 @@ classdef Configuration < handle
             me.arch.storeNote(sprintf('Config file %s was saved',name),step);
         end
         function logValueChange(me,key,value)
+            if isempty(me.dat)
+                return;
+            end
             step = me.dat.curStepData;
             me.arch.storeNote(sprintf('%s was changed to %s',key,value),step);
         end
         function logListChange(me,key,list)
+            if isempty(me.dat)
+                return;
+            end
             step = me.dat.curStepData;
             me.arch.storeNote(sprintf('%s was changed to %s',key,char(me.props.propertyList2String(list))),step);
         end
