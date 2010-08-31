@@ -13,6 +13,7 @@ if isempty(prevLbcbCP)
     % firstStep is nested function found below for getting first SP disps
     [prevLengths, prevDisplacement] = firstStep(me,actualLengths);
     commandDisps = prevDisplacement;
+    me.putArch('n',n);
 else
 %     prevLengths = me.currentLengths;        % was lengths0
     prevLengths = prevLbcbCP.externalSensors;   % was lengths0
