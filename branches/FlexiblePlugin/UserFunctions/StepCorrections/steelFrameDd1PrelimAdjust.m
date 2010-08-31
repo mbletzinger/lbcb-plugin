@@ -20,7 +20,6 @@ step = dat.curSubstepTgt.stepNum.step;
 
 if step == 1
     n = me.getCfg('n');
-    me.putArch('n',n);
     me.putDat('nCfgOld',me.getCfg('n'));
     me.putDat('correctionTarget1',0);
     me.putDat('correctionTarget2',0);

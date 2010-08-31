@@ -54,11 +54,11 @@ classdef ArchPlot < handle
             end
             yd = step.cData.values(me.yidx);
             if me.xdof > 6
-                xmd = step.lbcbCps{cpsidx}.response.force(me.yidx - 6);
-                xcd = step.lbcbCps{cpsidx}.command.force(me.yidx - 6);
+                xmd = step.lbcbCps{cpsidx}.response.force(me.xdof - 6);
+                xcd = step.lbcbCps{cpsidx}.command.force(me.xdof - 6);
             else
-                xmd = step.lbcbCps{cpsidx}.response.disp(me.yidx);
-                xcd = step.lbcbCps{cpsidx}.command.disp(me.yidx);
+                xmd = step.lbcbCps{cpsidx}.response.disp(me.xdof);
+                xcd = step.lbcbCps{cpsidx}.command.disp(me.xdof);
             end
             if isempty(me.measuredY) == false
                 me.measuredY = cat(1, me.measuredY,yd);
