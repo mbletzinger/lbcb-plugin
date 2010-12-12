@@ -144,8 +144,8 @@ classdef StepStates < SimStates
     methods (Access='private')
         function isNextStep(me)
             if me.nxtStep.stepsCompleted  %  No more targets
-                me.log.info(dbstack,sprintf('Target %s is done',...
-                    me.dat.prevStepTgt.stepNumber.toString()));
+                me.log.info(dbstack,sprintf('Target %d is done',...
+                    me.dat.prevStepTgt.stepNum.step));
                 me.statusReady();
                 me.currentAction.setState('DONE');
             else % Execute next step
