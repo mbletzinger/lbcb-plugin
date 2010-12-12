@@ -18,6 +18,7 @@ classdef MdlBroadcast < handle
         simcorTcp = {};
         connection = {};
         response = {};
+        snd
         log = Logger('MdlBroadcast');
         state = StateEnum({ ...
             'BUSY', ...
@@ -46,6 +47,7 @@ classdef MdlBroadcast < handle
             me.prevState = StateEnum(me.state.states);
             me.prevAction = StateEnum(me.action.states);
             me.vampErrorFound = false;
+            me.snd = Sounds;
         end
         
         % Continue executing the current action
@@ -75,6 +77,7 @@ classdef MdlBroadcast < handle
                         if jerror.isClientsAddedMsg()
                             me.log.info(dbstack,char(jerror.getText()));
                         else
+                            me.snd.duh();
                             me.log.error(dbstack,char(jerror.getText()));
                         end
                         me.vampErrorFound = true;
@@ -169,6 +172,7 @@ classdef MdlBroadcast < handle
                     me.state.setState('ERRORS EXIST');
                     me.action.setState('NONE');
                     me.simcorTcp.isReady();
+                    me.snd.trombone();
                 case 'READY'
                     me.state.setState('READY');
                     me.action.setState('NONE');
