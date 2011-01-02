@@ -10,6 +10,7 @@ classdef StepStates < SimStates
         doTriggering
         log = Logger('StepStates');
         st
+        started
     end
     methods
         function me = StepStates()
@@ -23,6 +24,7 @@ classdef StepStates < SimStates
                 'PROCESS OM RESPONSE',...
                 'DONE'
                 });
+            me.started = false;
         end
         function start(me,steps)
             me.nxtStep.steps = steps;
@@ -30,6 +32,7 @@ classdef StepStates < SimStates
             me.gettingInitialPosition = false;
             me.currentAction.setState('NEXT STEP');
             me.statusBusy();
+            me.started = true;
         end
         function getInitialPosition(me)
             me.gettingInitialPosition = true;
@@ -55,9 +58,10 @@ classdef StepStates < SimStates
                 case'NEXT STEP'
                     odone = me.nxtStep.isDone();
                     if odone % Next target is ready
-                        if me.needsTriggering()
+                        if me.needsTriggering() && me.started 
                             me.brdcstRsp.start();
                             me.currentAction.setState('BROADCAST TRIGGER');
+                            me.started = false;
                         else
                             me.isNextStep()
                         end
@@ -113,6 +117,8 @@ classdef StepStates < SimStates
                 case 'BROADCAST TRIGGER'
                     bdone = me.brdcstRsp.isDone();
                     if bdone
+                        config = CorrectionsSettingsDao(me.cdp.cfg);
+                        pause(config.cfgValues(17));
                         me.isNextStep();
                     end
                 case 'DONE'
@@ -145,7 +151,7 @@ classdef StepStates < SimStates
         function isNextStep(me)
             if me.nxtStep.stepsCompleted  %  No more targets
                 me.log.info(dbstack,sprintf('Target %d is done',...
-                    me.dat.prevStepTgt.stepNum.step));
+                    me.dat.curStepTgt.stepNum.step));
                 me.statusReady();
                 me.currentAction.setState('DONE');
             else % Execute next step
@@ -163,10 +169,10 @@ classdef StepStates < SimStates
             if me.doTriggering == false
                 return;
             end
-            if isempty(me.dat.prevSubstepTgt)
+            if isempty(me.dat.curSubstepTgt)
                 return;
             end
-            if me.dat.prevSubstepTgt.needsTriggering == false
+            if me.dat.curSubstepTgt.needsTriggering == false
                 return;
             end
             needsTriggering = true;
