@@ -15,7 +15,7 @@ classdef BroadcastResponses < BroadcasterState
             });
         end
         function start(me)
-            me.mdlBroadcast.start(me.dat.prevSubstepTgt.stepNum);
+            me.mdlBroadcast.start(me.dat.curSubstepTgt.stepNum);
             me.statusBusy();
             me.currentAction.setState('BROADCASTING');
         end
