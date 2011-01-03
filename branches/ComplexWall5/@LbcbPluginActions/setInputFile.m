@@ -3,7 +3,12 @@ done = 1;
 if isempty(iF)
     [file path] = uigetfile('*.txt','Input File');
     iF = me.hfact.inF;
-    done = iF.load(fullfile(path,file));
+    strtStep = [];
+    while isempty(strtStep)
+        a = inputdlg('Starting Step Number?','Starting Step Number',1,{'1'});
+        strtStep = sscanf(a{1},'%d');
+    end
+    done = iF.load(fullfile(path,file),strtStep);
 end
 if done
     me.hfact.tgtEx.inF = iF;
