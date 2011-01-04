@@ -24,6 +24,7 @@ classdef ProcessTarget < SimStates
             me.statusBusy();
             me.accepted = me.autoAccept;
             me.gui.updateCommandTable();
+            me.gui.updateStepsDisplay(target.stepNum);
             me.gui.blinkAcceptButton(~me.accepted);
             me.log.debug(dbstack,sprintf('Current Target: %s',target.toString()));
         end

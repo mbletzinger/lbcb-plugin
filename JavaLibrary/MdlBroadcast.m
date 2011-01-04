@@ -18,6 +18,7 @@ classdef MdlBroadcast < handle
         simcorTcp = {};
         connection = {};
         response = {};
+        snd
         log = Logger('MdlBroadcast');
         state = StateEnum({ ...
             'BUSY', ...
@@ -38,6 +39,7 @@ classdef MdlBroadcast < handle
 %        dbgWin
         simcorVamp
         vampErrorFound
+        prevJerror
     end
     methods
         function me = MdlBroadcast(cfg)
@@ -46,6 +48,7 @@ classdef MdlBroadcast < handle
             me.prevState = StateEnum(me.state.states);
             me.prevAction = StateEnum(me.action.states);
             me.vampErrorFound = false;
+            me.snd = Sounds;
         end
         
         % Continue executing the current action
@@ -75,6 +78,7 @@ classdef MdlBroadcast < handle
                         if jerror.isClientsAddedMsg()
                             me.log.info(dbstack,char(jerror.getText()));
                         else
+                            me.snd.duh();
                             me.log.error(dbstack,char(jerror.getText()));
                         end
                         me.vampErrorFound = true;
@@ -134,9 +138,8 @@ classdef MdlBroadcast < handle
             tf = me.simcorTcp.getTf();
             timeout = ncfg.msgTimeout;
             jmsg = tf.createBroadcastTransaction(stepNum.step, stepNum.subStep, stepNum.correctionStep, timeout);
-            %            me.log.debug(dbstack,char(jmsg.toString()));
+            me.log.debug(dbstack,char(jmsg.toString()));
             me.simcorTcp.startTransaction(jmsg);
-%             me.dbgWin.addMsg(char(jmsg.toString));
             me.action.setState('BROADCASTING');
             me.state.setState('BUSY');
         end
@@ -169,12 +172,13 @@ classdef MdlBroadcast < handle
                     me.state.setState('ERRORS EXIST');
                     me.action.setState('NONE');
                     me.simcorTcp.isReady();
+                    me.snd.trombone();
                 case 'READY'
                     me.state.setState('READY');
                     me.action.setState('NONE');
                     me.simcorTcp.isReady();
                 case { 'SETUP_TRIGGER_READ_RESPONSES' 'WAIT_FOR_TRIGGER_RESPONSES' ...
-                        'TRANSACTION_DONE'}
+                        'TRANSACTION_DONE', 'BROADCAST_COMMAND'}
                     % still busy
                 otherwise
                     me.log.error(dbstack,sprintf('"%s" not recognized',ts.getState()));
@@ -203,10 +207,10 @@ classdef MdlBroadcast < handle
         end
         function result = errorsExist(me,state)
             jerror = me.simcorTcp.getTransaction().getError();
-            if jerror.errorsExist()
+            if jerror.errorsExist() && isempty(me.prevJerror) == false ...
+                    && jerror.equals(me.prevJerror) == false
                 if jerror.isClientsAddedMsg()
                     me.log.info(dbstack,char(jerror.getText()));
-                    me.simcorTcp.getTransaction().clearError();
                     result = state;
                 else
                     me.log.error(dbstack,char(jerror.getText()));
@@ -215,6 +219,7 @@ classdef MdlBroadcast < handle
             else
                 result = state;
             end
+            me.prevJerror = jerror;
         end
     end
 end

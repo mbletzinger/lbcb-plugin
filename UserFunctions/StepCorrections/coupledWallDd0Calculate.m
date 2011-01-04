@@ -1,5 +1,15 @@
 % generate a new LbcbStep based on the current step
 function coupledWallDd0Calculate(me,cstep)
+%% Initialization of Global Variables
+if cstep.stepNum.step == 0
+    me.putDat('Fz1Target', cstep.lbcbCps{1}.command.force(3));
+    me.putDat('Fz2Target', cstep.lbcbCps{2}.command.force(3));
+    me.putArch('n',me.getCfg('n'));
+    me.putArch('maxDisp',me.getCfg('maxDisp'));
+    me.putArch('My total',0);
+end
+
+%% Actual content of DD0 Calculate
 % Defining local varbiables from me structure
 lbcb1Fx = cstep.lbcbCps{1}.response.force(1);
 lbcb2Fx = cstep.lbcbCps{2}.response.force(1);
@@ -15,7 +25,7 @@ dxLbcb2 = me.getCfg('dxLbcb2');
 
 % Calculating target moment move to calculate function
 FxTotal = lbcb1Fx + lbcb2Fx;
-MyTarget = Fxtot*kFactor;
+MyTarget = FxTotal*kFactor;
 
 % Calculating Fz error
 FzError = FzTarget - lbcb1Fz - lbcb2Fz;
@@ -31,14 +41,17 @@ MyActual = MyMy + MyFz;
 MyError = MyTarget - MyActual;
 
 % Correcting My error
-Fz1Target = Fz1Target + MyError/(2*dxLbcb1);
-Fz2Target = Fz2Target + MyError/(2*dxLbcb2);
+Fz1Target = Fz1Target - MyError/(2*dxLbcb1);
+Fz2Target = Fz2Target - MyError/(2*dxLbcb2);
 
 me.putDat('Fz1Target',Fz1Target);
 me.putDat('Fz2Target',Fz2Target);
 me.putArch('Fx total',FxTotal);
 me.putArch('MyTarget',MyTarget);
-me.putArch('MyActual',MyActual);
+me.putArch('My total',MyActual);
+me.putArch('My Left',lbcb1My);
+me.putArch('My Right',lbcb2My);
+me.putArch('My Couple',MyFz);
 me.putDat('MyError',MyError);
 me.log.debug(dbstack, sprintf('Fx Corrections %s\n',me.dat2String()));
 me.log.debug(dbstack, sprintf('Total Force %s\n',me.arch2String()));

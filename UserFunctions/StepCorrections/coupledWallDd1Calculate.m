@@ -1,63 +1,73 @@
 % calculations associated with actual v desired shear force differential
 function coupledWallDd1Calculate(me,cstep)
+
+step = cstep.stepNum.step;
+if step == 0
+    me.putDat('dd1Flag',0);
+end
+
 % Defining local varbiables from me structure
-FxL = cstep.lbcbCps{1}.response.force(1);
-FxR = cstep.lbcbCps{2}.response.force(1);
+lbcb1Fx = cstep.lbcbCps{1}.response.force(1);
+lbcb2Fx = cstep.lbcbCps{2}.response.force(1);
+lbcb1Dx = cstep.lbcbCps{1}.response.disp(1);
+lbcb2Dx = cstep.lbcbCps{2}.response.disp(1);
+dx = (lbcb1Dx + lbcb2Dx)/2;
 
-yieldDelta = me.getCfg('yieldDelta');
-dxlbcb1 = me.getCfg('dxLbcb1');
-dxlbcb2 = me.getCfg('dxLbcb2');
-F1Factor = me.getCfg('F1Factor');
-F2Factor = me.getCfg('F2Factor');
-sideMountFactor = me.getCfg('sideMountFactor');
-
-dx = (dxlbcb1 + dxlbcb2)/2;
-
+%% Calculating expected shear force differential
+damageDisp = me.getCfg('damageDisp');
+dFmaxFactor = me.getCfg('dFmaxFactor');
 maxDisp = me.getArch('maxDisp');
+
 if abs(dx) > maxDisp
     maxDisp = abs(dx);
     me.putArch('maxDisp',maxDisp);
 end
 
-% Calculating shear differential
-dF = FxR - FxL;
-baseShear = (FxR + FxL)*(1+sideMountFactor);
+baseShear = lbcb1Fx + lbcb2Fx;
+dF = lbcb2Fx - lbcb1Fx;
 
-% Calculating expected shear differential
-if maxDisp < yieldDelta
-    F1 = 0;
-    F2 = 0;
+dFmin = 0;
+if maxDisp < damageDisp
+    dFmax = 0;
 else
-    F1 = F1Factor;
-    F2 = F2Factor;
+    dFmax = baseShear*dFmaxFactor;
 end
-
 dispRatio = abs(dx)/maxDisp;
-dFmax = F1*baseShear;
-dFmin = F2*baseShear;
+
 dFexp = dispRatio*(dFmax - dFmin) + dFmin;
+dFError = dFexp - dF;
 
-dFerr = dFexp - dF;
-
-% Getting inter-pier stiffness and updating if necessary
-KdF = me.getCfg('KdF');
-dFFlag = me.getDat('dFFlag');
-
-if dFFlag == 1
-    olddF = me.getArch('dF');
-    ddx = me.getArch('ddx');
-    KdF = (KdF + (dF - olddF)/ddx)/2;
+%% Updating k_dF based on step data or change in user settings
+kCfgNew = me.getCfg('k_dF');
+k_dF = kCfgNew;
+if step > 1
+    kCfgOld = me.getDat('kCfgOld');
+    k_dF = me.getArch('k_dF');
+    
+    if me.getDat('dd1Flag') == 1
+        dFOld = me.getDat('dFOld');
+        ddxOld = me.getArch('ddx');
+        kStep = (dF - dFOld)/ddxOld;
+        if kStep > 0
+            k_dF = (k_dF + kStep)/2;
+        end
+    end
+    
+    if kCfgNew ~= kCfgOld
+        k_dF = kCfgNew;
+    end
 end
 
-% getting displacement increment for dF adjustment
-dxGain = me.getCfg('dxGain');
-ddx = (dFerr/KdF)*dxGain;
+%% Calculating required correction step, ddx
+ddx = dFError/k_dF;
 
-me.putArch('dx',dx);
-me.putArch('dF',dF);
-me.putArch('dFexp',dFexp);
-me.putArch('dFerr',dFerr);
+ddx = ddx*me.getCfg('ddxGain');
+
 me.putArch('ddx',ddx);
-me.putDat('olddF',dF)
+me.putArch('k_dF',k_dF);
+me.putArch('dFError',dFError);
+me.putDat('dFOld',dF);
+me.putDat('dd1Flag',0);
+me.putDat('kCfgOld',kCfgNew);
 
 end
