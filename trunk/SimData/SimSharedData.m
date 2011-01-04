@@ -32,12 +32,12 @@ classdef SimSharedData < handle
                 cmd2 = target.lbcbCps{2}.command;
             end
             me.nextStepData = me.sdf.target2StepData({ cmd1, ...
-                cmd2 }, target.stepNum.step,0);
+                cmd2 }, target.stepNum.step,target.stepNum.subStep);
             me.nextStepData.needsCorrection = target.needsCorrection;
 
             if me.curStepData.stepNum.step == 0
                 me.correctionTarget = me.sdf.target2StepData({ cmd1, ...
-                cmd2 }, target.stepNum.step,0);
+                cmd2 }, target.stepNum.step,target.stepNum.subStep);
                 me.correctionTarget.needsCorrection = target.needsCorrection;
             end
         end

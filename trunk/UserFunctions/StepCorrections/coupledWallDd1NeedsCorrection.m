@@ -1,10 +1,10 @@
 function needsCorrectionDD1 = coupledWallDd1NeedsCorrection(me)
 needsCorrectionDD1 = false;
 
-dFtol = me.getCfg('dFtol');
-dFerr = me.getDat('dFerr');
+dFTol = me.getCfg('dFTol');
+dFError = me.getArch('dFError');
 
-if abs(dFerr) > dFtol
+if abs(dFError) > dFTol
     needsCorrectionDD1 = true;
 end
 end

@@ -11,7 +11,7 @@ classdef  InputFile < Substeps
         function me = InputFile(sdf)
             me.sdf = sdf;
         end
-        function done = load(me,path)
+        function done = load(me,path,strtStep)
             me.endOfFile = 0;
             tgts= load(path);
             tmp = size(tgts);
@@ -22,7 +22,7 @@ classdef  InputFile < Substeps
                 done = 0;
                 return
             end
-            me.loadSteps(tgts)
+            me.loadSteps(tgts,strtStep)
             done = 1;
         end
         function readSpecfile(me,path)
@@ -37,7 +37,7 @@ classdef  InputFile < Substeps
             end
             me.commandDofs(1,1:length(cmdDofs)) = cmdDofs;
         end
-        function loadSteps(me,tgts)
+        function loadSteps(me,tgts,strtStep)
             % Due to slowing down issue, an itermediate variable called
             % "intermVar" is defined and assigned to "me.steps" at the end
             % of the for loop.
@@ -75,7 +75,7 @@ classdef  InputFile < Substeps
                 else
                     targets = {tgt1};
                 end
-                intermVar{t}=me.sdf.target2StepData(targets,t,0);
+                intermVar{t}=me.sdf.target2StepData(targets,t + strtStep - 1,0);
                 intermVar{t}.needsCorrection = true;
             end
             me.steps=intermVar;
