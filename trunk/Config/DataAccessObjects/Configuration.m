@@ -67,8 +67,10 @@ classdef Configuration < handle
             end
             me.error = result;
             done = 0;
+            if isempty(me.dat) == false
             step = me.dat.curStepData;
             me.arch.storeNote(sprintf('Config file %s was loaded',name),step);
+            end
        end
         function done = saveFile(me,name)
             result = me.props.save(name);
