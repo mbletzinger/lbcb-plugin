@@ -79,22 +79,31 @@ classdef DisplayFactory < handle
             ref.cdp = me.cdp;
             me.addDisplay('FzStepL2',ref,me.mainDisp.FzStepL2);
             ref = ResponseTable('L1ResponseTable',1);
+            ref.cdp = me.cdp;
             me.addDisplay('L1ResponseTable',ref,me.mainDisp.L1ResponseTable);
             ref = ResponseTable('L2ResponseTable',0);
+            ref.cdp = me.cdp;
             me.addDisplay('L2ResponseTable',ref,me.mainDisp.L2ResponseTable);
             ref = AllStepsCommandTable('L1CommandTable',1);
+            ref.cdp = me.cdp;
             me.addDisplay('L1CommandTable',ref,me.mainDisp.L1CommandTable);
             ref = AllStepsCommandTable('L2CommandTable',0);
+            ref.cdp = me.cdp;
             me.addDisplay('L2CommandTable',ref,me.mainDisp.L2CommandTable);
             ref = SubstepsCommandTable('L1SubstepsTable',1);
+            ref.cdp = me.cdp;
             me.addDisplay('L1SubstepsTable',ref,me.mainDisp.L1SubstepsTable);
             ref = SubstepsCommandTable('L2SubstepsTable',0);
+            ref.cdp = me.cdp;
             me.addDisplay('L2SubstepsTable',ref,me.mainDisp.L2SubstepsTable);
             ref = LbcbReadingsTable('L1ReadingsTable',1);
+            ref.cdp = me.cdp;
             me.addDisplay('L1ReadingsTable',ref,me.mainDisp.L1ReadingsTable);
             ref = LbcbReadingsTable('L2ReadingsTable',0);
+            ref.cdp = me.cdp;
             me.addDisplay('L2ReadingsTable',ref,me.mainDisp.L2ReadingsTable);
             ref = ArchTable('DerivedTable');
+            ref.cdp = me.cdp;
             me.addDisplay('DerivedTable',ref,me.mainDisp.DerivedTable);
         end
         function yes = isDisplaying(me,name)

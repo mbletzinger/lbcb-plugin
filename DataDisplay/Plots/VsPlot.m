@@ -28,7 +28,10 @@ classdef VsPlot < handle
             if me.isLbcb1
                 cpsidx = 1;
             end
-            if me.ydof > 6
+            if me.isLbcb1 == false && me.cdp.numLbcbs() < 2
+                return;
+            end
+            if me.ydof > 6 
                 yd = step.lbcbCps{cpsidx}.response.force(me.ydof - 6);
             else
                 yd = step.lbcbCps{cpsidx}.response.disp(me.ydof);
