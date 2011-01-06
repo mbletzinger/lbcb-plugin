@@ -9,7 +9,10 @@ classdef AllStepsCommandTable < DataTable
             cpsidx = (me.isLbcb1 == false) + 1;
             lt = length(me.cnames);
             row = cell(1,lt);
-                r = [ step.lbcbCps{cpsidx}.command.disp' step.lbcbCps{cpsidx}.command.force' ];
+            if me.cdp.numLbcbs() < 2 && me.isLbcb1 == false
+                return;
+            end
+            r = [ step.lbcbCps{cpsidx}.command.disp' step.lbcbCps{cpsidx}.command.force' ];
             for i = 1:lt
                 row{i} = sprintf('%+12.7e',r(i));
             end

@@ -35,6 +35,9 @@ classdef OneDofStepPlot < handle
             if me.isLbcb1
                 cpsidx = 1;
             end
+            if me.isLbcb1 == false && me.cdp.numLbcbs() < 2
+                return;
+            end
             cmdS = me.dat.curStepData;
             corS = me.dat.correctionTarget;
             tgtS = me.dat.curStepTgt;
