@@ -1,5 +1,5 @@
 % generate a new LbcbStep based on the current step
-function coupledWallDd0AdjustTarget(me,step)
+function coupledWallDd0AdjustTarget(me,step,tcps)
 Fz1Target = me.getDat('Fz1Target');
 Fz2Target = me.getDat('Fz2Target');
 step.lbcbCps{1}.command.setForceDof(3,Fz1Target);

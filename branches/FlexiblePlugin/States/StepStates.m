@@ -10,6 +10,7 @@ classdef StepStates < SimStates
         doTriggering
         log = Logger('StepStates');
         st
+        started
     end
     methods
         function me = StepStates()
@@ -17,12 +18,13 @@ classdef StepStates < SimStates
             me.doTriggering = false;
             me.currentAction = StateEnum({...
                 'NEXT STEP',...
+                'BROADCAST TRIGGER',...
                 'OM PROPOSE EXECUTE',...
                 'OM GET CONTROL POINTS',...
                 'PROCESS OM RESPONSE',...
-                'BROADCAST TRIGGER',...
                 'DONE'
                 });
+            me.started = false;
         end
         function start(me,steps)
             me.nxtStep.steps = steps;
@@ -30,6 +32,7 @@ classdef StepStates < SimStates
             me.gettingInitialPosition = false;
             me.currentAction.setState('NEXT STEP');
             me.statusBusy();
+            me.started = true;
         end
         function getInitialPosition(me)
             me.gettingInitialPosition = true;
@@ -49,26 +52,19 @@ classdef StepStates < SimStates
             done = 0;
             a = me.currentAction.getState();
             if me.stateChanged()
-%                 me.ddisp.dbgWin.setStepState(me.currentAction.idx);
                 me.gui.updateStepState(me.currentAction.idx)
             end
             switch a
                 case'NEXT STEP'
                     odone = me.nxtStep.isDone();
                     if odone % Next target is ready
-                        if me.nxtStep.stepsCompleted  %  No more targets
-                            me.log.info(dbstack,'Substeps are done');
-                            me.statusReady();
-                            me.currentAction.setState('DONE');                            
-                        else % Execute next step
-                            me.currentAction.setState('OM PROPOSE EXECUTE');
-                            if me.isFake() == false
-                                me.peOm.start()
-                            end
-                            me.gui.updateCommandTable();
-                            me.gui.updateStepsDisplay(me.dat.nextStepData.stepNum);
+                        if me.needsTriggering() && me.started 
+                            me.brdcstRsp.start();
+                            me.currentAction.setState('BROADCAST TRIGGER');
+                            me.started = false;
+                        else
+                            me.isNextStep()
                         end
-                        me.gui.updateStepTolerances(me.st);
                     end
                 case 'OM PROPOSE EXECUTE'
                     if me.isFake()
@@ -114,9 +110,6 @@ classdef StepStates < SimStates
                     me.gui.ddisp.updateAll(me.dat.curStepData);
                     if me.gettingInitialPosition
                         me.currentAction.setState('DONE');
-                    elseif me.needsTriggering()
-                        me.brdcstRsp.start();
-                        me.currentAction.setState('BROADCAST TRIGGER');
                     else
                         me.currentAction.setState('NEXT STEP');
                     end
@@ -124,13 +117,9 @@ classdef StepStates < SimStates
                 case 'BROADCAST TRIGGER'
                     bdone = me.brdcstRsp.isDone();
                     if bdone
-                        if me.brdcstRsp.hasErrors()
-                            me.gui.colorRunButton('BROKEN'); % Pause the simulation
-                            me.statusErrored();
-                            me.currentAction.setState('DONE');
-                            return;
-                        end
-                        me.currentAction.setState('NEXT STEP');
+                        config = CorrectionsSettingsDao(me.cdp.cfg);
+                        pause(config.cfgValues(17));
+                        me.isNextStep();
                     end
                 case 'DONE'
                     me.statusReady();
@@ -159,15 +148,31 @@ classdef StepStates < SimStates
         end
     end
     methods (Access='private')
+        function isNextStep(me)
+            if me.nxtStep.stepsCompleted  %  No more targets
+                me.log.info(dbstack,sprintf('Target %d is done',...
+                    me.dat.curStepTgt.stepNum.step));
+                me.statusReady();
+                me.currentAction.setState('DONE');
+            else % Execute next step
+                me.currentAction.setState('OM PROPOSE EXECUTE');
+                if me.isFake() == false
+                    me.peOm.start()
+                end
+                me.gui.updateCommandTable();
+                me.gui.updateStepsDisplay(me.dat.nextStepData.stepNum);
+            end
+            me.gui.updateStepTolerances(me.st);
+        end
         function needsTriggering = needsTriggering(me)
             needsTriggering = false;
             if me.doTriggering == false
                 return;
             end
-            if isempty(me.dat.curStepData)
+            if isempty(me.dat.curSubstepTgt)
                 return;
             end
-            if me.dat.curStepData.needsTriggering == false
+            if me.dat.curSubstepTgt.needsTriggering == false
                 return;
             end
             needsTriggering = true;

@@ -18,6 +18,7 @@ classdef MdlLbcb < handle
         simcorTcp = {};
         connection = {};
         response = {};
+        snd
         log = Logger('MdlLbcb');
         state = StateEnum({ ...
             'BUSY', ...
@@ -41,6 +42,7 @@ classdef MdlLbcb < handle
             me.prevState = StateEnum(me.state.states);
             me.prevAction = StateEnum(me.action.states);
             me.action.setState('NONE');
+            me.snd = Sounds;
         end
         
         % Continue executing the current action
@@ -155,6 +157,7 @@ classdef MdlLbcb < handle
                 case 'ERRORS_EXIST'
                     me.state.setState('ERRORS EXIST');
                     me.action.setState('NONE');
+                    me.snd.duh();
                     me.log.error(dbstack(),char(me.simcorTcp.getTransaction().getError().getText()));
                     me.simcorTcp.isReady(); %#ok<UNRCH>
                     me.simcorTcp.shutdown();

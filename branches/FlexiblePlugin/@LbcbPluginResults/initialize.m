@@ -211,15 +211,15 @@ if isempty(me.handles) == 0
     me.cmdTableHandle = me.handles.CommandTable;
     
     me.fillInLimits();
-    titleIm = imread('images/LbcbPluginBanner.png');
+    titleIm = imread('ImagesAndSounds/LbcbPluginBanner.png');
     axes(me.handles.titleImage);
     image(titleIm);
     axis off;
-    titleIm = imread('images/LBCB.png');
+    titleIm = imread('ImagesAndSounds/LBCB.png');
     axes(me.handles.lbcbImage);
     image(titleIm);
     axis off;
-    titleIm = imread('images/UIUC_I.png');
+    titleIm = imread('ImagesAndSounds/UIUC_I.png');
     axes(me.handles.uiucImage);
     image(titleIm);
     axis off;

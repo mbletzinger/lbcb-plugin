@@ -1,8 +1,8 @@
 classdef  Substeps < handle
     properties
-    sIdx = 1;
-    endOfFile = false;
-    started = false;
+    sIdx
+    endOfFile
+    started
     end
     properties (Access = private)
         stps
