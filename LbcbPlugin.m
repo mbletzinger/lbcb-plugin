@@ -326,7 +326,7 @@ actions.setCommandLimit(11,2,1,get(hObject,'String'));
 
 function MyU2_Callback(hObject, eventdata, handles)
 actions = getappdata(getLp(hObject),'actions');
-actions.setCommandLimit(1,2,0,get(hObject,'String'));
+actions.setCommandLimit(11,2,0,get(hObject,'String'));
 
 function MzL2_Callback(hObject, eventdata, handles)
 actions = getappdata(getLp(hObject),'actions');
