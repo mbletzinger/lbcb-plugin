@@ -65,8 +65,10 @@ classdef OpenCloseOm < OmState
         end
         function connectionError(me)
             me.connectionStatus.setState('ERRORED');
-            me.gui.colorRunButton('BROKEN'); % Pause the simulation
-            me.gui.colorButton('CONNECT OM','BROKEN');
+            if isempty(me.gui) == false
+                me.gui.colorRunButton('BROKEN'); % Pause the simulation
+                me.gui.colorButton('CONNECT OM','BROKEN');
+            end
             me.currentAction.setState('DONE');
             me.statusErrored();
             me.log.error(dbstack,...
@@ -83,11 +85,15 @@ classdef OpenCloseOm < OmState
             end
             me.connectionStatus.setState('CONNECTED');
             me.currentAction.setState('DONE');
-            me.gui.colorButton('CONNECT OM','ON');
+            if isempty(me.gui) == false
+                me.gui.colorButton('CONNECT OM','ON');
+            end
         end
         function disconnect(me)
             me.connectionStatus.setState('DISCONNECTED');
-            me.gui.colorButton('CONNECT OM','OFF');
+            if isempty(me.gui) == false
+                me.gui.colorButton('CONNECT OM','OFF');
+            end
             me.currentAction.setState('DONE');
         end
     end
