@@ -44,6 +44,6 @@ else
     end
 end
 if me.currentSimExecute.isState('RUN SIMULATION')
-    me.hfact.prcsTgt.edited();
+    me.hfact.acceptStp.edited();
 end
 end
