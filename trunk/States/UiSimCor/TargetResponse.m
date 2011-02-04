@@ -4,6 +4,7 @@ classdef TargetResponse < UiSimCorState
         target
         log = Logger('TargetResponse');
         abort
+        gotFirstStep
     end
     methods
         function me = TargetResponse()
@@ -15,6 +16,7 @@ classdef TargetResponse < UiSimCorState
                 'SEND_RESPONSE', ...
                 'CLOSE_SESSION_RECEIVED',...
                 });
+            me.gotFirstStep = false;
         end
         function start(me)
             me.mdlUiSimCor.start();
@@ -58,6 +60,10 @@ classdef TargetResponse < UiSimCorState
                     end
                     me.target = me.sdf.uisimcorMsg2Step(command);
                     me.target.needsCorrection = true;
+                    if(me.gotFirstStep == false) 
+                        me.target.isFirstStep = true;
+                        me.gotFirstStep = true;
+                    end
                     me.currentAction.setState('DONE');
                 case {'SEND_RESPONSE', 'CLOSE_SESSION_RECEIVED' }
                     me.currentAction.setState('DONE');

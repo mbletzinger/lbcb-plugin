@@ -78,6 +78,7 @@ classdef  InputFile < Substeps
                 intermVar{t}=me.sdf.target2StepData(targets,t + strtStep - 1,0);
                 intermVar{t}.needsCorrection = true;
             end
+            intermVar{1}.isFirstStep = true;
             me.steps=intermVar;
             me.started = false;
             me.log.info(dbstack,sprintf('Loaded %d steps',lgth));

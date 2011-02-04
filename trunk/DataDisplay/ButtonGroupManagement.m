@@ -21,7 +21,7 @@ classdef ButtonGroupManagement < handle
                 h = me.childHandles{i};
                 if i == sidx
                     set(h,'BackgroundColor','cyan');
-                    set(h,'FontWeight','bold');
+                    set(h,'FontWeight','normal');
                     set(h,'Value',true);
                 else
                     set(h,'BackgroundColor',me.offColor);
