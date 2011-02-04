@@ -26,7 +26,7 @@ else
     me.hfact.il.limits.window2(dof) = n;
 end
 if me.currentSimExecute.isState('RUN SIMULATION')
-    me.hfact.prcsTgt.edited();
+    me.hfact.acceptStp.edited();
 end
 end
 
