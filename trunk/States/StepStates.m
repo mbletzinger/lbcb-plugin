@@ -6,6 +6,7 @@ classdef StepStates < SimStates
         fakeGcp = [];
         arch = [];
         brdcstRsp = [];
+        acceptStp = [];
         gettingInitialPosition;
         doTriggering
         log = Logger('StepStates');
@@ -18,10 +19,11 @@ classdef StepStates < SimStates
             me.doTriggering = false;
             me.currentAction = StateEnum({...
                 'NEXT STEP',...
-                'BROADCAST TRIGGER',...
+                'ACCEPT STEP',...
                 'OM PROPOSE EXECUTE',...
                 'OM GET CONTROL POINTS',...
                 'PROCESS OM RESPONSE',...
+                'BROADCAST TRIGGER',...
                 'DONE'
                 });
             me.started = false;
@@ -58,12 +60,18 @@ classdef StepStates < SimStates
                 case'NEXT STEP'
                     odone = me.nxtStep.isDone();
                     if odone % Next target is ready
-                        if me.needsTriggering() && me.started 
-                            me.brdcstRsp.start();
-                            me.currentAction.setState('BROADCAST TRIGGER');
-                            me.started = false;
-                        else
-                            me.isNextStep()
+                        me.isNextStep()
+                    end
+                case'ACCEPT STEP'
+                    odone = me.acceptStp.isDone();
+                    me.setStatus(me.acceptStp.status);
+                    if me.hasErrors()
+                        return;
+                    end
+                    if odone % Step is accepted
+                        me.currentAction.setState('OM PROPOSE EXECUTE');
+                        if me.isFake() == false
+                            me.peOm.start()
                         end
                     end
                 case 'OM PROPOSE EXECUTE'
@@ -109,7 +117,11 @@ classdef StepStates < SimStates
                     me.arch.archive(me.dat.curStepData);
                     me.gui.ddisp.updateAll(me.dat.curStepData);
                     if me.gettingInitialPosition
+                        me.dat.initialPosition2Target();
                         me.currentAction.setState('DONE');
+                    elseif me.needsTriggering()
+                        me.brdcstRsp.start();
+                        me.currentAction.setState('BROADCAST TRIGGER');
                     else
                         me.currentAction.setState('NEXT STEP');
                     end
@@ -155,12 +167,10 @@ classdef StepStates < SimStates
                 me.statusReady();
                 me.currentAction.setState('DONE');
             else % Execute next step
-                me.currentAction.setState('OM PROPOSE EXECUTE');
-                if me.isFake() == false
-                    me.peOm.start()
-                end
+                me.acceptStp.start();
                 me.gui.updateCommandTable();
                 me.gui.updateStepsDisplay(me.dat.nextStepData.stepNum);
+                me.currentAction.setState('ACCEPT STEP');
             end
             me.gui.updateStepTolerances(me.st);
         end
@@ -169,10 +179,10 @@ classdef StepStates < SimStates
             if me.doTriggering == false
                 return;
             end
-            if isempty(me.dat.curSubstepTgt)
+            if isempty(me.dat.curStepData)
                 return;
             end
-            if me.dat.curSubstepTgt.needsTriggering == false
+            if me.dat.curStepData.needsTriggering == false
                 return;
             end
             needsTriggering = true;

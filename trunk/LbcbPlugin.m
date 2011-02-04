@@ -27,11 +27,11 @@ function varargout = LbcbPlugin(varargin)
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
 gui_State = struct('gui_Name',       mfilename, ...
-                   'gui_Singleton',  gui_Singleton, ...
-                   'gui_OpeningFcn', @LbcbPlugin_OpeningFcn, ...
-                   'gui_OutputFcn',  @LbcbPlugin_OutputFcn, ...
-                   'gui_LayoutFcn',  [] , ...
-                   'gui_Callback',   []);
+    'gui_Singleton',  gui_Singleton, ...
+    'gui_OpeningFcn', @LbcbPlugin_OpeningFcn, ...
+    'gui_OutputFcn',  @LbcbPlugin_OutputFcn, ...
+    'gui_LayoutFcn',  [] , ...
+    'gui_Callback',   []);
 if nargin && ischar(varargin{1})
     gui_State.gui_Callback = str2func(varargin{1});
 end
@@ -67,8 +67,8 @@ if(nargin > 3)
             case 'notimer'
                 handles.notimer = varargin{index+1};
             otherwise
-            str= sprintf('%s not recognized',label);
-            disp(str);
+                str= sprintf('%s not recognized',label);
+                disp(str);
         end
     end
 end
@@ -85,11 +85,11 @@ guidata(hObject, handles);
 % h = handles
 
 % UIWAIT makes LbcbPlugin wait for user response (see UIRESUME)
- uiwait(handles.LbcbPlugin);
+uiwait(handles.LbcbPlugin);
 
 
 % --- Outputs from this function are returned to the command line.
-function varargout = LbcbPlugin_OutputFcn(hObject, eventdata, handles) 
+function varargout = LbcbPlugin_OutputFcn(hObject, eventdata, handles)
 % varargout  cell array for returning output args (see VARARGOUT);
 % hObject    handle to figure
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -109,11 +109,11 @@ if handles.notimer
     % Used for debugging the software
     disp('no timer execution');
     if actions.currentSimExecute.isState('DONE')
-    actions.startSimulation();
+        actions.startSimulation();
     end
-    LbcbPluginActions.executeSim([],[],actions);    
+    LbcbPluginActions.executeSim([],[],actions);
 else
-    actions.processRunHold(get(hObject,'Value'));    
+    actions.processRunHold(get(hObject,'Value'));
 end
 
 % --- Executes on button press in Connect2Om.
@@ -590,8 +590,12 @@ function LbcbPlugin_DeleteFcn(hObject, eventdata, handles)
 actions = getappdata(hObject,'actions');
 ddisp = getappdata(hObject,'ddisp');
 disp('Shutting Down');
-actions.shutdown();
-ddisp.closeAll();
+if isempty(actions) == false
+    actions.shutdown();
+end
+if isempty(ddisp) == false
+    ddisp.closeAll();
+end
 
 
 % --------------------------------------------------------------------
@@ -723,10 +727,10 @@ actions.processVamping(val);
 function ArchiveOnOff_Callback(hObject, eventdata, handles)
 actions = getappdata(getLp(hObject),'actions');
 if strcmp(get(hObject, 'Checked'),'on')
-%     actions.processArchiveOnOff(0);
+    %     actions.processArchiveOnOff(0);
     set(hObject,'Checked','off');
-else 
-%     actions.processArchiveOnOff(1);
+else
+    %     actions.processArchiveOnOff(1);
     set(hObject,'Checked','on');
 end
 actions.processArchiveOnOff(get(hObject,'Checked'));
@@ -910,9 +914,9 @@ else
     ddisp.openDisplay('L2ReadingsTable');
 end
 function lp = getLp(hObject)
-    lp = hObject;
+lp = hObject;
+tag = get(lp,'Tag');
+while strcmp(tag,'LbcbPlugin') == false
+    lp = get(lp,'Parent');
     tag = get(lp,'Tag');
-    while strcmp(tag,'LbcbPlugin') == false
-        lp = get(lp,'Parent');
-        tag = get(lp,'Tag');
-    end
+end

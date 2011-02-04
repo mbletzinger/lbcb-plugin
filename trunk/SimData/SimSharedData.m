@@ -34,10 +34,10 @@ classdef SimSharedData < handle
             me.nextStepData = me.sdf.target2StepData({ cmd1, ...
                 cmd2 }, target.stepNum.step,target.stepNum.subStep);
             me.nextStepData.needsCorrection = target.needsCorrection;
-
+            
             if me.curStepData.stepNum.step == 0
                 me.correctionTarget = me.sdf.target2StepData({ cmd1, ...
-                cmd2 }, target.stepNum.step,target.stepNum.subStep);
+                    cmd2 }, target.stepNum.step,target.stepNum.subStep);
                 me.correctionTarget.needsCorrection = target.needsCorrection;
             end
         end
@@ -80,7 +80,7 @@ classdef SimSharedData < handle
                 if isempty(steps{s})
                     continue;
                 end
-%                me.log.debug(dbstack,sprintf('%s: %s',lbls{s},steps{s}.toString()));
+                %                me.log.debug(dbstack,sprintf('%s: %s',lbls{s},steps{s}.toString()));
                 [ disp dDofs force fDofs] = steps{s}.cmdData(); %#ok<NASGU,ASGLU>
                 for d = 1 : length(didx)
                     table{s,d} = disp(didx(d));
@@ -128,6 +128,18 @@ classdef SimSharedData < handle
         end
         function set.nextStepData(me,sd)
             me.nextStepData = sd;
+        end
+        function initialPosition2Target(me)
+            [ disp force ] = me.curStepData.respData();
+            me.curStepData.lbcbCps{1}.command.disp = disp(1:6);
+            me.curStepData.lbcbCps{1}.command.force = force(1:6);
+            if me.cdp.numLbcbs == 2
+                me.curStepData.lbcbCps{2}.command.disp = disp(7:12);
+                me.curStepData.lbcbCps{2}.command.force = force(7:12);
+            end
+            me.curStepTgt = me.curStepData;
+            me.curSubstepTgt = me.curStepData;
+            me.prevStepData = me.curStepData;
         end
     end
 end
