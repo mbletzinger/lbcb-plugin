@@ -13,7 +13,7 @@ if me.needsCorrection()
         ddl = 0;
     end
     me.dat.nextCorrectionStep(2 + ddl);
-    me.adjustTarget(me.dat.nextStepData,me.dat.correctionTarget);
+    me.adjustTarget(me.dat.curStepData,me.dat.correctionTarget);
     me.log.info(dbstack,'Generating correction step');
     me.gui.updateCorrections(false,me.edCorrect,ddl);
 else
