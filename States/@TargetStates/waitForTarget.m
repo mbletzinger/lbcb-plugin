@@ -5,9 +5,11 @@ if me.targetSource.isState('INPUT FILE')
         me.currentAction.setState('DONE');
         return;
     end
-%    me.dat.curStepTgt.transformCommand();
-    me.prcsTgt.start(target);
-    me.currentAction.setState('PROCESS TARGET');
+    %    me.dat.curStepTgt.transformCommand();
+    me.dat.stepTgtShift(target);
+    steps = me.splitTarget();
+    me.currentAction.setState('EXECUTE SUBSTEPS');
+    me.stpEx.start(steps);
     return;
 else
     if me.tgtRsp.isDone()
@@ -21,9 +23,11 @@ else
             me.currentAction.setState('ABORT SIMULATION');
             return;
         end
-    me.tgtRsp.target.transformCommand();
-    me.prcsTgt.start(me.tgtRsp.target);
-    me.currentAction.setState('PROCESS TARGET');
+        me.tgtRsp.target.transformCommand();        
+        me.dat.stepTgtShift(me.tgtRsp.target);
+        steps = me.splitTarget();
+        me.currentAction.setState('EXECUTE SUBSTEPS');
+        me.stpEx.start(steps);
     end
 end
 end

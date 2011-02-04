@@ -6,7 +6,6 @@ classdef TargetStates < SimStates
             'NONE',...
             });
         stpEx = [];
-        prcsTgt = [];
         tgtRsp = [];
         ocSimCor = [];
         inF = [];
@@ -34,7 +33,6 @@ classdef TargetStates < SimStates
     methods (Access='private')
         initialPosition(me)
         waitForTarget(me)
-        processTarget(me)
         steps = splitTarget(me)
         executeSubsteps(me)
         sendTargetResponses(me)

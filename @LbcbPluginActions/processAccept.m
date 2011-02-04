@@ -1,3 +1,3 @@
 function processAccept(me,on)
-    me.hfact.prcsTgt.accepted = on;
+    me.hfact.acceptStp.accepted = on;
 end

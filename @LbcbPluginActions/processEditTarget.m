@@ -1,10 +1,14 @@
 function processEditTarget(me)
-if isempty(me.hfact.dat.curStepTgt)
+if isempty(me.hfact.dat.curStepData)
     me.log.error(dbstack,'Cannot edit a non-existent target');
-    return;
+    return; %#ok<UNRCH>
 end
-targets = { me.hfact.dat.curStepTgt.lbcbCps{1}.command,...
-    me.hfact.dat.curStepTgt.lbcbCps{2}.command };
+if me.hfact.cdp.numLbcbs() == 2
+    targets = {me.hfact.dat.nextStepData.lbcbCps{1}.command,...
+        me.hfact.dat.nextStepData.lbcbCps{2}.command};
+else
+    targets = { me.hfact.dat.nextStepData.lbcbCps{1}.command};
+end
 EditTarget('targets',targets);
-me.hfact.prcsTgt.edited();
+me.hfact.acceptStp.edited();
 end

@@ -11,7 +11,7 @@ classdef HandleFactory <  handle
         
         
         % Configuration Instance
-        cfg = [];
+        cdp = [];
         
         % Corrections
         ed = cell(2,1);
@@ -20,7 +20,7 @@ classdef HandleFactory <  handle
         
         % Simulation States and Executors
         omStates = cell(3,1);
-        simStates = cell(3,1);
+        simStates = cell(2,1);
         simCorStates = cell(2,1);
         brdcstStates = cell(3,1);
         stpStates = cell(2,1);
@@ -51,17 +51,19 @@ classdef HandleFactory <  handle
         
     end
     properties (Dependent = true)
-        % Simulation states
+        % OM states
         ocOm;
         peOm;
         gcpOm;
+        
+        % Step States
         nxtStep;
         pResp;
+        acceptStp;
         
         %Simulation Execution
         stpEx;
         tgtEx;
-        prcsTgt;
         
         % UiSimCor States
         ocSimCor
@@ -71,13 +73,14 @@ classdef HandleFactory <  handle
         ssBrdcst
         brdcstRsp
         vmpChk
-        
+
+        cfg
+
     end
     methods
         function me = HandleFactory(handle,cfg)
             
-            me.cfg = cfg;
-            cdp = ConfigDaoProvider(cfg);
+            me.cdp = ConfigDaoProvider(cfg);
             
             me.mdlLbcb = MdlLbcb(me.cfg);
             me.omStates{1} = OpenCloseOm;
@@ -86,10 +89,10 @@ classdef HandleFactory <  handle
             
             me.stpStates{1} = NextStep;
             me.stpStates{2} = ProcessResponse;
+            me.stpStates{3} = ProcessTarget;
             
             me.simStates{1} = StepStates;
             me.simStates{2} = TargetStates;
-            me.simStates{3} = ProcessTarget;
             
             me.mdlUiSimCor = MdlUiSimCor(me.cfg);
             me.simCorStates{1} = OpenCloseUiSimCor;
@@ -107,15 +110,15 @@ classdef HandleFactory <  handle
             lc.il = me.il;
 
             me.sdf = StepDataFactory;
-            me.sdf.cdp = cdp;
+            me.sdf.cdp = me.cdp;
             me.sdf.mdlLbcb = me.mdlLbcb;
             me.sdf.mdlUiSimCor = me.mdlUiSimCor;
             me.inF = InputFile(me.sdf);
 
             me.dat = SimSharedData;
             me.dat.sdf = me.sdf;
-            me.dat.cdp = cdp;
-            me.arch = Archiver(cdp);
+            me.dat.cdp = me.cdp;
+            me.arch = Archiver(me.cdp);
             me.cfg.dat = me.dat;
             me.cfg.arch = me.arch;
 
@@ -123,7 +126,7 @@ classdef HandleFactory <  handle
             datH = org.nees.uiuc.simcor.matlab.HashTable();
             archH = org.nees.uiuc.simcor.matlab.HashTable();
             for i = 1:2
-                me.ed{i} = ElasticDeformation(cdp,(i == 1));
+                me.ed{i} = ElasticDeformation(me.cdp,(i == 1));
                 me.st{i} = StepTolerances(me.cfg,i == 1);
                 me.ed{i}.cfgH = cfgH;
                 me.ed{i}.datH = datH;
@@ -132,44 +135,45 @@ classdef HandleFactory <  handle
             end
             
             for i = 1:4
-                me.dd{i} = DerivedDof(cdp,i - 1);
+                me.dd{i} = DerivedDof(me.cdp,i - 1);
                 me.dd{i}.cfgH = cfgH;
                 me.dd{i}.datH = datH;
                 me.dd{i}.archH = archH;
             end
             
-            me.pa = PrelimAdjustment(cdp);
+            me.pa = PrelimAdjustment(me.cdp);
             me.pa.cfgH = cfgH;
             me.pa.datH = datH;
             me.pa.dat = me.dat;
             me.pa.archH = archH;
             
             for c =1:length(me.omStates)
-                me.omStates{c}.cdp = cdp;
+                me.omStates{c}.cdp = me.cdp;
                 me.omStates{c}.dat = me.dat;
                 me.omStates{c}.mdlLbcb = me.mdlLbcb;
             end
             
             for c =1:length(me.stpStates)
-                me.stpStates{c}.cdp = cdp;
+                me.stpStates{c}.cdp = me.cdp;
                 me.stpStates{c}.dat = me.dat;
                 me.stpStates{c}.sdf = me.sdf;
                 me.stpStates{c}.ed = me.ed;
                 me.stpStates{c}.dd = me.dd;
                 me.stpStates{c}.pa = me.pa;
             end
+            me.acceptStp.lc = lc;
             
             for c =1:4
-                me.dd{c}.cdp = cdp;
+                me.dd{c}.cdp = me.cdp;
                 if c < 3
-                    me.ed{c}.cdp = cdp;
+                    me.ed{c}.cdp = me.cdp;
                 end
             end
             
-            me.fakeGcp = GetControlPointsFake(cdp);
+            me.fakeGcp = GetControlPointsFake(me.cdp);
             me.fakeGcp.dat = me.dat;
             me.ddisp = DisplayFactory(handle);
-            me.ddisp.cdp = cdp;
+            me.ddisp.cdp = me.cdp;
 %            dbgWin = DebugWindow;
             me.ddisp.dat = me.dat;
 %            me.ddisp.dbgWin = dbgWin;
@@ -178,7 +182,7 @@ classdef HandleFactory <  handle
 %            me.mdlBroadcast.dbgWin = dbgWin;
             
             for c =1:length(me.simStates)
-                me.simStates{c}.cdp = cdp;
+                me.simStates{c}.cdp = me.cdp;
                 me.simStates{c}.ocOm = me.ocOm;
                 me.simStates{c}.dat = me.dat;
                 me.simStates{c}.nxtStep = me.nxtStep;
@@ -192,27 +196,21 @@ classdef HandleFactory <  handle
             me.stpEx.st = me.st;
             me.stpEx.arch = me.arch;
             me.stpEx.brdcstRsp = me.brdcstRsp;
+            me.stpEx.acceptStp = me.acceptStp;
             
             me.tgtEx.stpEx = me.stpEx;
-            me.tgtEx.prcsTgt = me.simStates{3};
             me.tgtEx.inF = me.inF;
-            me.tgtEx.tgtRsp = me.tgtRsp;
             me.tgtEx.ocSimCor = me.ocSimCor;
-            me.simStates{3}.lc = lc;
-            
-%             dbgWin.stpEx = me.stpEx;
-%             dbgWin.tgtEx = me.tgtEx;
-%             dbgWin.prcsTgt = me.simStates{3};
-            
+                        
             for c =1:length(me.simCorStates)
-                me.simCorStates{c}.cdp = cdp;
+                me.simCorStates{c}.cdp = me.cdp;
                 me.simCorStates{c}.mdlUiSimCor = me.mdlUiSimCor;
                 me.simCorStates{c}.dat = me.dat;
                 me.simCorStates{c}.sdf = me.sdf;
             end
             
             for c =1:length(me.brdcstStates)
-                me.brdcstStates{c}.cdp = cdp;
+                me.brdcstStates{c}.cdp = me.cdp;
                 me.brdcstStates{c}.mdlBroadcast = me.mdlBroadcast;
                 me.brdcstStates{c}.dat = me.dat;
                 me.brdcstStates{c}.sdf = me.sdf;
@@ -277,8 +275,8 @@ classdef HandleFactory <  handle
         function c = get.tgtEx(me)
             c= me.simStates{2};
         end
-        function c = get.prcsTgt(me)
-            c= me.simStates{3};
+        function c = get.acceptStp(me)
+            c= me.stpStates{3};
         end
         function c = get.ocSimCor(me)
             c= me.simCorStates{1};
@@ -294,6 +292,9 @@ classdef HandleFactory <  handle
         end
         function c = get.vmpChk(me)
             c= me.brdcstStates{3};
+        end
+        function c = get.cfg(me)
+            c= me.cdp.cfg;
         end
         function fillButtons(me,handle)
             bsimst = ButtonGroupManagement(handle.simStatesPanel);
