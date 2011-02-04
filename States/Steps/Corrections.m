@@ -60,6 +60,15 @@ classdef Corrections < handle
                 str = sprintf('%s/%s=%f',str,k,me.cfgH.get(k));
             end
         end
+        function yes = existsDat(me,key)
+            yes = me.datH.exists(key);
+        end
+        function yes = existsArch(me,key)
+            yes = me.archH.exists(key);
+        end
+        function yes = existsCfg(me,key)
+            yes = me.cfgH.exists(key);
+        end
         function saveData(me,step)
             keys = me.archH.keys();
             lt = length(keys);

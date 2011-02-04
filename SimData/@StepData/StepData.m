@@ -14,6 +14,8 @@ classdef StepData < handle
         containsModelCps;
         needsTriggering;
         stepTimes; % BG
+        isFirstStep
+        isInitialPosition
     end
     methods
         function me = StepData()
@@ -30,6 +32,8 @@ classdef StepData < handle
             me.containsModelCps = 0;
             me.needsTriggering = false;
             me.stepTimes=[];
+            me.isFirstStep = false;
+            me.isInitialPosition = false;
         end
         str = toString(me)
         jmsg = generateOmProposeMsg(me)

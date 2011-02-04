@@ -44,6 +44,7 @@ classdef StepStates < SimStates
                 tgts = { Target };
             end
             me.dat.curStepData = me.sdf.target2StepData(tgts,0,0);
+            me.dat.curStepData.isInitialPosition = true;
             if me.isFake == false
                 me.gcpOm.start();
             end

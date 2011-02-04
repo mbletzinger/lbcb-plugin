@@ -22,7 +22,7 @@ function varargout = LbcbPlugin(varargin)
 
 % Edit the above text to modify the response to help LbcbPlugin
 
-% Last Modified by GUIDE v2.5 26-Aug-2010 12:42:14
+% Last Modified by GUIDE v2.5 04-Feb-2011 03:05:09
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -919,4 +919,31 @@ tag = get(lp,'Tag');
 while strcmp(tag,'LbcbPlugin') == false
     lp = get(lp,'Parent');
     tag = get(lp,'Tag');
+end
+
+
+function MyStepL1_Callback(hObject, eventdata, handles)
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('MyStepL1')
+    ddisp.closeDisplay('MyStepL1');
+else
+    ddisp.openDisplay('MyStepL1');
+end
+
+
+function MyStepL2_Callback(hObject, eventdata, handles)
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('MyStepL2')
+    ddisp.closeDisplay('MyStepL2');
+else
+    ddisp.openDisplay('MyStepL2');
+end
+
+
+function MyBottom_Callback(hObject, eventdata, handles)
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('MyBottom')
+    ddisp.closeDisplay('MyBottom');
+else
+    ddisp.openDisplay('MyBottom');
 end
