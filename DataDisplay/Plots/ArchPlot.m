@@ -33,6 +33,9 @@ classdef ArchPlot < handle
             if isempty(step.cData.values) || me.noValues
                 return;
             end
+            if me.cdp.numLbcbs() == 1 && me.isLbcb1 == false
+                return
+            end
             if me.yidx < 0 
                 lt = length(step.cData.labels);
                 for i = 1:lt
