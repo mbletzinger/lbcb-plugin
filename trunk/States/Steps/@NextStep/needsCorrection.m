@@ -5,7 +5,7 @@ me.ddlevel = 0;
 if isempty(me.dat.curStepData)
     return;
 end
-if me.dat.curStepData.needsCorrection == false
+if me.shouldBeCorrected == false
     return;
 end
 scfg = StepCorrectionConfigDao(me.cdp.cfg);

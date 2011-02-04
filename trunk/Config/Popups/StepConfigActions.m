@@ -67,6 +67,7 @@ classdef StepConfigActions < handle
             end
             
             set(me.handles.substepTriggering,'String',sprintf('%d',me.stcfg.triggerEverySubstep));
+            set(me.handles.triggerDelay,'String',sprintf('%d',me.stcfg.triggerDelay));
             yes = 0;
             if me.stcfg.triggerEverySubstep > 0
                 
@@ -93,6 +94,14 @@ classdef StepConfigActions < handle
                 return;
             end
             me.stcfg.triggerEverySubstep = value;
+        end
+        function setTriggeringDelay(me,str)
+            value = sscanf(str,'%d');
+            if isempty(value)
+                me.log.error(dbstack,sprintf('"%s" is not a valid input',str));
+                return;
+            end
+            me.stcfg.triggerDelay = value;
         end
         function setSsICell(me,indices,str)
             if indices(2) == 1

@@ -4,8 +4,6 @@ stp = me.dat.curStepTgt2Step();
 steps.steps = { stp };
 sn = me.dat.curStepTgt.stepNum.step;
 if me.cdp.doStepSplitting == false
-    me.setCorrectionFlag(stp);
-    me.setTriggeringFlag(stp);
     return;
 end
 if me.cdp.numLbcbs() > 1
@@ -24,8 +22,6 @@ end
 numSteps = abs(finalDisp - initialDisp) ./ stpSize;
 maxNumSteps = max(ceil(numSteps));
 if maxNumSteps < 2
-    me.setCorrectionFlag(stp);
-    me.setTriggeringFlag(stp);
     return;
 end
 inc = (finalDisp - initialDisp) / maxNumSteps;
@@ -52,10 +48,7 @@ for i = 1 : maxNumSteps
         tgts{2}.forceDofs = finalForceDofs(7:12);
         tgts{2}.clearNonControlDofs()
     end
-    ss{i} = me.sdf.target2StepData(tgts,sn,i);
-    me.setCorrectionFlag(ss{i});
-    me.setTriggeringFlag(ss{i});
-    
+    ss{i} = me.sdf.target2StepData(tgts,sn,i);    
 end
 steps.steps = ss;
 me.log.info(dbstack,sprintf('Created %d substeps',length(ss)));

@@ -76,7 +76,6 @@ classdef  InputFile < Substeps
                     targets = {tgt1};
                 end
                 intermVar{t}=me.sdf.target2StepData(targets,t + strtStep - 1,0);
-                intermVar{t}.needsCorrection = true;
             end
             intermVar{1}.isFirstStep = true;
             me.steps=intermVar;

@@ -10,9 +10,7 @@ classdef StepData < handle
         mdlLbcb;
         mdlUiSimCor;
         cdp;
-        needsCorrection;
         containsModelCps;
-        needsTriggering;
         stepTimes; % BG
         isFirstStep
         isInitialPosition
@@ -28,9 +26,7 @@ classdef StepData < handle
             me.mdlLbcb = [];
             me.mdlUiSimCor = [];
             me.cdp = [];
-            me.needsCorrection = false;
             me.containsModelCps = 0;
-            me.needsTriggering = false;
             me.stepTimes=[];
             me.isFirstStep = false;
             me.isInitialPosition = false;
