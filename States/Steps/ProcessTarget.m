@@ -1,4 +1,4 @@
-classdef ProcessTarget < SimStates
+classdef ProcessTarget < Step
     properties
         lc
         accepted;
@@ -8,7 +8,7 @@ classdef ProcessTarget < SimStates
     end
     methods
         function me = ProcessTarget()
-            me = me@SimStates();
+            me = me@Step();
             me.accepted = false;
             me.autoAccept = false;
             me.currentAction = StateEnum({...
@@ -17,16 +17,14 @@ classdef ProcessTarget < SimStates
                 'DONE'
                 });
         end
-        function start(me,target)
-            me.target = target;
-            me.dat.stepTgtShift(me.target);
+        function start(me)
             me.currentAction.setState('CHECK LIMITS');
             me.statusBusy();
             me.accepted = me.autoAccept;
             me.gui.updateCommandTable();
-            me.gui.updateStepsDisplay(target.stepNum);
+            me.gui.updateStepsDisplay(me.dat.nextStepData.stepNum);
             me.gui.blinkAcceptButton(~me.accepted);
-            me.log.debug(dbstack,sprintf('Current Target: %s',target.toString()));
+            me.log.debug(dbstack,sprintf('Current Target: %s',me.dat.nextStepData.toString()));
         end
         function edited(me)
             me.currentAction.setState('CHECK LIMITS');
@@ -67,7 +65,7 @@ classdef ProcessTarget < SimStates
             end
         end
         function yes = withinLimits(me)
-            yes = me.lc.withinLimits(me.dat.curStepTgt,me.dat.prevStepTgt );
+            yes = me.lc.withinLimits(me.dat.nextStepData,me.dat.curStepData);
         end
         
     end
