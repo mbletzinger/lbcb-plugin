@@ -33,13 +33,9 @@ classdef SimSharedData < handle
             end
             me.nextStepData = me.sdf.target2StepData({ cmd1, ...
                 cmd2 }, target.stepNum.step,target.stepNum.subStep);
-            me.nextStepData.needsCorrection = target.needsCorrection;
-            me.nextStepData.needsTriggering = target.needsTriggering;
             
             me.correctionTarget = me.sdf.target2StepData({ cmd1, ...
                 cmd2 }, target.stepNum.step,target.stepNum.subStep);
-            me.correctionTarget.needsCorrection = target.needsCorrection;
-            me.correctionTarget.needsTriggering = target.needsTriggering;
         end
         function nextCorrectionStep(me,stype)
             cmd1 = me.curStepData.lbcbCps{1}.command;
@@ -51,7 +47,6 @@ classdef SimSharedData < handle
                 cmd2 }, me.curStepData.stepNum.step, ...
                 me.curStepData.stepNum.subStep);
             me.nextStepData.stepNum = me.curStepData.stepNum.next(stype);
-            me.nextStepData.needsCorrection = true;
         end
         function step = curStepTgt2Step(me)
             cmd1 = me.curStepTgt.lbcbCps{1}.command;

@@ -16,15 +16,17 @@ classdef NextStep < Step
         log = Logger('NextStep');
         ddlevel
         edCorrect
+        shouldBeCorrected
     end
     methods
         function me = NextStep()
             me = me@Step();
         end
-        function start(me)
+        function start(me,shouldBeCorrected)
             me.stepsCompleted = false;
             me.ddlevel = 1;
             me.edCorrect = false;
+            me.shouldBeCorrected = shouldBeCorrected;
         end
         done = isDone(me)
     end

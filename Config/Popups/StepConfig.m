@@ -22,7 +22,7 @@ function varargout = StepConfig(varargin)
 
 % Edit the above text to modify the response to help StepConfig
 
-% Last Modified by GUIDE v2.5 30-Jul-2010 18:56:18
+% Last Modified by GUIDE v2.5 04-Feb-2011 11:48:57
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -152,3 +152,9 @@ handles.actions.setPrelimAdjust(get(hObject,'Value'),1);
 % --- Executes on selection change in ddPrelimAdjust.
 function ddPrelimAdjust_Callback(hObject, eventdata, handles)
 handles.actions.setPrelimAdjust(get(hObject,'Value'),2);
+
+
+
+function triggerDelay_Callback(hObject, eventdata, handles)
+handles.actions.setTriggeringDelay(get(hObject,'String'));
+

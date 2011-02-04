@@ -36,8 +36,6 @@ classdef TargetStates < SimStates
         steps = splitTarget(me)
         executeSubsteps(me)
         sendTargetResponses(me)
-        setCorrectionFlag(me,step)
-        setTriggeringFlag(me,step)
         abortSimulation(me)
     end
 end

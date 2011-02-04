@@ -59,7 +59,6 @@ classdef TargetResponse < UiSimCorState
                         return;
                     end
                     me.target = me.sdf.uisimcorMsg2Step(command);
-                    me.target.needsCorrection = true;
                     if(me.gotFirstStep == false) 
                         me.target.isFirstStep = true;
                         me.gotFirstStep = true;
