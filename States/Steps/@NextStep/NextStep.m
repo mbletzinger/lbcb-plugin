@@ -17,6 +17,8 @@ classdef NextStep < Step
         ddlevel
         edCorrect
         shouldBeCorrected
+        checkedStepNumber
+        needsCorrectionFlag
     end
     methods
         function me = NextStep()
@@ -29,9 +31,9 @@ classdef NextStep < Step
             me.shouldBeCorrected = shouldBeCorrected;
         end
         done = isDone(me)
+        needsCorrection = needsCorrection(me,shouldBeCorrected)
     end
     methods (Access='private')
-        needsCorrection = needsCorrection(me)
         adjustTarget(me,target,tcps)
         prelimAdjust(me,target)
     end

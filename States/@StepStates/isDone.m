@@ -69,7 +69,7 @@ switch a
         if me.gettingInitialPosition
             me.dat.initialPosition2Target();
             me.currentAction.setState('DONE');
-        elseif me.needsTriggering()
+        elseif (me.nxtStep.needsCorrection(me.shouldBeCorrected()) == false) && me.needsTriggering()
             me.brdcstRsp.start();
             me.currentAction.setState('BROADCAST TRIGGER');
         else

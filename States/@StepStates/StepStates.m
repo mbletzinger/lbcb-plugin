@@ -8,7 +8,6 @@ classdef StepStates < SimStates
         brdcstRsp = [];
         acceptStp = [];
         gettingInitialPosition;
-        doTriggering
         log = Logger('StepStates');
         st
         started
@@ -16,7 +15,6 @@ classdef StepStates < SimStates
     methods
         function me = StepStates()
             me = me@SimStates();
-            me.doTriggering = false;
             me.currentAction = StateEnum({...
                 'NEXT STEP',...
                 'ACCEPT STEP',...
