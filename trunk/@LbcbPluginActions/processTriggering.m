@@ -1,7 +1,6 @@
 function processTriggering(me,on)
 action = 'START TRIGGERING';
 
-me.hfact.stpEx.doTriggering = on;
 if on
     nope = me.hfact.ssBrdcst.start(0);
 else

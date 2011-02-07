@@ -7,7 +7,7 @@ if me.steps.started == false
     me.gui.updateCorrections(true,false,false);
     return;
 end
-if me.needsCorrection()
+if me.needsCorrection(me.shouldBeCorrected)
     ddl = me.ddlevel - 1; % DD level 1 is done with ED
     if ddl < 0
         ddl = 0;

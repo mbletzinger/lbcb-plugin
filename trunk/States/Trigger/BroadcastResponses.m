@@ -15,11 +15,18 @@ classdef BroadcastResponses < BroadcasterState
             });
         end
         function start(me)
-            me.mdlBroadcast.start(me.dat.curSubstepTgt.stepNum);
+            if me.mdlBroadcast.state.isState('NOT LISTENING')
+                return;
+            end
+            me.mdlBroadcast.start(me.dat.curStepData.stepNum);
             me.statusBusy();
             me.currentAction.setState('BROADCASTING');
         end
         function done = isDone(me)
+            if me.mdlBroadcast.state.isState('NOT LISTENING')
+                done = 1;
+                return;
+            end
             done = 0;
             me.stateChanged();
             if me.mdlBroadcast.isDone() == 0

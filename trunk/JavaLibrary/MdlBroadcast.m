@@ -24,6 +24,7 @@ classdef MdlBroadcast < handle
             'BUSY', ...
             'READY', ...
             'ERRORS EXIST' ...
+            'NOT LISTENING' ...
             });
         prevState;
         action = StateEnum({ ...
@@ -36,7 +37,7 @@ classdef MdlBroadcast < handle
             });
         prevAction;
         cfg
-%        dbgWin
+        %        dbgWin
         simcorVamp
         vampErrorFound
         prevJerror
@@ -44,7 +45,7 @@ classdef MdlBroadcast < handle
     methods
         function me = MdlBroadcast(cfg)
             me.cfg = cfg;
-            me.state.setState('READY');
+            me.state.setState('NOT LISTENING');
             me.prevState = StateEnum(me.state.states);
             me.prevAction = StateEnum(me.action.states);
             me.vampErrorFound = false;
@@ -95,7 +96,7 @@ classdef MdlBroadcast < handle
                 me.prevState.setState(ss);
             end
             switch ss
-                case {'READY','ERRORS EXIST'}
+                case {'READY','ERRORS EXIST','NOT LISTENING'}
                     done = 1;
                 case 'BUSY'
                     done = 0;
@@ -151,7 +152,7 @@ classdef MdlBroadcast < handle
                 me.action.setState('STOP VAMP');
             else
                 me.simcorVamp = org.nees.uiuc.simcor.TriggerBroadcastVamp(...
-                me.simcorTcp);
+                    me.simcorTcp);
                 me.simcorVamp.startVamp(ncfg.vampInterval,ncfg.msgTimeout);
                 me.action.setState('CHECK VAMP');
             end
@@ -190,11 +191,14 @@ classdef MdlBroadcast < handle
             ts.setState(char(me.simcorTcp.isReady()));
             csS = ts.getState();
             csS = me.errorsExist(csS);
-%            me.log.debug(dbstack,sprintf('Transaction state is %s',csS));
+            %            me.log.debug(dbstack,sprintf('Transaction state is %s',csS));
             switch csS
                 case {'READY' }
-                    me.state.setState('READY');
-                    me.action.setState('NONE');
+                    if me.action.isState('START LISTENER')
+                        me.state.setState('READY');
+                    else
+                        me.state.setState('NOT LISTENING');
+                    end
                 case 'ERRORS_EXIST'
                     me.simcorTcp.isReady();
                     me.state.setState('ERRORS EXIST');

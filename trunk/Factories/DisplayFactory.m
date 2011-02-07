@@ -24,19 +24,19 @@ classdef DisplayFactory < handle
         end
         function initialize(me,handle)
             me.mainDisp = handle;
-            ref = ArchPlot('TotalFxVsLbcb1Dx',1,1,'Fx total');
-            ref.cdp = me.cdp;
-            me.addDisplay('TotalFxVsLbcb1Dx',ref,me.mainDisp.TotalFxVsLbcb1Dx);
-            ref = ArchPlot('TotalFxVsLbcb2Dx',0,1,'Fx total');
-            ref.cdp = me.cdp;
-            me.addDisplay('TotalFxVsLbcb2Dx',ref,me.mainDisp.TotalFxVsLbcb2Dx);
-            ref = ArchPlot('TotalMyVsLbcb1Dx',1,1,'My total');
-            ref.cdp = me.cdp;
-            me.addDisplay('TotalMyVsLbcb1Dx',ref,me.mainDisp.TotalMyVsLbcb1Dx);
-            ref = ArchPlot('TotalMyVsLbcb2Dx',0,1,'My total');
-            ref.cdp = me.cdp;
-            me.addDisplay('TotalMyVsLbcb2Dx',ref,me.mainDisp.TotalMyVsLbcb2Dx);
-            ref = ArchPlot('MyBottom',0,1,'MyBottom');
+%             ref = ArchPlot('TotalFxVsLbcb1Dx',1,1,'Fx total');
+%             ref.cdp = me.cdp;
+%             me.addDisplay('TotalFxVsLbcb1Dx',ref,me.mainDisp.TotalFxVsLbcb1Dx);
+%             ref = ArchPlot('TotalFxVsLbcb2Dx',0,1,'Fx total');
+%             ref.cdp = me.cdp;
+%             me.addDisplay('TotalFxVsLbcb2Dx',ref,me.mainDisp.TotalFxVsLbcb2Dx);
+%             ref = ArchPlot('TotalMyVsLbcb1Dx',1,1,'My total');
+%             ref.cdp = me.cdp;
+%             me.addDisplay('TotalMyVsLbcb1Dx',ref,me.mainDisp.TotalMyVsLbcb1Dx);
+%             ref = ArchPlot('TotalMyVsLbcb2Dx',0,1,'My total');
+%             ref.cdp = me.cdp;
+%             me.addDisplay('TotalMyVsLbcb2Dx',ref,me.mainDisp.TotalMyVsLbcb2Dx);
+            ref = ArchPlot('MyBottom',1,1,'MyBottom');
             ref.cdp = me.cdp;
             me.addDisplay('MyBottom',ref,me.mainDisp.MyBottom);
             ref = VsPlot('RyVsLbcb1Dx',1,1,5);

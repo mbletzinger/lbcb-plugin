@@ -1,11 +1,11 @@
-function needsCorrection = needsCorrection(me)
+function needsCorrection = needsCorrection(me,shouldBeCorrected)
 needsCorrection = false;
 me.edCorrect = false;
 me.ddlevel = 0;
 if isempty(me.dat.curStepData)
     return;
 end
-if me.shouldBeCorrected == false
+if shouldBeCorrected == false
     return;
 end
 scfg = StepCorrectionConfigDao(me.cdp.cfg);
@@ -13,6 +13,22 @@ doCorrections = scfg.doCorrections;
 if isempty(doCorrections)
     return;
 end
+
+stepN = me.dat.curStepData.stepNum;
+if isempty(me.checkedStepNumber)
+    same = false;
+else
+    same = stepN.step == me.checkedStepNumber.step && ...
+        stepN.subStep == me.checkedStepNumber.subStep && ...
+        stepN.correctionStep == me.checkedStepNumber.correctionStep;
+end
+if same
+    needsCorrection = me.needsCorrectionFlag;
+    return;
+end
+
+me.checkedStepNumber = stepN;
+
 for lv = 1:length(doCorrections)
     if doCorrections(lv) == true;
         switch lv
@@ -31,12 +47,16 @@ for lv = 1:length(doCorrections)
                 if ddCorrect
                     me.ddlevel = lv-1;
                     needsCorrection = ddCorrect;
+                    me.needsCorrectionFlag = needsCorrection;
                     return;
                 end
                 needsCorrection = me.edCorrect;
                 if lv == 2 && me.edCorrect % Only do first level DD with ED
+                    me.needsCorrectionFlag = needsCorrection;
                     return;
                 end
         end
     end
+    me.needsCorrectionFlag = needsCorrection;
+    
 end
