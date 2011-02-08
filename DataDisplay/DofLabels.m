@@ -17,7 +17,7 @@ classdef DofLabels < handle
         function put(me,lbl,val)
             me.labels.put(lbl,val);
         end
-        function yes = existsDat(me,key)
+        function yes = exists(me,key)
             yes = me.labels.exists(key);
         end
     end
