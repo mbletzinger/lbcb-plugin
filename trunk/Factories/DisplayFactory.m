@@ -1,4 +1,4 @@
-classdef DisplayFactory < handle
+ classdef DisplayFactory < handle
     properties
         mainDisp
         dispIdxs
