@@ -36,6 +36,9 @@
 %             ref = ArchPlot('TotalMyVsLbcb2Dx',0,1,'My total');
 %             ref.cdp = me.cdp;
 %             me.addDisplay('TotalMyVsLbcb2Dx',ref,me.mainDisp.TotalMyVsLbcb2Dx);
+            ref = MultiDofStepPlot('CummulativeMoment',{'PDelta','ShearL','My'},'Y Moments',1,1);
+            ref.cdp = me.cdp;
+            me.addDisplay('CummulativeMoment',ref,me.mainDisp.CummulativeMoment);
             ref = ArchPlot('MyBottom',1,1,'MyBottom');
             ref.cdp = me.cdp;
             me.addDisplay('MyBottom',ref,me.mainDisp.MyBottom);
@@ -168,7 +171,11 @@
         end
         function dispDeleted(src,event,name) %#ok<INUSD,INUSL>
             global mySelf;
+            if mySelf.dispIdxs.exists(name) == false
+                return;
+            end
             i = mySelf.dispIdxs.get(name);
+            
             ref = mySelf.disps{i};
             ref.plot.isDisplayed = false;
             hndl = mySelf.checkHndls{i};

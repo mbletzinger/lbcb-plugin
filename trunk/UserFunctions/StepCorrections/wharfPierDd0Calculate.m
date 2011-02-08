@@ -9,6 +9,16 @@ if cstep.isInitialPosition
 end
 
 ip = me.getDat('initialPosition');
-myBottom = my + fx * 84 + fz * (dx - ip);
+P_Delta = fz * (dx - ip);
+Shear_L = fx * 84;
+
+myBottom = my + Shear_L + P_Delta;
+Inflec_Point = -my/fx;
 me.putArch('MyBottom',myBottom);
+me.putArch('InflecPoint',Inflec_Point);
+me.putArch('PDelta', P_Delta);
+me.putArch('ShearL', Shear_L);
+
 end
+
+
