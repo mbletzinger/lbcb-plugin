@@ -22,7 +22,7 @@ function varargout = LbcbPlugin(varargin)
 
 % Edit the above text to modify the response to help LbcbPlugin
 
-% Last Modified by GUIDE v2.5 08-Feb-2011 09:40:32
+% Last Modified by GUIDE v2.5 08-Feb-2011 11:59:12
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -949,10 +949,10 @@ else
 end
 
 
-function CummulativeMoment_Callback(hObject, eventdata, handles)
+function CumulativeMoment_Callback(hObject, eventdata, handles)
 ddisp = getappdata(getLp(hObject),'ddisp');
-if ddisp.isDisplaying('CummulativeMoment')
-    ddisp.closeDisplay('CummulativeMoment');
+if ddisp.isDisplaying('CumulativeMoment')
+    ddisp.closeDisplay('CumulativeMoment');
 else
-    ddisp.openDisplay('CummulativeMoment');
+    ddisp.openDisplay('CumulativeMoment');
 end

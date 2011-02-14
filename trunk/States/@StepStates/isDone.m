@@ -66,6 +66,7 @@ switch a
         me.pResp.isDone();
         me.arch.archive(me.dat.curStepData);
         me.gui.ddisp.updateAll(me.dat.curStepData);
+        me.log.debug(dbstack,sprintf('Current Response: %s',me.dat.curStepData.toString()));
         if me.gettingInitialPosition
             me.dat.initialPosition2Target();
             me.currentAction.setState('DONE');
