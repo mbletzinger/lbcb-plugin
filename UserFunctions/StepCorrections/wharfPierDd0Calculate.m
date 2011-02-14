@@ -10,11 +10,13 @@ end
 
 ip = me.getDat('initialPosition');
 P_Delta = fz * (dx - ip);
-Shear_L = fx * 84;
+Shear_L = fx * 12;
+MomentY = -my;
 
-myBottom = my + Shear_L + P_Delta;
+myBottom = MomentY + Shear_L + P_Delta;
 Inflec_Point = -my/fx;
 me.putArch('MyBottom',myBottom);
+me.putArch('MomentY', MomentY);
 me.putArch('InflecPoint',Inflec_Point);
 me.putArch('PDelta', P_Delta);
 me.putArch('ShearL', Shear_L);

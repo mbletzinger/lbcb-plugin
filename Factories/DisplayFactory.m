@@ -36,9 +36,9 @@
 %             ref = ArchPlot('TotalMyVsLbcb2Dx',0,1,'My total');
 %             ref.cdp = me.cdp;
 %             me.addDisplay('TotalMyVsLbcb2Dx',ref,me.mainDisp.TotalMyVsLbcb2Dx);
-            ref = MultiDofStepPlot('CummulativeMoment',{'PDelta','ShearL','My'},'Y Moments',1,1);
+            ref = MultiDofStepPlot('CumulativeMoment',{'PDelta','ShearL','MomentY'},'Y Moments',1,1);
             ref.cdp = me.cdp;
-            me.addDisplay('CummulativeMoment',ref,me.mainDisp.CummulativeMoment);
+            me.addDisplay('CumulativeMoment',ref,me.mainDisp.CumulativeMoment);
             ref = ArchPlot('MyBottom',1,1,'MyBottom');
             ref.cdp = me.cdp;
             me.addDisplay('MyBottom',ref,me.mainDisp.MyBottom);

@@ -24,7 +24,7 @@ classdef ProcessTarget < Step
             me.gui.updateCommandTable();
             me.gui.updateStepsDisplay(me.dat.nextStepData.stepNum);
             me.gui.blinkAcceptButton(~me.accepted);
-            me.log.debug(dbstack,sprintf('Current Target: %s',me.dat.nextStepData.toString()));
+%            me.log.debug(dbstack,sprintf('Current Target: %s',me.dat.nextStepData.toString()));
         end
         function edited(me)
             me.currentAction.setState('CHECK LIMITS');
