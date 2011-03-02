@@ -22,6 +22,7 @@ psi = psi1*psi2*psi3;
 %% Processing displacement data to give actuator length data
 
 lengths = zeros(1,size(p0,2));
+
 for i = 1:size(p0,2)
     r0 = p0(:,i) - v0;
     pin2pin = deltas(1:3) - (eye(3) - psi)*r0 + p0(:,i) - q0(:,i);

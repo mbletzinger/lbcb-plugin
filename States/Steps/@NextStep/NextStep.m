@@ -27,7 +27,7 @@ classdef NextStep < Step
         function start(me,shouldBeCorrected)
             me.stepsCompleted = false;
             me.ddlevel = 1;
-            me.edCorrect = false;
+%            me.edCorrect = false;
             me.shouldBeCorrected = shouldBeCorrected;
         end
         done = isDone(me)

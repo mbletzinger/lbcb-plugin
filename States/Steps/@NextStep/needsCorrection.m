@@ -1,6 +1,5 @@
 function needsCorrection = needsCorrection(me,shouldBeCorrected)
 needsCorrection = false;
-me.edCorrect = false;
 me.ddlevel = 0;
 if isempty(me.dat.curStepData)
     return;

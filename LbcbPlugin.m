@@ -22,7 +22,7 @@ function varargout = LbcbPlugin(varargin)
 
 % Edit the above text to modify the response to help LbcbPlugin
 
-% Last Modified by GUIDE v2.5 08-Feb-2011 11:59:12
+% Last Modified by GUIDE v2.5 02-Mar-2011 12:42:09
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -940,12 +940,12 @@ else
 end
 
 
-function MyBottom_Callback(hObject, eventdata, handles)
+function DxVsMyBottom_Callback(hObject, eventdata, handles)
 ddisp = getappdata(getLp(hObject),'ddisp');
-if ddisp.isDisplaying('MyBottom')
-    ddisp.closeDisplay('MyBottom');
+if ddisp.isDisplaying('DxVsMyBottom')
+    ddisp.closeDisplay('DxVsMyBottom');
 else
-    ddisp.openDisplay('MyBottom');
+    ddisp.openDisplay('DxVsMyBottom');
 end
 
 
@@ -955,4 +955,40 @@ if ddisp.isDisplaying('CumulativeMoment')
     ddisp.closeDisplay('CumulativeMoment');
 else
     ddisp.openDisplay('CumulativeMoment');
+end
+
+
+function MyTopVsMyBottom_Callback(hObject, eventdata, handles)
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('MyTopVsMyBottom')
+    ddisp.closeDisplay('MyTopVsMyBottom');
+else
+    ddisp.openDisplay('MyTopVsMyBottom');
+end
+
+
+function TopBottomMoment_Callback(hObject, eventdata, handles)
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('TopBottomMoment')
+    ddisp.closeDisplay('TopBottomMoment');
+else
+    ddisp.openDisplay('TopBottomMoment');
+end
+
+
+function FxStepL1_Callback(hObject, eventdata, handles)
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('FxStepL1')
+    ddisp.closeDisplay('FxStepL1');
+else
+    ddisp.openDisplay('FxStepL1');
+end
+
+
+function FxStepL2_Callback(hObject, eventdata, handles)
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('FxStepL2')
+    ddisp.closeDisplay('FxStepL2');
+else
+    ddisp.openDisplay('FxStepL2');
 end

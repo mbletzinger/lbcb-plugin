@@ -47,6 +47,8 @@ classdef XyPlots < DisplayControl
             legend(me.legends);
             hold off;
             xlabel(xlab); ylabel(ylab);
+            set(me.axis, 'XGrid', 'on');
+            set(me.axis, 'YGrid', 'on');
             me.displayData();
         end
         function update(me,d,idx)

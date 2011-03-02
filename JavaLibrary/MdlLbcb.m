@@ -203,9 +203,14 @@ classdef MdlLbcb < handle
                     me.action.setState('NONE');
                     me.log.error(dbstack(),char(me.simcorTcp.getTransaction().getError().getText()));
                     me.simcorTcp.shutdown(); %#ok<UNRCH>
+                case 'SENDING_CLOSE_COMMAND'
+                    me.simcorTcp.isReady();
+                    me.state.setState('READY');
+                    me.action.setState('NONE');
+                    me.simcorTcp.shutdown(); %#ok<UNRCH>
                 case {'CLOSING_CONNECTION' 'OPENING_CONNECTION' 'CHECK_OPEN_CONNECTION' ...
                         'ASSEMBLE_OPEN_COMMAND' 'SENDING_COMMAND' 'SETUP_READ_RESPONSE'...
-                        'SENDING_CLOSE_COMMAND' 'WAIT_FOR_RESPONSE' 'TRANSACTION_DONE'}
+                        'WAIT_FOR_RESPONSE' 'TRANSACTION_DONE'}
                 otherwise
                     me.log.error(dbstack,sprintf('"%s" not recognized',csS));
             end
