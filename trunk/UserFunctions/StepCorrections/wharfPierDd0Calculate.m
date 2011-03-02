@@ -14,7 +14,7 @@ Shear_L = fx * 12;
 MomentY = -my;
 
 myBottom = MomentY + Shear_L + P_Delta;
-Inflec_Point = -my/fx;
+Inflec_Point = 12-myBottom/fx;
 me.putArch('MyBottom',myBottom);
 me.putArch('MomentY', MomentY);
 me.putArch('InflecPoint',Inflec_Point);

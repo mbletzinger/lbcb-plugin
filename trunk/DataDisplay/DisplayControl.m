@@ -5,7 +5,7 @@ classdef DisplayControl < handle
         dmng
         dispFuncRef
         dispFact
-        lbl = { 'Dx','Dy', 'Dz', 'Rx','Ry', 'Rz','Fy', 'Fz', 'Mx','My', 'Mz' }; 
+        lbl = { 'Dx','Dy', 'Dz', 'Rx','Ry', 'Rz','Fx', 'Fy', 'Fz', 'Mx','My', 'Mz' }; 
     end
     methods
         function me = DisplayControl()

@@ -191,7 +191,7 @@ end
        end
        
        % Calculating SP lengths based on first delta approximation
-       lengthscalc = dof2act(delta,v0,me.plat,me.base);
+       lengthscalc = dof2act(delta,v0,me.plat,me.base); %Should be Zero Length
        
        % Calculating discrepancy between actual and expected SP lengths from delta
        errors = actualLengths - lengthscalc;

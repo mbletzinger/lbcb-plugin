@@ -39,22 +39,22 @@ classdef EditTargetActions < handle
             me.dofHandles{6,4} = handles.mz2;
             for d = 1:6
                 if me.targets{1}.dispDofs(d)
-                    set(me.dofHandles{d,1},'String',sprintf('%f',me.targets{1}.disp(d)));
+                    set(me.dofHandles{d,1},'String',sprintf('%7.5f',me.targets{1}.disp(d)));
                 else
                     set(me.dofHandles{d,1},'Enable','off');
                 end
                 if me.targets{1}.forceDofs(d)
-                    set(me.dofHandles{d,2},'String',sprintf('%f',me.targets{1}.force(d)));
+                    set(me.dofHandles{d,2},'String',sprintf('%7.5f',me.targets{1}.force(d)));
                 else
                     set(me.dofHandles{d,2},'Enable','off');
                 end
                 if length(me.targets) == 2 &&  me.targets{2}.dispDofs(d)
-                    set(me.dofHandles{d,3},'String',sprintf('%f',me.targets{2}.disp(d)));
+                    set(me.dofHandles{d,3},'String',sprintf('%7.5f',me.targets{2}.disp(d)));
                 else
                     set(me.dofHandles{d,3},'Enable','off');
                 end
                 if length(me.targets) == 2 && me.targets{2}.forceDofs(d)
-                    set(me.dofHandles{d,4},'String',sprintf('%f',me.targets{2}.force(d)));
+                    set(me.dofHandles{d,4},'String',sprintf('%7.5f',me.targets{2}.force(d)));
                 else
                     set(me.dofHandles{d,4},'Enable','off');
                 end
