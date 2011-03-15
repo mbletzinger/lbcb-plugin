@@ -29,7 +29,7 @@ classdef VampCheck < BroadcasterState
             end
             if me.closeIt
                 if me.vampStatus.isState('VAMPING')  % There are no errors
-                    me.mdlBroadcast.startStopVamp(1);
+                    me.mdlBroadcast.startStopVamp(1,[]);
                     me.currentAction.setState('STOPPING');
                 end
             else

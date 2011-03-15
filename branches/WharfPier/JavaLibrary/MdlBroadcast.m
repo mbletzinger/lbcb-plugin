@@ -146,6 +146,11 @@ classdef MdlBroadcast < handle
         end
         function startStopVamp(me,stopIt,stepNumber)
             ncfg = NetworkConfigDao(me.cfg);
+            tid = [];
+            if isempty(stepNumber) == false
+                tf = me.simcorTcp.getTf();
+                tid = tf.createTransactionId(stepNumber.step, stepNumber.subStep, stepNumber.correctionStep);
+            end
             me.state.setState('BUSY');
             if(stopIt)
                 me.simcorVamp.stopVamp();
@@ -153,7 +158,7 @@ classdef MdlBroadcast < handle
             else
                 me.simcorVamp = org.nees.uiuc.simcor.TriggerBroadcastVamp(...
                     me.simcorTcp);
-                me.simcorVamp.startVamp(ncfg.vampInterval,ncfg.msgTimeout);
+                me.simcorVamp.startVamp(ncfg.vampInterval,ncfg.msgTimeout,tid);
                 me.action.setState('CHECK VAMP');
             end
         end
