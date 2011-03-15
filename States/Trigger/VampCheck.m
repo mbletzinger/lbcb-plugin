@@ -19,12 +19,12 @@ classdef VampCheck < BroadcasterState
             aborted = false;
             if closeIt && me.vampStatus.isState('STOPPED')
                 me.log.error(dbstack,'Vamp Check already stopped');
-                aborted = true;
+                aborted = true; %#ok<UNRCH>
                 return;
             end
             if closeIt == 0 && me.vampStatus.isState('VAMPING')
                 me.log.error(dbstack,'Vamp Check already started');
-                aborted = true;
+                aborted = true; %#ok<UNRCH>
                 return;
             end
             if me.closeIt
@@ -33,7 +33,11 @@ classdef VampCheck < BroadcasterState
                     me.currentAction.setState('STOPPING');
                 end
             else
-                me.mdlBroadcast.startStopVamp(0);
+                sn = [];
+                if isempty(me.dat.curStepData) == false
+                    sn = me.dat.curStepData.stepNum;
+                end
+                me.mdlBroadcast.startStopVamp(0,sn);
                 me.vampStatus.setState('VAMPING');
                 me.gui.colorButton('VAMPING','ON');
             end

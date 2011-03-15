@@ -144,7 +144,7 @@ classdef MdlBroadcast < handle
             me.action.setState('BROADCASTING');
             me.state.setState('BUSY');
         end
-        function startStopVamp(me,stopIt)
+        function startStopVamp(me,stopIt,stepNumber)
             ncfg = NetworkConfigDao(me.cfg);
             me.state.setState('BUSY');
             if(stopIt)
