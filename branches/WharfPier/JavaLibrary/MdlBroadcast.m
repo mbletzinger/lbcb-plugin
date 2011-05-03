@@ -209,7 +209,8 @@ classdef MdlBroadcast < handle
                     me.state.setState('ERRORS EXIST');
                     me.action.setState('NONE');
                     me.simcorTcp.shutdown();
-                case {'TRANSACTION_DONE' 'BROADCAST_CLOSE_COMMAND' 'CLOSE_TRIGGER_CONNECTIONS' 'STOP_LISTENER'}
+                case {'TRANSACTION_DONE' 'BROADCAST_CLOSE_COMMAND'...
+                        'CLOSE_TRIGGER_CONNECTIONS' 'STOP_LISTENER' 'DELAY_FOR_CLOSE_COMMANDS'}
                 otherwise
                     me.log.error(dbstack,sprintf('"%s" not recognized',csS));
             end
