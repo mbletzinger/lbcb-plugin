@@ -10,7 +10,7 @@ end
 
 ip = me.getDat('initialPosition');
 P_Delta = fz * (dx - ip);
-Shear_L = fx * 12;
+Shear_L = fx * 84;
 MomentY = -my;
 
 myBottom = MomentY + Shear_L + P_Delta;
