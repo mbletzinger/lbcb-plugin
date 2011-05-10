@@ -144,8 +144,13 @@ classdef MdlBroadcast < handle
             me.action.setState('BROADCASTING');
             me.state.setState('BUSY');
         end
-        function startStopVamp(me,stopIt)
+        function startStopVamp(me,stopIt,stepNumber)
             ncfg = NetworkConfigDao(me.cfg);
+            tid = [];
+            if isempty(stepNumber) == false
+                tf = me.simcorTcp.getTf();
+                tid = tf.createTransactionId(stepNumber.step, stepNumber.subStep, stepNumber.correctionStep);
+            end
             me.state.setState('BUSY');
             if(stopIt)
                 me.simcorVamp.stopVamp();
@@ -153,7 +158,7 @@ classdef MdlBroadcast < handle
             else
                 me.simcorVamp = org.nees.uiuc.simcor.TriggerBroadcastVamp(...
                     me.simcorTcp);
-                me.simcorVamp.startVamp(ncfg.vampInterval,ncfg.msgTimeout);
+                me.simcorVamp.startVamp(ncfg.vampInterval,ncfg.msgTimeout,tid);
                 me.action.setState('CHECK VAMP');
             end
         end
@@ -167,7 +172,7 @@ classdef MdlBroadcast < handle
             ts.setState(me.simcorTcp.isReady());
             csS = ts.getState();
             csS = me.errorsExist(csS);
-            %            me.log.debug(dbstack,sprintf('Transaction state is %s',csS));
+            me.log.debug(dbstack,sprintf('Transaction state is %s',csS));
             switch csS
                 case 'ERRORS_EXIST'
                     me.state.setState('ERRORS EXIST');
@@ -204,7 +209,8 @@ classdef MdlBroadcast < handle
                     me.state.setState('ERRORS EXIST');
                     me.action.setState('NONE');
                     me.simcorTcp.shutdown();
-                case {'TRANSACTION_DONE' 'BROADCAST_CLOSE_COMMAND' 'CLOSE_TRIGGER_CONNECTIONS' 'STOP_LISTENER'}
+                case {'TRANSACTION_DONE' 'BROADCAST_CLOSE_COMMAND'...
+                        'CLOSE_TRIGGER_CONNECTIONS' 'STOP_LISTENER' 'DELAY_FOR_CLOSE_COMMANDS'}
                 otherwise
                     me.log.error(dbstack,sprintf('"%s" not recognized',csS));
             end
