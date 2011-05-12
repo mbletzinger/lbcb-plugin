@@ -22,7 +22,7 @@ function varargout = LbcbPlugin(varargin)
 
 % Edit the above text to modify the response to help LbcbPlugin
 
-% Last Modified by GUIDE v2.5 02-Mar-2011 12:42:09
+% Last Modified by GUIDE v2.5 11-May-2011 21:38:55
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -992,3 +992,33 @@ if ddisp.isDisplaying('FxStepL2')
 else
     ddisp.openDisplay('FxStepL2');
 end
+
+
+function AlertList_Callback(hObject, eventdata, handles)
+
+
+function AlertList_CreateFcn(hObject, eventdata, handles)
+
+% Hint: listbox controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+function ToleranceTable_CellEditCallback(hObject, eventdata, handles)
+
+
+function LbcbChoice_Callback(hObject, eventdata, handles)
+
+
+function LbcbChoice_CreateFcn(hObject, eventdata, handles)
+
+% Hint: popupmenu controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+function Limits_Callback(hObject, eventdata, handles)
