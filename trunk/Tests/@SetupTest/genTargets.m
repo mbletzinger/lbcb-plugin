@@ -24,5 +24,5 @@ switch test
         me.log.error(dbstack, sprintf('%s not recognized',test));
 end
 me.infile.commandDofs = me.cDofs;
-me.infile.loadSteps(me.tgts);
+me.infile.loadSteps(me.tgts,0);
 end

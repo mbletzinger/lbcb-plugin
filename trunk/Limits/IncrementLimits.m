@@ -25,13 +25,13 @@ classdef IncrementLimits < handle
             yes = (sum(me.faults1) + sum(me.faults2)) == 0;
         end
         function [faults increments] = wL(me,curCmd,prevCmd,window,used)
-            faults = zeros(12,1);
+            faults = false(12,1);
             increments(1:6) = curCmd.disp - prevCmd.disp;
             increments(7:12) = curCmd.force - prevCmd.force;
             for l = 1:12
                 if used(l)
                     if abs(increments(l)) > window(l)
-                        faults(l) = 1;
+                        faults(l) = true;
                     end
                 end
             end

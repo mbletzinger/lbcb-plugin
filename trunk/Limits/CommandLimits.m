@@ -30,16 +30,16 @@ classdef CommandLimits < handle
             yes = sum(sum(me.faults1) + sum(me.faults2)) == 0;
         end
         function [faults commands] = wL(me,cmds,lower,upper,used)
-            faults = zeros(12,2);
+            faults = false(12,2);
             commands(1:6) = cmds.disp;
             commands(7:12) = cmds.force;
             for l = 1:12
                 if(used(l))
                     if commands(l) < lower(l)
-                        faults(l,1) = 1;
+                        faults(l,1) = true;
                     end
                     if commands(l) > upper(l)
-                        faults(l,2) = 1;
+                        faults(l,2) = true;
                     end
                 end
 %                 me.log.debug(dbstack,sprintf('%d cmd %f < low %f',...
