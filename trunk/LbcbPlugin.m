@@ -604,13 +604,13 @@ else
     ddisp.openDisplay('FxStepL2');
 end
 
-
-function AlertBox_Callback(hObject, eventdata, handles)
-
 function ToleranceTable_CellEditCallback(hObject, eventdata, handles)
-
+actions = getappdata(getLp(hObject),'actions');
+actions.setCell(eventdata.Indices,eventdata.NewData);
 
 function LbcbChoice_Callback(hObject, eventdata, handles)
+actions = getappdata(getLp(hObject),'actions');
+actions.fill();
 
 function CommandLimits_Callback(hObject, eventdata, handles)
 actions = getappdata(getLp(hObject),'actions');

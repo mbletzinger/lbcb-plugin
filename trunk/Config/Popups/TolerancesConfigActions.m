@@ -4,17 +4,13 @@ classdef TolerancesConfigActions < handle
         limitsTable
         log = Logger('TolerancesConfigActions')
         selectedRow
-        ilcfg
         pstep
         cstep
-        il
+        tl
     end
     methods
-        function me = TolerancesConfigActions(cfg,pstep,cstep)
-            me.ilcfg = WindowLimitsDao('increment.limits',cfg);
-            me.pstep = pstep;
-            me.cstep = cstep;
-            me.il = IncrementLimits(cfg);
+        function me = TolerancesConfigActions(cfg)
+            me.tl = IncrementLimits(cfg);
         end
         function select(me,indices)
             if isempty(indices)
@@ -37,13 +33,18 @@ classdef TolerancesConfigActions < handle
             set(me.handles.LbcbChoice,'Value',1);
             me.fill();
         end
+        function setSteps(me,pstep,cstep)
+            me.pstep = pstep;
+            me.cstep = cstep;
+            me.fill();
+        end
         function fill(me)
             me.limitsTable = cell(12,3);
             [limits used] = me.getCfg();
             if me.isLbcb1()
-                [logical increments ] = me.il.wL(me.cstep.lbcbCps{1}.command,me.pstep.lbcbCps{1}.command,limits, used);
+                [logical increments ] = me.tl.wL(me.cstep.lbcbCps{1}.command,me.pstep.lbcbCps{1}.command,limits, used);
             else
-                [logical increments ] = me.il.wL(me.cstep.lbcbCps{2}.command,me.pstep.lbcbCps{2}.command,limits, used);
+                [logical increments ] = me.tl.wL(me.cstep.lbcbCps{2}.command,me.pstep.lbcbCps{2}.command,limits, used);
             end
             for i = 1:12
                 if used(i)
@@ -77,22 +78,24 @@ classdef TolerancesConfigActions < handle
             limits(r) = li;
             used(r) = u;
             if me.isLbcb1()
-                me.ilcfg.window1 = limits;
-                me.ilcfg.used1 = used;
+                me.tlcfg.window1 = limits;
+                me.tlcfg.used1 = used;
             else
-                me.ilcfg.window2 = limits;
-                me.ilcfg.used2 = used;
+                me.tlcfg.window2 = limits;
+                me.tlcfg.used2 = used;
             end
             me.fill();
         end
         
         function [limits used] = getCfg(me)
+            me.tl.getLimits();
+            cfg = me.tl.limits;
             if me.isLbcb1()
-                limits = me.ilcfg.window1;
-                used = me.ilcfg.used1;
+                limits = cfg.window1;
+                used = cfg.used1;
             else
-                limits = me.ilcfg.window2;
-                used = me.ilcfg.used2;
+                limits = cfg.window2;
+                used = cfg.used2;
             end
         end
     end
