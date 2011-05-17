@@ -2,26 +2,13 @@ classdef LbcbPluginResults < handle
     properties
         handles = [];
         hfact = [];
-        %text box handles 1 = LBCB1, 2 = LBCB 2
-        commandLimitsHandles1 = {};
-        commandLimitsHandles2 = {};
-        commandTolerancesHandles1 = {};
-        commandTolerancesHandles2 = {};
-        incrementLimitsHandles1 = {};
-        incrementLimitsHandles2 = {};
-        
-        commandCurrentValueHandles1 = {};
-        commandCurrentValueHandles2 = {};
-        toleranceCurrentValueHandles1 = {};
-        toleranceCurrentValueHandles2 = {};
-        incrementCurrentValueHandles1 = {};
-        incrementCurrentValueHandles2 = {};
-
         stepHandles = cell(2,1);
         stepTimes = []; % BG
         msgHandle = [];
         cmdTableHandle = [];
         shuttingDown;
+        alerts;
+        tolerances;
         
         log = Logger('LbcbPluginResults');
         buttonStatus = StateEnum({...
@@ -51,7 +38,7 @@ classdef LbcbPluginResults < handle
             me.stepTimes = zeros(1,3);
         end
         initialize(me)
-        updateLimits(me,cl,il)
+        updateAlerts(me)
         updateStepTolerances(me,st)
         updateStepsDisplay(me,simStep)
         updateTimer(me); %BG
@@ -62,8 +49,6 @@ classdef LbcbPluginResults < handle
         updateGui(me)
         updateCommands(me,ssd)
         blinkAcceptButton(me,on)
-        setLimit(me,hndl,dof,used,limit)
-        fillInLimits(me)
         colorAutoAcceptButton(me,on)
         updateStepState(me,idx)
         updateSimState(me,idx)
