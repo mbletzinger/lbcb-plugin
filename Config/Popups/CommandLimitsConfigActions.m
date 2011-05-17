@@ -4,13 +4,11 @@ classdef CommandLimitsConfigActions < handle
         limitsTable
         log = Logger('CommandLimitsConfigActions')
         selectedRow
-        clcfg
         step
         cl
     end
     methods
         function me = CommandLimitsConfigActions(cfg,step)
-            me.clcfg = LimitsDao('command.limits',cfg);
             me.step = step;
             me.cl = CommandLimits(cfg);
         end
@@ -76,26 +74,29 @@ classdef CommandLimitsConfigActions < handle
             lower(r) = lo;
             upper(r) = up;
             used(r) = u;
+            cfg = me.cl.limits;
             if me.isLbcb1()
-                me.clcfg.lower1 = lower;
-                me.clcfg.upper1 = upper;
-                me.clcfg.used1 = used;
+                cfg.lower1 = lower;
+                cfg.upper1 = upper;
+                cfg.used1 = used;
             else
-                me.clcfg.lower2 = lower;
-                me.clcfg.upper2 = upper;
-                me.clcfg.used2 = used;
+                cfg.lower2 = lower;
+                cfg.upper2 = upper;
+                cfg.used2 = used;
             end
             me.fill();
         end
         function [lower upper used] = getCfg(me)
+            me.cl.getLimits();
+            cfg = me.cl.limits;
             if me.isLbcb1()
-                upper = me.clcfg.upper1;
-                lower = me.clcfg.lower1;
-                used = me.clcfg.used1;
+                upper = cfg.upper1;
+                lower = cfg.lower1;
+                used = cfg.used1;
             else
-                upper = me.clcfg.upper2;
-                lower = me.clcfg.lower2;
-                used = me.clcfg.used2;
+                upper = cfg.upper2;
+                lower = cfg.lower2;
+                used = cfg.used2;
             end
         end
     end

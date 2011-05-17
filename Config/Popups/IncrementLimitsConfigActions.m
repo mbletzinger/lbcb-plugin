@@ -4,14 +4,12 @@ classdef IncrementLimitsConfigActions < handle
         limitsTable
         log = Logger('IncrementLimitsConfigActions')
         selectedRow
-        ilcfg
         pstep
         cstep
         il
     end
     methods
         function me = IncrementLimitsConfigActions(cfg,pstep,cstep)
-            me.ilcfg = WindowLimitsDao('increment.limits',cfg);
             me.pstep = pstep;
             me.cstep = cstep;
             me.il = IncrementLimits(cfg);
@@ -76,23 +74,26 @@ classdef IncrementLimitsConfigActions < handle
             [limits used] = me.getCfg();
             limits(r) = li;
             used(r) = u;
+            cfg = me.il.limits;
             if me.isLbcb1()
-                me.ilcfg.window1 = limits;
-                me.ilcfg.used1 = used;
+                cfg.window1 = limits;
+                cfg.used1 = used;
             else
-                me.ilcfg.window2 = limits;
-                me.ilcfg.used2 = used;
+                cfg.window2 = limits;
+                cfg.used2 = used;
             end
             me.fill();
         end
         
         function [limits used] = getCfg(me)
+            me.il.getLimits();
+            cfg = me.il.limits;
             if me.isLbcb1()
-                limits = me.ilcfg.window1;
-                used = me.ilcfg.used1;
+                limits = cfg.window1;
+                used = cfg.used1;
             else
-                limits = me.ilcfg.window2;
-                used = me.ilcfg.used2;
+                limits = cfg.window2;
+                used = cfg.used2;
             end
         end
     end
