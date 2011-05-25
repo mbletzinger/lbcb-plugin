@@ -1,4 +1,4 @@
-function prelimAdjust(me)
+function prelimAdjust(me,curStep, nextStep)
     me.pa.ddPrelimAdjust();
-    me.pa.edPrelimAdjust(me.dat.curStepData, me.dat.nextStepData);
+    me.pa.edPrelimAdjust(curStep, nextStep);
 end
