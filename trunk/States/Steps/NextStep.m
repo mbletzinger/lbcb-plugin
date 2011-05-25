@@ -14,9 +14,6 @@ classdef NextStep < Step
         steps = [];
         stepsCompleted = 0;
         log = Logger('NextStep');
-        ddlevel
-        checkedStepNumber
-        neededCorrections
     end
     methods
         function me = NextStep()
@@ -37,13 +34,13 @@ classdef NextStep < Step
                 me.gui.updateCorrections(true,false,false);
                 return;
             end
-            if me.needsCorrection(me.shouldBeCorrected)
+            if me.corrections.needsCorrection(me.dat.curStepData)
                 ddl = me.ddlevel - 1; % DD level 1 is done with ED
                 if ddl < 0
                     ddl = 0;
                 end
                 me.dat.nextCorrectionStep(2 + ddl);
-                me.adjustTarget(me.dat.nextStepData,me.dat.correctionTarget);
+                me.corrections.adjustTarget(me.dat.nextStepData);
                 me.log.info(dbstack,'Generating correction step');
                 me.gui.updateCorrections(false,me.edCorrect,ddl);
             else

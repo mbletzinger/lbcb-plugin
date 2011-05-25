@@ -18,7 +18,7 @@ classdef DerivedDof < CorrectionVariables
             me.log = Logger(sprintf('DerivedDof L%d',me.level));
         end
         calculate(me,cstep)
-        adjustTarget(me,step,tcps)
+        adjustTarget(me,step)
         yes = needsCorrection(me,step)
     end
 end

@@ -32,7 +32,11 @@ switch a
             odone = me.peOm.isDone();
             if odone % execute response has been received from OM
                 if me.peOm.hasErrors()
-                    me.ocOm.connectionError();
+                    if me.peOm.connectionError;
+                        me.ocOm.connectionError(); 
+                    else
+                        me.gui.alerts.setDeclineAlert();
+                    end
                     me.statusErrored();
                     done = 1;
                     return;
@@ -43,7 +47,6 @@ switch a
             end
         end
     case 'OM GET CONTROL POINTS'
-        
         if me.isFake()
             me.fakeGcp.generateControlPoints();
             me.pResp.start();
@@ -66,11 +69,15 @@ switch a
         me.pResp.isDone();
         me.arch.archive(me.dat.curStepData);
         me.gui.ddisp.updateAll(me.dat.curStepData);
-        me.log.debug(dbstack,sprintf('Current Response: %s',me.dat.curStepData.toString()));
+        me.log.debug(dbstack,sprintf('Current Response: %s', ...
+            me.dat.curStepData.toString()));
+        me.corrections.calculateCorrections(me.dat.correctionTarget, ...
+            me.dat.curStepData);
         if me.gettingInitialPosition
             me.dat.initialPosition2Target();
             me.currentAction.setState('DONE');
-        elseif (me.nxtStep.needsCorrection(me.shouldBeCorrected()) == false) && me.needsTriggering()
+        elseif (me.corrections.needsCorrection(me.dat.curStepData) == false)...
+                && me.needsTriggering()
             me.brdcstRsp.start();
             me.currentAction.setState('BROADCAST TRIGGER');
         else

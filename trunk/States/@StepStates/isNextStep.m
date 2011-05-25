@@ -1,6 +1,6 @@
 function isNextStep(me)
 if me.nxtStep.stepsCompleted  %  No more targets
-    me.log.info(dbstack,sprintf('Target %d is done',...
+    me.log.info(dbstack,sprintf('Step %d is completed',...
         me.dat.curStepTgt.stepNum.step));
     me.statusReady();
     me.currentAction.setState('DONE');

@@ -17,6 +17,7 @@ classdef HandleFactory <  handle
         ed = cell(2,1);
         dd = cell(4,1);
         pa = [];
+        corrections = [];
         
         % Simulation States and Executors
         omStates = cell(3,1);
@@ -147,6 +148,8 @@ classdef HandleFactory <  handle
             me.pa.dat = me.dat;
             me.pa.archH = archH;
             
+            me.corrections = Corrections(me.cdp);
+            
             for c =1:length(me.omStates)
                 me.omStates{c}.cdp = me.cdp;
                 me.omStates{c}.dat = me.dat;
@@ -157,9 +160,7 @@ classdef HandleFactory <  handle
                 me.stpStates{c}.cdp = me.cdp;
                 me.stpStates{c}.dat = me.dat;
                 me.stpStates{c}.sdf = me.sdf;
-                me.stpStates{c}.ed = me.ed;
-                me.stpStates{c}.dd = me.dd;
-                me.stpStates{c}.pa = me.pa;
+                me.stpStates{c}.corrections = me.corrections;
             end
             me.acceptStp.lc = lc;
             
@@ -197,6 +198,7 @@ classdef HandleFactory <  handle
             me.stpEx.arch = me.arch;
             me.stpEx.brdcstRsp = me.brdcstRsp;
             me.stpEx.acceptStp = me.acceptStp;
+            me.stpEx.corrections = me.corrections;
             
             me.tgtEx.stpEx = me.stpEx;
             me.tgtEx.inF = me.inF;

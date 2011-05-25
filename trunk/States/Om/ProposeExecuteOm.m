@@ -2,6 +2,7 @@ classdef ProposeExecuteOm < OmState
     properties
         id = {}
         log = Logger('ProposeExecuteOm');
+        connectionError;
     end
     methods
         function me = ProposeExecuteOm()
@@ -11,8 +12,10 @@ classdef ProposeExecuteOm < OmState
                 'PROPOSE', ...
                 'WAIT FOR EXECUTE ACK'
                 });
+            me.connectionError = 0;
         end
         function start(me)
+            me.connectionError = 0;
             me.startPropose();
             me.statusBusy();
         end
@@ -24,12 +27,23 @@ classdef ProposeExecuteOm < OmState
                 return;
             end
             if me.mdlLbcb.state.isState('ERRORS EXIST')
+                me.connectionError = 1;
                 me.statusErrored();
                 me.log.error(dbstack,'OM Link has errored out');
                 me.currentAction.setState('DONE');
                 done = 1;
                 return;
             end
+            response = me.mdlLbcb.response;
+            if response.isOk() == false
+                me.connectionError = 0; % should be redundent
+                me.statusErrored();
+                me.log.error(dbstack,'OM has declined a proposed command');
+                me.currentAction.setState('DONE');
+                done = 1;
+                return;
+            end
+            
             switch a
                 case 'DONE'
                     me.statusReady();

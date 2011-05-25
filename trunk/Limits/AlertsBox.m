@@ -40,5 +40,17 @@ classdef AlertsBox < handle
         function text = fault2Text(me, fault, lbcb,dof)
             text = sprintf(' %s fault for LBCB %d %s',fault,lbcb,me.dofl{dof});
         end
+        function setConnectionAlert(me,link)
+            me.add(sprintf('%s connection is broken',link));
+        end
+        function clearConnectionAlert(me,link)
+            me.remove(sprintf('%s connection is broken',link));
+        end
+        function setDeclineAlert(me)
+            me.add('OM has declined a proposed command');
+        end
+        function clearDeclineAlert(me)
+            me.remove('OM has declined a proposed command');
+        end
     end
 end

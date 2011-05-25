@@ -1,12 +1,10 @@
 classdef Step < States
     properties
         cdp = [];
-        ed = cell(2,1);
-        dd = cell(4,1);
-        pa = []
         gui = [];
         dat = [];
         sdf = [];
+        corrections
     end
     methods
         function me = Step()

@@ -39,6 +39,29 @@ classdef IncrementLimits < handle
         function getLimits(me)
             me.limits = WindowLimitsDao('increment.limits',me.cfg);
         end
-
+        function setAlerts(me, alerts)
+            list = [];
+            for d = 1:12
+                
+                f = me.genAlert(1,d);
+                if me.faults1(d)
+                    alerts.add(f);
+                else
+                    alerts.remove(f);
+                end
+                
+                f = me.genAlert(2,d);
+                if me.faults2(d)
+                    alerts.add(f);
+                else
+                    alerts.remove(f);
+                end
+            end
+        end
+        function fault = genAlert(lbcb, dof)
+            lbcbS = { 'LBCB 1' 'LBCB 2' };
+            dofS = { 'Dx' 'Dy' 'Dz' 'Rx' 'Ry' 'Rz' 'Fx' 'Fy' 'Fz' 'Mx' 'My' 'Mz' };
+            fault = sprint('%s %s has exceeded the increment limit', lbcbS{lbcb},dofS{dof});
+        end
     end
 end
