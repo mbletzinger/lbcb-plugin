@@ -14,7 +14,7 @@
 % $LastChangedDate: 2009-05-31 07:19:36 -0500 (Sun, 31 May 2009) $
 % $Author: mbletzin $
 % =====================================================================================================================
-classdef ElasticDeformation < Corrections
+classdef ElasticDeformation < CorrectionVariables
     properties
         base = [];
         plat = [];
@@ -27,7 +27,7 @@ classdef ElasticDeformation < Corrections
     end
     methods
         function me = ElasticDeformation(cdp,isLbcb1)
-            me = me@Corrections(cdp);
+            me = me@CorrectionVariables(cdp);
             me.isLbcb1 = isLbcb1;
         end
         adjustTarget(me,curLbcbCp)

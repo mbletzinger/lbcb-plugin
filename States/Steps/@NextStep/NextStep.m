@@ -15,19 +15,17 @@ classdef NextStep < Step
         stepsCompleted = 0;
         log = Logger('NextStep');
         ddlevel
-        edCorrect
-        shouldBeCorrected
         checkedStepNumber
-        needsCorrectionFlag
+        neededCorrections
     end
     methods
         function me = NextStep()
             me = me@Step();
+            me.neededCorrections = false(10); % guessing how many levels are configured
         end
         function start(me,shouldBeCorrected)
             me.stepsCompleted = false;
             me.ddlevel = 1;
-%            me.edCorrect = false;
             me.shouldBeCorrected = shouldBeCorrected;
         end
         done = isDone(me)
