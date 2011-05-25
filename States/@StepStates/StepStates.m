@@ -11,6 +11,7 @@ classdef StepStates < SimStates
         log = Logger('StepStates');
         st
         started
+        corrections
     end
     methods
         function me = StepStates()

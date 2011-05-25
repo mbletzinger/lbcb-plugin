@@ -20,7 +20,7 @@ classdef ProcessResponse < Step
         function start(me)
             me.edCalculate();
             me.derivedDofCalculate();
-            me.ed{1}.saveData(me.dat.curStepData);
+            me.corrections.ed{1}.saveData(me.dat.curStepData);
         end
         function done = isDone(me)
             me.statusReady();
@@ -47,7 +47,7 @@ classdef ProcessResponse < Step
                         tcps = me.dat.correctionTarget.lbcbCps{l};
                     end
                     
-                    me.ed{l}.calculate(ccps,pcps,tcps);
+                    me.corrections.ed{l}.calculate(ccps,pcps,tcps);
                 end
         end
         function derivedDofCalculate(me)
@@ -57,7 +57,7 @@ classdef ProcessResponse < Step
                 if isempty(doC) || doC(1 + d) == false
                     continue;
                 end
-                me.dd{d}.calculate(me.dat.curStepData);
+                me.corrections.dd{d}.calculate(me.dat.curStepData);
             end
         end
     end

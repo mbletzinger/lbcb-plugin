@@ -9,8 +9,8 @@ classdef TolerancesConfigActions < handle
         tl
     end
     methods
-        function me = TolerancesConfigActions(cfg)
-            me.tl = IncrementLimits(cfg);
+        function me = TolerancesConfigActions(tl)
+            me.tl = tl;
         end
         function select(me,indices)
             if isempty(indices)
@@ -42,9 +42,11 @@ classdef TolerancesConfigActions < handle
             me.limitsTable = cell(12,3);
             [limits used] = me.getCfg();
             if me.isLbcb1()
-                [logical increments ] = me.tl.wL(me.cstep.lbcbCps{1}.command,me.pstep.lbcbCps{1}.command,limits, used);
+                [logical increments ] = me.tl{1}.wL(me.cstep.lbcbCps{1}.command,...
+                    me.pstep.lbcbCps{1}.command,limits, used);
             else
-                [logical increments ] = me.tl.wL(me.cstep.lbcbCps{2}.command,me.pstep.lbcbCps{2}.command,limits, used);
+                [logical increments ] = me.tl{2}.wL(me.cstep.lbcbCps{2}.command,...
+                    me.pstep.lbcbCps{2}.command,limits, used);
             end
             for i = 1:12
                 if used(i)
@@ -88,14 +90,16 @@ classdef TolerancesConfigActions < handle
         end
         
         function [limits used] = getCfg(me)
-            me.tl.getLimits();
-            cfg = me.tl.limits;
             if me.isLbcb1()
-                limits = cfg.window1;
-                used = cfg.used1;
+                me.tl{1}.getLimits();
+                cfg = me.tl{1}.limits;
+                limits = cfg. window;
+                used = cfg.used;
             else
-                limits = cfg.window2;
-                used = cfg.used2;
+                me.tl{2}.getLimits();
+                cfg = me.tl{2}.limits;
+                limits = cfg.window;
+                used = cfg.used;
             end
         end
     end
