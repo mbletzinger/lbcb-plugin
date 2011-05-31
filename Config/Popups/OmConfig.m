@@ -112,6 +112,8 @@ function sensorTable_CellSelectionCallback(hObject, eventdata, handles)
 handles.actions.selectedRow(eventdata.Indices);
 
 function upSensor_Callback(hObject, eventdata, handles)
+handles.actions.upSensor();
 
 
 function downSensor_Callback(hObject, eventdata, handles)
+handles.actions.downSensor();

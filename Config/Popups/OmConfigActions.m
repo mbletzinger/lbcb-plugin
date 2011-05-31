@@ -107,6 +107,16 @@ classdef OmConfigActions < handle
             me.oesl.setList();
             me.uDisplay();
         end
+        function upSensor(me)
+            me.oesl.upSensor(me.selected)
+            me.oesl.setList();
+            me.uDisplay();
+        end
+        function downSensor(me)
+            me.oesl.downSensor(me.selected)
+            me.oesl.setList();
+            me.uDisplay();
+        end
         function uDisplay(me)
             me.table = cell(me.ocfg.numExtSensors,10);
             for s = 1:me.ocfg.numExtSensors

@@ -104,13 +104,17 @@ classdef OmExternalSensorList < handle
                 return;
             end
             nm = length(me.list);
-            if(idx == 1)
+            if(idx <= 1)
                 return;
             end
             lst = me.list;
-            o = me.list(idx);
-            lst(idx) = me.list(idx - 1);
-            lst(idx - 1) = o;
+            o = me.list{idx};
+            p = me.list{idx - 1};
+            p.idx = idx;
+            lst{idx} = p;
+            o.idx = idx - 1;
+            lst{idx - 1} = o;
+            me.list = lst;
         end
         function downSensor(me,idx)
             if isempty(me.list)
@@ -121,9 +125,13 @@ classdef OmExternalSensorList < handle
                 return;
             end
             lst = me.list;
-            o = me.list(idx);
-            lst(idx) = me.list(idx + 1);
-            lst(idx + 1) = o;
+            o = me.list{idx};
+            p = me.list{idx + 1};
+            p.idx = idx;
+            lst{idx} = p;
+            o.idx = idx + 1;
+            lst{idx + 1} = o;
+            me.list = lst;
         end
         function str = toString(me)
             str = '';
