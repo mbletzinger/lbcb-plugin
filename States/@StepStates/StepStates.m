@@ -3,7 +3,6 @@ classdef StepStates < SimStates
         peOm = [];
         pResp = [];
         gcpOm = [];
-        fakeGcp = [];
         arch = [];
         brdcstRsp = [];
         acceptStp = [];
@@ -30,7 +29,6 @@ classdef StepStates < SimStates
         start(me,steps)
         getInitialPosition(me)
         done = isDone(me)
-        yes = isFake(me)
         resetOmStates(me)
     end
     methods (Access='private')

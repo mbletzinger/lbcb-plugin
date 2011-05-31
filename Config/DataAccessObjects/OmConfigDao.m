@@ -19,7 +19,6 @@ classdef OmConfigDao < handle
         base
         plat
         sensorErrorTol
-        useFakeOm
         perturbationsL1
         perturbationsL2
     end
@@ -31,7 +30,7 @@ classdef OmConfigDao < handle
         function me = OmConfigDao(cfg)
             me.dt = DataTypes(cfg);
             me.empty = true;
-            if isempty(me.sensorNames{1}) == false
+            if isempty(me.sensorNames) == false
                 me.empty = false;
             end
         end
@@ -47,20 +46,14 @@ classdef OmConfigDao < handle
         function set.numExtSensors(me,value)
             me.dt.setInt('om.numExtSensors',value);
         end
-        function result = get.useFakeOm(me)
-            result = me.dt.getBool('om.useFakeOm',0);
-        end
-        function set.useFakeOm(me,value)
-            me.dt.setBool('om.useFakeOm',value);
-        end
         function result = get.sensorNames(me)
-            result = me.dt.getStringVector('om.sensorNames',{''});
+            result = me.dt.getStringVector('om.sensorNames',[]);
         end
         function set.sensorNames(me,value)
             me.dt.setStringVector('om.sensorNames',value);
         end
         function result = get.apply2Lbcb(me)
-            result = me.dt.getStringVector('om.apply2Lbcb',{'BOTH'});
+            result = me.dt.getStringVector('om.apply2Lbcb',[]);
         end
         function set.apply2Lbcb(me,value)
             me.dt.setStringVector('om.apply2Lbcb',value);
@@ -104,74 +97,6 @@ classdef OmConfigDao < handle
         end
         function set.perturbationsL2(me,value)
             me.dt.setTarget('om.sensor.perturbations.lbcb2',value);
-        end
-        function insertSensor(me,s)
-            n = me.numExtSensors;
-            if me.empty
-                me.numExtSensors = 1;
-                me.empty = false;
-                
-                me.sensorNames = {' '};
-                me.apply2Lbcb = {'BOTH'};
-                me.base = {zeros(3,1)};
-                me.plat = {zeros(3,1)};
-                
-            else
-                me.sensorNames = me.insertIntoArray(s,me.sensorNames,true);
-                me.apply2Lbcb = me.insertIntoArray(s,me.apply2Lbcb,true);
-                me.sensitivities = me.insertIntoArray(s,me.sensitivities,false);
-                me.base = me.insertIntoArray(s,me.base,true);
-                me.plat = me.insertIntoArray(s,me.plat,true);
-                me.sensorErrorTol = me.insertIntoArray(s,me.sensorErrorTol,false);
-                
-                me.sensorNames{s} = ' ';
-                me.apply2Lbcb{s} = 'BOTH';
-                me.base{s} = zeros(3,1);
-                me.plat{s} = zeros(3,1);
-                me.numExtSensors = n+1;
-                
-            end
-        end
-        function removeSensor(me,s)
-            
-            
-            n = me.numExtSensors;
-            if n == 1
-                me.empty = true;
-                me.numExtSensors = 0;
-            else
-                me.sensorNames = me.removeFromArray(s,me.sensorNames);
-                me.apply2Lbcb = me.removeFromArray(s,me.apply2Lbcb);
-                me.sensitivities = me.removeFromArray(s,me.sensitivities);
-                me.base = me.removeFromArray(s,me.base);
-                me.plat = me.removeFromArray(s,me.plat);
-                me.sensorErrorTol = me.removeFromArray(s,me.sensorErrorTol);
-                me.numExtSensors = n-1;
-            end
-        end
-        function out = insertIntoArray(me,s,in,isCell)
-            n = me.numExtSensors;
-            if isCell
-                out = cell(n + 1,1);
-            else
-                out = zeros(n + 1,1);
-            end
-            if s < n
-                out(1:s) = in(1:s);
-            else
-                out(1:n) = in(1:n);
-            end
-            if s < n + 1
-                out(s + 1 : n + 1) = in(s:n);
-            end
-        end
-        function out = removeFromArray(me,s,in)
-            n = me.numExtSensors;
-            out = in;
-            out(s) = [];
-            if n == 1
-                out = {};
-            end
         end
     end
 end

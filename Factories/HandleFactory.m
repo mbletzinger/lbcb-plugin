@@ -37,11 +37,7 @@ classdef HandleFactory <  handle
         
         % Input File Loader
         inF = [];
-        
-        %Fake OM classes
-        
-        fakeGcp = [];
-        
+                
         %Archiver
         
         arch = [];
@@ -171,8 +167,6 @@ classdef HandleFactory <  handle
                 end
             end
             
-            me.fakeGcp = GetControlPointsFake(me.cdp);
-            me.fakeGcp.dat = me.dat;
             me.ddisp = DisplayFactory(handle);
             me.ddisp.cdp = me.cdp;
 %            dbgWin = DebugWindow;
@@ -190,7 +184,6 @@ classdef HandleFactory <  handle
                 me.simStates{c}.sdf = me.sdf;
                 me.simStates{c}.ddisp = me.ddisp;
             end
-            me.stpEx.fakeGcp = me.fakeGcp;
             me.stpEx.peOm = me.peOm;
             me.stpEx.gcpOm = me.gcpOm;
             me.stpEx.pResp = me.pResp;

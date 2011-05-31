@@ -20,55 +20,45 @@ switch a
         end
         if odone % Step is accepted
             me.currentAction.setState('OM PROPOSE EXECUTE');
-            if me.isFake() == false
-                me.peOm.start()
-            end
+            me.peOm.start()
         end
     case 'OM PROPOSE EXECUTE'
-        if me.isFake()
-            me.dat.stepShift();
-            me.currentAction.setState('OM GET CONTROL POINTS');
-        else
-            odone = me.peOm.isDone();
-            if odone % execute response has been received from OM
-                if me.peOm.hasErrors()
-                    if me.peOm.connectionError;
-                        me.ocOm.connectionError(); 
-                    else
-                        me.gui.alerts.setDeclineAlert();
-                    end
-                    me.statusErrored();
-                    done = 1;
-                    return;
+        odone = me.peOm.isDone();
+        if odone % execute response has been received from OM
+            if me.peOm.hasErrors()
+                if me.peOm.connectionError;
+                    me.ocOm.connectionError();
+                else
+                    me.gui.alerts.setDeclineAlert();
                 end
-                me.dat.stepShift();
-                me.gcpOm.start();
-                me.currentAction.setState('OM GET CONTROL POINTS');
+                me.statusErrored();
+                done = 1;
+                return;
             end
+            me.dat.stepShift();
+            me.gcpOm.start();
+            me.currentAction.setState('OM GET CONTROL POINTS');
         end
     case 'OM GET CONTROL POINTS'
-        if me.isFake()
-            me.fakeGcp.generateControlPoints();
+        odone = me.gcpOm.isDone();
+        if odone
+            if me.gcpOm.hasErrors()
+                me.ocOm.connectionError();
+                me.statusErrored();
+                done = 1;
+                return;
+            end
             me.pResp.start();
             me.currentAction.setState('PROCESS OM RESPONSE');
-        else
-            odone = me.gcpOm.isDone();
-            if odone
-                if me.gcpOm.hasErrors()
-                    me.ocOm.connectionError();
-                    me.statusErrored();
-                    done = 1;
-                    return;
-                end
-                me.pResp.start();
-                me.currentAction.setState('PROCESS OM RESPONSE');
-            end
         end
         
     case 'PROCESS OM RESPONSE'
         me.pResp.isDone();
         me.arch.archive(me.dat.curStepData);
         me.gui.ddisp.updateAll(me.dat.curStepData);
+        me.gui.updateStepState(me.currentAction.idx)
+        me.gui.updateStepTolerances(me.st);
+        me.gui.updateTimer(); %BG
         me.log.debug(dbstack,sprintf('Current Response: %s', ...
             me.dat.curStepData.toString()));
         me.corrections.calculateCorrections(me.dat.correctionTarget, ...
@@ -89,16 +79,13 @@ switch a
         bdone = me.brdcstRsp.isDone();
         if bdone
             config = CorrectionsSettingsDao(me.cdp.cfg);
-%            pause(config.cfgValues(17));
+            %            pause(config.cfgValues(17));
             me.nxtStep.start(me.shouldBeCorrected());
             me.currentAction.setState('NEXT STEP');
         end
     case 'DONE'
         me.statusReady();
-        me.gui.updateStepState(me.currentAction.idx)
-        me.gui.updateStepTolerances(me.st);
         done = 1;
-        me.gui.updateTimer(); %BG
     otherwise
         me.log.error(dbstack,sprintf('%s action not recognized',me.currentAction.getState()));
 end

@@ -9,6 +9,5 @@ else % Execute next step
     me.gui.updateCommandTable();
     me.gui.updateStepsDisplay(me.dat.nextStepData.stepNum);
     me.currentAction.setState('ACCEPT STEP');
-    me.gui.updateStepTolerances(me.st);
 end
 end

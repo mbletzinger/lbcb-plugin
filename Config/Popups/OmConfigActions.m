@@ -7,12 +7,14 @@ classdef OmConfigActions < handle
         aps
         pertTable = cell(6,2);
         selected;
+        oesl
     end
     methods
         function me = OmConfigActions(cfg)
             me.aps = StateEnum({'LBCB1','LBCB2','BOTH'});
             me.ocfg = OmConfigDao(cfg);
             me.selected = 1;
+            me.oesl = OmExternalSensorList(cfg);
         end
         function setCell(me,indices,data,errString)
             if isempty(data)
@@ -22,34 +24,24 @@ classdef OmConfigActions < handle
             if indices(1) > me.ocfg.numExtSensors
                 me.addSensor();
             end
-            names = me.ocfg.sensorNames;
-            apply = me.ocfg.apply2Lbcb;
-            sens = me.ocfg.sensitivities;
-            bs = me.ocfg.base;
-            pl = me.ocfg.plat;
-            err = me.ocfg.sensorErrorTol;
+            o = me.oesl.list{indices(1)};
             switch indices(2)
                 case 1
-                    names{indices(1)} = data;
-                    me.ocfg.sensorNames = names;
+                    o.sensorName = data;
                 case 2
-                    apply{indices(1)} = data;
-                    me.ocfg.apply2Lbcb = apply;
+                    o.apply2Lbcb = data;
                 case 3
-                    sens(indices(1)) = data;
-                    me.ocfg.sensitivities = sens;
+                    o.sensitivity = data;
                 case { 4 5 6 }
-                    bs{indices(1)}(indices(2) - 3) = data;
-                    me.ocfg.base = bs;
+                    o.base(indices(2) - 3) = data;
                 case { 7 8 9 }
-                    pl{indices(1)}(indices(2) - 6) = data;
-                    me.ocfg.plat = pl;
+                    o.plat(indices(2) - 6) = data;
                 case 10
-                    err(indices(1)) = data;
-                    me.ocfg.sensorErrorTol = err;
+                    o.sensorErrorTol = data;
                 otherwise
                     me.log.error(dbstack,sprintf('Cannot handle column %d',indices(2)));
             end
+            o.setMe();
             me.uDisplay();
         end
         function initialize(me,handles)
@@ -70,16 +62,12 @@ classdef OmConfigActions < handle
             set(me.handles.sensorTable,'ColumnFormat',format);
             set(me.handles.numLbcbs,'String',{'1','2'});
             set(me.handles.numLbcbs,'Value',me.ocfg.numLbcbs);
-            set(me.handles.useFakeOm,'Value',me.ocfg.useFakeOm);
             set(me.handles.pertTable,'Data',me.pertTable);
             me.uDisplay();
             
         end
         function setNumLbcbs(me,value)
             me.ocfg.numLbcbs = value;
-        end
-        function setUseFakeOm(me,value)
-            me.ocfg.useFakeOm = value;
         end
         function setPertCell(me,indices,str)
             if indices(2) == 1
@@ -110,36 +98,33 @@ classdef OmConfigActions < handle
             me.selected = indices(1);
         end
         function addSensor(me)
-            me.ocfg.insertSensor(me.selected);
+            me.oesl.insertSensor(me.selected)
+            me.oesl.setList();
             me.uDisplay();
         end
         function removeSensor(me)
-            me.table(me.selected,:) = [];
-            me.ocfg.removeSensor(me.selected);
-            if me.selected > me.ocfg.numExtSensors
-                me.selected = me.ocfg.numExtSensors;
-            end
+            me.oesl.removeSensor(me.selected)
+            me.oesl.setList();
             me.uDisplay();
         end
         function uDisplay(me)
-            names = me.ocfg.sensorNames;
-            apply = me.ocfg.apply2Lbcb;
-            sens = me.ocfg.sensitivities;
-            bs = me.ocfg.base;
-            pl = me.ocfg.plat;
-            err = me.ocfg.sensorErrorTol;
             me.table = cell(me.ocfg.numExtSensors,10);
             for s = 1:me.ocfg.numExtSensors
-                me.table{s,1} = names{s};
-                me.table{s,2} = apply{s};
-                me.table{s,3} = sens(s);
-                me.table{s,4} = bs{s}(1);
-                me.table{s,5} = bs{s}(2);
-                me.table{s,6} = bs{s}(3);
-                me.table{s,7} = pl{s}(1);
-                me.table{s,8} = pl{s}(2);
-                me.table{s,9} = pl{s}(3);
-                me.table{s,10} = err(s);
+                o = me.oesl.list{s};
+                me.table{s,1} = o.sensorName;
+                me.table{s,2} = o.apply2Lbcb;
+                me.table{s,3} = o.sensitivity;
+                if isempty(o.base) == false
+                    me.table{s,4} = o.base(1);
+                    me.table{s,5} = o.base(2);
+                    me.table{s,6} = o.base(3);
+                end
+                if isempty(o.plat) == false
+                    me.table{s,7} = o.plat(1);
+                    me.table{s,8} = o.plat(2);
+                    me.table{s,9} = o.plat(3);
+                end
+                me.table{s,10} = o.sensorErrorTol;
             end
             set(me.handles.sensorTable,'Data',me.table);
         end
