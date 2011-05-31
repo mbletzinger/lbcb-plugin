@@ -4,6 +4,9 @@ if isempty(iF)
     [file path] = uigetfile('*.txt','Input File');
     iF = me.hfact.inF;
     strtStep = [];
+    if file == 0
+        return;
+    end
     while isempty(strtStep)
         a = inputdlg('Starting Step Number?','Starting Step Number',1,{'1'});
         strtStep = sscanf(a{1},'%d');

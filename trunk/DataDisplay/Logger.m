@@ -1,6 +1,5 @@
 classdef Logger < handle
     properties
-        filename = '';
         levelTypes = StateEnum({...
             'DEBUG',...
             'INFO',...
@@ -51,6 +50,11 @@ classdef Logger < handle
                 set(hnd,'String',nmsgs);
                 set(hnd,'Value',length(nmsgs));
             end
+            if getRecord()
+                archive = getArchive();
+                str = sprintf('%s - %s: %s',level,me.sstring(stack),msg);
+                archive.writeText(str);
+            end
         end
         function str = sstring(me, stack) 
             if length(stack) > 1
@@ -84,6 +88,21 @@ classdef Logger < handle
         function handle = getMsgHandle()
             global msgHandle;
             handle = msgHandle;
+        end
+        function setRecord(rec)
+            global record;
+            record = rec;
+        end
+        function rec = getRecord()
+            global record;
+            rec = record;
+        end
+        function arch = getArchive()
+            global archive
+            if isempty(archive)
+                archive = TextArchive('Messages');
+            end
+            arch = archive;
         end
     end
 end

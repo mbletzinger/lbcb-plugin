@@ -22,7 +22,7 @@ function varargout = OmConfig(varargin)
 
 % Edit the above text to modify the response to help OmConfig
 
-% Last Modified by GUIDE v2.5 12-Nov-2009 21:50:11
+% Last Modified by GUIDE v2.5 29-May-2011 13:06:07
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -83,95 +83,35 @@ guidata(hObject, handles);
 uiwait(handles.OmConfig);
 
 
-% --- Outputs from this function are returned to the command line.
 function varargout = OmConfig_OutputFcn(hObject, eventdata, handles) 
-% varargout  cell array for returning output args (see VARARGOUT);
-% hObject    handle to figure
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Get default command line output from handles structure
 varargout{1} = 1;
 
 
-% --- Executes on selection change in numLbcbs.
 function numLbcbs_Callback(hObject, eventdata, handles)
-% hObject    handle to numLbcbs (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: contents = get(hObject,'String') returns numLbcbs contents as cell array
-%        contents{get(hObject,'Value')} returns selected item from numLbcbs
 handles.actions.setNumLbcbs(get(hObject,'Value'));
 
-% --- Executes on button press in fakeOmProps.
-function fakeOmProps_Callback(hObject, eventdata, handles)
-% hObject    handle to fakeOmProps (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-FakeOmConfig('cfg',handles.cfg)
-
-% --- Executes on button press in useFakeOm.
-function useFakeOm_Callback(hObject, eventdata, handles)
-% hObject    handle to useFakeOm (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hint: get(hObject,'Value') returns toggle state of useFakeOm
-handles.actions.setUseFakeOm(get(hObject,'Value'));
-
-% --- Executes on button press in ok.
 function ok_Callback(hObject, eventdata, handles) %#ok<*INUSL>
-% hObject    handle to ok (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
 delete(handles.OmConfig);
 
-% --- Executes when entered data in editable cell(s) in sensorTable.
 function sensorTable_CellEditCallback(hObject, eventdata, handles) %#ok<INUSL,*DEFNU>
-% hObject    handle to sensorTable (see GCBO)
-% eventdata  structure with the following fields (see UITABLE)
-%	Indices: row and column indices of the cell(s) edited
-%	PreviousData: previous data for the cell(s) edited
-%	EditData: string(s) entered by the user
-%	NewData: EditData or its converted form set on the Data property. Empty if Data was not changed
-%	Error: error string when failed to convert EditData to appropriate value for Data
-% handles    structure with handles and user data (see GUIDATA)
 handles.actions.setCell(eventdata.Indices,eventdata.NewData,eventdata.Error);
 
 
-% --- Executes when entered data in editable cell(s) in pertTable.
 function pertTable_CellEditCallback(hObject, eventdata, handles)
-% hObject    handle to pertTable (see GCBO)
-% eventdata  structure with the following fields (see UITABLE)
-%	Indices: row and column indices of the cell(s) edited
-%	PreviousData: previous data for the cell(s) edited
-%	EditData: string(s) entered by the user
-%	NewData: EditData or its converted form set on the Data property. Empty if Data was not changed
-%	Error: error string when failed to convert EditData to appropriate value for Data
-% handles    structure with handles and user data (see GUIDATA)
 handles.actions.setPertCell(eventdata.Indices,eventdata.EditData);
 
 
-% --- Executes on button press in addSensor.
 function addSensor_Callback(hObject, eventdata, handles)
-% hObject    handle to addSensor (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
 handles.actions.addSensor();
 
 
-% --- Executes on button press in removeSensor.
 function removeSensor_Callback(hObject, eventdata, handles)
-% hObject    handle to removeSensor (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
 handles.actions.removeSensor();
 
-% --- Executes when selected cell(s) is changed in sensorTable.
 function sensorTable_CellSelectionCallback(hObject, eventdata, handles)
-% hObject    handle to sensorTable (see GCBO)
-% eventdata  structure with the following fields (see UITABLE)
-%	Indices: row and column indices of the cell(s) currently selecteds
-% handles    structure with handles and user data (see GUIDATA)
 handles.actions.selectedRow(eventdata.Indices);
+
+function upSensor_Callback(hObject, eventdata, handles)
+
+
+function downSensor_Callback(hObject, eventdata, handles)
