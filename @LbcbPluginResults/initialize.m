@@ -2,7 +2,7 @@ function initialize(me)
 
 if isempty(me.handles) == 0
     me.alerts = AlertsBox();
-    me.tolerances = TolerancesConfigActions();
+    me.tolerances = TolerancesConfigActions(me.hfact.st);
     me.bsimst.init()
     me.bstpst.init()
     me.bsrc.init()
@@ -15,8 +15,6 @@ if isempty(me.handles) == 0
     me.stepHandles{3} = me.handles.CorrectionStep;
     me.msgHandle = me.handles.Messages;
     me.cmdTableHandle = me.handles.CommandTable;
-    
-    me.fillInLimits();
     titleIm = imread('ImagesAndSounds/LbcbPluginBanner.png');
     axes(me.handles.titleImage);
     image(titleIm);
@@ -30,7 +28,7 @@ if isempty(me.handles) == 0
     image(titleIm);
     axis off;
     me.updateSource(3);
-    me.updateCorrections(false,false,false);
+    me.updateCorrections();
 end
 me.colorRunButton('OFF');
 end
