@@ -20,14 +20,10 @@ for lv = 1:length(doCorrections)
                         ctarget.lbcbCps{2});
                 end
                 edCorrect = (n1 + n2) > 0;
-                me.needsCorrections(lv) = edCorrect;
+                me.ncorrections(lv) = edCorrect;
             case { 2 3 4 5 }
                 ddCorrect = me.dd{lv-1}.needsCorrection(step);
-                if ddCorrect
-                    me.ddlevel = lv-1;
-                    return;
-                end
-                me.needsCorrections(lv) = ddCorrect;
+                me.ncorrections(lv) = ddCorrect;
         end
     end
 end

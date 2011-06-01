@@ -1,12 +1,11 @@
 classdef DataArchive < TextArchive
     properties
-    path = '';
-    hpath
-    headers={};
+        headers
     end
     methods
         function me = DataArchive(name)
-            me = me.createPath(name);
+            me = me@TextArchive(name);
+            me.headers = {};
         end
         function write(me,stepNumber,data,note)
             str = printf(fid,'%s	',stepNumber);

@@ -18,12 +18,9 @@ classdef NextStep < Step
     methods
         function me = NextStep()
             me = me@Step();
-            me.neededCorrections = false(10); % guessing how many levels are configured
         end
-        function start(me,shouldBeCorrected)
+        function start(me)
             me.stepsCompleted = false;
-            me.ddlevel = 1;
-            me.shouldBeCorrected = shouldBeCorrected;
         end
         function done = isDone(me)
             done = 1;
@@ -31,23 +28,19 @@ classdef NextStep < Step
             if me.steps.started == false
                 me.dat.substepTgtShift(me.steps.next());
                 me.prelimAdjust();
-                me.gui.updateCorrections(true,false,false);
+                me.gui.updateCorrections();
                 return;
             end
             if me.corrections.needsCorrection(me.dat.curStepData)
-                ddl = me.ddlevel - 1; % DD level 1 is done with ED
-                if ddl < 0
-                    ddl = 0;
-                end
-                me.dat.nextCorrectionStep(2 + ddl);
+                me.dat.nextCorrectionStep(me.corrections.stepType());
                 me.corrections.adjustTarget(me.dat.nextStepData);
                 me.log.info(dbstack,'Generating correction step');
-                me.gui.updateCorrections(false,me.edCorrect,ddl);
+                me.gui.updateCorrections();
             else
                 % get next input step
                 stp = me.steps.next();
                 me.stepsCompleted = me.steps.endOfFile;
-                me.gui.updateCorrections(true,false,false);
+                me.gui.updateCorrections();
                 if me.stepsCompleted
                     return;
                 else

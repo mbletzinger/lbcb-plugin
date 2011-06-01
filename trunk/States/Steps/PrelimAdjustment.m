@@ -6,14 +6,14 @@
 % $LastChangedDate: 2009-06-01 15:30:46 -0500 (Mon, 01 Jun 2009) $
 % $Author: mbletzin $
 % =====================================================================================================================
-classdef PrelimAdjustment < Corrections
+classdef PrelimAdjustment < CorrectionVariables
     properties
         log
         dat
     end
     methods
         function me = PrelimAdjustment(cdp)
-            me = me@Corrections(cdp);
+            me = me@CorrectionVariables(cdp);
             me.log = Logger('PrelimAdjustment');
         end
         function edPrelimAdjust(me,curStep,nextStep)

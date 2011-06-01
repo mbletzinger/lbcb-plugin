@@ -50,7 +50,7 @@ classdef Logger < handle
                 set(hnd,'String',nmsgs);
                 set(hnd,'Value',length(nmsgs));
             end
-            if getRecord()
+            if Logger.getRecord()
                 archive = getArchive();
                 str = sprintf('%s - %s: %s',level,me.sstring(stack),msg);
                 archive.writeText(str);

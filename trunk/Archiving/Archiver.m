@@ -26,7 +26,9 @@ classdef Archiver < handle
             me.lbcbReadA.headers = me.commandA.headers;
             me.edReadA.headers = me.commandA.headers;
             [n se a] = cdp.getExtSensors(); %#ok<ASGLU,NASGU>
-            me.extSensA.headers = {'Step' n{:} }; %#ok<CCAT>
+            if isempty(n) == false
+                me.extSensA.headers = {'Step' n{:} }; %#ok<CCAT>
+            end
             me.wroteCorDataHeaders = false;
         end
         function setArchiveOn(me,on)

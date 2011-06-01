@@ -2,7 +2,6 @@ classdef TextArchive < handle
     properties
     path = '';
     hpath
-    headers={};
     end
     methods
         function me = TextArchive(name)
