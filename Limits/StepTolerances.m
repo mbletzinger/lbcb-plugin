@@ -39,5 +39,15 @@ classdef StepTolerances < handle
                 me.used = wlcfg.used2;
             end
         end
+        function setWindow(me, window, used)
+            wlcfg = WindowLimitsDao('command.tolerances',me.cfg);
+            if me.isLbcb1
+                wlcfg.window1 = window;
+                wlcfg.used1 = used;
+            else
+                wlcfg.window2 = window;
+                wlcfg.used2 = used;
+            end
+        end
     end
 end

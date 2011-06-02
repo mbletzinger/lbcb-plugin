@@ -1,4 +1,4 @@
-classdef CommandLimitsConfigActions < handle
+classdef CommandLimitsConfigActions < TableDataManagement
     properties
         handles
         limitsTable
@@ -36,10 +36,14 @@ classdef CommandLimitsConfigActions < handle
         function fill(me)
             me.limitsTable = cell(12,4);
             [lower upper used] = me.getCfg();
-            if me.isLbcb1()
-                [logical current ] = me.cl.wL(me.step.lbcbCps{1}.command,lower, upper, used);
-            else
-                [logical current ] = me.cl.wL(me.step.lbcbCps{2}.command,lower, upper, used);
+            logical = false(12,2);
+            current = zeros(12,1);
+            if isempty(me.step) == false
+                if me.isLbcb1()
+                    [logical current ] = me.cl.wL(me.step.lbcbCps{1}.command,lower, upper, used);
+                else
+                    [logical current ] = me.cl.wL(me.step.lbcbCps{2}.command,lower, upper, used);
+                end
             end
             for i = 1:12
                 if used(i)
@@ -47,28 +51,26 @@ classdef CommandLimitsConfigActions < handle
                     me.limitsTable{i,2} = sprintf('%f',upper(i));
                 end
                 me.limitsTable{i,3} = current(i);
-                me.limitsTable{i,4} = logical(i,1) | logical(i,2);
+                me.limitsTable{i,4} = ~(logical(i,1) & logical(i,2));
             end
             set(me.handles.LimitsTable,'Data',me.limitsTable);
         end
         function setCell(me,indices,data)
             r = indices(1);
-                lo = 0;
-                up = 0;
-                u = false;
+            lo = 0;
+            up = 0;
+            u = false;
             if isempty(me.limitsTable{r,1}) == false
                 lo = str2double(me.limitsTable{r,1});
             end
             if isempty(me.limitsTable{r,2}) == false
                 up = str2double(me.limitsTable{r,2});
             end
-            if isempty(data) == false
-                if indices(2) == 1
-                    lo = str2double(data);
-                else
-                    up = str2double(data);
-                end
-                u = true;
+            [ d u ] = me.getData(data);
+            if indices(2) == 1
+                lo = d;
+            else
+                up = d;
             end
             [lower upper used] = me.getCfg();
             lower(r) = lo;

@@ -3,6 +3,7 @@ function initialize(me)
 if isempty(me.handles) == 0
     me.alerts = AlertsBox();
     me.tolerances = TolerancesConfigActions(me.hfact.st);
+    me.tolerances.initialize(me.handles);
     me.bsimst.init()
     me.bstpst.init()
     me.bsrc.init()

@@ -38,6 +38,7 @@ classdef LbcbPluginActions < handle
         ocSimCor
         ocOm
         shuttingDown
+        tolerances;
         
     end
     methods
@@ -60,6 +61,7 @@ classdef LbcbPluginActions < handle
                 me.hfact.setGuiHandle(handles);
             end
             me.hfact.gui.initialize();
+            me.tolerances = me.hfact.gui.tolerances;
             lcfg = LogLevelsDao(me.hfact.cfg);
             Logger.setCmdLevel(lcfg.cmdLevel);
             Logger.setMsgLevel(lcfg.msgLevel);

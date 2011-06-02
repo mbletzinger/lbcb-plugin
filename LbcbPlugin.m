@@ -606,7 +606,7 @@ end
 
 function ToleranceTable_CellEditCallback(hObject, eventdata, handles)
 actions = getappdata(getLp(hObject),'actions');
-actions.setCell(eventdata.Indices,eventdata.NewData);
+actions.tolerances.setCell(eventdata.Indices,eventdata.NewData);
 
 function LbcbChoice_Callback(hObject, eventdata, handles)
 actions = getappdata(getLp(hObject),'actions');
