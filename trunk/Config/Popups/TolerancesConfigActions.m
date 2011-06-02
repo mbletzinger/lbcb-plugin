@@ -1,4 +1,4 @@
-classdef TolerancesConfigActions < handle
+classdef TolerancesConfigActions < TableDataManagement
     properties
         handles
         limitsTable
@@ -41,6 +41,9 @@ classdef TolerancesConfigActions < handle
         function fill(me)
             me.limitsTable = cell(12,3);
             [limits used] = me.getCfg();
+            logical = true(12,1);
+            increments = zeros(12,1);
+            if isempty(me.cstep) == false
             if me.isLbcb1()
                 [logical increments ] = me.tl{1}.wL(me.cstep.lbcbCps{1}.command,...
                     me.pstep.lbcbCps{1}.command,limits, used);
@@ -48,58 +51,40 @@ classdef TolerancesConfigActions < handle
                 [logical increments ] = me.tl{2}.wL(me.cstep.lbcbCps{2}.command,...
                     me.pstep.lbcbCps{2}.command,limits, used);
             end
+            end
             for i = 1:12
                 if used(i)
                     me.limitsTable{i,1} = sprintf('%f',limits(i));
                 end
                 me.limitsTable{i,2} = increments(i);
-                me.limitsTable{i,3} = logical(i);
+                me.limitsTable{i,3} = (logical(i) == false);
             end
-            set(me.handles.LimitsTable,'Data',me.limitsTable);
+            set(me.handles.ToleranceTable,'Data',me.limitsTable);
         end
         function setCell(me,indices,data)
             r = indices(1);
             li = 0;
-            u = false;
-            if isempty(me.limitsTable{r,1}) == false
-                li = str2double(me.limitsTable{r,1});
-            end
-            if isempty(data) == false
-                if ischar(data)
-                    nli = str2double(data);
-                    if isnan(nli) == false
-                        li = nli;
-                        u = true;
-                    end
-                else
-                    li = data;
-                    u = true;
-                end
-            end
+            [li u ] = me.getData(data);
             [limits used] = me.getCfg();
             limits(r) = li;
             used(r) = u;
             if me.isLbcb1()
-                me.tlcfg.window1 = limits;
-                me.tlcfg.used1 = used;
+                me.tl{1}.setWindow(limits,used);
             else
-                me.tlcfg.window2 = limits;
-                me.tlcfg.used2 = used;
+                me.tl{2}.setWindow(limits,used);
             end
             me.fill();
         end
         
         function [limits used] = getCfg(me)
             if me.isLbcb1()
-                me.tl{1}.getLimits();
-                cfg = me.tl{1}.limits;
-                limits = cfg. window;
-                used = cfg.used;
+                me.tl{1}.getWindow();
+                limits = me.tl{1}. window;
+                used = me.tl{1}.used;
             else
-                me.tl{2}.getLimits();
-                cfg = me.tl{2}.limits;
-                limits = cfg.window;
-                used = cfg.used;
+                me.tl{2}.getWindow();
+                limits = me.tl{2}.window;
+                used = me.tl{2}.used;
             end
         end
     end

@@ -1,4 +1,4 @@
-classdef IncrementLimitsConfigActions < handle
+classdef IncrementLimitsConfigActions < TableDataManagement
     properties
         handles
         limitsTable
@@ -38,17 +38,21 @@ classdef IncrementLimitsConfigActions < handle
         function fill(me)
             me.limitsTable = cell(12,3);
             [limits used] = me.getCfg();
-            if me.isLbcb1()
-                [logical increments ] = me.il.wL(me.cstep.lbcbCps{1}.command,me.pstep.lbcbCps{1}.command,limits, used);
-            else
-                [logical increments ] = me.il.wL(me.cstep.lbcbCps{2}.command,me.pstep.lbcbCps{2}.command,limits, used);
+            logical = true(12,1);
+            increments = zeros(12,1);
+            if isempty(me.cstep) == false
+                if me.isLbcb1()
+                    [logical increments ] = me.il.wL(me.cstep.lbcbCps{1}.command,me.pstep.lbcbCps{1}.command,limits, used);
+                else
+                    [logical increments ] = me.il.wL(me.cstep.lbcbCps{2}.command,me.pstep.lbcbCps{2}.command,limits, used);
+                end
             end
             for i = 1:12
                 if used(i)
                     me.limitsTable{i,1} = sprintf('%f',limits(i));
                 end
                 me.limitsTable{i,2} = increments(i);
-                me.limitsTable{i,3} = logical(i);
+                me.limitsTable{i,3} = logical(i) == false;
             end
             set(me.handles.LimitsTable,'Data',me.limitsTable);
         end
@@ -59,18 +63,7 @@ classdef IncrementLimitsConfigActions < handle
             if isempty(me.limitsTable{r,1}) == false
                 li = str2double(me.limitsTable{r,1});
             end
-            if isempty(data) == false
-                if ischar(data)
-                    nli = str2double(data);
-                    if isnan(nli) == false
-                        li = nli;
-                        u = true;
-                    end
-                else
-                    li = data;
-                    u = true;
-                end
-            end
+            [li u] = me.getData(data);
             [limits used] = me.getCfg();
             limits(r) = li;
             used(r) = u;

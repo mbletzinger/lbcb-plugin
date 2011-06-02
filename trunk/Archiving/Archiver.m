@@ -16,7 +16,7 @@ classdef Archiver < handle
             me.lbcbReadA = DataArchive('LbcbReadings');
             me.edReadA = DataArchive('ElasticDefReadings');
             me.corDataA = DataArchive('CorrectionData');
-            me.notes = DataArchive('TestNotes');
+            me.notes = TextArchive('TestNotes');
             me.archiveOn = false;
             me.commandA.headers = ...
                 {'Step','LBCB1 Dx','LBCB1 Dy','LBCB1 Dz','LBCB1 Rx','LBCB1 Ry','LBCB1 Rz',...
@@ -76,11 +76,11 @@ classdef Archiver < handle
             me.wroteCorDataHeaders = true;
         end
         function storeNote(me,nt,step)
-            stp = '0\t0\t0';
+            stp = '0    0   0';
             if isempty(step) == false
                 stp = step.stepNum.toString();
             end
-            me.notes.write(stp,[],nt)
+            me.notes.writeText(sprintf('%s\t%s',stp,nt));
         end
     end
 end

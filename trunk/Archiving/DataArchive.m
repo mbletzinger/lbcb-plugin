@@ -7,13 +7,13 @@ classdef DataArchive < TextArchive
             me = me@TextArchive(name);
             me.headers = {};
         end
-        function write(me,stepNumber,data,note)
-            str = printf(fid,'%s	',stepNumber);
+        function write(me,stepNumber,data)
+            fid = fopen(me.path,'a');
+            str = sprintf(fid,'%s	',stepNumber);
             for i=1:length (data)
-                str = printf(fid,'%s%+12.7e	',str,data(i));
+                str = sprintf(fid,'%s%+12.7e	',str,data(i));
             end
-            str = printf(fid,'%s%s\r\n',str,note);
-            me.writeText(str);
+            fclose(fid);
         end
         function writeHeaders(me)
             fid = fopen(me.hpath,'w');
