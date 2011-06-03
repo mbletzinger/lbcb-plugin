@@ -9,8 +9,8 @@ psi1 = [cos(deltas(6))  -sin(deltas(6)) 0
         0               0               1];
 
 psi2 = [cos(deltas(5))  0               sin(deltas(5))
-        0               cos(deltas(5))  0
-        -sin(deltas(5)) 0               1];
+        0               1               0
+        -sin(deltas(5)) 0               cos(deltas(5))];
 
 psi3 = [1      0               0
         0      cos(deltas(4))  -sin(deltas(4))
