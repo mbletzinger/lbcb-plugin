@@ -8,12 +8,11 @@ classdef DataArchive < TextArchive
             me.headers = {};
         end
         function write(me,stepNumber,data)
-            fid = fopen(me.path,'a');
-            str = sprintf(fid,'%s	',stepNumber);
+            str = sprintf('%s	',stepNumber);
             for i=1:length (data)
-                str = sprintf(fid,'%s%+12.7e	',str,data(i));
+                str = sprintf('%s%+12.7e	',str,data(i));
             end
-            fclose(fid);
+            me.writeText(str);
         end
         function writeHeaders(me)
             fid = fopen(me.hpath,'w');

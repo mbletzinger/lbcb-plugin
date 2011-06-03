@@ -27,25 +27,31 @@ classdef NextStep < Step
             me.statusReady();
             if me.steps.started == false
                 me.dat.substepTgtShift(me.steps.next());
-                me.prelimAdjust();
-                me.gui.updateCorrections();
-                return;
+                me.corrections.prelimAdjust(me.dat.curStepData,me.dat.nextStepData);
+                if isempty(me.gui) == false
+                    me.gui.updateCorrections();
+                end
+                return;         
             end
-            if me.corrections.needsCorrection(me.dat.curStepData)
+            if me.corrections.needsCorrection()
                 me.dat.nextCorrectionStep(me.corrections.stepType());
                 me.corrections.adjustTarget(me.dat.nextStepData);
                 me.log.info(dbstack,'Generating correction step');
-                me.gui.updateCorrections();
+                if isempty(me.gui) == false
+                    me.gui.updateCorrections();
+                end
             else
                 % get next input step
                 stp = me.steps.next();
                 me.stepsCompleted = me.steps.endOfFile;
-                me.gui.updateCorrections();
+                if isempty(me.gui) == false
+                    me.gui.updateCorrections();
+                end
                 if me.stepsCompleted
                     return;
                 else
                     me.dat.substepTgtShift(stp);
-                    me.prelimAdjust();
+                    me.corrections.prelimAdjust(me.dat.curStepData,me.dat.nextStepData);
                 end
             end
             me.log.debug(dbstack,sprintf('Correction Target L1 is %s',me.dat.correctionTarget.lbcbCps{1}.command.toString()));

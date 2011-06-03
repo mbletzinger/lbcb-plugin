@@ -1,3 +1,3 @@
 function updateStepTolerances(me)
-me.tolerances.setSteps(hfact.dat.prevStepData, hfact.dat.curStepData);
+me.tolerances.setSteps(me.hfact.dat.curStepData);
 end

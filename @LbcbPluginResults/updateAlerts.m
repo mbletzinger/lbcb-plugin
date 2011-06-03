@@ -1,5 +1,9 @@
 function updateAlerts(me)
 me.hfact.cl.setAlerts(me.alerts);
 me.hfact.il.setAlerts(me.alerts);
-set(me.handles.AlertBox,me.alerts.list,'String');
+if isempty(me.alerts.list)
+    set(me.handles.AlertBox,'String','');
+else
+    set(me.handles.AlertBox,'String',me.alerts.list);
+end
 end

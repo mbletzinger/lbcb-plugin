@@ -34,6 +34,5 @@ classdef StepStates < SimStates
     methods (Access='private')
         isNextStep(me)
         needsTriggering = needsTriggering(me)
-        shouldBeCorrected = shouldBeCorrected(me)
     end
 end
