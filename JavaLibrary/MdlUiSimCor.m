@@ -146,7 +146,7 @@ classdef MdlUiSimCor < handle
             ts = StateEnum(is.transactionStates);
             ts.setState(me.simcorTcp.isReady());
             csS = ts.getState();
-%            me.log.debug(dbstack,sprintf('Transaction state is %s',csS));
+%             me.log.debug(dbstack,sprintf('Transaction state is %s',csS));
             switch csS
                 case 'ERRORS_EXIST'
                     me.state.setState('ERRORS EXIST');
@@ -154,6 +154,10 @@ classdef MdlUiSimCor < handle
                     me.log.error(dbstack(),char(me.simcorTcp.getTransaction().getError().getText()));
                     me.simcorTcp.isReady();
                     me.simcorTcp.shutdown();
+                case 'CLOSING_CONNECTION'
+                    me.state.setState('ERRORS EXIST');
+                    me.action.setState('NONE');
+                    me.log.error(dbstack(),char(me.simcorTcp.getTransaction().getError().getText()));
                 case 'COMMAND_AVAILABLE'
                     %                    me.state.setState('READY');
                     transaction = me.simcorTcp.pickupTransaction();
@@ -166,7 +170,7 @@ classdef MdlUiSimCor < handle
                 case {'WAIT_FOR_COMMAND' 'READ_COMMAND'}
                     % still busy
                 otherwise
-                    me.log.error(dbstack,sprintf('"%s" not recognized',ts.getState()));
+                    me.log.error(dbstack,sprintf('"%s" not recognized',csS));
             end
         end
         function sendingResponseAction(me)
@@ -174,7 +178,7 @@ classdef MdlUiSimCor < handle
             ts = StateEnum(is.transactionStates);
             ts.setState(me.simcorTcp.isReady());
             csS = ts.getState();
-            %            me.log.debug(dbstack,sprintf('Transaction state is %s',csS));
+%             me.log.debug(dbstack,sprintf('Transaction state is %s',csS));
             switch csS
                 case 'ERRORS_EXIST'
                     me.state.setState('ERRORS EXIST');
@@ -189,7 +193,7 @@ classdef MdlUiSimCor < handle
                 case { 'SENDING_RESPONSE', 'WAIT_FOR_RESPONSE'}
                     % still busy
                 otherwise
-                    me.log.error(dbstack,sprintf('"%s" not recognized',ts.getState()));
+                    me.log.error(dbstack,sprintf('"%s" not recognized',csS));
             end
         end
         function connectionAction(me)
