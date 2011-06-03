@@ -18,6 +18,8 @@ end
             set(hndl,'BackgroundColor','y');
             set(hndl,'FontWeight','normal');
             set(hndl,'Value',0);
+                me.hfact.acceptStp.autoAccept = false;
+                me.colorAutoAcceptButton(false);
         otherwise
     end
 end
