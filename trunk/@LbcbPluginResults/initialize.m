@@ -1,6 +1,6 @@
 function initialize(me)
 
-if isempty(me.handles) == 0
+if isempty(me.handles) == false
     me.alerts = AlertsBox();
     me.tolerances = TolerancesConfigActions(me.hfact.st);
     me.tolerances.initialize(me.handles);

@@ -51,7 +51,7 @@ classdef Logger < handle
                 set(hnd,'Value',length(nmsgs));
             end
             if Logger.getRecord()
-                archive = getArchive();
+                archive = Logger.getArchive();
                 str = sprintf('%s - %s: %s',level,me.sstring(stack),msg);
                 archive.writeText(str);
             end

@@ -54,16 +54,15 @@ classdef CommandLimits < handle
             list = [];
             for l = 1:2
                 for d = 1:12
-                    
                     f = me.genAlert(1,l,d);
-                    if me.faults1(l,d)
+                    if me.faults1(d,l)
                         alerts.add(f);
                     else
                         alerts.remove(f);
                     end
                     
                     f = me.genAlert(2,l,d);
-                    if me.faults2(l,d)
+                    if me.faults2(d,l)
                         alerts.add(f);
                     else
                         alerts.remove(f);
@@ -71,11 +70,11 @@ classdef CommandLimits < handle
                 end
             end
         end
-        function fault = genAlert(lbcb, limit, dof)
+        function fault = genAlert(me,lbcb, limit, dof)
             lbcbS = { 'LBCB 1' 'LBCB 2' };
             limitS = { 'Lower' 'Upper' };
             dofS = { 'Dx' 'Dy' 'Dz' 'Rx' 'Ry' 'Rz' 'Fx' 'Fy' 'Fz' 'Mx' 'My' 'Mz' };
-            fault = sprint('%s %s has exceeded the %s limit', lbcbS{lbcb},limitS{limit},dofS{dof});
+            fault = sprintf('%s %s has exceeded the %s limit', lbcbS{lbcb},limitS{limit},dofS{dof});
         end
     end
 end

@@ -33,8 +33,7 @@ classdef TolerancesConfigActions < TableDataManagement
             set(me.handles.LbcbChoice,'Value',1);
             me.fill();
         end
-        function setSteps(me,pstep,cstep)
-            me.pstep = pstep;
+        function setSteps(me,cstep)
             me.cstep = cstep;
             me.fill();
         end
@@ -42,21 +41,25 @@ classdef TolerancesConfigActions < TableDataManagement
             me.limitsTable = cell(12,3);
             [limits used] = me.getCfg();
             logical = true(12,1);
-            increments = zeros(12,1);
+            diffs = zeros(12,1);
             if isempty(me.cstep) == false
             if me.isLbcb1()
-                [logical increments ] = me.tl{1}.wL(me.cstep.lbcbCps{1}.command,...
-                    me.pstep.lbcbCps{1}.command,limits, used);
+                me.tl{1}.withinTolerances(me.cstep.lbcbCps{1}.command,...
+                    me.cstep.lbcbCps{1}.response);
+                logical = me.tl{1}.within;
+                diffs = me.tl{1}.diffs;
             else
-                [logical increments ] = me.tl{2}.wL(me.cstep.lbcbCps{2}.command,...
-                    me.pstep.lbcbCps{2}.command,limits, used);
+                me.tl{2}.withinTolerances(me.cstep.lbcbCps{2}.command,...
+                    me.cstep.lbcbCps{2}.response);
+                logical = me.tl{2}.within;
+                diffs = me.tl{2}.diffs;
             end
             end
             for i = 1:12
                 if used(i)
                     me.limitsTable{i,1} = sprintf('%f',limits(i));
                 end
-                me.limitsTable{i,2} = increments(i);
+                me.limitsTable{i,2} = diffs(i);
                 me.limitsTable{i,3} = (logical(i) == false);
             end
             set(me.handles.ToleranceTable,'Data',me.limitsTable);

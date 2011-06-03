@@ -25,7 +25,6 @@ classdef SetupTest < handle
     methods
         setTest(me,test)
         m = getMultiplier(me, d)
-        genFakeParameters(me,idx,needsConverge)
         genOmConfig(me)
         genLogConfig(me)
         genNetworkConfig(me)

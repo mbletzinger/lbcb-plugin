@@ -6,7 +6,7 @@ end
 set(me.stepHandles{1},'String',sprintf('%d',simstep.step));
 set(me.stepHandles{2},'String',sprintf('%d',simstep.subStep));
 set(me.stepHandles{3},'String',sprintf('%d',simstep.correctionStep));
-if isempty(me.commandCurrentValueHandles1) == false
+if isempty(me.handles) == false
     me.updateGui();
 end
 end

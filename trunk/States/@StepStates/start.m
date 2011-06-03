@@ -5,5 +5,5 @@ me.gettingInitialPosition = false;
 me.currentAction.setState('NEXT STEP');
 me.statusBusy();
 me.started = true;
-me.nxtStep.start(false);
+me.nxtStep.start();
 end

@@ -145,6 +145,9 @@ classdef HandleFactory <  handle
             me.pa.archH = archH;
             
             me.corrections = Corrections(me.cdp);
+            me.corrections.pa = me.pa;
+            me.corrections.ed = me.ed;
+            me.corrections.dd = me.dd;
             
             for c =1:length(me.omStates)
                 me.omStates{c}.cdp = me.cdp;

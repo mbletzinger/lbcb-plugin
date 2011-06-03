@@ -2,7 +2,9 @@ function done = isDone(me)
 done = 0;
 a = me.currentAction.getState();
 if me.stateChanged()
-    me.gui.updateStepState(me.currentAction.idx)
+    if isempty(me.gui) == false
+        me.gui.updateStepState(me.currentAction.idx)
+    end
 end
 switch a
     case'NEXT STEP'
@@ -19,6 +21,7 @@ switch a
             return;
         end
         if odone % Step is accepted
+            
             me.currentAction.setState('OM PROPOSE EXECUTE');
             me.peOm.start()
         end
@@ -57,21 +60,21 @@ switch a
         me.arch.archive(me.dat.curStepData);
         me.gui.ddisp.updateAll(me.dat.curStepData);
         me.gui.updateStepState(me.currentAction.idx)
-        me.gui.updateStepTolerances(me.st);
+        me.gui.updateStepTolerances();
         me.gui.updateTimer(); %BG
         me.log.debug(dbstack,sprintf('Current Response: %s', ...
             me.dat.curStepData.toString()));
-        me.corrections.calculateCorrections(me.dat.correctionTarget, ...
+        me.corrections.determineCorrections(me.dat.correctionTarget, ...
             me.dat.curStepData);
         if me.gettingInitialPosition
             me.dat.initialPosition2Target();
             me.currentAction.setState('DONE');
-        elseif (me.corrections.needsCorrection(me.dat.curStepData) == false)...
+        elseif (me.corrections.needsCorrection() == false)...
                 && me.needsTriggering()
             me.brdcstRsp.start();
             me.currentAction.setState('BROADCAST TRIGGER');
         else
-            me.nxtStep.start(me.shouldBeCorrected());
+            me.nxtStep.start();
             me.currentAction.setState('NEXT STEP');
         end
         
@@ -80,7 +83,7 @@ switch a
         if bdone
             config = CorrectionsSettingsDao(me.cdp.cfg);
             %            pause(config.cfgValues(17));
-            me.nxtStep.start(me.shouldBeCorrected());
+            me.nxtStep.start();
             me.currentAction.setState('NEXT STEP');
         end
     case 'DONE'

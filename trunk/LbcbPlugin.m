@@ -22,7 +22,7 @@ function varargout = LbcbPlugin(varargin)
 
 % Edit the above text to modify the response to help LbcbPlugin
 
-% Last Modified by GUIDE v2.5 25-May-2011 05:28:27
+% Last Modified by GUIDE v2.5 02-Jun-2011 09:59:16
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -622,7 +622,7 @@ actions = getappdata(getLp(hObject),'actions');
 IncrementLimitsConfig('cfg',actions.hfact.cfg);
 
 
-function Messages_Callback(hObject, eventdata, handles)
+function MessageArchive_Callback(hObject, eventdata, handles)
 if strcmp(get(hObject, 'Checked'),'on')
     set(hObject,'Checked','off');
 else

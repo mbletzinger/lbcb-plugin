@@ -13,11 +13,8 @@ classdef Corrections < handle
             me.cdp = cdp;
             me.ncorrections = false(5,1);
         end
-        function nc = needsCorrection(me,step)
-            nc = canBeCorrected(step);
-            if nc
+        function nc = needsCorrection(me)
                 nc = sum(me.ncorrections) > 0;
-            end
         end
         function st = stepType(me)
             % 0 = step
@@ -35,5 +32,6 @@ classdef Corrections < handle
         canBeCorrected(me,step)
         determineCorrections(me,ctarget,step)
         prelimAdjust(me,curStep, nextStep)
+        calculate(me, curStep, prevStep, corTarget)
     end
 end

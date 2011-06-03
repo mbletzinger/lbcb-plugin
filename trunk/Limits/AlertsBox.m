@@ -6,6 +6,7 @@ classdef AlertsBox < handle
     end
     methods
         function me = AlertsBox()
+            me.list = {};
         end
         function add(me,text)
             if isempty(me.list)
@@ -15,7 +16,7 @@ classdef AlertsBox < handle
             l = length(me.list);
             nl = cell(l+1,1);
             nl(1:l) = me.list(:);
-            nl(l+1) = text;
+            nl{l+1} = text;
             me.list = nl;
         end
         function remove(me,text)
@@ -24,14 +25,14 @@ classdef AlertsBox < handle
             end
             l = length(me.list);
             if l == 1 && strcmp(me.list{1},text)
-                me.list = [];
+                me.list = {};
                 return;
             end
             nl = cell(l-1,1);
             ni = 1;
             for i = 1:l
                 if strcmp(me.list{i},text) == false
-                    nl(ni) = me.list{i};
+                    nl(ni) = me.list(i);
                     ni = ni + 1;
                 end
             end

@@ -25,7 +25,7 @@ else
     tt1=[num2str(hours),':',num2str(mins),':',num2str(secs),' - '];
 end
 set(me.handles.Timer,'String',sprintf('%s',[tt1 tt2]));
-if isempty(me.commandCurrentValueHandles1) == false
+if isempty(me.handles) == false
     me.updateGui();
 end
 me.stepTimes(2)=currenttime;

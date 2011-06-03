@@ -58,10 +58,10 @@ classdef IncrementLimits < handle
                 end
             end
         end
-        function fault = genAlert(lbcb, dof)
+        function fault = genAlert(me,lbcb, dof)
             lbcbS = { 'LBCB 1' 'LBCB 2' };
             dofS = { 'Dx' 'Dy' 'Dz' 'Rx' 'Ry' 'Rz' 'Fx' 'Fy' 'Fz' 'Mx' 'My' 'Mz' };
-            fault = sprint('%s %s has exceeded the increment limit', lbcbS{lbcb},dofS{dof});
+            fault = sprintf('%s %s has exceeded the increment limit', lbcbS{lbcb},dofS{dof});
         end
     end
 end

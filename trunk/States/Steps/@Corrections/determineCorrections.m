@@ -3,11 +3,17 @@ scfg = StepCorrectionConfigDao(me.cdp.cfg);
 doCorrections = scfg.doCorrections;
 
 if isempty(doCorrections)
+    me.ncorrections = false(5,1);
     return;
 end
 
 me.checkedStepNumber = step.stepNum;
-me.neededCorrections = false(length(doCorrections),1);
+me.ncorrections = false(length(doCorrections),1);
+
+if me.canBeCorrected(step) == false
+    return;
+end
+
 for lv = 1:length(doCorrections)
     if doCorrections(lv) == true;
         switch lv

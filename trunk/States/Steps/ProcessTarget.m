@@ -21,10 +21,13 @@ classdef ProcessTarget < Step
             me.currentAction.setState('CHECK LIMITS');
             me.statusBusy();
             me.accepted = me.autoAccept;
-            me.gui.updateCommandTable();
-            me.gui.updateStepsDisplay(me.dat.nextStepData.stepNum);
-            me.gui.blinkAcceptButton(~me.accepted);
-%            me.log.debug(dbstack,sprintf('Current Target: %s',me.dat.nextStepData.toString()));
+            if isempty(me.gui) == false
+                me.gui.updateCommandTable();
+                me.gui.updateStepsDisplay(me.dat.nextStepData.stepNum);
+                me.gui.blinkAcceptButton(~me.accepted);
+            else
+                    me.log.debug(dbstack,sprintf('Current Target: %s',me.dat.nextStepData.toString()));
+            end
         end
         function edited(me)
             me.currentAction.setState('CHECK LIMITS');
@@ -42,7 +45,7 @@ classdef ProcessTarget < Step
             switch a
                 case 'CHECK LIMITS'
                     within = me.withinLimits();
-                    me.gui.updateLimits(me.lc);
+                    me.gui.updateAlerts();
                     if within
                         if me.accepted
                             me.currentAction.setState('DONE');

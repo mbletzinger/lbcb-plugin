@@ -48,22 +48,22 @@ classdef Archiver < handle
             if length(step.lbcbCps) > 1
                 values = [ values step.lbcbCps{2}.command.disp' step.lbcbCps{2}.command.force' ];
             end
-            me.commandA.write(step.stepNum.toString(),values,'');
+            me.commandA.write(step.stepNum.toString(),values);
             
             values = [ step.lbcbCps{1}.response.lbcb.disp' step.lbcbCps{1}.response.lbcb.force' ];
             if length(step.lbcbCps) > 1
                 values = [ values step.lbcbCps{2}.response.lbcb.disp' step.lbcbCps{2}.response.lbcb.force' ];
             end
-            me.lbcbReadA.write(step.stepNum.toString(),values,'');
+            me.lbcbReadA.write(step.stepNum.toString(),values);
             
             values = [ step.lbcbCps{1}.response.ed.disp' step.lbcbCps{1}.response.ed.force' ];
             if length(step.lbcbCps) > 1
                 values = [ values step.lbcbCps{2}.response.ed.disp' step.lbcbCps{2}.response.ed.force' ];
             end
-            me.edReadA.write(step.stepNum.toString(),values,'');
-            me.extSensA.write(step.stepNum.toString(),step.externalSensorsRaw,'');
+            me.edReadA.write(step.stepNum.toString(),values);
+            me.extSensA.write(step.stepNum.toString(),step.externalSensorsRaw);
             if isempty(step.cData.values) == false
-                me.corDataA.write(step.stepNum.toString(),step.cData.values,'');
+                me.corDataA.write(step.stepNum.toString(),step.cData.values);
                 me.setCorDataHeaders(step);
             end
         end
