@@ -1,4 +1,4 @@
-% =====================================================================================================================
+  % =====================================================================================================================
 % Class which calculates the position of an LBCB platform based on external
 % sensors
 %
@@ -16,24 +16,50 @@
 % =====================================================================================================================
 classdef ElasticDeformation < CorrectionVariables
     properties
-        base = [];
-        plat = [];
-        perturbations = [];
-        potTol = [];
-        activeDofs = [];
-        st = [];
+        %==
+        % properties of these two variables
+        % size of each one: 3 x (# of sensors)
+        fixedLocations = [];
+        pinLocations = [];
+        %==
         log = Logger('ElasticDeformation');
-        isLbcb1 = 0;
+        isLbcb1;
+        %==
+        % properties of these two variables 
+        % they are initial and current readings of external sensors
+        % displacements = curReadings - initialReadings;
+        % size: (# of sensors) x 1
+	    initialReadings = [];       
+        curReadings = []; 
+        %==
+        % optimization setting for "optimset"
+        % optSetting.maxfunevals : max. # of iterations for minimizing
+        %                          the objective function (default = 1000)
+        % optSetting.maxiter : max. # of iterations for optimizing the
+        %                      control point (default = 100)
+        % optSetting.tolfun : tolerance of the objective function
+        %                     (default = 1e-8)
+        % optSetting.tolx: tolerance of the control point
+        %                  (default = 1e-12)
+        % optSetting.jacob: switch for jacobian matrix, 'on' or 'off'
+        %                   (default = 'on')
+	    optSetting = [];
+        %==
+        % a bond for needsCorrection
+        % size: 2 x 1, in which first one is for translations and the
+        % second one is for rotations
+        within = [];
     end
     methods
         function me = ElasticDeformation(cdp,isLbcb1)
             me = me@CorrectionVariables(cdp);
             me.isLbcb1 = isLbcb1;
         end
-        adjustTarget(me,curLbcbCp)
-        % calculate LBCB position based on external sensor readings.
-        calculate(me, curLbcbCp,prevLbcbCp,targetCps)
+        adjustTarget(me,correctionTarget,curResponse,curCommand)
+        prelimAdjust(me,prevCorrection,curCommand)
+        curResponse = calculate(me,curCommand)
         loadConfig(me)
-        yes = needsCorrection(me,lbcbCps,targetCps)
+        yes = needsCorrection(me,curResponse, correctionTarget)
+	
     end
 end
