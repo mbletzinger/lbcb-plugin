@@ -1,20 +1,12 @@
-function  calculate(me, curStep, prevStep, corTarget)
+function  calculate(me, curStep)
 %calculate elastic deformations
 ccfg = StepCorrectionConfigDao(me.cdp.cfg);
 doC = ccfg.doCalculations;
 if isempty(doC) || doC(1)
     for l = 1: me.cdp.numLbcbs()
         ccps = curStep.lbcbCps{l};
-        pcps = {};
-        if isempty(prevStep) == false
-            pcps = prevStep.lbcbCps{l};
-        end
-        if isempty(corTarget)
-            tcps = ccps;
-        else
-            tcps = corTarget.lbcbCps{l};
-        end
-        me.ed{l}.calculate(ccps,pcps,tcps);
+        rsp = me.ed{l}.calculate(ccps.command);
+        ccps.response.ed.disp = rsp;
     end
 end
 for d = 1:4

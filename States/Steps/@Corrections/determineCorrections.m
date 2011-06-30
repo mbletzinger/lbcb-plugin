@@ -18,14 +18,13 @@ for lv = 1:length(doCorrections)
     if doCorrections(lv) == true;
         switch lv
             case 1
-                n1 = me.ed{1}.needsCorrection(step.lbcbCps{1},...
-                    ctarget.lbcbCps{1});
-                n2 = 0;
-                if me.cdp.numLbcbs() == 2
-                    n2 = me.ed{2}.needsCorrection(step.lbcbCps{2},...
-                        ctarget.lbcbCps{2});
+                need = 0;
+                for lbcb = 1:me.cdp.numLbcbs()
+                    n = me.ed{lbcb}.needsCorrection(step.lbcbCps{lbcb}.response.disp,...
+                        ctarget.lbcbCps{lbcb}.command);
+                    need = need + n;
                 end
-                edCorrect = (n1 + n2) > 0;
+                edCorrect = need > 0;
                 me.ncorrections(lv) = edCorrect;
             case { 2 3 4 5 }
                 ddCorrect = me.dd{lv-1}.needsCorrection(step);

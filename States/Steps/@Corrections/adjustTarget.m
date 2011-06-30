@@ -1,11 +1,12 @@
-function adjustTarget(me, target)
+function adjustTarget(me, ctarget, curStep,nextStep)
 edCorrected = false;
-if me.ncorrections(1)
-    me.ed{1}.adjustTarget(target.lbcbCps{1});
-    if me.cdp.numLbcbs() == 2
-        me.ed{2}.adjustTarget(target.lbcbCps{2});
+for lbcb = 1:me.cdb.numLbcbs()
+    if me.ncorrections(lbcb)
+        me.ed{lbcb}.adjustTarget(ctarget.lbcbCps{1}.command,...
+            curStep.lbcbCps{lbcb}.response.disp,...
+            nextStep.lbcbCps{lbcb}.command);
+        edCorrected = true;
     end
-    edCorrected = true;
 end
 
 for ddl = 2:length(me.Correction)
@@ -18,4 +19,3 @@ for ddl = 2:length(me.Correction)
     end
 end
 end
- 
