@@ -5,7 +5,7 @@ classdef OmConfigActions < handle
         ocfg
         log = Logger('OmConfigActions')
         aps
-        pertTable = cell(6,2);
+        correctTable
         selected;
         oesl
     end
@@ -33,11 +33,15 @@ classdef OmConfigActions < handle
                 case 3
                     o.sensitivity = data;
                 case { 4 5 6 }
-                    o.base(indices(2) - 3) = data;
+                    o.fixedLocation(indices(2) - 3) = data;
                 case { 7 8 9 }
-                    o.plat(indices(2) - 6) = data;
+                    o.pinLocation(indices(2) - 6) = data;
                 case 10
                     o.sensorErrorTol = data;
+                case 11
+                    o.sensorLower = data;
+                case 12
+                    o.sensorUpper = data;
                 otherwise
                     me.log.error(dbstack,sprintf('Cannot handle column %d',indices(2)));
             end
@@ -46,49 +50,104 @@ classdef OmConfigActions < handle
         end
         function initialize(me,handles)
             me.handles = handles;
-            pert1 = me.ocfg.perturbationsL1;
-            pert2 = me.ocfg.perturbationsL2;
-            me.pertTable = cell(6,2);
+            cor1 = me.ocfg.needsCorrectionL1;
+            cor2 = me.ocfg.needsCorrectionL2;
+            me.correctTable = false(6,2);
             for i = 1:6
-                if pert1.dispDofs(i)
-                    me.pertTable{i,1} = sprintf('%f',pert1.disp(i));
+                if isempty(cor1) == false
+                    me.correctTable(i,1) = cor1(i);
                 end
-                if pert2.dispDofs(i)
-                    me.pertTable{i,2} = sprintf('%f',pert2.disp(i));
+                if isempty(cor2) == false
+                    me.correctTable(i,2) = cor2(i);
                 end
             end
             set(me.handles.sensorTable,'Data',me.table);
             format = {'char',me.aps.states,'numeric','numeric','numeric','numeric','numeric','numeric','numeric','numeric'};
             set(me.handles.sensorTable,'ColumnFormat',format);
             set(me.handles.numLbcbs,'String',{'1','2'});
-            set(me.handles.numLbcbs,'Value',me.ocfg.numLbcbs);
-            set(me.handles.pertTable,'Data',me.pertTable);
-            me.uDisplay();
             
+            set(me.handles.numLbcbs,'Value',me.ocfg.numLbcbs);       
+            set(me.handles.transPert,'String',sprintf('%9.7e',me.ocfg.transPert));
+            set(me.handles.rotPert,'String',sprintf('%9.7e',me.ocfg.rotPert));
+            set(me.handles.maxFunEvals,'String',sprintf('%d',me.ocfg.optsetMaxFunEvals));
+            set(me.handles.maxIter,'String',sprintf('%d',me.ocfg.optsetMaxIter));
+            set(me.handles.tolFun,'String',sprintf('%9.7e',me.ocfg.optsetTolFun));
+            set(me.handles.tolX,'String',sprintf('%9.7e',me.ocfg.optsetTolX));
+            set(me.handles.jacob,'Value',me.ocfg.optsetJacob);
+            
+            set(me.handles.correctionTable,'Data',me.correctTable);
+            me.uDisplay();
         end
+        
         function setNumLbcbs(me,value)
             me.ocfg.numLbcbs = value;
         end
-        function setPertCell(me,indices,str)
-            if indices(2) == 1
-                pert = me.ocfg.perturbationsL1;
-            else
-                pert = me.ocfg.perturbationsL2;
+        function setTransPert(me,str)
+            value = str2double(str);
+            if isempty(value)
+                me.log.error(dbstack,sprintf('"%s" is not a number', str));
+                return;
             end
-            if strcmp(str,'') || isempty(str)
-                pert.dispDofs(indices(1)) = 0;
-            else
-                data = sscanf(str,'%f');
-                if isempty(data)
-                    me.log.error(dbstack,sprintf('"%s" is not a valid input',str));
-                    return;
-                end
-                pert.setDispDof(indices(1),data);
+            me.ocfg.transPert = value;
+        end
+        function setRotPert(me,str)
+            value = str2double(str);
+            if isempty(value)
+                me.log.error(dbstack,sprintf('"%s" is not a number', str));
+                return;
             end
+            me.ocfg.rotPert = value;
+        end
+        function setOptsetMaxFunEvals(me,str)
+            value = sscanf(str,'%d');
+            if isempty(value)
+                me.log.error(dbstack,sprintf('"%s" is not a number', str));
+                return;
+            end
+            me.ocfg.optsetMaxFunEvals = value;
+        end
+        function setOptsetMaxIter(me,str)
+            value = sscanf(str,'%d');
+            if isempty(value)
+                me.log.error(dbstack,sprintf('"%s" is not a number', str));
+                return;
+            end
+            me.ocfg.optsetMaxIter = value;
+        end
+        function setOptsetTolFun(me,str)
+            value = str2double(str);
+            if isempty(value)
+                me.log.error(dbstack,sprintf('"%s" is not a number', str));
+                return;
+            end
+            me.ocfg.optsetTolFun = value;
+        end
+        function setOptsetTolX(me,str)
+            value = str2double(str);
+            if isempty(value)
+                me.log.error(dbstack,sprintf('"%s" is not a number', str));
+                return;
+            end
+            me.ocfg.optsetTolX = value;
+        end
+        function setOptsetJacob(me,value)
+            me.ocfg.optsetJacob = value;
+        end
+        
+        function setCorrectCell(me,indices,str)
             if indices(2) == 1
-                me.ocfg.perturbationsL1 = pert;
+                pert = me.ocfg.needsCorrectionL1;
             else
-                me.ocfg.perturbationsL2 = pert;
+                pert = me.ocfg.needsCorrectionL2;
+            end
+            if isempty(pert)
+                pert = zeros(6,1);
+            end
+            pert(indices(1)) = str;
+            if indices(2) == 1
+                me.ocfg.needsCorrectionL1 = pert;
+            else
+                me.ocfg.needsCorrectionL2 = pert;
             end
         end
         function selectedRow(me,indices)
@@ -99,22 +158,18 @@ classdef OmConfigActions < handle
         end
         function addSensor(me)
             me.oesl.insertSensor(me.selected)
-            me.oesl.setList();
             me.uDisplay();
         end
         function removeSensor(me)
             me.oesl.removeSensor(me.selected)
-            me.oesl.setList();
             me.uDisplay();
         end
         function upSensor(me)
             me.oesl.upSensor(me.selected)
-            me.oesl.setList();
             me.uDisplay();
         end
         function downSensor(me)
             me.oesl.downSensor(me.selected)
-            me.oesl.setList();
             me.uDisplay();
         end
         function uDisplay(me)
@@ -124,17 +179,19 @@ classdef OmConfigActions < handle
                 me.table{s,1} = o.sensorName;
                 me.table{s,2} = o.apply2Lbcb;
                 me.table{s,3} = o.sensitivity;
-                if isempty(o.base) == false
-                    me.table{s,4} = o.base(1);
-                    me.table{s,5} = o.base(2);
-                    me.table{s,6} = o.base(3);
+                if isempty(o.fixedLocation) == false
+                    me.table{s,4} = o.fixedLocation(1);
+                    me.table{s,5} = o.fixedLocation(2);
+                    me.table{s,6} = o.fixedLocation(3);
                 end
-                if isempty(o.plat) == false
-                    me.table{s,7} = o.plat(1);
-                    me.table{s,8} = o.plat(2);
-                    me.table{s,9} = o.plat(3);
+                if isempty(o.pinLocation) == false
+                    me.table{s,7} = o.pinLocation(1);
+                    me.table{s,8} = o.pinLocation(2);
+                    me.table{s,9} = o.pinLocation(3);
                 end
                 me.table{s,10} = o.sensorErrorTol;
+                me.table{s,11} = o.sensorLower;
+                me.table{s,12} = o.sensorUpper;
             end
             set(me.handles.sensorTable,'Data',me.table);
         end

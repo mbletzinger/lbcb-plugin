@@ -22,7 +22,7 @@ function varargout = StepConfig(varargin)
 
 % Edit the above text to modify the response to help StepConfig
 
-% Last Modified by GUIDE v2.5 04-Feb-2011 11:48:57
+% Last Modified by GUIDE v2.5 08-Jul-2011 18:42:56
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -138,10 +138,10 @@ end
 handles.actions.setTriggeringPerSubstep('0');
 
 
-% --- Executes when entered data in editable cell(s) in CorrectionTable.
-function CorrectionTable_CellEditCallback(hObject, eventdata, handles)
+% --- Executes when entered data in editable cell(s) in ddCorrectionTable.
+function ddCorrectionTable_CellEditCallback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
-handles.actions.setCorrectionCell(eventdata.Indices,eventdata.EditData);
+handles.actions.setCorrectionCell(eventdata.Indices,eventdata.EditData,1);
 
 
 % --- Executes on selection change in edPrelimAdjust.
@@ -158,3 +158,6 @@ handles.actions.setPrelimAdjust(get(hObject,'Value'),2);
 function triggerDelay_Callback(hObject, eventdata, handles)
 handles.actions.setTriggeringDelay(get(hObject,'String'));
 
+
+function edCorrectionTable_CellEditCallback(hObject, eventdata, handles)
+handles.actions.setCorrectionCell(eventdata.Indices,eventdata.EditData,0);

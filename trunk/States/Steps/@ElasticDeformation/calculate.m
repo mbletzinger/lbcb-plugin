@@ -14,7 +14,7 @@
 % edCalc(me,ccps, pcps, tcps);
 % end
 
-function curResponse = calculate(me,curCommand)
+function curResponse = calculate(me, prevResponse, sensorReadings, initialReadings)
 
 %------------------
 % obtain all variables
@@ -22,7 +22,7 @@ function curResponse = calculate(me,curCommand)
 xpin = me.pinLocations;
 xfix = me.fixedLocations;
 %==
-disp = curReadings - initialReadings;
+disp = sensorReadings - initialReadings;
 
 %------------------
 % Check
@@ -38,44 +38,6 @@ if size(disp,2) ~= 1
     disp = disp';
 end
 
-%------------------
-% Make default values for optimization setting
-% optSetting.maxfunevals : max. # of iterations for minimizing
-%                          the objective function (default = 1000)
-% optSetting.maxiter : max. # of iterations for optimizing the
-%                      control point (default = 100)
-% optSetting.tolfun : tolerance of the objective function
-%                     (default = 1e-8)
-% optSetting.tolx: tolerance of the control point
-%                  (default = 1e-12)
-% optSetting.jacob: switch for jacobian matrix, 'on' or 'off'
-%                   (default = 'on')
-%------------------
-if isempty(me.optSetting.maxfunevals)
-    maxfunevals = 1000;
-else
-    maxfunevals = me.optSetting.maxfunevals;
-end
-if isempty(me.optSetting.maxiter)
-    maxiter = 100;
-else
-    maxiter = me.optSetting.maxiter;
-end
-if isempty(me.optSetting.tolfun)
-    tolfun = 1e-8;
-else
-    tolfun = me.optSetting.tolfun;
-end
-if isempty(me.optSetting.tolx)
-    tolx = 1e-12;
-else
-    tolx = me.optSetting.tolx;
-end
-if isempty(me.optSetting.jacob)
-    jacob = 'on';
-else
-    jacob = me.optSetting.jacob;
-end
 %==
 opt = optimset('MaxFunEvals',maxfunevals,'MaxIter',maxiter,...
                'TolFun',tolfun,'TolX',tolx,...
@@ -88,7 +50,7 @@ opt = optimset('MaxFunEvals',maxfunevals,'MaxIter',maxiter,...
 % this function still has some additional features which can be called in
 % the future.
 %------------------
-curResponse = curCommand + disp2controlpoint(disp,xpin,xfix,[],curCommand,3,opt);
+curResponse = prevResponse + disp2controlpoint(disp,xpin,xfix,[],prevResponse,3,opt);
 
 %------------------
 % end

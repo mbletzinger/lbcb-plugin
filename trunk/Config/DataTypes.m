@@ -40,8 +40,8 @@ classdef DataTypes < handle
             result = sscanf(str,'%f');
         end
         function setDouble(me,key,value)
-            me.cfg.props.setProperty(key,sprintf('%f',value));
-            me.cfg.logValueChange(key,sprintf('%f',value));
+            me.cfg.props.setProperty(key,sprintf('%9.7e',value));
+            me.cfg.logValueChange(key,sprintf('%9.7e',value));
         end
         function result = getBool(me,key,default)
             str = char(me.cfg.props.getProperty(key));
@@ -116,6 +116,22 @@ classdef DataTypes < handle
             me.cfg.props.setPropertyList(key,valS);
             me.cfg.logListChange(key,valS);
         end
+        function result = getBoolVector(me,key,default)
+            resultSL = me.cfg.props.getPropertyList(key);
+            if isempty(resultSL)
+                result = default;
+                return;
+            end
+            result = me.su.sl2ia(resultSL);
+        end
+        function setBoolVector(me,key,value)
+            if isempty(value)
+                return
+            end
+            valS = me.su.ia2sl(value);
+            me.cfg.props.setPropertyList(key,valS);
+            me.cfg.logListChange(key,valS);
+        end
         function result = getTarget(me,key)
             result = Target;
             perts = me.getDoubleVector(key,ones(6,1) * 1000);
@@ -137,6 +153,9 @@ classdef DataTypes < handle
             me.setDoubleVector(key,perts);
         end
         function result = getTransVector(me,key,itemkey,itemSize)
+            if itemSize == 0
+                itemSize = 1;
+            end
             result = cell(itemSize,1);
             for i = 1: itemSize
                 resultSL = me.cfg.props.getPropertyList(sprintf('%s.%s%d',key,itemkey,i));

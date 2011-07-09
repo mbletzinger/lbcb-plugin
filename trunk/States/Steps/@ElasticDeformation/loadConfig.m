@@ -46,4 +46,43 @@ end
 i = i -1;
 me.perturbations = mperts(1:i);
 me.activeDofs = mact(1:i);
+
+%------------------
+% Make default values for optimization setting
+% optSetting.maxfunevals : max. # of iterations for minimizing
+%                          the objective function (default = 1000)
+% optSetting.maxiter : max. # of iterations for optimizing the
+%                      control point (default = 100)
+% optSetting.tolfun : tolerance of the objective function
+%                     (default = 1e-8)
+% optSetting.tolx: tolerance of the control point
+%                  (default = 1e-12)
+% optSetting.jacob: switch for jacobian matrix, 'on' or 'off'
+%                   (default = 'on')
+%------------------
+if isempty(me.optSetting.maxfunevals)
+    maxfunevals = 1000;
+else
+    maxfunevals = me.optSetting.maxfunevals;
+end
+if isempty(me.optSetting.maxiter)
+    maxiter = 100;
+else
+    maxiter = me.optSetting.maxiter;
+end
+if isempty(me.optSetting.tolfun)
+    tolfun = 1e-8;
+else
+    tolfun = me.optSetting.tolfun;
+end
+if isempty(me.optSetting.tolx)
+    tolx = 1e-12;
+else
+    tolx = me.optSetting.tolx;
+end
+if isempty(me.optSetting.jacob)
+    jacob = 'on';
+else
+    jacob = me.optSetting.jacob;
+end
 end
