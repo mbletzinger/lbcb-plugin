@@ -43,7 +43,7 @@ classdef ElasticDeformation < CorrectionVariables
         %                  (default = 1e-12)
         % optSetting.jacob: switch for jacobian matrix, 'on' or 'off'
         %                   (default = 'on')
-	    optSetting = [];
+	    optSetting;
         %==
         % a bond for needsCorrection
         % size: 2 x 1, in which first one is for translations and the
@@ -55,9 +55,9 @@ classdef ElasticDeformation < CorrectionVariables
             me = me@CorrectionVariables(cdp);
             me.isLbcb1 = isLbcb1;
         end
-        adjustTarget(me,correctionTarget,curResponse,curCommand)
+        nextCommand = adjustTarget(me,correctionTarget,curResponse,curCommand)
         prelimAdjust(me,prevCorrection,curCommand)
-        curResponse = calculate(me,curCommand)
+        curResponse = calculate(me, prevResponse, sensorReadings, initialReadings)
         loadConfig(me)
         yes = needsCorrection(me,curResponse, correctionTarget)
 	

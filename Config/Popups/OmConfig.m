@@ -22,7 +22,7 @@ function varargout = OmConfig(varargin)
 
 % Edit the above text to modify the response to help OmConfig
 
-% Last Modified by GUIDE v2.5 29-May-2011 13:06:07
+% Last Modified by GUIDE v2.5 05-Jul-2011 15:12:03
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -83,7 +83,7 @@ guidata(hObject, handles);
 uiwait(handles.OmConfig);
 
 
-function varargout = OmConfig_OutputFcn(hObject, eventdata, handles) 
+function varargout = OmConfig_OutputFcn(hObject, eventdata, handles)  %#ok<INUSD>
 varargout{1} = 1;
 
 
@@ -97,8 +97,8 @@ function sensorTable_CellEditCallback(hObject, eventdata, handles) %#ok<INUSL,*D
 handles.actions.setCell(eventdata.Indices,eventdata.NewData,eventdata.Error);
 
 
-function pertTable_CellEditCallback(hObject, eventdata, handles)
-handles.actions.setPertCell(eventdata.Indices,eventdata.EditData);
+function correctionTable_CellEditCallback(hObject, eventdata, handles)
+handles.actions.setCorrectCell(eventdata.Indices,eventdata.EditData);
 
 
 function addSensor_Callback(hObject, eventdata, handles)
@@ -117,3 +117,26 @@ handles.actions.upSensor();
 
 function downSensor_Callback(hObject, eventdata, handles)
 handles.actions.downSensor();
+
+function maxFunEvals_Callback(hObject, eventdata, handles)
+handles.actions.setOptsetMaxFunEvals(get(hObject,'String'));
+
+function maxIter_Callback(hObject, eventdata, handles)
+handles.actions.setOptsetMaxIter(get(hObject,'String'));
+
+function tolFun_Callback(hObject, eventdata, handles)
+handles.actions.setOptsetTolFun(get(hObject,'String'));
+
+function tolX_Callback(hObject, eventdata, handles)
+handles.actions.setOptsetTolX(get(hObject,'String'));
+
+function jacob_Callback(hObject, eventdata, handles)
+handles.actions.setOptsetJacob(get(hObject,'String'));
+
+
+function transPert_Callback(hObject, eventdata, handles)
+handles.actions.setTransPert(get(hObject,'String'));
+
+
+function rotPert_Callback(hObject, eventdata, handles)
+handles.actions.setRotPert(get(hObject,'String'));

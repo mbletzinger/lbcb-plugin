@@ -16,11 +16,20 @@ classdef OmConfigDao < handle
         sensorNames
         apply2Lbcb
         sensitivities
-        base
-        plat
+        fixedLocation
+        pinLocation
         sensorErrorTol
-        perturbationsL1
-        perturbationsL2
+        sensorUpper
+        sensorLower
+        transPert
+        rotPert
+        needsCorrectionL1
+        needsCorrectionL2
+        optsetMaxFunEvals
+        optsetMaxIter
+        optsetTolFun
+        optsetTolX
+        optsetJacob
     end
     properties
         dt;
@@ -64,21 +73,33 @@ classdef OmConfigDao < handle
         function set.sensitivities(me,value)
             me.dt.setDoubleVector('om.sensitivities',value);
         end
-        function result = get.base(me)
+        function result = get.needsCorrectionL1(me)
+            result = me.dt.getDoubleVector('om.needsCorrection.L1',[]);
+        end
+        function set.needsCorrectionL1(me,value)
+            me.dt.setDoubleVector('om.needsCorrection.L1',value);
+        end
+        function result = get.needsCorrectionL2(me)
+            result = me.dt.getDoubleVector('om.needsCorrection.L2',[]);
+        end
+        function set.needsCorrectionL2(me,value)
+            me.dt.setDoubleVector('om.needsCorrection.L2',value);
+        end
+        function result = get.fixedLocation(me)
             sz = me.numExtSensors;
-            result = me.dt.getTransVector('om.location.base','ext.sensor',sz);
+            result = me.dt.getTransVector('om.location.fixedLocation','ext.sensor',sz);
         end
-        function set.base(me,value)
+        function set.fixedLocation(me,value)
             sz = length(value);
-            me.dt.setTransVector('om.location.base','ext.sensor',sz,value);
+            me.dt.setTransVector('om.location.fixedLocation','ext.sensor',sz,value);
         end
-        function result = get.plat(me)
+        function result = get.pinLocation(me)
             sz = me.numExtSensors;
-            result = me.dt.getTransVector('om.location.plat','ext.sensor',sz);
+            result = me.dt.getTransVector('om.location.pinLocation','ext.sensor',sz);
         end
-        function set.plat(me,value)
+        function set.pinLocation(me,value)
             sz = length(value);
-            me.dt.setTransVector('om.location.plat','ext.sensor',sz,value);
+            me.dt.setTransVector('om.location.pinLocation','ext.sensor',sz,value);
         end
         function result = get.sensorErrorTol(me)
             result = me.dt.getDoubleVector('om.sensor.error.tol',[0]);
@@ -86,17 +107,59 @@ classdef OmConfigDao < handle
         function set.sensorErrorTol(me,value)
             me.dt.setDoubleVector('om.sensor.error.tol',value);
         end
-        function result = get.perturbationsL1(me)
-            result = me.dt.getTarget('om.sensor.perturbations.lbcb1');
+        function result = get.sensorUpper(me)
+            result = me.dt.getDoubleVector('om.sensor.limit.upper',[0]);
         end
-        function set.perturbationsL1(me,value)
-            me.dt.setTarget('om.sensor.perturbations.lbcb1',value);
+        function set.sensorUpper(me,value)
+            me.dt.setDoubleVector('om.sensor.limit.upper',value);
         end
-        function result = get.perturbationsL2(me)
-            result = me.dt.getTarget('om.sensor.perturbations.lbcb2');
+        function result = get.sensorLower(me)
+            result = me.dt.getDoubleVector('om.sensor.limit.lower',[0]);
         end
-        function set.perturbationsL2(me,value)
-            me.dt.setTarget('om.sensor.perturbations.lbcb2',value);
+        function set.sensorLower(me,value)
+            me.dt.setDoubleVector('om.sensor.limit.lower',value);
+        end
+        function result = get.transPert(me)
+            result = me.dt.getDouble('om.sensor.perturbations.trans',0.000001);
+        end
+        function set.transPert(me,value)
+            me.dt.setDouble('om.sensor.perturbations.trans',value);
+        end
+        function result = get.rotPert(me)
+            result = me.dt.getDouble('om.sensor.perturbations.rot',0.0000001);
+        end
+        function set.rotPert(me,value)
+            me.dt.setDouble('om.sensor.perturbations.rot',value);
+        end
+        function result = get.optsetMaxFunEvals(me)
+            result = me.dt.getInt('om.optset.maxFunEvals',1000);
+        end
+        function set.optsetMaxFunEvals(me,value)
+            me.dt.setInt('om.optset.maxFunEvals',value);
+        end
+        function result = get.optsetMaxIter(me)
+            result = me.dt.getInt('om.optset.maxIter',100);
+        end
+        function set.optsetMaxIter(me,value)
+            me.dt.setInt('om.optset.maxIter',value);
+        end
+        function result = get.optsetTolFun(me)
+            result = me.dt.getDouble('om.optset.tolFun',1e-8);
+        end
+        function set.optsetTolFun(me,value)
+            me.dt.setDouble('om.optset.tolFun',value);
+        end
+        function result = get.optsetTolX(me)
+            result = me.dt.getDouble('om.optset.tolX',1e-12);
+        end
+        function set.optsetTolX(me,value)
+            me.dt.setDouble('om.optset.tolX',value);
+        end
+        function result = get.optsetJacob(me)
+            result = me.dt.getBool('om.optset.jacob',1);
+        end
+        function set.optsetJacob(me,value)
+            me.dt.setBool('om.optset.jacob',value);
         end
     end
 end

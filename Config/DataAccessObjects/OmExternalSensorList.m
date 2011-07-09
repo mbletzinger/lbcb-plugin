@@ -12,19 +12,28 @@ classdef OmExternalSensorList < handle
             for s = 1:nm
                 me.list{s} = OmExternalSensor(cfg,s);
             end
+            me.refresh();
         end
         function setList(me)
             for s = 1: length(me.list)
+                me.list{s}.idx = s;
                 me.list{s}.setMe();
+            end
+            ocfg = OmConfigDao(me.cfg);
+            ocfg.numExtSensors = length(me.list);
+        end
+        function refresh(me)
+            ocfg = OmConfigDao(me.cfg);
+            for s = 1:ocfg.numExtSensors
+                me.list{s}.getMe();
             end
         end
         function idxO = insertSensor(me,idx)
-            ocfg = OmConfigDao(me.cfg);
             if isempty(me.list)
                 idxO = 1;
                 me.list = cell(1,1);
                 me.list{idxO} = OmExternalSensor(me.cfg,idxO);
-                ocfg.numExtSensors = length(me.list);
+                me.setList();
                 return;
             end
             nm = length(me.list);
@@ -34,7 +43,7 @@ classdef OmExternalSensorList < handle
                 lst(1:nm) = me.list(1:nm);
                 lst{idxO} = OmExternalSensor(me.cfg,idxO);
                 me.list = lst;
-                ocfg.numExtSensors = length(me.list);
+                me.setList();
                 return;
             end
             if idx == nm
@@ -45,7 +54,7 @@ classdef OmExternalSensorList < handle
                 lst(last) = me.list(nm);
                 lst{idxO} = OmExternalSensor(me.cfg,idxO);
                 me.list = lst;
-                ocfg.numExtSensors = length(me.list);
+                me.setList();
                 return;
             end
             if idx == 1
@@ -55,7 +64,7 @@ classdef OmExternalSensorList < handle
                 lst(2:last) = me.list(1:nm);
                 lst{idxO} = OmExternalSensor(me.cfg,idxO);
                 me.list = lst;
-                ocfg.numExtSensors = length(me.list);
+                me.setList();
                 return;
             end
             last = nm + 1;
@@ -65,7 +74,7 @@ classdef OmExternalSensorList < handle
             lst(idx + 1:last) = me.list(idx:nm);
             lst{idxO} = OmExternalSensor(me.cfg,idxO);
             me.list = lst;
-            ocfg.numExtSensors = length(me.list);
+            me.setList();
         end
         function removeSensor(me,idx)
             ocfg = OmConfigDao(me.cfg);
@@ -78,26 +87,26 @@ classdef OmExternalSensorList < handle
                 ocfg.numExtSensors = 0;
                 return;
             end
-            if nm > idx
+            if idx > nm
                 return;
             end
             lst = cell(nm - 1,1);
             if idx == nm
                 lst(1:nm -1 ) = me.list(1:nm - 1);
                 me.list = lst;
-                ocfg.numExtSensors = length(me.list);
+                me.setList();
                 return;
             end
             if idx == 1
                 lst(1:nm - 1) = me.list(2:nm);
                 me.list = lst;
-                ocfg.numExtSensors = length(me.list);
+                me.setList();
                 return;
             end
             lst(1:idx - 1)= me.list(1:idx - 1);
             lst(idx:nm - 1)= me.list(idx + 1:nm);
             me.list = lst;
-            ocfg.numExtSensors = length(me.list);
+            me.setList();
         end
         function upSensor(me,idx)
             if isempty(me.list)
@@ -115,6 +124,7 @@ classdef OmExternalSensorList < handle
             o.idx = idx - 1;
             lst{idx - 1} = o;
             me.list = lst;
+            me.setList();
         end
         function downSensor(me,idx)
             if isempty(me.list)
@@ -132,6 +142,7 @@ classdef OmExternalSensorList < handle
             o.idx = idx + 1;
             lst{idx + 1} = o;
             me.list = lst;
+            me.setList();
         end
         function str = toString(me)
             str = '';

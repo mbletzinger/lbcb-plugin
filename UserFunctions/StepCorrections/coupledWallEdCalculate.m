@@ -81,6 +81,7 @@ if sum(abs(errors)<me.potTol) == length(activeDOFs)
 end
 
 while pass == 0
+    % if the offsets are wrong it this will never exit
     deltaest = (Jacobian\(actualLengths - lengthscalc)')' + deltaest;
     
     for d = 1:length(activeDOFs)
