@@ -93,15 +93,6 @@ classdef ConfigDaoProvider < handle
             else
                 inc = scfg.substepIncL2;
             end
-        end
-        function yes = isCorrectDof(me,lbcb,dof)
-            ocfg = OmConfigDao(me.cfg);
-            correct = ocfg.needsCorrectionL1;
-            if lbcb == 2
-                correct = ocfg.needsCorrectionL2;
-            end
-            yes = correct(dof) > 0;
-        end
-        
+        end        
     end
 end

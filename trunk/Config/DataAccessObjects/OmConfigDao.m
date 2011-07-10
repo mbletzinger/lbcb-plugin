@@ -23,8 +23,6 @@ classdef OmConfigDao < handle
         sensorLower
         transPert
         rotPert
-        needsCorrectionL1
-        needsCorrectionL2
         optsetMaxFunEvals
         optsetMaxIter
         optsetTolFun
@@ -68,22 +66,10 @@ classdef OmConfigDao < handle
             me.dt.setStringVector('om.apply2Lbcb',value);
         end
         function result = get.sensitivities(me)
-            result = me.dt.getDoubleVector('om.sensitivities',[1]);
+            result = me.dt.getDoubleVector('om.sensitivities',[1]); %#ok<*NBRAK>
         end
         function set.sensitivities(me,value)
             me.dt.setDoubleVector('om.sensitivities',value);
-        end
-        function result = get.needsCorrectionL1(me)
-            result = me.dt.getDoubleVector('om.needsCorrection.L1',[]);
-        end
-        function set.needsCorrectionL1(me,value)
-            me.dt.setDoubleVector('om.needsCorrection.L1',value);
-        end
-        function result = get.needsCorrectionL2(me)
-            result = me.dt.getDoubleVector('om.needsCorrection.L2',[]);
-        end
-        function set.needsCorrectionL2(me,value)
-            me.dt.setDoubleVector('om.needsCorrection.L2',value);
         end
         function result = get.fixedLocations(me)
             sz = me.numExtSensors;

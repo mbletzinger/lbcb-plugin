@@ -41,11 +41,19 @@ classdef OmExternalSensor < handle
             list = me.cfg.sensorErrorTol;
             me.sensorErrorTol = list(me.idx);
             list = me.cfg.sensorLower;
-            me.sensorLower = list(me.idx);
+            if length(list) < me.idx % compensate for old property files missing this field
+                me.sensorLower = -100;
+            else
+                me.sensorLower = list(me.idx);
+            end
             list = me.cfg.sensorUpper;
-            me.sensorUpper = list(me.idx);
+            if length(list) < me.idx
+                me.sensorUpper = 100;
+            else
+                me.sensorUpper = list(me.idx);
+            end
         end
-        function setMe(me)          
+        function setMe(me)
             list = me.cfg.sensorNames;
             if length(list) < me.idx
                 lst = cell(me.idx,1);
@@ -99,7 +107,7 @@ classdef OmExternalSensor < handle
             end
             list(me.idx) = me.sensorErrorTol;
             me.cfg.sensorErrorTol = list;
-
+            
             list = me.cfg.sensorLower;
             if length(list) < me.idx
                 lst = zeros(me.idx,1);
@@ -108,7 +116,7 @@ classdef OmExternalSensor < handle
             end
             list(me.idx) = me.sensorLower;
             me.cfg.sensorLower = list;
-
+            
             list = me.cfg.sensorUpper;
             if length(list) < me.idx
                 lst = zeros(me.idx,1);
@@ -117,21 +125,21 @@ classdef OmExternalSensor < handle
             end
             list(me.idx) = me.sensorUpper;
             me.cfg.sensorUpper = list;
-end
+        end
         function str = toString(me)
             str = sprintf('/name=%s/lbcb=%s/sens=%9.7e', ...
                 me.sensorName, me.apply2Lbcb, me.sensitivity);
             if isempty(me.fixedLocations)
                 str = sprintf('%s/base=[]',str);
             else
-            str = sprintf('%s/base=[%9.7e,%9.7e,%9.7e]', ...
-                str,me.fixedLocations(1), me.fixedLocations(2), me.fixedLocations(3));
+                str = sprintf('%s/base=[%9.7e,%9.7e,%9.7e]', ...
+                    str,me.fixedLocations(1), me.fixedLocations(2), me.fixedLocations(3));
             end
             if isempty(me.pinLocations)
                 str = sprintf('%s/lat=[]',str);
             else
-            str = sprintf('%s/pinLocations=[%9.7e,%9.7e,%9.7e]', ...
-                str,me.pinLocations(1), me.pinLocations(2), me.pinLocations(3));
+                str = sprintf('%s/pinLocations=[%9.7e,%9.7e,%9.7e]', ...
+                    str,me.pinLocations(1), me.pinLocations(2), me.pinLocations(3));
             end
             str = sprintf('%s/error=%9.7e', str,me.sensorErrorTol);
             str = sprintf('%s/low=%9.7e', str,me.sensorLower);

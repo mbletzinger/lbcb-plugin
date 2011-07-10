@@ -5,7 +5,6 @@ classdef OmConfigActions < handle
         ocfg
         log = Logger('OmConfigActions')
         aps
-        correctTable
         selected;
         oesl
     end
@@ -50,17 +49,6 @@ classdef OmConfigActions < handle
         end
         function initialize(me,handles)
             me.handles = handles;
-            cor1 = me.ocfg.needsCorrectionL1;
-            cor2 = me.ocfg.needsCorrectionL2;
-            me.correctTable = false(6,2);
-            for i = 1:6
-                if isempty(cor1) == false
-                    me.correctTable(i,1) = cor1(i);
-                end
-                if isempty(cor2) == false
-                    me.correctTable(i,2) = cor2(i);
-                end
-            end
             set(me.handles.sensorTable,'Data',me.table);
             format = {'char',me.aps.states,'numeric','numeric','numeric','numeric','numeric','numeric','numeric','numeric'};
             set(me.handles.sensorTable,'ColumnFormat',format);
@@ -75,7 +63,6 @@ classdef OmConfigActions < handle
             set(me.handles.tolX,'String',sprintf('%9.7e',me.ocfg.optsetTolX));
             set(me.handles.jacob,'Value',me.ocfg.optsetJacob);
             
-            set(me.handles.correctionTable,'Data',me.correctTable);
             me.uDisplay();
         end
         
@@ -134,22 +121,6 @@ classdef OmConfigActions < handle
             me.ocfg.optsetJacob = value;
         end
         
-        function setCorrectCell(me,indices,str)
-            if indices(2) == 1
-                pert = me.ocfg.needsCorrectionL1;
-            else
-                pert = me.ocfg.needsCorrectionL2;
-            end
-            if isempty(pert)
-                pert = zeros(6,1);
-            end
-            pert(indices(1)) = str;
-            if indices(2) == 1
-                me.ocfg.needsCorrectionL1 = pert;
-            else
-                me.ocfg.needsCorrectionL2 = pert;
-            end
-        end
         function selectedRow(me,indices)
             if isempty(indices)
                 return;
