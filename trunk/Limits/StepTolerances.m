@@ -13,17 +13,19 @@ classdef StepTolerances < handle
             me.cfg = cfg;
             me.isLbcb1 = isLbcb1;
         end
-
+        function yes = needsCorrection(me,dof)
+                yes = me.within(dof) == false;
+        end
         function yes = withinTolerances(me,target,response)
             me.getWindow();
 %            me.log.debug(dbstack, sprintf('Comparing %s \nto %s',target.toString(),response.toString()));
-            me.within = ones(12,1);
+            me.within = true(12,1);
             me.diffs(1:6) = abs(target.disp - response.disp);
             me.diffs(7:12) = abs(target.force - response.force);
             for l = 1:12
                 if(me.used(l))
                     if me.diffs(l) > me.window(l)
-                        me.within(l) = 0;
+                        me.within(l) = false;
                     end
                 end
             end
