@@ -5,8 +5,8 @@ classdef OmExternalSensor < handle
         sensorName
         apply2Lbcb
         sensitivity
-        fixedLocation
-        pinLocation
+        fixedLocations
+        pinLocations
         sensorErrorTol
         sensorLower
         sensorUpper
@@ -18,8 +18,8 @@ classdef OmExternalSensor < handle
             me.sensorName = ' ';
             me.apply2Lbcb = 'LBCB1';
             me.sensitivity = 1;
-            me.fixedLocation = zeros(3,1);
-            me.pinLocation = zeros(3,1);
+            me.fixedLocations = zeros(3,1);
+            me.pinLocations = zeros(3,1);
             me.sensorErrorTol = 0;
             me.sensorLower = -100;
             me.sensorUpper = 100;
@@ -34,10 +34,10 @@ classdef OmExternalSensor < handle
             me.apply2Lbcb = list{me.idx};
             list = me.cfg.sensitivities;
             me.sensitivity = list(me.idx);
-            list = me.cfg.fixedLocation;
-            me.fixedLocation = list{me.idx};
-            list = me.cfg.pinLocation;
-            me.pinLocation = list{me.idx};
+            list = me.cfg.fixedLocations;
+            me.fixedLocations = list{me.idx};
+            list = me.cfg.pinLocations;
+            me.pinLocations = list{me.idx};
             list = me.cfg.sensorErrorTol;
             me.sensorErrorTol = list(me.idx);
             list = me.cfg.sensorLower;
@@ -73,23 +73,23 @@ classdef OmExternalSensor < handle
             list(me.idx) = me.sensitivity;
             me.cfg.sensitivities = list;
             
-            list = me.cfg.fixedLocation;
+            list = me.cfg.fixedLocations;
             if length(list) < me.idx
                 lst = cell(me.idx,1);
                 lst(1:length(list)) = list(:);
                 list = lst;
             end
-            list{me.idx} = me.fixedLocation;
-            me.cfg.fixedLocation = list;
+            list{me.idx} = me.fixedLocations;
+            me.cfg.fixedLocations = list;
             
-            list = me.cfg.pinLocation;
+            list = me.cfg.pinLocations;
             if length(list) < me.idx
                 lst = cell(me.idx,1);
                 lst(1:length(list)) = list(:);
                 list = lst;
             end
-            list{me.idx} = me.pinLocation;
-            me.cfg.pinLocation = list;
+            list{me.idx} = me.pinLocations;
+            me.cfg.pinLocations = list;
             
             list = me.cfg.sensorErrorTol;
             if length(list) < me.idx
@@ -121,27 +121,27 @@ end
         function str = toString(me)
             str = sprintf('/name=%s/lbcb=%s/sens=%9.7e', ...
                 me.sensorName, me.apply2Lbcb, me.sensitivity);
-            if isempty(me.fixedLocation)
+            if isempty(me.fixedLocations)
                 str = sprintf('%s/base=[]',str);
             else
             str = sprintf('%s/base=[%9.7e,%9.7e,%9.7e]', ...
-                str,me.fixedLocation(1), me.fixedLocation(2), me.fixedLocation(3));
+                str,me.fixedLocations(1), me.fixedLocations(2), me.fixedLocations(3));
             end
-            if isempty(me.pinLocation)
+            if isempty(me.pinLocations)
                 str = sprintf('%s/lat=[]',str);
             else
-            str = sprintf('%s/pinLocation=[%9.7e,%9.7e,%9.7e]', ...
-                str,me.pinLocation(1), me.pinLocation(2), me.pinLocation(3));
+            str = sprintf('%s/pinLocations=[%9.7e,%9.7e,%9.7e]', ...
+                str,me.pinLocations(1), me.pinLocations(2), me.pinLocations(3));
             end
             str = sprintf('%s/error=%9.7e', str,me.sensorErrorTol);
             str = sprintf('%s/low=%9.7e', str,me.sensorLower);
             str = sprintf('%s/hi=%9.7e', str,me.sensorUpper);
         end
-        function set.fixedLocation(me,b)
+        function set.fixedLocations(me,b)
             if iscell(b)
                 disp ('setting base as a cell array')
             end
-            me.fixedLocation = b;
+            me.fixedLocations = b;
         end
         function set.sensorName(me,s)
             if iscell(s)

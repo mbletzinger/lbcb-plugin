@@ -66,7 +66,16 @@ classdef ConfigDaoProvider < handle
                 yes = false;
                 return;
             end
-            yes = dos(1);
+            yes = dos(1) > 0;
+        end
+        function yes = useDd(me, level)
+            scfg = StepCorrectionConfigDao(me.cfg);
+            dos = scfg.doCalculations;
+            if isempty(dos)
+                yes = false;
+                return;
+            end
+            yes = dos(level + 1) > 0;
         end
         function yes = doStepSplitting(me)
             scfg = StepTimingConfigDao(me.cfg);
@@ -75,7 +84,7 @@ classdef ConfigDaoProvider < handle
                 yes = false;
                 return;
             end
-            yes = dos(1);
+            yes = dos(1) > 0;
         end
         function inc = getSubstepInc(me,isLbcb1)
             scfg = StepTimingConfigDao(me.cfg);
