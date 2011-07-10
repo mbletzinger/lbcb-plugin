@@ -16,8 +16,8 @@ classdef OmConfigDao < handle
         sensorNames
         apply2Lbcb
         sensitivities
-        fixedLocation
-        pinLocation
+        fixedLocations
+        pinLocations
         sensorErrorTol
         sensorUpper
         sensorLower
@@ -85,21 +85,21 @@ classdef OmConfigDao < handle
         function set.needsCorrectionL2(me,value)
             me.dt.setDoubleVector('om.needsCorrection.L2',value);
         end
-        function result = get.fixedLocation(me)
+        function result = get.fixedLocations(me)
             sz = me.numExtSensors;
-            result = me.dt.getTransVector('om.location.fixedLocation','ext.sensor',sz);
+            result = me.dt.getTransVector('om.location.fixedLocations','ext.sensor',sz);
         end
-        function set.fixedLocation(me,value)
+        function set.fixedLocations(me,value)
             sz = length(value);
-            me.dt.setTransVector('om.location.fixedLocation','ext.sensor',sz,value);
+            me.dt.setTransVector('om.location.fixedLocations','ext.sensor',sz,value);
         end
-        function result = get.pinLocation(me)
+        function result = get.pinLocations(me)
             sz = me.numExtSensors;
-            result = me.dt.getTransVector('om.location.pinLocation','ext.sensor',sz);
+            result = me.dt.getTransVector('om.location.pinLocations','ext.sensor',sz);
         end
-        function set.pinLocation(me,value)
+        function set.pinLocations(me,value)
             sz = length(value);
-            me.dt.setTransVector('om.location.pinLocation','ext.sensor',sz,value);
+            me.dt.setTransVector('om.location.pinLocations','ext.sensor',sz,value);
         end
         function result = get.sensorErrorTol(me)
             result = me.dt.getDoubleVector('om.sensor.error.tol',[0]);

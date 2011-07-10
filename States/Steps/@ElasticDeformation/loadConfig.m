@@ -1,88 +1,49 @@
 function loadConfig(me)
 ocfg = OmConfigDao(me.cdp.cfg);
-[names se applied ] = me.cdp.getExtSensors();
-lt = length(applied);
-base = zeros(3,lt);
-plat = zeros(3,lt);
-for s = 1:lt
-    base(:,s) = ocfg.base{s};
-    plat(:,s) = ocfg.plat{s};
-end
-perts = ocfg.perturbationsL2;
-sensorErrorTol = ocfg.sensorErrorTol;
-lb = 'LBCB2';
+% get sensors for both LBCBs
+bapplied = ocfg.apply2Lbcb;
+bpinLocations = ocfg.pinLocations;
+bfixedLocations = ocfg.fixedLocations;
+bulimit = ocfg.sensorUpper;
+bllimit = ocfg.sensorLower;
+berror = ocfg.sensorErrorTol;
+
+aselect = StateEnum({'LBCB1','LBCB2','BOTH'});
+lbcb = 'LBCB2';
 if me.isLbcb1
-    lb = 'LBCB1';
-    perts = ocfg.perturbationsL1;
+    lbcb = 'LBCB1';
 end
-i = 1;
 
-mbase = zeros(3,lt);
-mplat = zeros(3,lt);
-mpotTol = zeros(lt);
-for s = 1:lt
-    if strcmp(applied{s},lb)
-      mbase(:,i) = base(:,s);
-      mplat(:,i) = plat(:,s);
-      mpotTol(i) = sensorErrorTol(s);
-      i = i + 1;
+ns = ocfg.numExtSensors;
+me.pinLocations = zeros(3,ns); 
+me.fixedLocations = zeros(3,ns);
+me.limits = zeros(2,ns);
+me.errorTolerance = zeros(ns);
+
+% filter for one LBCB
+fs = 1;
+for s = 1:ns
+    aselect.setState(bapplied{s});
+    if aselect.isState(lbcb) == false && aselect.isState('BOTH') == false
+        continue;
     end
+    me.pinLocations(:,fs) = bpinLocations{s};
+    me.fixedLocations(:,fs) = bfixedLocations{s};
+    me.limits(:,fs) = [ bllimit(s) bulimit(s)];
+    me.errorTolerance(fs) = berror(s);
+    fs = fs + 1;
 end
-i = i -1;
-me.base = mbase(:,1:i);
-me.plat = mplat(:,1:i);
-me.potTol = mpotTol(1:i);
+ne = fs - 1;
+me.pinLocations = me.pinLocations(:,1:ne);
+me.fixedLocations = me.fixedLocations(:,1:ne);
+me.limits = me.limits(:,1:ne);
+me.errorTolerance = me.errorTolerance(1:ne);
 
-mperts = zeros(6,1);
-mact = zeros(6,1);
-i = 1;
-for d = 1:6
-    if perts.dispDofs(d)
-        mperts(i) = perts.disp(d);
-        mact(i) = d;
-        i = i + 1;
-    end
-end
-i = i -1;
-me.perturbations = mperts(1:i);
-me.activeDofs = mact(1:i);
-
-%------------------
-% Make default values for optimization setting
-% optSetting.maxfunevals : max. # of iterations for minimizing
-%                          the objective function (default = 1000)
-% optSetting.maxiter : max. # of iterations for optimizing the
-%                      control point (default = 100)
-% optSetting.tolfun : tolerance of the objective function
-%                     (default = 1e-8)
-% optSetting.tolx: tolerance of the control point
-%                  (default = 1e-12)
-% optSetting.jacob: switch for jacobian matrix, 'on' or 'off'
-%                   (default = 'on')
-%------------------
-if isempty(me.optSetting.maxfunevals)
-    maxfunevals = 1000;
-else
-    maxfunevals = me.optSetting.maxfunevals;
-end
-if isempty(me.optSetting.maxiter)
-    maxiter = 100;
-else
-    maxiter = me.optSetting.maxiter;
-end
-if isempty(me.optSetting.tolfun)
-    tolfun = 1e-8;
-else
-    tolfun = me.optSetting.tolfun;
-end
-if isempty(me.optSetting.tolx)
-    tolx = 1e-12;
-else
-    tolx = me.optSetting.tolx;
-end
-if isempty(me.optSetting.jacob)
-    jacob = 'on';
-else
-    jacob = me.optSetting.jacob;
-end
+me.transPert = ocfg.transPert;
+me.rotPert = ocfg.rotPert;
+me.optSetting.maxfunevals = ocfg.optsetMaxFunEvals;
+me.optSetting.maxiter = ocfg.optsetMaxIter;
+me.optSetting.tolfun = ocfg.optsetTolFun;
+me.optSetting.tolx = ocfg.optsetTolX;
+me.optSetting.jacob = ocfg.optsetJacob > 0;
 end

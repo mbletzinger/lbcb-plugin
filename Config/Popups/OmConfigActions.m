@@ -19,7 +19,7 @@ classdef OmConfigActions < handle
         function setCell(me,indices,data,errString)
             if isempty(data)
                 me.log.error(dbstack,errString);
-                return; %#ok<UNRCH>
+                return; 
             end
             if indices(1) > me.ocfg.numExtSensors
                 me.addSensor();
@@ -33,9 +33,9 @@ classdef OmConfigActions < handle
                 case 3
                     o.sensitivity = data;
                 case { 4 5 6 }
-                    o.fixedLocation(indices(2) - 3) = data;
+                    o.fixedLocations(indices(2) - 3) = data;
                 case { 7 8 9 }
-                    o.pinLocation(indices(2) - 6) = data;
+                    o.pinLocations(indices(2) - 6) = data;
                 case 10
                     o.sensorErrorTol = data;
                 case 11
@@ -94,7 +94,7 @@ classdef OmConfigActions < handle
             value = str2double(str);
             if isempty(value)
                 me.log.error(dbstack,sprintf('"%s" is not a number', str));
-                return;
+                return; 
             end
             me.ocfg.rotPert = value;
         end
@@ -102,7 +102,7 @@ classdef OmConfigActions < handle
             value = sscanf(str,'%d');
             if isempty(value)
                 me.log.error(dbstack,sprintf('"%s" is not a number', str));
-                return;
+                return; 
             end
             me.ocfg.optsetMaxFunEvals = value;
         end
@@ -110,7 +110,7 @@ classdef OmConfigActions < handle
             value = sscanf(str,'%d');
             if isempty(value)
                 me.log.error(dbstack,sprintf('"%s" is not a number', str));
-                return;
+                return; 
             end
             me.ocfg.optsetMaxIter = value;
         end
@@ -118,7 +118,7 @@ classdef OmConfigActions < handle
             value = str2double(str);
             if isempty(value)
                 me.log.error(dbstack,sprintf('"%s" is not a number', str));
-                return;
+                return; %#ok<*UNRCH>
             end
             me.ocfg.optsetTolFun = value;
         end
@@ -179,15 +179,15 @@ classdef OmConfigActions < handle
                 me.table{s,1} = o.sensorName;
                 me.table{s,2} = o.apply2Lbcb;
                 me.table{s,3} = o.sensitivity;
-                if isempty(o.fixedLocation) == false
-                    me.table{s,4} = o.fixedLocation(1);
-                    me.table{s,5} = o.fixedLocation(2);
-                    me.table{s,6} = o.fixedLocation(3);
+                if isempty(o.fixedLocations) == false
+                    me.table{s,4} = o.fixedLocations(1);
+                    me.table{s,5} = o.fixedLocations(2);
+                    me.table{s,6} = o.fixedLocations(3);
                 end
-                if isempty(o.pinLocation) == false
-                    me.table{s,7} = o.pinLocation(1);
-                    me.table{s,8} = o.pinLocation(2);
-                    me.table{s,9} = o.pinLocation(3);
+                if isempty(o.pinLocations) == false
+                    me.table{s,7} = o.pinLocations(1);
+                    me.table{s,8} = o.pinLocations(2);
+                    me.table{s,9} = o.pinLocations(3);
                 end
                 me.table{s,10} = o.sensorErrorTol;
                 me.table{s,11} = o.sensorLower;

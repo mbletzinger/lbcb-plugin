@@ -21,6 +21,15 @@ classdef ElasticDeformation < CorrectionVariables
         % size of each one: 3 x (# of sensors)
         fixedLocations = [];
         pinLocations = [];
+        
+        % 2 x (# of sensors)
+        limits = [];
+        errorTolerance = [];
+       
+        transPert
+        rotPert
+        
+        
         %==
         log = Logger('ElasticDeformation');
         isLbcb1;
