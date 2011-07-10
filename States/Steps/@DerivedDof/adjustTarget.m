@@ -6,9 +6,6 @@ funcs = scfg.adjustTargetFunctions;
 if isempty(funcs)
     return;
 end
-if strcmp(funcs{2 + me.level},'<NONE>')
-    return;
-end
 ddAdjust = str2func(funcs{2 + me.level});
 ddAdjust(me,step);
 end

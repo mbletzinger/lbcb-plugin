@@ -6,9 +6,6 @@ funcs = scfg.calculationFunctions;
 if isempty(funcs)
     return;
 end
-if strcmp(funcs{2 + me.level},'<NONE>')
-    return;
-end
 ddCalc = str2func(funcs{2 + me.level});
 ddCalc(me,cstep);
 end

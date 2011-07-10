@@ -9,10 +9,6 @@ funcs = scfg.needsCorrectionFunctions;
 if isempty(funcs)
     return;
 end
-if strcmp(funcs{2 + me.level},'<NONE>')
-    yes = false;
-    return;
-end
 ddCorrect = str2func(funcs{2 + me.level});
 yes = ddCorrect(me);
 end
