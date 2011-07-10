@@ -20,5 +20,6 @@ classdef DerivedDof < CorrectionVariables
         calculate(me,cstep)
         adjustTarget(me,step)
         yes = needsCorrection(me,step)
+        prelimAdjust(me)
     end
 end

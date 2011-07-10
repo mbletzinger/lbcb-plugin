@@ -14,7 +14,7 @@ for ddl = 2:length(me.Correction)
         return; % Only the first level can be done at the same time as ED
     end
     if me.ncorrections(ddl)
-        me.dd{ddl}.adjustTarget(target);
+        me.dd{ddl}.adjustTarget(nextStep);
         return;
     end
 end

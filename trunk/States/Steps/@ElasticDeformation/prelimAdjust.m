@@ -1,18 +1,15 @@
 function prelimAdjust(me,curStep, nextStep)
+lbcb = 2;
+if me.isLbcb1
+    lbcb = 1;
+end
 
-targetL = nextStep.lbcbCps{1}.command.disp;
-targetR = nextStep.lbcbCps{2}.command.disp;
+target = nextStep.lbcbCps{lbcb}.command.disp;
+prevOMcommand = curStep.lbcbCps{lbcb}.command.disp;
+position = curStep.lbcbCps{lbcb}.response.ed.disp;
+correction = target - previousOMCommand;
+newOMcommand = position + correction;
+nextStep.lbcbCps{lbcb}.command.disp = newOMcommand;
 
-prevOMcommandL = curStep.lbcbCps{1}.command.disp;
-prevOMcommandR = curStep.lbcbCps{2}.command.disp;
-
-positionL = curStep.lbcbCps{1}.response.ed.disp;
-positionR = curStep.lbcbCps{2}.response.ed.disp;
-
-newOMcommandL = prevOMcommandL + (targetL - positionL);
-newOMcommandR = prevOMcommandR + (targetR - positionR);
-
-nextStep.lbcbCps{1}.command.disp([1 5]) = newOMcommandL([1 5]);
-nextStep.lbcbCps{2}.command.disp([1 5]) = newOMcommandR([1 5]);
-
+me.archiveCorrections('prelim',correction);
 end

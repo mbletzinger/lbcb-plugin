@@ -9,6 +9,7 @@ classdef SimSharedData < handle
         prevStepData = [];
         curStepData = [];
         nextStepData = [];
+        initialPosition = [];
         sdf = [];
         log = Logger('SimSharedData');
         cdp;

@@ -65,10 +65,11 @@ classdef ElasticDeformation < CorrectionVariables
             me.isLbcb1 = isLbcb1;
         end
         nextCommand = adjustTarget(me,correctionTarget,curResponse,curCommand)
-        prelimAdjust(me,prevCorrection,curCommand)
+        prelimAdjust(me,curStep, nextStep)
         curResponse = calculate(me, prevResponse, sensorReadings, initialReadings)
         loadConfig(me)
         yes = needsCorrection(me,curResponse, correctionTarget)
+        archiveCorrections(type,cor);
 	
     end
 end
