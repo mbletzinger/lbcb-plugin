@@ -96,14 +96,8 @@ delete(handles.OmConfig);
 function sensorTable_CellEditCallback(hObject, eventdata, handles) %#ok<INUSL,*DEFNU>
 handles.actions.setCell(eventdata.Indices,eventdata.NewData,eventdata.Error);
 
-
-function correctionTable_CellEditCallback(hObject, eventdata, handles)
-handles.actions.setCorrectCell(eventdata.Indices,eventdata.EditData);
-
-
 function addSensor_Callback(hObject, eventdata, handles)
 handles.actions.addSensor();
-
 
 function removeSensor_Callback(hObject, eventdata, handles)
 handles.actions.removeSensor();
