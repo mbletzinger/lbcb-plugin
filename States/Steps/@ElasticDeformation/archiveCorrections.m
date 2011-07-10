@@ -5,7 +5,7 @@ if me.isLbcb1
     lbcb = 1;
 end
 for d = 1:6
-    if me.cdp.isCorrectDof(l,d)
+    if me.st.used(d)
         label = sprintf('%sL%d%s',type,lbcb,dofL{d});
         me.archH.set(label,cor(d));
     end

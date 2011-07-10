@@ -24,11 +24,12 @@ classdef ElasticDeformation < CorrectionVariables
         
         % 2 x (# of sensors)
         limits = [];
+        
+        % 1 x (# of sensors)
         errorTolerance = [];
        
         transPert
         rotPert
-        
         
         %==
         log = Logger('ElasticDeformation');
@@ -58,6 +59,7 @@ classdef ElasticDeformation < CorrectionVariables
         % size: 2 x 1, in which first one is for translations and the
         % second one is for rotations
         within = [];
+        st = [];
     end
     methods
         function me = ElasticDeformation(cdp,isLbcb1)

@@ -16,7 +16,6 @@ classdef HandleFactory <  handle
         % Corrections
         ed = cell(2,1);
         dd = cell(4,1);
-        pa = [];
         corrections = [];
         
         % Simulation States and Executors
@@ -137,15 +136,8 @@ classdef HandleFactory <  handle
                 me.dd{i}.datH = datH;
                 me.dd{i}.archH = archH;
             end
-            
-            me.pa = PrelimAdjustment(me.cdp);
-            me.pa.cfgH = cfgH;
-            me.pa.datH = datH;
-            me.pa.dat = me.dat;
-            me.pa.archH = archH;
-            
+                        
             me.corrections = Corrections(me.cdp);
-            me.corrections.pa = me.pa;
             me.corrections.ed = me.ed;
             me.corrections.dd = me.dd;
             
