@@ -1,4 +1,4 @@
-  % =====================================================================================================================
+% =====================================================================================================================
 % Class which calculates the position of an LBCB platform based on external
 % sensors
 %
@@ -68,10 +68,14 @@ classdef ElasticDeformation < CorrectionVariables
         end
         nextCommand = adjustTarget(me,correctionTarget,curResponse,curCommand)
         prelimAdjust(me,curStep, nextStep)
-        curResponse = calculate(me, prevResponse, sensorReadings, initialReadings)
+        curResponse = calculate(me, prevResponse)
         loadConfig(me)
         yes = needsCorrection(me,curResponse, correctionTarget)
         archiveCorrections(type,cor);
 	
+    end
+    methods(Static)
+        [fx,Jac] = x2cmd_eval2_mf(cmd,xpin,xfix,d,cmdlast,idof,cmdpert);
+        cmd = disp2controlpoint(d,xpin,xfix,xcurrent,cmdlast,imode,optm,idof);
     end
 end
