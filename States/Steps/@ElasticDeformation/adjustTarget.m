@@ -19,7 +19,7 @@ function curCommandOut = adjustTarget(me,correctionTarget,curResponse,prevComman
 % obtain the modified command
 % description: iteration steps for elastic deformation
 %------------------
-temp = prevCommand - (curResponse - correctionTarget); 
+temp = prevCommand + (correctionTarget - curResponse ); 
 
 %------------------
 % Check
@@ -27,6 +27,39 @@ temp = prevCommand - (curResponse - correctionTarget);
 % the command equal to the previous step
 % (this step can be discussed)
 %------------------
+ind_t = []; % index for traslations
+ind_r = []; % index for rotations
+for i = 1:3
+    if me.st.used(i)
+       ind_t = [ind_t,i];
+    end
+    if me.st.used(i+3)
+        ind_r = [ind_r,i+3];
+    end
+end
+%==
+norm_tran_cal = 0;
+norm_tran_true = 0;
+if ~isempty(ind_t)
+    norm_tran_cal = norm(temp(ind_t)-correctionTarget(ind_t));
+    norm_tran_true = norm(prevCommand(ind_t) - correctionTarget(ind_t));
+end
+norm_rot_cal = 0;
+norm_rot_true = 0;
+if ~isempty(ind_r)
+    norm_rot_cal = norm(temp(ind_r)-correctionTarget(ind_r));
+    norm_rot_true = norm(prevCommand(ind_r) - correctionTarget(ind_r));
+end
+%==
+limit_ratio = 4;
+%==
+if (norm_tran_cal<=limit_ratio*norm_tran_true) && (norm_rot_cal<=limit_ratio*norm_rot_true)
+    curCommandOut = temp;
+else
+    curCommandOut = prevCommand; % this one can be modified
+end
+%==
+%{
 norm_tran_cal = norm(temp(1:3)-correctionTarget(1:3));
 norm_tran_true = norm(prevCommand(1:3) - correctionTarget(1:3));
 %==
@@ -40,6 +73,7 @@ if (norm_tran_cal<=limit_ratio*norm_tran_true) && (norm_rot_cal<=limit_ratio*nor
 else
     curCommandOut = prevCommand; % this one can be modified
 end
+%}
 
 %------------------
 % end

@@ -45,5 +45,5 @@ me.optSetting.maxfunevals = ocfg.optsetMaxFunEvals;
 me.optSetting.maxiter = ocfg.optsetMaxIter;
 me.optSetting.tolfun = ocfg.optsetTolFun;
 me.optSetting.tolx = ocfg.optsetTolX;
-me.optSetting.jacob = ocfg.optsetJacob > 0;
+me.optSetting.jacob = ocfg.optsetJacob > 0; % question, it would be 'on' or 'off'
 end
