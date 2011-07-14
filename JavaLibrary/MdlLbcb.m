@@ -16,7 +16,6 @@ classdef MdlLbcb < handle
     properties
         params = org.nees.uiuc.simcor.tcp.TcpParameters;
         simcorTcp = {};
-        connection = {};
         response = {};
         snd
         log = Logger('MdlLbcb');
@@ -184,7 +183,7 @@ classdef MdlLbcb < handle
             ts.setState(char(me.simcorTcp.isReady()));
             csS = ts.getState();
             csS = me.errorsExist(csS);
-            me.log.debug(dbstack,sprintf('Transaction state is %s',csS));
+%            me.log.debug(dbstack,sprintf('Transaction state is %s',csS));
             switch csS
                 case {'RESPONSE_AVAILABLE' 'READY' }
                     me.state.setState('READY');
@@ -207,7 +206,7 @@ classdef MdlLbcb < handle
                     me.simcorTcp.isReady();
                     me.state.setState('READY');
                     me.action.setState('NONE');
-                    me.simcorTcp.shutdown(); %#ok<UNRCH>
+                    me.simcorTcp.shutdown(); 
                 case {'CLOSING_CONNECTION' 'OPENING_CONNECTION' 'CHECK_OPEN_CONNECTION' ...
                         'ASSEMBLE_OPEN_COMMAND' 'SENDING_COMMAND' 'SETUP_READ_RESPONSE'...
                         'WAIT_FOR_RESPONSE' 'TRANSACTION_DONE'}

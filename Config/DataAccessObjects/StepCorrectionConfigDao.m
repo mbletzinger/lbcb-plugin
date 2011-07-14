@@ -17,6 +17,7 @@ classdef StepCorrectionConfigDao < handle
         needsCorrectionFunctions
         adjustTargetFunctions
         prelimAdjustTargetFunctions
+        errorTolerance
     end
     properties
         dt;
@@ -26,13 +27,13 @@ classdef StepCorrectionConfigDao < handle
         me.dt = DataTypes(cfg);
         end
         function result = get.doCalculations(me)
-            result = me.dt.getIntVector('step.calculations',[0 0 0 0 0]);
+            result = me.dt.getIntVector('step.calculations',false(5,1));
         end
         function set.doCalculations(me,value)
             me.dt.setIntVector('step.calculations',value);
         end
         function result = get.doCorrections(me)
-            result = me.dt.getIntVector('step.correction',[0 0 0 0 0]);
+            result = me.dt.getIntVector('step.correction',false(5,1));
         end
         function set.doCorrections(me,value)
             me.dt.setIntVector('step.correction',value);
@@ -56,9 +57,15 @@ classdef StepCorrectionConfigDao < handle
             me.dt.setStringVector('step.adjustTarget.function',value);
         end
         function result = get.prelimAdjustTargetFunctions(me)
-             result = me.dt.getStringVector('step.prelimAdjustTarget.function',{'Standard' 'Test'});
+             result = me.dt.getStringVector('step.prelimAdjustTarget.function',{'Standard' 'Test' 'Test' 'Test' 'Test'});
         end
         function set.prelimAdjustTargetFunctions(me,value)
+            me.dt.setStringVector('step.prelimAdjustTarget.function',value);
+        end
+        function result = get.errorTolerance(me)
+             result = me.dt.getStringVector('step.prelimAdjustTarget.function',{'<None>' '<None>' });
+        end
+        function set.errorTolerance(me,value)
             me.dt.setStringVector('step.prelimAdjustTarget.function',value);
         end
     end

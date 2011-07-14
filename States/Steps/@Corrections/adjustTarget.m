@@ -1,15 +1,16 @@
 function adjustTarget(me, ctarget, curStep,nextStep)
 edCorrected = false;
-for lbcb = 1:me.cdb.numLbcbs()
-    if me.ncorrections(lbcb)
-        me.ed{lbcb}.adjustTarget(ctarget.lbcbCps{1}.command,...
+if me.ncorrections(1)
+    for lbcb = 1:me.cdp.numLbcbs()
+        nextStep.lbcbCps{lbcb}.command.disp =...
+            me.ed{lbcb}.adjustTarget(ctarget.lbcbCps{1}.command.disp,...
             curStep.lbcbCps{lbcb}.response.disp,...
-            nextStep.lbcbCps{lbcb}.command);
+            curStep.lbcbCps{lbcb}.command.disp);
         edCorrected = true;
     end
 end
 
-for ddl = 2:length(me.Correction)
+for ddl = 2:length(me.ncorrections)
     if edCorrected && ddl > 2
         return; % Only the first level can be done at the same time as ED
     end

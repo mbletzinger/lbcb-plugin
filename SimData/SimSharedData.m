@@ -29,15 +29,14 @@ classdef SimSharedData < handle
             me.curSubstepTgt = target;
             cmd1 = target.lbcbCps{1}.command;
             cmd2 = [];
-            if me.cdp.numLbcbs() > 1
+            if me.cdp.numLbcbs() > 1 
                 cmd2 = target.lbcbCps{2}.command;
             end
             me.nextStepData = me.sdf.target2StepData({ cmd1, ...
                 cmd2 }, target.stepNum.step,target.stepNum.subStep);
-            
-            me.correctionTarget = me.sdf.target2StepData({ cmd1, ...
-                cmd2 }, target.stepNum.step,target.stepNum.subStep);
+            me.setCorrectionTarget(target);
         end
+                    
         function nextCorrectionStep(me,stype)
             cmd1 = me.curStepData.lbcbCps{1}.command;
             cmd2 = [];
@@ -125,6 +124,15 @@ classdef SimSharedData < handle
         function set.nextStepData(me,sd)
             me.nextStepData = sd;
         end
+        function setCorrectionTarget(me,targetStep)
+            cmd1 = targetStep.lbcbCps{1}.command;
+            cmd2 = [];
+            if me.cdp.numLbcbs() > 1 
+                cmd2 = targetStep.lbcbCps{2}.command;
+            end
+            me.correctionTarget = me.sdf.target2StepData({ cmd1, ...
+                cmd2 }, targetStep.stepNum.step,targetStep.stepNum.subStep);
+        end
         function initialPosition2Target(me)
             [ disp force ] = me.curStepData.respData();
             me.curStepData.lbcbCps{1}.command.disp = disp(1:6);
@@ -136,6 +144,7 @@ classdef SimSharedData < handle
             me.curStepTgt = me.curStepData;
             me.curSubstepTgt = me.curStepData;
             me.prevStepData = me.curStepData;
+            me.initialPosition = me.curStepData;
         end
     end
 end

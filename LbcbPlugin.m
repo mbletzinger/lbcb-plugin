@@ -610,7 +610,7 @@ actions.tolerances.setCell(eventdata.Indices,eventdata.NewData);
 
 function LbcbChoice_Callback(hObject, eventdata, handles)
 actions = getappdata(getLp(hObject),'actions');
-actions.fill();
+actions.tolerances.fill();
 
 function CommandLimits_Callback(hObject, eventdata, handles)
 actions = getappdata(getLp(hObject),'actions');

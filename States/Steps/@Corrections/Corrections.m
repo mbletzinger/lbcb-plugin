@@ -29,9 +29,9 @@ classdef Corrections < handle
             end
         end
         adjustTarget(me, ctarget, curStep,nextStep)
-        canBeCorrected(me,curStep)
+        canBeCorrected = canBeCorrected(me,step)
         determineCorrections(me,ctarget,step)
         prelimAdjust(me,curStep, nextStep)
-        calculate(me, curStep)
+        calculate(me, curStep, initialPosition)
     end
 end

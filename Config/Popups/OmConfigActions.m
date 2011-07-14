@@ -35,12 +35,6 @@ classdef OmConfigActions < handle
                     o.fixedLocations(indices(2) - 3) = data;
                 case { 7 8 9 }
                     o.pinLocations(indices(2) - 6) = data;
-                case 10
-                    o.sensorErrorTol = data;
-                case 11
-                    o.sensorLower = data;
-                case 12
-                    o.sensorUpper = data;
                 otherwise
                     me.log.error(dbstack,sprintf('Cannot handle column %d',indices(2)));
             end
@@ -50,7 +44,7 @@ classdef OmConfigActions < handle
         function initialize(me,handles)
             me.handles = handles;
             set(me.handles.sensorTable,'Data',me.table);
-            format = {'char',me.aps.states,'numeric','numeric','numeric','numeric','numeric','numeric','numeric','numeric'};
+            format = {'char',me.aps.states,'numeric','numeric','numeric','numeric','numeric'};
             set(me.handles.sensorTable,'ColumnFormat',format);
             set(me.handles.numLbcbs,'String',{'1','2'});
             
@@ -144,7 +138,7 @@ classdef OmConfigActions < handle
             me.uDisplay();
         end
         function uDisplay(me)
-            me.table = cell(me.ocfg.numExtSensors,10);
+            me.table = cell(me.ocfg.numExtSensors,9);
             for s = 1:me.ocfg.numExtSensors
                 o = me.oesl.list{s};
                 me.table{s,1} = o.sensorName;
@@ -160,9 +154,6 @@ classdef OmConfigActions < handle
                     me.table{s,8} = o.pinLocations(2);
                     me.table{s,9} = o.pinLocations(3);
                 end
-                me.table{s,10} = o.sensorErrorTol;
-                me.table{s,11} = o.sensorLower;
-                me.table{s,12} = o.sensorUpper;
             end
             set(me.handles.sensorTable,'Data',me.table);
         end

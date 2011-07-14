@@ -7,7 +7,6 @@ if isempty(doCorrections)
     return;
 end
 
-me.checkedStepNumber = step.stepNum;
 me.ncorrections = false(length(doCorrections),1);
 
 if me.canBeCorrected(step) == false
@@ -20,7 +19,7 @@ for lv = 1:length(doCorrections)
             case 1
                 need = 0;
                 for lbcb = 1:me.cdp.numLbcbs()
-                    n = me.ed{lbcb}.needsCorrection(step.lbcbCps{lbcb}.response.disp,...
+                    n = me.ed{lbcb}.needsCorrection(step.lbcbCps{lbcb}.response,...
                         ctarget.lbcbCps{lbcb}.command);
                     need = need + n;
                 end

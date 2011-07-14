@@ -14,5 +14,5 @@ if isempty(me.externalSensorsRaw) == 0
         str = sprintf('%s/%s=%f',str,n{s},me.externalSensorsRaw(s));
     end
 end
-str = sprintf('%s\nderivedData=%s',str,me.cData.toString());
+str = sprintf('%s\narchivedData=%s',str,me.cData.toString());
 end

@@ -1,4 +1,4 @@
-% =====================================================================================================================
+ % =====================================================================================================================
 % Class containing the calculations for derived DOFs.
 %
 % Members:
@@ -20,6 +20,12 @@ classdef DerivedDof < CorrectionVariables
         calculate(me,cstep)
         adjustTarget(me,step)
         yes = needsCorrection(me,step)
-        prelimAdjust(me)
+        prelimAdjust(me,step,func)
+        
+        calculateTest(me,cstep)
+        adjustTargetTest(me,step)
+        yes = needsCorrectionTest(me,step)
+        prelimAdjustTest(me,step)
+
     end
 end
