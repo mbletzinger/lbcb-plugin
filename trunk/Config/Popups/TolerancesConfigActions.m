@@ -58,8 +58,8 @@ classdef TolerancesConfigActions < TableDataManagement
             for i = 1:12
                 if used(i)
                     me.limitsTable{i,1} = sprintf('%f',limits(i));
+                    me.limitsTable{i,2} = diffs(i);
                 end
-                me.limitsTable{i,2} = diffs(i);
                 me.limitsTable{i,3} = (logical(i) == false);
             end
             set(me.handles.ToleranceTable,'Data',me.limitsTable);

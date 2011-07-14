@@ -22,12 +22,6 @@ classdef ElasticDeformation < CorrectionVariables
         fixedLocations = [];
         pinLocations = [];
         
-        % 2 x (# of sensors)
-        limits = [];
-        
-        % 1 x (# of sensors)
-        errorTolerance = [];
-       
         transPert
         rotPert
         
@@ -61,7 +55,7 @@ classdef ElasticDeformation < CorrectionVariables
         within = [];
         st = [];
     end
-    methods
+    methods   
         function me = ElasticDeformation(cdp,isLbcb1)
             me = me@CorrectionVariables(cdp);
             me.isLbcb1 = isLbcb1;
@@ -72,7 +66,7 @@ classdef ElasticDeformation < CorrectionVariables
         loadConfig(me)
         yes = needsCorrection(me,curResponse, correctionTarget)
         archiveCorrections(type,cor);
-	
+        curResponse = calculateTest(me, curCommand,stepNum)
     end
     methods(Static)
         [fx,Jac] = x2cmd_eval2_mf(cmd,xpin,xfix,d,cmdlast,idof,cmdpert);

@@ -29,23 +29,23 @@ classdef NextStep < Step
                 me.dat.substepTgtShift(me.steps.next());
                 me.corrections.prelimAdjust(me.dat.curStepData,me.dat.nextStepData);
                 if isempty(me.gui) == false
-                    me.gui.updateCorrections();
+                    me.gui.updateCorrections(false);
                 end
                 return;         
             end
             if me.corrections.needsCorrection()
                 me.dat.nextCorrectionStep(me.corrections.stepType());
-                me.corrections.adjustTarget(me.dat.nextStepData);
+                me.corrections.adjustTarget(me.dat.correctionTarget,me.dat.curStepData,me.dat.nextStepData);
                 me.log.info(dbstack,'Generating correction step');
                 if isempty(me.gui) == false
-                    me.gui.updateCorrections();
+                    me.gui.updateCorrections(true);
                 end
             else
                 % get next input step
                 stp = me.steps.next();
                 me.stepsCompleted = me.steps.endOfFile;
                 if isempty(me.gui) == false
-                    me.gui.updateCorrections();
+                    me.gui.updateCorrections(false);
                 end
                 if me.stepsCompleted
                     return;

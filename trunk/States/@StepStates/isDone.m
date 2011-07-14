@@ -51,6 +51,9 @@ switch a
                 done = 1;
                 return;
             end
+            if me.gettingInitialPosition
+                me.dat.initialPosition2Target();
+            end
             me.pResp.start();
             me.currentAction.setState('PROCESS OM RESPONSE');
         end
@@ -64,18 +67,20 @@ switch a
         me.gui.updateTimer(); %BG
         me.log.debug(dbstack,sprintf('Current Response: %s', ...
             me.dat.curStepData.toString()));
-        me.corrections.determineCorrections(me.dat.correctionTarget, ...
-            me.dat.curStepData);
         if me.gettingInitialPosition
             me.dat.initialPosition2Target();
             me.currentAction.setState('DONE');
-        elseif (me.corrections.needsCorrection() == false)...
-                && me.needsTriggering()
-            me.brdcstRsp.start();
-            me.currentAction.setState('BROADCAST TRIGGER');
         else
-            me.nxtStep.start();
-            me.currentAction.setState('NEXT STEP');
+            me.corrections.determineCorrections(me.dat.correctionTarget, ...
+            me.dat.curStepData);
+            if (me.corrections.needsCorrection() == false)...
+                    && me.needsTriggering()
+                    me.brdcstRsp.start();
+                me.currentAction.setState('BROADCAST TRIGGER');
+            else
+                me.nxtStep.start();
+             me.currentAction.setState('NEXT STEP');
+            end
         end
         
     case 'BROADCAST TRIGGER'

@@ -17,8 +17,6 @@ end
 ns = ocfg.numExtSensors;
 me.pinLocations = zeros(3,ns); 
 me.fixedLocations = zeros(3,ns);
-me.limits = zeros(2,ns);
-me.errorTolerance = zeros(ns);
 
 % filter for one LBCB
 fs = 1;
@@ -29,15 +27,11 @@ for s = 1:ns
     end
     me.pinLocations(:,fs) = bpinLocations{s};
     me.fixedLocations(:,fs) = bfixedLocations{s};
-    me.limits(:,fs) = [ bllimit(s) bulimit(s)];
-    me.errorTolerance(fs) = berror(s);
     fs = fs + 1;
 end
 ne = fs - 1;
 me.pinLocations = me.pinLocations(:,1:ne);
 me.fixedLocations = me.fixedLocations(:,1:ne);
-me.limits = me.limits(:,1:ne);
-me.errorTolerance = me.errorTolerance(1:ne);
 
 me.transPert = ocfg.transPert;
 me.rotPert = ocfg.rotPert;

@@ -10,19 +10,24 @@ classdef StepConfigActions < handle
         edCorrectionTable
         flist
         edlist
+        pedlist
+        pflist
     end
     methods
         function me = StepConfigActions(cfg)
             me.ssITable = cell(6,2);
-            me.edCorrectionTable = cell(1,5);
+            me.edCorrectionTable = cell(1,3);
             me.ddCorrectionTable = cell(4,5);
             me.stcfg = StepTimingConfigDao(cfg);
             me.sccfg = StepCorrectionConfigDao(cfg);
             ssI1 = me.stcfg.substepIncL1;
             ssI2 = me.stcfg.substepIncL2;
             flabels = FunctionLists('StepCorrections');
-            me.flist = { 'Test' flabels.list{:}};  %#ok<CCAT>
+            me.flist = { 'Test' flabels.list{:}};   %#ok<*CCAT>
             me.edlist = {'Standard','Test'};
+            me.pflist = { '<NONE>',me.flist{:} };
+            me.pedlist = { '<NONE>',me.edlist{:} };
+            
             for i = 1:6
                 if ssI1.dispDofs(i)
                     me.ssITable{i,1} = sprintf('%f',ssI1.disp(i));
@@ -55,17 +60,17 @@ classdef StepConfigActions < handle
             set(me.handles.ddCorrectionTable,'ColumnFormat',format);
 
             set(me.handles.edCorrectionTable,'Data',me.edCorrectionTable);
-            format = {'logical','logical',me.edlist,me.edlist,me.edlist};
+            format = {'logical','logical',me.edlist};
             set(me.handles.edCorrectionTable,'ColumnFormat',format);
 
             patf = me.sccfg.prelimAdjustTargetFunctions;
 
-            set(me.handles.edPrelimAdjust,'String',me.edlist);
-            val = me.locate(me.edlist,patf{1});
+            set(me.handles.edPrelimAdjust,'String',me.pedlist);
+            val = me.locate(me.pedlist,patf{1});
             set(me.handles.edPrelimAdjust,'Value',val);
 
-            set(me.handles.ddPrelimAdjust,'String',me.flist);
-            val = me.locate(me.flist,patf{2});
+            set(me.handles.ddPrelimAdjust,'String',me.pflist);
+            val = me.locate(me.pflist,patf{2});
             set(me.handles.ddPrelimAdjust,'Value',val);
             
             yes = 0;

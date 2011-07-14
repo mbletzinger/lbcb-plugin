@@ -8,6 +8,38 @@ function yes = needsCorrection(me,curResponse, correctionTarget)
 % norm values between the current response and the target
 % description: tranlsations and rotations are separated
 %------------------
+norm_1 = norm(curResponse(1:3)-correctionTarget(1:3));
+norm_2 = norm(curResponse(4:6)-correctionTarget(4:6));
+yes = (me.st.withinTolerances(correctionTarget,curResponse)) == false;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%------------------
+% norm values between the current response and the target
+% description: tranlsations and rotations are separated
+%------------------
 ind_tran = [];
 ind_rot = [];
 for i = 1:3
@@ -30,6 +62,16 @@ end
 %==
 % norm_1 = norm(curResponse(1:3)-correctionTarget(1:3));
 % norm_2 = norm(curResponse(4:6)-correctionTarget(4:6));
+
+
+
+
+
+
+
+
+
+
 
 %------------------
 % two criteria 

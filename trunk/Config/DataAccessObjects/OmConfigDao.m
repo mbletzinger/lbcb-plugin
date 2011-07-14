@@ -18,9 +18,6 @@ classdef OmConfigDao < handle
         sensitivities
         fixedLocations
         pinLocations
-        sensorErrorTol
-        sensorUpper
-        sensorLower
         transPert
         rotPert
         optsetMaxFunEvals
@@ -86,24 +83,6 @@ classdef OmConfigDao < handle
         function set.pinLocations(me,value)
             sz = length(value);
             me.dt.setTransVector('om.location.pinLocations','ext.sensor',sz,value);
-        end
-        function result = get.sensorErrorTol(me)
-            result = me.dt.getDoubleVector('om.sensor.error.tol',[0]);
-        end
-        function set.sensorErrorTol(me,value)
-            me.dt.setDoubleVector('om.sensor.error.tol',value);
-        end
-        function result = get.sensorUpper(me)
-            result = me.dt.getDoubleVector('om.sensor.limit.upper',[0]);
-        end
-        function set.sensorUpper(me,value)
-            me.dt.setDoubleVector('om.sensor.limit.upper',value);
-        end
-        function result = get.sensorLower(me)
-            result = me.dt.getDoubleVector('om.sensor.limit.lower',[0]);
-        end
-        function set.sensorLower(me,value)
-            me.dt.setDoubleVector('om.sensor.limit.lower',value);
         end
         function result = get.transPert(me)
             result = me.dt.getDouble('om.sensor.perturbations.trans',0.000001);

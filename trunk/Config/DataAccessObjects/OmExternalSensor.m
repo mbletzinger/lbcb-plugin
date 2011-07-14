@@ -7,9 +7,6 @@ classdef OmExternalSensor < handle
         sensitivity
         fixedLocations
         pinLocations
-        sensorErrorTol
-        sensorLower
-        sensorUpper
     end
     methods
         function me = OmExternalSensor(cfg,idx)
@@ -20,9 +17,6 @@ classdef OmExternalSensor < handle
             me.sensitivity = 1;
             me.fixedLocations = zeros(3,1);
             me.pinLocations = zeros(3,1);
-            me.sensorErrorTol = 0;
-            me.sensorLower = -100;
-            me.sensorUpper = 100;
         end
         function getMe(me)
             list = me.cfg.sensorNames;
@@ -38,20 +32,6 @@ classdef OmExternalSensor < handle
             me.fixedLocations = list{me.idx};
             list = me.cfg.pinLocations;
             me.pinLocations = list{me.idx};
-            list = me.cfg.sensorErrorTol;
-            me.sensorErrorTol = list(me.idx);
-            list = me.cfg.sensorLower;
-            if length(list) < me.idx % compensate for old property files missing this field
-                me.sensorLower = -100;
-            else
-                me.sensorLower = list(me.idx);
-            end
-            list = me.cfg.sensorUpper;
-            if length(list) < me.idx
-                me.sensorUpper = 100;
-            else
-                me.sensorUpper = list(me.idx);
-            end
         end
         function setMe(me)
             list = me.cfg.sensorNames;
@@ -99,32 +79,6 @@ classdef OmExternalSensor < handle
             list{me.idx} = me.pinLocations;
             me.cfg.pinLocations = list;
             
-            list = me.cfg.sensorErrorTol;
-            if length(list) < me.idx
-                lst = zeros(me.idx,1);
-                lst(1:length(list)) = list(:);
-                list = lst;
-            end
-            list(me.idx) = me.sensorErrorTol;
-            me.cfg.sensorErrorTol = list;
-            
-            list = me.cfg.sensorLower;
-            if length(list) < me.idx
-                lst = zeros(me.idx,1);
-                lst(1:length(list)) = list(:);
-                list = lst;
-            end
-            list(me.idx) = me.sensorLower;
-            me.cfg.sensorLower = list;
-            
-            list = me.cfg.sensorUpper;
-            if length(list) < me.idx
-                lst = zeros(me.idx,1);
-                lst(1:length(list)) = list(:);
-                list = lst;
-            end
-            list(me.idx) = me.sensorUpper;
-            me.cfg.sensorUpper = list;
         end
         function str = toString(me)
             str = sprintf('/name=%s/lbcb=%s/sens=%9.7e', ...
@@ -141,9 +95,6 @@ classdef OmExternalSensor < handle
                 str = sprintf('%s/pinLocations=[%9.7e,%9.7e,%9.7e]', ...
                     str,me.pinLocations(1), me.pinLocations(2), me.pinLocations(3));
             end
-            str = sprintf('%s/error=%9.7e', str,me.sensorErrorTol);
-            str = sprintf('%s/low=%9.7e', str,me.sensorLower);
-            str = sprintf('%s/hi=%9.7e', str,me.sensorUpper);
         end
         function set.fixedLocations(me,b)
             if iscell(b)
