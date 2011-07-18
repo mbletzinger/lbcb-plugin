@@ -145,17 +145,17 @@ classdef StepConfigActions < handle
             end
         end
         function setPrelimAdjust(me,str,idx)
+            if idx == 1
+                lst = me.pedlist;
+            else
+                lst = me.pflist;
+            end
             patf = me.sccfg.prelimAdjustTargetFunctions;
-            patf{idx} = me.flist{str};
+            patf{idx} = lst{str};
             me.sccfg.prelimAdjustTargetFunctions = patf;
         end
         function saveValue(me,row,column,value)
             cfg = me.sccfg;
-            if row == 1
-                lst = me.edlist;
-            else
-                lst = me.flist;
-            end
             switch column
                 case 1
                     cols = cfg.doCalculations;
@@ -187,11 +187,6 @@ classdef StepConfigActions < handle
         end
         function value = loadValue(me,row,column)
             cfg = me.sccfg;
-            if row == 1
-                lst = me.edlist;
-            else
-                lst = me.flist;
-            end
             switch column
                 case 1
                     cols = cfg.doCalculations;

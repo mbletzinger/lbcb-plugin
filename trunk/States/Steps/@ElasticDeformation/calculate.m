@@ -14,7 +14,7 @@
 % edCalc(me,ccps, pcps, tcps);
 % end
 
-function curResponse = calculate(me, prevResponse)
+function curResponse = calculate(me, prevResponse, curReadings, initialPosition)
 
 %------------------
 % obtain all variables
@@ -22,7 +22,7 @@ function curResponse = calculate(me, prevResponse)
 xpin = me.pinLocations;
 xfix = me.fixedLocations;
 %==
-disp = me.curReadings - me.initialReadings;
+disp = curReadings - initialPosition;
 
 %------------------
 % Obtain idof
@@ -33,6 +33,8 @@ idof = me.st.used;
 if mdof > ndof
     idof = idof';
 end
+idof = idof(1:6);
+
 
 
 %------------------
@@ -52,30 +54,42 @@ end
 %------------------
 % Setting for optimization
 %------------------
-if isempty(me.opSetting.maxfunevals)
+if isempty(me.optSetting) % OM config is NOT passed into here in the first step
     optm.maxfunevals = 1000;
-else
-    optm.maxfunevals = me.opSetting.maxfunevals;
-end
-if isempty(me.optSetting.maxiter)
     optm.maxiter = 100;
-else
-    optm.maxiter = me.optSetting.maxiter;
-end
-if isempty(me.optSetting.tolfun)
     optm.tolfun = 1e-8;
-else
-    optm.tolfun = me.optSetting.tolfun;
-end
-if isempty(me.optSetting.tolx)
     optm.tolx = 1e-12;
-else
-    optm.tolx = me.optSetting.tolx;
-end
-if isempty(me.optSetting.jacob)
     optm.jacob = 'on';
 else
-    optm.jacob = me.optSetting.jacob;
+    if isempty(me.optSetting.maxfunevals)
+        optm.maxfunevals = 1000;
+    else
+        optm.maxfunevals = me.optSetting.maxfunevals;
+    end
+    if isempty(me.optSetting.maxiter)
+        optm.maxiter = 100;
+    else
+        optm.maxiter = me.optSetting.maxiter;
+    end
+    if isempty(me.optSetting.tolfun)
+        optm.tolfun = 1e-8;
+    else
+        optm.tolfun = me.optSetting.tolfun;
+    end
+    if isempty(me.optSetting.tolx)
+        optm.tolx = 1e-12;
+    else
+        optm.tolx = me.optSetting.tolx;
+    end
+    if isempty(me.optSetting.jacob)
+        optm.jacob = 'on';
+    else
+        if me.optSetting.jacob
+            optm.jacob = 'on';
+        else
+            optm.jacob = 'off';
+        end
+    end
 end
 
 %------------------
@@ -84,14 +98,14 @@ end
 % me.transPert = ocfg.transPert;
 % me.rotPert = ocfg.rotPert;
 if isempty(me.transPert) || (length(me.transPert)<3)
-    temp1 = ones(3,1);
+    temp1 = me.transPert(1)*ones(3,1);
 else
-    temp1 = me.transPert;
+    temp1 = ones(3,1);
 end
 if isempty(me.rotPert) || (length(me.rotPert)<3)
-    temp2 = 0.005*ones(3,1);
+    temp2 = me.rotPert*ones(3,1);
 else
-    temp2 = me.rotPert;
+    temp2 = 0.005*ones(3,1);
 end
 %==
 optm.pert_total = [temp1;temp2];
@@ -104,9 +118,15 @@ optm.pert_total = [temp1;temp2];
 % the future.
 %------------------
 % prevResponse is 1 by 6
+% disp
+% xpin
+% xfix
+% prevResponse
+% idof
 %==
-temp = prevResponse + ElasticDeformation.disp2controlpoint(disp,xpin,xfix,[],prevResponse,3,optm,idof_update);
+temp = prevResponse + ElasticDeformation.disp2controlpoint(disp,xpin,xfix,[],prevResponse,3,optm,idof);
 %==
+% temp
 % curResponse = temp(idof); 
 curResponse = temp;
 

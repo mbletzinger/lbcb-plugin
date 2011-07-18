@@ -62,10 +62,10 @@ classdef ElasticDeformation < CorrectionVariables
         end
         nextCommand = adjustTarget(me,correctionTarget,curResponse,curCommand)
         prelimAdjust(me,curStep, nextStep)
-        curResponse = calculate(me, prevResponse)
+        curResponse = calculate(me, prevResponse,curReadings, initialPosition)
         loadConfig(me)
         yes = needsCorrection(me,curResponse, correctionTarget)
-        archiveCorrections(type,cor);
+        archiveCorrections(me,type,cor);
         curResponse = calculateTest(me, curCommand,stepNum)
     end
     methods(Static)
