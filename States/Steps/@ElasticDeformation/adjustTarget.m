@@ -27,6 +27,7 @@ temp = prevCommand + (correctionTarget - curResponse );
 % the command equal to the previous step
 % (this step can be discussed)
 %------------------
+%{
 ind_t = []; % index for traslations
 ind_r = []; % index for rotations
 for i = 1:3
@@ -58,6 +59,9 @@ if (norm_tran_cal<=limit_ratio*norm_tran_true) && (norm_rot_cal<=limit_ratio*nor
 else
     curCommandOut = prevCommand; % this one can be modified
 end
+%}
+
+curCommandOut = temp;
 %==
 %{
 norm_tran_cal = norm(temp(1:3)-correctionTarget(1:3));

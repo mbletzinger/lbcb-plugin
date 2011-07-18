@@ -1,17 +1,19 @@
-function  calculate(me, curStep,initialPosition)
+function  calculate(me, prevStep, curStep,initialPosition)
 %calculate elastic deformations
 ccfg = StepCorrectionConfigDao(me.cdp.cfg);
 doC = ccfg.doCalculations;
 funcs = ccfg.calculationFunctions;
 if  doC(1)
     for l = 1: me.cdp.numLbcbs()
+        pcps = prevStep.lbcbCps{l};
         ccps = curStep.lbcbCps{l};
         icps = initialPosition.lbcbCps{l};
         stp = curStep.stepNum;
         if strcmp(funcs(1),'Test')
             rsp = me.ed{l}.calculateTest(ccps.command.disp,stp);
         else
-            rsp = me.ed{l}.calculate(ccps.response.disp,...
+            me.ed{1}.loadConfig;
+            rsp = me.ed{l}.calculate(pcps.response.disp,...
                 ccps.externalSensors,icps.externalSensors);
         end
         ccps.response.ed.disp = rsp;

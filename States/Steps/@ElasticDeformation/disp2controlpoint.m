@@ -30,7 +30,6 @@ function cmd = disp2controlpoint(d,xpin,xfix,xcurrent,cmdlast,imode,optm,idof)
 % trying to make three cases only: 1 dof, 3 dof (2 tran + 1 rot), 6 dof
 %------------------
 ind_tran = find(idof(1:3) == 1);
-ind_rot = find(idof(4:6) == 1);
 %==
 idof_update = zeros(size(idof));
 if ~isempty(ind_tran)
@@ -47,6 +46,11 @@ if ~isempty(ind_tran)
         idof_update = ones(1,6);
     end
 end
+indtemp = find(idof(4:6) == 1);
+if ~isempty(indtemp)
+    idof_update(indtemp+3*ones(1,length(indtemp))) = ones(1,length(indtemp));
+end
+ind_rot = find(idof_update(4:6) == 1);
 if ~isempty(ind_rot)
     temp = [2 3;3 1;1 2];
     if length(ind_rot) == 1
@@ -93,7 +97,7 @@ ind_dof = find(idof_update == 1);
 %------------------
 switch imode
     case 100 %dont use, will be modified later
-        cmdtemp = lsqnonlin(@(cmd) ElasticDeformation.x2cmd_eval(cmd,xcurrent,xpin,xfix,d),cmdlast',LB,UB,opt);
+        cmdtemp = lsqnonlin(@(cmd) ElasticDeformation.x2cmd_eval(cmd,xcurrent,xpin,xfix,d),cmdlast,LB,UB,opt);
         cmd = cmdtemp';
     case 30 %it doesn't require optimization function
         %--------------------
@@ -112,14 +116,14 @@ switch imode
         % first step
         %--------------------
         cmdtemp = INI_check;        
-        [fxtemp,Jtemp] = ElasticDeformation.x2cmd_eval2_mf(cmdtemp,xpin,xfix,d,cmdlast',idof_update,cmdpert); 
+        [fxtemp,Jtemp] = ElasticDeformation.x2cmd_eval2_mf(cmdtemp,xpin,xfix,d,cmdlast,idof_update,cmdpert); 
         normtemp = 0;
         
         %--------------------
         % Iteration
         %--------------------
         for i = 1:optm.maxfunevals
-            [fx,Jac] = ElasticDeformation.x2cmd_eval2_mf(cmdtemp,xpin,xfix,d,cmdlast',idof_update,cmdpert);
+            [fx,Jac] = ElasticDeformation.x2cmd_eval2_mf(cmdtemp,xpin,xfix,d,cmdlast,idof_update,cmdpert);
             delta_cmdtemp = inv(Jac'*Jac+lamda*diag(diag(Jac'*Jac)))*Jac'*(fx);
             cmdnew = - delta_cmdtemp + cmdtemp;
             %== check whether 'cmdnew' is within boundary or not
@@ -140,7 +144,7 @@ switch imode
                         cmdnew(ind2) = UB_check(ind2);
                     end
                     normtemp = norm(fx-fxtemp);
-                    [fx,Jac] = ElasticDeformation.x2cmd_eval2_mf(cmdnew,xpin,xfix,d,cmdlast',idof_update,cmdpert);
+                    [fx,Jac] = ElasticDeformation.x2cmd_eval2_mf(cmdnew,xpin,xfix,d,cmdlast,idof_update,cmdpert);
                     delta_cmdtemp = inv(Jac'*Jac+lamda*diag(diag(Jac'*Jac)))*Jac'*(fx);
                     cmdnew = -delta_cmdtemp + cmdnew;
                     if norm(fx-fxtemp) > normtemp
@@ -167,11 +171,11 @@ switch imode
             %==
         end        
         %==
-        cmd = zeros(1,6);
-        cmd(ind_dof) = cmdnew';
+        cmd = zeros(6,1);
+        cmd(ind_dof) = cmdtemp;
         
     case 3
-        cmdtemp = lsqnonlin(@(cmd) ElasticDeformation.x2cmd_eval2_mf(cmd,xpin,xfix,d,cmdlast',idof_update,cmdpert),zeros(length(ind_dof),1),LB(ind_dof),UB(ind_dof),opt);
-        cmd = zeros(1,6);
-        cmd(ind_dof) = cmdtemp';
+        cmdtemp = lsqnonlin(@(cmd) ElasticDeformation.x2cmd_eval2_mf(cmd,xpin,xfix,d,cmdlast,idof_update,cmdpert),zeros(length(ind_dof),1),LB(ind_dof),UB(ind_dof),opt);
+        cmd = zeros(6,1);
+        cmd(ind_dof) = cmdtemp;
 end

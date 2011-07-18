@@ -57,7 +57,7 @@ classdef StepCorrectionConfigDao < handle
             me.dt.setStringVector('step.adjustTarget.function',value);
         end
         function result = get.prelimAdjustTargetFunctions(me)
-             result = me.dt.getStringVector('step.prelimAdjustTarget.function',{'Standard' 'Test' 'Test' 'Test' 'Test'});
+             result = me.dt.getStringVector('step.prelimAdjustTarget.function',{'<NONE>' '<NONE>'});
         end
         function set.prelimAdjustTargetFunctions(me,value)
             me.dt.setStringVector('step.prelimAdjustTarget.function',value);

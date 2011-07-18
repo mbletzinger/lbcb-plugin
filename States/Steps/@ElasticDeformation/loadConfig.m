@@ -4,9 +4,9 @@ ocfg = OmConfigDao(me.cdp.cfg);
 bapplied = ocfg.apply2Lbcb;
 bpinLocations = ocfg.pinLocations;
 bfixedLocations = ocfg.fixedLocations;
-bulimit = ocfg.sensorUpper;
-bllimit = ocfg.sensorLower;
-berror = ocfg.sensorErrorTol;
+% bulimit = ocfg.sensorUpper;
+% bllimit = ocfg.sensorLower;
+% berror = ocfg.sensorErrorTol;
 
 aselect = StateEnum({'LBCB1','LBCB2','BOTH'});
 lbcb = 'LBCB2';
