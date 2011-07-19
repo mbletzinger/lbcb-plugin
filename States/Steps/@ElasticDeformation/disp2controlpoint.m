@@ -96,9 +96,14 @@ ind_dof = find(idof_update == 1);
 % obtain cmd
 %------------------
 switch imode
-    case 100 %dont use, will be modified later
-        cmdtemp = lsqnonlin(@(cmd) ElasticDeformation.x2cmd_eval(cmd,xcurrent,xpin,xfix,d),cmdlast,LB,UB,opt);
-        cmd = cmdtemp';
+    case 100 %dont use, only for testing
+        ind_pin = [1 2 3 6];
+        xpin = xpin(:,ind_pin);
+        xfix = xfix(:,ind_pin);
+        d = d(ind_pin);
+        cmdtemp = lsqnonlin(@(cmd) ElasticDeformation.x2cmd_eval2_mf(cmd,xpin,xfix,d,cmdlast,idof_update,cmdpert),zeros(length(ind_dof),1),LB(ind_dof),UB(ind_dof),opt);
+        cmd = zeros(6,1);
+        cmd(ind_dof) = cmdtemp;
     case 30 %it doesn't require optimization function
         %--------------------
         % Update variable
