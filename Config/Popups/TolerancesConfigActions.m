@@ -4,9 +4,9 @@ classdef TolerancesConfigActions < TableDataManagement
         limitsTable
         log = Logger('TolerancesConfigActions')
         selectedRow
-        pstep
-        cstep
         tl
+        correctionTarget
+        currentStep
     end
     methods
         function me = TolerancesConfigActions(tl)
@@ -33,36 +33,36 @@ classdef TolerancesConfigActions < TableDataManagement
             set(me.handles.LbcbChoice,'Value',1);
             me.fill();
         end
-        function setSteps(me,cstep)
-            me.cstep = cstep;
-            me.fill();
+        
+        function setStep(me,step)
+            me.currentStep = step;
+        end
+        function setTarget(me,target)
+            me.correctionTarget = target;
         end
         function fill(me)
             me.limitsTable = cell(12,3);
-            [limits used] = me.getCfg();
-            logical = true(12,1);
-            diffs = zeros(12,1);
-            if isempty(me.cstep) == false
-            if me.isLbcb1()
-                me.tl{1}.withinTolerances(me.cstep.lbcbCps{1}.command,...
-                    me.cstep.lbcbCps{1}.response);
-                logical = me.tl{1}.within;
-                diffs = me.tl{1}.diffs;
-            else
-                me.tl{2}.withinTolerances(me.cstep.lbcbCps{2}.command,...
-                    me.cstep.lbcbCps{2}.response);
-                logical = me.tl{2}.within;
-                diffs = me.tl{2}.diffs;
-            end
-            end
+            [limits used diffs within] = me.getCfg();
             for i = 1:12
                 if used(i)
                     me.limitsTable{i,1} = sprintf('%f',limits(i));
                     me.limitsTable{i,2} = diffs(i);
                 end
-                me.limitsTable{i,3} = (logical(i) == false);
+                me.limitsTable{i,3} = (within(i) == false);
             end
             set(me.handles.ToleranceTable,'Data',me.limitsTable);
+        end
+        function recalculate(me)
+            if me.isLbcb1()
+                stpT = me.tl{1};
+                target = me.correctionTarget.lbcbCps{1}.command;
+                response = me.currentStep.lbcbCps{1}.response;
+            else
+                stpT = me.tl{2};
+                target = me.correctionTarget.lbcbCps{2}.command;
+                response = me.currentStep.lbcbCps{2}.response;
+            end
+            me.fill();
         end
         function setCell(me,indices,data)
             r = indices(1);
@@ -76,19 +76,19 @@ classdef TolerancesConfigActions < TableDataManagement
             else
                 me.tl{2}.setWindow(limits,used);
             end
-            me.fill();
+            me.recalculate();
         end
         
-        function [limits used] = getCfg(me)
+        function [limits used diffs within] = getCfg(me)
+            stpT = me.tl{2};
             if me.isLbcb1()
-                me.tl{1}.getWindow();
-                limits = me.tl{1}. window;
-                used = me.tl{1}.used;
-            else
-                me.tl{2}.getWindow();
-                limits = me.tl{2}.window;
-                used = me.tl{2}.used;
+                stpT = me.tl{1};
             end
+            stpT.getWindow();
+            limits = stpT.window;
+            used = stpT.used;
+            diffs = stpT.diffs;
+            within = stpT.within;
         end
     end
 end

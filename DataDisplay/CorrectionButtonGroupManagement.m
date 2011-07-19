@@ -13,23 +13,29 @@ classdef CorrectionButtonGroupManagement < handle
         function init(me)
             me.offColor = get(me.childHandles{1},'BackgroundColor');
         end
-        function setState(me,nc,ed,dd)
-            if nc == false
-                if ed
-                    me.on(1);
-                else
-                    me.off(1);
-                end
-                me.on(2);
-                me.labelDD(dd);
-                me.off(3);
-                return;
-            end
+        function setState(me,nc,ed,dd, ddl)
             me.off(1);
             me.off(2);
             me.on(3);
             me.labelDD(0);
+            
+            if nc == true
+                return;
+            end
+            
+            if ed
+                me.on(1);
+                me.off(3);
+            end
+            
+            if dd
+                me.on(2);
+                me.labelDD(ddl);
+                me.off(3);
+            end
+            return;
         end
+        
         function on(me, i)
             h = me.childHandles{i};
             set(h,'BackgroundColor','cyan');
