@@ -72,7 +72,10 @@ switch a
             me.currentAction.setState('DONE');
         else
             me.corrections.determineCorrections(me.dat.correctionTarget, ...
-            me.dat.curStepData);
+                me.dat.curStepData);
+             if isempty(me.gui) == false
+                me.gui.updateCorrections();
+            end
             if (me.corrections.needsCorrection() == false)...
                     && me.needsTriggering()
                     me.brdcstRsp.start();

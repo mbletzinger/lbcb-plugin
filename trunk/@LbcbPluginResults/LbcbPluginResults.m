@@ -53,7 +53,7 @@ classdef LbcbPluginResults < handle
         updateStepState(me,idx)
         updateSimState(me,idx)
         updateSource(me,idx)        
-        updateCorrections(me,nc,ed,dd)        
+        updateCorrections(me)        
     end
     methods (Access=private)
         colorFaultText(me,hndl,fault,isLbcb1,f)

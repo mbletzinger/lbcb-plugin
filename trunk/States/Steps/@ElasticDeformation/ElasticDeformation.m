@@ -66,7 +66,7 @@ classdef ElasticDeformation < CorrectionVariables
         loadConfig(me)
         yes = needsCorrection(me,curResponse, correctionTarget)
         archiveCorrections(me,type,cor);
-        curResponse = calculateTest(me, curCommand,stepNum)
+        curResponse = calculateTest(me, correctionTarget,stepNum)
     end
     methods(Static)
         [fx,Jac] = x2cmd_eval2_mf(cmd,xpin,xfix,d,cmdlast,idof,cmdpert);

@@ -1,7 +1,7 @@
 classdef StepTolerances < handle
     properties
-        within = ones(12,1);
-        diffs = zeros(12,1);
+        within;
+        diffs;;
         window = [];
         used = [];
         log = Logger('StepTolerances');
@@ -12,6 +12,8 @@ classdef StepTolerances < handle
         function me = StepTolerances(cfg,isLbcb1)            
             me.cfg = cfg;
             me.isLbcb1 = isLbcb1;
+            me.within = true(12,1);
+            me.diffs = zeros(12,1);
         end
         function yes = needsCorrection(me,dof)
                 yes = me.within(dof) == false;
