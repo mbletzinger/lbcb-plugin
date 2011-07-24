@@ -8,12 +8,12 @@ end
 corrections = me.hfact.corrections.ncorrections;
 nc = (sum(corrections)  > 0) == false;
 ed = corrections(1);
-dd = 0;
-ddl = false;
+ddl = 0;
+dd = false;
 for c = 2:length(corrections)
     if corrections(c)
-        dd = c - 2;
-        ddl = true;
+        ddl = c - 2;
+        dd = true;
         break;
     end
 end

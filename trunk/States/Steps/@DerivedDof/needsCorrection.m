@@ -9,6 +9,11 @@ funcs = scfg.needsCorrectionFunctions;
 if isempty(funcs)
     return;
 end
-ddCorrect = str2func(funcs{2 + me.level});
+fname = funcs{2 + me.level};
+if strcmp(fname,'Test')
+    yes = me.needsCorrectionTest();
+    return;
+end
+ddCorrect = str2func(fname);
 yes = ddCorrect(me);
 end
