@@ -26,7 +26,7 @@ for lv = 1:length(doCorrections)
                 edCorrect = need > 0;
                 me.ncorrections(lv) = edCorrect;
             case { 2 3 4 5 }
-                ddCorrect = me.dd{lv-1}.needsCorrection(step);
+                ddCorrect = me.dd{lv-1}.needsCorrection();
                 me.ncorrections(lv) = ddCorrect;
         end
     end

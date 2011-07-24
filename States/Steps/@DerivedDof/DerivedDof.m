@@ -19,12 +19,12 @@ classdef DerivedDof < CorrectionVariables
         end
         calculate(me,cstep)
         adjustTarget(me,step)
-        yes = needsCorrection(me,step)
+        yes = needsCorrection(me)
         prelimAdjust(me,step,func)
         
         calculateTest(me,cstep)
         adjustTargetTest(me,step)
-        yes = needsCorrectionTest(me,step)
+        yes = needsCorrectionTest(me)
         prelimAdjustTest(me,step)
 
     end
