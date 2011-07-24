@@ -213,7 +213,7 @@ classdef MdlUiSimCor < handle
                     me.action.setState('NONE');
                     me.log.error(dbstack(),char(me.simcorTcp.getTransaction().getError().getText()));
                     me.simcorTcp.shutdown();
-                case {'CLOSING_CONNECTION' 'CHECK_LISTENER_OPEN_CONNECTION' ,'STOP_LISTENER'}
+                case {'CLOSING_CONNECTION' 'SHUTDOWN_CONNECTION' 'CHECK_LISTENER_OPEN_CONNECTION' ,'STOP_LISTENER'}
                 otherwise
                     me.log.error(dbstack,sprintf('"%s" not recognized',csS));
             end

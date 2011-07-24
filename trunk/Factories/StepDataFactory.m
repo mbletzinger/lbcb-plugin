@@ -5,6 +5,7 @@ classdef StepDataFactory < handle
         cdp = [];
         m2d = Msg2DofData();
         tgtNumber;
+        log= Logger('StepDataFactory')
     end
     methods
         function clone = createEmptyStepData(me,step,sub,cor)
@@ -36,6 +37,12 @@ classdef StepDataFactory < handle
             clone.stepNum = StepNumber(me.nextTgtNumber(),0,0);
             [addresses, contents] = cmd.getContents();
             if iscell(addresses)
+                if length(addresses) ~= me.cdp.numModelCps()
+                    me.log.error(dbstack,...
+                        sprintf('Number of control points set in Target Configuration is not equal to the targets that UI-SimCor is sending (%d)',...
+                        length(addresses)));
+                    return; %#ok<UNRCH>
+                end
                 for a = 1 : length(addresses)
                     addr = char(addresses{a}.toString());
                     target = me.m2d.parse(contents{a},addr);
@@ -51,6 +58,12 @@ classdef StepDataFactory < handle
                 end
             else
                 addr = char(addresses.toString());
+                if me.cdp.numModelCps() ~= 1
+                    me.log.error(dbstack,...
+                        sprintf('Number of control points set in Target Configuration is not equal to the targets that UI-SimCor is sending (%d)',...
+                        length(addresses)));
+                    return; %#ok<UNRCH>
+                end
                 target = me.m2d.parse(contents,addr);
                 for t = 1 : 6
                     if(target{1}.dispDofs(t))

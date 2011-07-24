@@ -120,7 +120,7 @@ handles.dao.connectionTimeout = sscanf(get(hObject,'String'),'%d');
 
 
 function SimCorPort_Callback(hObject, eventdata, handles)
-handles.dao.simcorPort = sccanf(get(hObject,'String'),'%d');
+handles.dao.simcorPort = sscanf(get(hObject,'String'),'%d');
 
 
 

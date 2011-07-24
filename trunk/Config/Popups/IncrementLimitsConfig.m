@@ -45,21 +45,22 @@ end
 
 
 % --- Executes just before IncrementLimitsConfig is made visible.
-function IncrementLimitsConfig_OpeningFcn(hObject, eventdata, handles, varargin)
+function IncrementLimitsConfig_OpeningFcn(hObject, eventdata, handles, varargin) %#ok<*INUSL>
 cfg = [];
 pstep = [];
 cstep = [];
+il = [];
 if(nargin > 3)
     for index = 1:2:(nargin-3),
         if nargin-3==index, break, end
         label = lower(varargin{index});
         switch label
-            case 'cfg'
-                cfg = varargin{index+1};
             case 'pstep'
                 pstep = varargin{index+1};
             case 'cstep'
                 cstep = varargin{index+1};
+            case 'limits'
+                il = varargin{index+1};
             otherwise
             str= sprintf('%s not recognized',label);
             disp(str);
@@ -68,7 +69,7 @@ if(nargin > 3)
 end
 
 handles.cfg = cfg;
-handles.actions = IncrementLimitsConfigActions(cfg,pstep,cstep);
+handles.actions = IncrementLimitsConfigActions(il,pstep,cstep);
 handles.actions.initialize(handles);
 
 % Make the GUI modal
@@ -80,7 +81,7 @@ guidata(hObject, handles);
 % UIWAIT makes OmConfig wait for user response (see UIRESUME)
 uiwait(handles.IncrementLimitsConfig);
 
-function varargout = IncrementLimitsConfig_OutputFcn(hObject, eventdata, handles) 
+function varargout = IncrementLimitsConfig_OutputFcn(hObject, eventdata, handles)  %#ok<*INUSD>
 % varargout  cell array for returning output args (see VARARGOUT);
 % hObject    handle to figure
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -90,7 +91,7 @@ function varargout = IncrementLimitsConfig_OutputFcn(hObject, eventdata, handles
 varargout{1} = 1;
 
 
-function Lbcb_Callback(hObject, eventdata, handles)
+function Lbcb_Callback(hObject, eventdata, handles) %#ok<*DEFNU>
 handles.actions.fill();
 
 
