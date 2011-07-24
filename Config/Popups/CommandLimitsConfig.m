@@ -44,18 +44,19 @@ end
 % End initialization code - DO NOT EDIT
 
 
-function CommandLimitsConfig_OpeningFcn(hObject, eventdata, handles, varargin)
+function CommandLimitsConfig_OpeningFcn(hObject, eventdata, handles, varargin) %#ok<*INUSL>
 cfg = [];
 step = [];
+cl = [];
 if(nargin > 3)
     for index = 1:2:(nargin-3),
         if nargin-3==index, break, end
         label = lower(varargin{index});
         switch label
-            case 'cfg'
-                cfg = varargin{index+1};
             case 'step'
                 step = varargin{index+1};
+            case 'limits'
+                cl = varargin{index+1};
             otherwise
             str= sprintf('%s not recognized',label);
             disp(str);
@@ -64,7 +65,7 @@ if(nargin > 3)
 end
 
 handles.cfg = cfg;
-handles.actions = CommandLimitsConfigActions(cfg,step);
+handles.actions = CommandLimitsConfigActions(cl,step);
 handles.actions.initialize(handles);
 
 % Make the GUI modal
@@ -76,10 +77,10 @@ guidata(hObject, handles);
 % UIWAIT makes OmConfig wait for user response (see UIRESUME)
 uiwait(handles.CommandLimitsConfig);
 
-function varargout = CommandLimitsConfig_OutputFcn(hObject, eventdata, handles) 
+function varargout = CommandLimitsConfig_OutputFcn(hObject, eventdata, handles)  %#ok<*INUSD>
 varargout{1} = 1;
 
-function Lbcb_Callback(hObject, eventdata, handles)
+function Lbcb_Callback(hObject, eventdata, handles) %#ok<*DEFNU>
 handles.actions.fill();
 
 function Ok_Callback(hObject, eventdata, handles)

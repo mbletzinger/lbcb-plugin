@@ -32,6 +32,6 @@ classdef Corrections < handle
         canBeCorrected = canBeCorrected(me,step)
         determineCorrections(me,ctarget,step)
         prelimAdjust(me,curStep, nextStep)
-        calculate(me,prevStep curStep, initialPosition, correctionTarget)
+        calculate(me,prevStep, curStep, initialPosition, correctionTarget)
     end
 end

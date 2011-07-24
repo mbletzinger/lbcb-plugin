@@ -1,7 +1,7 @@
 classdef IncrementLimits < handle
     properties
-        faults1 = zeros(12,1);
-        faults2 = zeros(12,1);
+        faults1 = false(12,1);
+        faults2 = false(12,1);
         increments1 = zeros(12,1);
         increments2 = zeros(12,1);
         limits = [];
@@ -14,7 +14,7 @@ classdef IncrementLimits < handle
         function yes = withinLimits(me,curStep,prevStep)
             cdp = ConfigDaoProvider(me.cfg);
             me.getLimits();
-            me.faults2 = zeros(12,1);
+            me.faults2 = false(12,1);
             [me.faults1 me.increments1 ] = me.wL(curStep.lbcbCps{1}.command,...
                 prevStep.lbcbCps{1}.command,me.limits.window1,me.limits.used1);
             lt = cdp.numLbcbs();

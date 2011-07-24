@@ -191,6 +191,7 @@ classdef HandleFactory <  handle
             me.tgtEx.stpEx = me.stpEx;
             me.tgtEx.inF = me.inF;
             me.tgtEx.ocSimCor = me.ocSimCor;
+            me.tgtEx.tgtRsp = me.tgtRsp;
                         
             for c =1:length(me.simCorStates)
                 me.simCorStates{c}.cdp = me.cdp;

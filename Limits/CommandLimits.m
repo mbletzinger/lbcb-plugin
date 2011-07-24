@@ -1,7 +1,7 @@
 classdef CommandLimits < handle
     properties
-        faults1 = zeros(12,2); % 12 x 2 upper and lower limit faults.  Exceeded = 1
-        faults2 = zeros(12,2);
+        faults1 = false(12,2); % 12 x 2 upper and lower limit faults.  Exceeded = 1
+        faults2 = false(12,2);
         limits = [];
         commands1 = zeros(12,1);
         commands2 = zeros(12,1);
@@ -15,8 +15,8 @@ classdef CommandLimits < handle
         end
         function yes = withinLimits(me,step)
             me.getLimits();
-            me.faults1 = zeros(12,2);
-            me.faults2 = zeros(12,2);
+            me.faults1 = false(12,2);
+            me.faults2 = false(12,2);
             [me.faults1 me.commands1 ] = me.wL(step.lbcbCps{1}.command,...
                 me.limits.lower1,me.limits.upper1,me.limits.used1);
             lt = length(step.lbcbCps);

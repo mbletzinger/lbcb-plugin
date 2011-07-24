@@ -5,9 +5,9 @@ use File::Spec;
 use Cwd;
 use strict;
 
-#my ( $host, $port ) = ( "localhost", "6445" );
+my ( $host, $port ) = ( "localhost", "6445" );
 
-my ($host, $port) = ("cee-neesstit1.cee.illinois.edu","6445");
+#my ($host, $port) = ("cee-neesstit1.cee.illinois.edu","6445");
 my $cwd     = cwd();
 my @dirs    = File::Spec->splitdir($cwd);
 my $dropped = pop @dirs;
@@ -26,8 +26,9 @@ receiveCommand();
 
 sendCommand("set-parameter\tdummySetParam\tnstep\t0");
 receiveCommand();
+sleep(4);
 
-my $increment = "0.5";
+my $increment = "0.05";
 for my $i ( 1 .. 5 ) {
 	my ( $sec, $min, $hour, $mday, $month, $year, $wday, $yday, $isdst ) =
 	  localtime(time);
@@ -35,10 +36,10 @@ for my $i ( 1 .. 5 ) {
 	$month++;
 	print "$month/$mday/$year";
 	sendCommand( "propose	trans20080206155057.44"
-		  . "	MDL-00-01	x	displacement	1.0000000000e-003	y	displacement	2.0000000000e-003	z	rotation	3.0000000000e-003"
+		  . "	MDL-00-01	x	displacement	$increment	y	displacement	2.0000000000e-003	z	rotation	3.0000000000e-003"
 	);
 	receiveCommand();
-	$increment = $increment eq "0.5" ? "-0.5" : "0.5";
+	$increment = $increment eq "0.05" ? "-0.05" : "0.05";
 	sleep 3;
 }
 

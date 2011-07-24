@@ -614,17 +614,19 @@ actions.tolerances.fill();
 
 function CommandLimits_Callback(hObject, eventdata, handles)
 actions = getappdata(getLp(hObject),'actions');
-CommandLimitsConfig('cfg',actions.hfact.cfg);
+CommandLimitsConfig('step',actions.hfact.dat.nextStepData,...
+    'limits',actions.hfact.cl); 
 
 
 function IncrementLimits_Callback(hObject, eventdata, handles)
 actions = getappdata(getLp(hObject),'actions');
-IncrementLimitsConfig('cfg',actions.hfact.cfg);
-
+IncrementLimitsConfig('cstep',actions.hfact.dat.nextStepData,...
+    'pstep',actions.hfact.dat.curStepData,...
+    'limits',actions.hfact.il);
 
 function MessageArchive_Callback(hObject, eventdata, handles)
 if strcmp(get(hObject, 'Checked'),'on')
-    set(hObject,'Checked','off');
+    set(hObject,'Checked','off'); 
 else
     set(hObject,'Checked','on');
 end

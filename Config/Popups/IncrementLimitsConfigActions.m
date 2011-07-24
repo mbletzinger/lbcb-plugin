@@ -9,10 +9,10 @@ classdef IncrementLimitsConfigActions < TableDataManagement
         il
     end
     methods
-        function me = IncrementLimitsConfigActions(cfg,pstep,cstep)
+        function me = IncrementLimitsConfigActions(il,pstep,cstep)
             me.pstep = pstep;
             me.cstep = cstep;
-            me.il = IncrementLimits(cfg);
+            me.il = il;
         end
         function select(me,indices)
             if isempty(indices)
@@ -37,22 +37,13 @@ classdef IncrementLimitsConfigActions < TableDataManagement
         end
         function fill(me)
             me.limitsTable = cell(12,3);
-            [limits used] = me.getCfg();
-            logical = true(12,1);
-            increments = zeros(12,1);
-            if isempty(me.cstep) == false
-                if me.isLbcb1()
-                    [logical increments ] = me.il.wL(me.cstep.lbcbCps{1}.command,me.pstep.lbcbCps{1}.command,limits, used);
-                else
-                    [logical increments ] = me.il.wL(me.cstep.lbcbCps{2}.command,me.pstep.lbcbCps{2}.command,limits, used);
-                end
-            end
+            [limits used logical increments] = me.getCfg();
             for i = 1:12
                 if used(i)
-                    me.limitsTable{i,1} = sprintf('%f',limits(i));
+                    me.limitsTable{i,1} = sprintf('%9.7e',limits(i));
+                    me.limitsTable{i,2} = sprintf('%9.7e',increments(i));
                 end
-                me.limitsTable{i,2} = increments(i);
-                me.limitsTable{i,3} = logical(i) == false;
+                me.limitsTable{i,3} = logical(i);
             end
             set(me.handles.LimitsTable,'Data',me.limitsTable);
         end
@@ -75,18 +66,26 @@ classdef IncrementLimitsConfigActions < TableDataManagement
                 cfg.window2 = limits;
                 cfg.used2 = used;
             end
+            me.recalculate()
             me.fill();
         end
+        function recalculate(me)
+            me.il.withinLimits(me.cstep, me.pstep);
+        end
         
-        function [limits used] = getCfg(me)
+        function [limits used logical increments] = getCfg(me)
             me.il.getLimits();
             cfg = me.il.limits;
             if me.isLbcb1()
                 limits = cfg.window1;
                 used = cfg.used1;
+                logical = me.il.faults1;
+                increments = me.il.increments1;
             else
                 limits = cfg.window2;
                 used = cfg.used2;
+                logical = me.il.faults2;
+                increments = me.il.increments2;
             end
         end
     end
