@@ -70,7 +70,9 @@ classdef IncrementLimitsConfigActions < TableDataManagement
             me.fill();
         end
         function recalculate(me)
-            me.il.withinLimits(me.cstep, me.pstep);
+            if isempty(me.pstep) == false
+                me.il.withinLimits(me.cstep, me.pstep);
+            end
         end
         
         function [limits used logical increments] = getCfg(me)
