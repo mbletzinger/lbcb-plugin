@@ -56,7 +56,10 @@ classdef CommandLimitsConfigActions < TableDataManagement
             set(me.handles.LimitsTable,'Data',me.limitsTable);
         end
         function recalculate(me)
-            me.cl.withinLimits(me.step);
+            if isempty(me.step) == false && ...
+                    isempty(me.step.lbcbCps{1}) == false
+                me.cl.withinLimits(me.step);
+            end
         end
         function setCell(me,indices,data)
             r = indices(1);

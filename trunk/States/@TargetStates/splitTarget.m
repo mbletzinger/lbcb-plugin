@@ -19,6 +19,11 @@ end
 [ finalDisp finalDispDofs finalForce finalForceDofs ] = ...
     me.dat.curStepTgt.cmdData();
 % numSteps = abs(finalDisp - (initialDisp & finalDispDofs)) ./ stpSize;
+for s=1:length(stpSize)
+    if stpSize(s) == 0
+        stpSize(s) = 1000; % use artificially large number to overcome divide by zero issue
+    end
+end
 numSteps = abs(finalDisp - initialDisp) ./ stpSize;
 maxNumSteps = max(ceil(numSteps));
 if maxNumSteps < 2
@@ -48,7 +53,7 @@ for i = 1 : maxNumSteps
         tgts{2}.forceDofs = finalForceDofs(7:12);
         tgts{2}.clearNonControlDofs()
     end
-    ss{i} = me.sdf.target2StepData(tgts,sn,i);    
+    ss{i} = me.sdf.target2StepData(tgts,sn,i);
 end
 steps.steps = ss;
 me.log.info(dbstack,sprintf('Created %d substeps',length(ss)));

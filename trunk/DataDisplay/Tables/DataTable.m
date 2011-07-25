@@ -43,6 +43,11 @@ classdef DataTable < handle
                 me.data(2:me.rowsize,:) = me.data(1:(me.rowsize - 1),:);
                 me.rnames(2:me.rowsize,1) = me.rnames(1:(me.rowsize - 1),1);
             end
+            if size(me.data,2) < length(row)
+                dt = cell(size(me.data,1),length(row));
+                dt(size(me.data)) = me.data(size(me.data));
+                me.data = dt;
+            end
             me.data(1,:) = row;
             me.rnames{1} = regexprep(step.stepNum.toString(),'\t',',');
             me.plot.update(me.data,me.rnames);

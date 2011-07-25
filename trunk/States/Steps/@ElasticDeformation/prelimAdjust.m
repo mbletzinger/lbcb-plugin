@@ -6,7 +6,7 @@ end
 target = nextStep.lbcbCps{lbcb}.command.disp;
 prevOMcommand = curStep.lbcbCps{lbcb}.command.disp;
 position = curStep.lbcbCps{lbcb}.response.ed.disp;
-correction = target - prevOMCommand;
+correction = target - prevOMcommand;
 newOMcommand = position + correction;
 correction = position - prevOMcommand;
 newOMcommand = target + correction;
