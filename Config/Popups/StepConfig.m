@@ -112,31 +112,8 @@ handles.actions.setCorrectionPerSubstep(get(hObject,'String'));
 function OK_Callback(hObject, eventdata, handles)
 delete(handles.StepConfig);
 
-
-% --- Executes on button press in doSubstepCorrection.
-function doSubstepCorrection_Callback(hObject, eventdata, handles)
-% hObject    handle to doSubstepCorrection (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hint: get(hObject,'Value') returns toggle state of doSubstepCorrection
-if get(hObject,'Value') 
-    return;
-end
-handles.actions.setCorrectionPerSubstep('0');
-
-
 function substepTriggering_Callback(hObject, eventdata, handles)
 handles.actions.setTriggeringPerSubstep(get(hObject,'String'));
-
-
-% --- Executes on button press in doSubstepTriggering.
-function doSubstepTriggering_Callback(hObject, eventdata, handles)
-if get(hObject,'Value') 
-    return;
-end
-handles.actions.setTriggeringPerSubstep('0');
-
 
 % --- Executes when entered data in editable cell(s) in ddCorrectionTable.
 function ddCorrectionTable_CellEditCallback(hObject, eventdata, handles)

@@ -6,8 +6,8 @@ if me.existsArch(label) == false
     return;
 end
 step = me.getArch(label);
-yes = step <= 3  *  100^me.level;
+yes = step <= 4  *  100^me.level;
 if me.level > 0
-    yes = yes && step > 3*100^(me.level - 1);
+    yes = yes && step > 4*100^(me.level - 1);
 end
 end

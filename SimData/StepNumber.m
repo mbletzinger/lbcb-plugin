@@ -49,7 +49,10 @@ classdef StepNumber < handle
             simstate = StepNumber(stp,sStp,cStp);
         end
         function str = toString(me)
-            str = sprintf('%d\t%d\t%d',me.step, me.subStep,me.correctionStep);
+            str = sprintf('%d\t%d\t%d',me.step, me.subStep, me.correctionStep);
+        end
+        function str = toStringD(me,d)
+            str = sprintf('%d%s%d%s%d',me.step, d, me.subStep,d,me.correctionStep);
         end
     end
     methods (Static, Access = private)

@@ -21,7 +21,7 @@ switch a
             return;
         end
         if odone % Step is accepted
-            
+            me.log.info(dbstack,sprintf('Executing step %s',me.dat.nextStepData.stepNum.toStringD(' ')));
             me.currentAction.setState('OM PROPOSE EXECUTE');
             me.peOm.start()
         end
@@ -63,7 +63,6 @@ switch a
         me.arch.archive(me.dat.curStepData);
         me.gui.ddisp.updateAll(me.dat.curStepData);
         me.gui.updateStepState(me.currentAction.idx)
-        me.gui.updateStepTolerances();
         me.gui.updateTimer(); %BG
         me.log.debug(dbstack,sprintf('Current Response: %s', ...
             me.dat.curStepData.toString()));
@@ -84,6 +83,7 @@ switch a
                 me.nxtStep.start();
              me.currentAction.setState('NEXT STEP');
             end
+            me.gui.updateStepTolerances();
         end
         
     case 'BROADCAST TRIGGER'

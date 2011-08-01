@@ -1,6 +1,6 @@
 % generate a new LbcbStep based on the current step
 function adjustTargetTest(me,step)
-me.log.info(dbstack,sprintf('Adjusting DD%d for step %s',me.level, step.stepNum.toString()));
+me.log.info(dbstack,sprintf('Adjusting DD%d for step %s',me.level, step.stepNum.toStringD(' ')));
 interval = .0001 * me.level;
 label = sprintf('DD%dcurStep',me.level);
 dir = rem(me.getArch(label),2);
