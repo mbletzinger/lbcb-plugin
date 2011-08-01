@@ -13,5 +13,5 @@ switch action
     otherwise
         me.log.error(dbstack, sprintf('%s not recognized',action));
 end
-me.hfact.gui.fillInLimits();
+me.hfact.gui.updateStepTolerances();
 end

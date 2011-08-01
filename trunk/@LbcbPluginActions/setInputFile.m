@@ -18,6 +18,7 @@ if done
     me.hfact.tgtEx.targetSource.setState('INPUT FILE');
     me.hfact.gui.updateSource(1);
     me.alreadyStarted = false;
+    me.currentSimExecute.setState('DONE');
 else
     me.hfact.tgtEx.targetSource.setState('NONE');
     

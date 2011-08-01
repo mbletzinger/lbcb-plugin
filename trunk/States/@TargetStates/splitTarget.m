@@ -27,8 +27,11 @@ end
 numSteps = abs(finalDisp - initialDisp) ./ stpSize;
 maxNumSteps = max(ceil(numSteps));
 if maxNumSteps < 2
+    me.log.debug(dbstack,'Number of substeps is < 2');
     return;
 end
+me.log.debug(dbstack,sprintf('Step sizes: %s',me.dof2s(stpSize)));
+me.log.debug(dbstack,sprintf('Number of substeps: %s',me.dof2s(numSteps)));
 inc = (finalDisp - initialDisp) / maxNumSteps;
 finc = (finalForce - initialForce) / maxNumSteps;
 ss = cell(maxNumSteps,1);
@@ -53,7 +56,7 @@ for i = 1 : maxNumSteps
         tgts{2}.forceDofs = finalForceDofs(7:12);
         tgts{2}.clearNonControlDofs()
     end
-    ss{i} = me.sdf.target2StepData(tgts,sn,i);
+    ss{i} = me.sdf.target2StepData(tgts,sn,i-1);
 end
 steps.steps = ss;
 me.log.info(dbstack,sprintf('Created %d substeps',length(ss)));

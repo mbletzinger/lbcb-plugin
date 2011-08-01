@@ -73,19 +73,9 @@ classdef StepConfigActions < handle
             val = me.locate(me.pflist,patf{2});
             set(me.handles.ddPrelimAdjust,'Value',val);
             
-            yes = 0;
-            if me.stcfg.correctEverySubstep > 0    
-                yes = 1;
-            end
-            
             set(me.handles.substepTriggering,'String',sprintf('%d',me.stcfg.triggerEverySubstep));
             set(me.handles.triggerDelay,'String',sprintf('%d',me.stcfg.triggerDelay));
 
-            yes = 0;
-            if me.stcfg.triggerEverySubstep > 0    
-                yes = 1;
-            end
-            set(me.handles.doSubstepTriggering,'Value',yes);
             
         end
         function setDoStepSplitting(me,value)

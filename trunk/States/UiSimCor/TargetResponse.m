@@ -22,6 +22,8 @@ classdef TargetResponse < UiSimCorState
             me.mdlUiSimCor.start();
             me.statusBusy();
             me.currentAction.setState('WAIT_FOR_TARGET');
+            me.abort = false;
+            me.gotFirstStep = false;
         end
         function respond(me)
             jmsg = me.dat.curStepTgt.generateSimCorResponseMsg();

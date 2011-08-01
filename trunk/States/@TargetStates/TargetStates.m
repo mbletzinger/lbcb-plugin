@@ -37,5 +37,6 @@ classdef TargetStates < SimStates
         executeSubsteps(me)
         sendTargetResponses(me)
         abortSimulation(me)
+        str = dof2s(me,a)
     end
 end
