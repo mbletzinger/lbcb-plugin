@@ -19,7 +19,7 @@ classdef HandleFactory <  handle
         corrections = [];
         
         % Simulation States and Executors
-        omStates = cell(3,1);
+        omStates = cell(4,1);
         simStates = cell(2,1);
         simCorStates = cell(2,1);
         brdcstStates = cell(3,1);
@@ -51,6 +51,7 @@ classdef HandleFactory <  handle
         ocOm;
         peOm;
         gcpOm;
+        gipOm;
         
         % Step States
         nxtStep;
@@ -82,6 +83,7 @@ classdef HandleFactory <  handle
             me.omStates{1} = OpenCloseOm;
             me.omStates{2} = ProposeExecuteOm;
             me.omStates{3} = GetControlPointsOm;
+            me.omStates{4} = GetInitialPosition;
             
             me.stpStates{1} = NextStep;
             me.stpStates{2} = ProcessResponse;
@@ -181,6 +183,7 @@ classdef HandleFactory <  handle
             end
             me.stpEx.peOm = me.peOm;
             me.stpEx.gcpOm = me.gcpOm;
+            me.stpEx.gipOm = me.gipOm;
             me.stpEx.pResp = me.pResp;
             me.stpEx.st = me.st;
             me.stpEx.arch = me.arch;
@@ -253,6 +256,9 @@ classdef HandleFactory <  handle
         end
         function c = get.gcpOm(me)
             c= me.omStates{3};
+        end
+        function c = get.gipOm(me)
+            c= me.omStates{4};
         end
         function c = get.nxtStep(me)
             c= me.stpStates{1};
