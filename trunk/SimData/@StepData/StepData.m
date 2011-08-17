@@ -35,6 +35,7 @@ classdef StepData < handle
         jmsg = generateOmProposeMsg(me)
         jmsg = generateSimCorResponseMsg(me)
         goodMsg = parseOmControlPointMsg(me,rsp)
+        goodMsg = parseOmGetInitialPositionMsg(me,msg)
         goodMsg = parseSimCorControlPointMsg(me,rsp)
         values = parseExternalSensorsMsg(me,names,msg)
         distributeExtSensorData(me,readings)

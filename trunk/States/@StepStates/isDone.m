@@ -42,6 +42,18 @@ switch a
             me.gcpOm.start();
             me.currentAction.setState('OM GET CONTROL POINTS');
         end
+    case 'OM GET INITIAL POSITION'
+        odone = me.gipOm.isDone();
+        if odone
+            if me.gipOm.hasErrors()
+                me.ocOm.connectionError();
+                me.statusErrored();
+                done = 1;
+                return;
+            end
+            me.gcpOm.start();
+            me.currentAction.setState('OM GET CONTROL POINTS');
+        end
     case 'OM GET CONTROL POINTS'
         odone = me.gcpOm.isDone();
         if odone
