@@ -43,7 +43,7 @@ classdef GetInitialPosition < OmState
                     if lgth == 2
                          me.currentAction.setState('LBCB2');
                     else
-                        me.currentAction.setState('ExternalSensors');
+                        me.currentAction.setState('DONE');
                     end
                     goodMsg = me.dat.curStepData.parseOmGetInitialPositionMsg(me.mdlLbcb.response);
                     if goodMsg == false

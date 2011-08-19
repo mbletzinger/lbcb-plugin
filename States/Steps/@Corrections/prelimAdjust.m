@@ -6,7 +6,7 @@ if isempty(func)
 end
 
 if strcmp(func{2},'<NONE>') == false
-me.dd{1}.prelimAdjust(curStep,func{2}); % use only one function for all levels
+me.dd{1}.prelimAdjust(nextStep,func{2}); % use only one function for all levels
 end
 
 if strcmp(func{1},'<NONE>') 

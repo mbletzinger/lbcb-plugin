@@ -90,11 +90,11 @@ classdef SimSharedData < handle
             didx = [];
             fidx = [];
             labels = {};
-            if isempty(me.curStepTgt)
+            if isempty(me.nextStepData)
                 return;
             end
-            dofO = me.curStepTgt.lbcbCps{1}.response.lbcb; % for the label functions
-            [ disp dDofs force fDofs] = me.curStepTgt.cmdData();
+            dofO = me.nextStepData.lbcbCps{1}.response.lbcb; % for the label functions
+            [ disp dDofs force fDofs] = me.nextStepData.cmdData();
             idx = 1;
             for d = 1 : length(disp)
                 if dDofs(d)
@@ -134,13 +134,6 @@ classdef SimSharedData < handle
                 cmd2 }, targetStep.stepNum.step,targetStep.stepNum.subStep);
         end
         function initialPosition2Target(me)
-            [ disp force ] = me.curStepData.respData();
-            me.curStepData.lbcbCps{1}.command.disp = disp(1:6);
-            me.curStepData.lbcbCps{1}.command.force = force(1:6);
-            if me.cdp.numLbcbs == 2
-                me.curStepData.lbcbCps{2}.command.disp = disp(7:12);
-                me.curStepData.lbcbCps{2}.command.force = force(7:12);
-            end
             me.curStepTgt = me.curStepData;
             me.curSubstepTgt = me.curStepData;
             me.prevStepData = me.curStepData;
