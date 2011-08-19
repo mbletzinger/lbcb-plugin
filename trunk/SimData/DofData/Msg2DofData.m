@@ -16,7 +16,7 @@ classdef Msg2DofData < handle
             cps = sscanf(mdl(:),':%s');
         end
         % Parses the data portion of a control point message
-        function data = parse(me,msg,mdl)
+        function data = parse(me,msg)
             data = {Target()};
             tgt =1;
             tokens = regexp(char(msg),'\t','split');
