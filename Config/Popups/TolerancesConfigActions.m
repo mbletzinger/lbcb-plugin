@@ -53,6 +53,9 @@ classdef TolerancesConfigActions < TableDataManagement
             set(me.handles.ToleranceTable,'Data',me.limitsTable);
         end
         function recalculate(me)
+            if isempty(me.correctionTarget) || isempty(me.currentStep)
+                return;
+            end
             if me.isLbcb1()
                 stpT = me.tl{1};
                 target = me.correctionTarget.lbcbCps{1}.command;
