@@ -39,7 +39,7 @@
             ref = MultiDofStepPlot('CumulativeMoment',{'PDelta','ShearL','MomentY'},'Y Moments',1,1);
             ref.cdp = me.cdp;
             me.addDisplay('CumulativeMoment',ref,me.mainDisp.CumulativeMoment);
-            ref = MultiDofStepPlot('TopBottomMoment',{'MyBottom','MomentY'},'Y Moments',1,0);
+            ref = MultiDofStepPlot('TopBottomMoment',{'MyBottom','MCrack','MomentY'},'Y Moments',1,0);
             ref.cdp = me.cdp;
             me.addDisplay('TopBottomMoment',ref,me.mainDisp.TopBottomMoment);
             ref = ArchPlot('DxVsMyBottom',1,1,'MyBottom');
