@@ -53,6 +53,7 @@ classdef StepConfigActions < handle
             me.handles = handles;
             set(me.handles.SubStepIncrements,'Data',me.ssITable);
             set(me.handles.DoStepSplitting,'Value',me.stcfg.doStepSplitting);
+            set(me.handles.AcceptStep,'Value',me.stcfg.acceptStep);
             set(me.handles.CorrectionPerSubstep,'String',sprintf('%d',me.stcfg.correctEverySubstep));
 
             set(me.handles.ddCorrectionTable,'Data',me.ddCorrectionTable);
@@ -80,6 +81,9 @@ classdef StepConfigActions < handle
         end
         function setDoStepSplitting(me,value)
             me.stcfg.doStepSplitting = value;
+        end
+        function setAcceptStep(me,value)
+            me.stcfg.acceptStep = value;
         end
         function setCorrectionPerSubstep(me,str)
             value = sscanf(str,'%d');

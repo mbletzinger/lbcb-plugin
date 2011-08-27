@@ -7,7 +7,7 @@
 %   id - internal step count
 %   idCounter = static count of how many steps have been created
 %
-% $LastChangedDate: 2009-10-12 10:40:20 -0500 (Mon, 12 Oct 2009) $ 
+% $LastChangedDate: 2009-10-12 10:40:20 -0500 (Mon, 12 Oct 2009) $
 % $Author: mbletzin $
 % =====================================================================================================================
 classdef StepNumber < handle
@@ -24,7 +24,7 @@ classdef StepNumber < handle
             me.subStep = subStep;
             me.correctionStep = cStep;
             me.id = StepNumber.newId();
-%            me.log.debug(dbstack,sprintf('created step %s',me.toString()));
+            %            me.log.debug(dbstack,sprintf('created step %s',me.toString()));
         end
         % increment the step or substep and return in a new instance
         function simstate = next(me,stepType)
@@ -54,6 +54,16 @@ classdef StepNumber < handle
         function str = toStringD(me,d)
             str = sprintf('%d%s%d%s%d',me.step, d, me.subStep,d,me.correctionStep);
         end
+        function yes = isCorrectionStep(me)
+            yes = me.correctionStep > 0;
+        end
+        function yes = isSubStep(me)
+            yes = me.subStep > 0;
+        end
+        function yes = isStep(me)
+            yes = me.isCorrectionStep() == false && me.isSubStep() == false;
+        end
+        
     end
     methods (Static, Access = private)
         function id = newId()
