@@ -22,7 +22,7 @@ classdef TargetPlot < DisplayControl
             lgth = length(lgnds);
             
             me.legends = lgnds;
-            colorLabels = { 'b', 'r','g','k','c','m','y' };
+            colorLabels = { 'r','b','g','k','c','m','y' };
             me.plotPars = cell(lgth);
             for i = 1:lgth
                 me.plotPars{i} = { 0, 0,sprintf('-%s',colorLabels{i}), 0, 0,sprintf('d%s',colorLabels{i}) };

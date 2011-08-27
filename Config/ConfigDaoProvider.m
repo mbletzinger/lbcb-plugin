@@ -86,6 +86,15 @@ classdef ConfigDaoProvider < handle
             end
             yes = dos(1) > 0;
         end
+        function yes = forceAcceptStep(me)
+            scfg = StepTimingConfigDao(me.cfg);
+            as = scfg.acceptStep;
+            if isempty(as)
+                yes = false;
+                return;
+            end
+            yes = as(1) > 0;
+        end
         function inc = getSubstepInc(me,isLbcb1)
             scfg = StepTimingConfigDao(me.cfg);
             if isLbcb1

@@ -16,5 +16,5 @@
 function curCommandOut = adjustTarget(me,correctionTarget,curResponse,prevCommand)
 correction = correctionTarget - curResponse;
 curCommandOut = prevCommand + correction;
-me.archiveCorrections('ed',correction);
+%me.archiveCorrections('ed',correction);
 end
