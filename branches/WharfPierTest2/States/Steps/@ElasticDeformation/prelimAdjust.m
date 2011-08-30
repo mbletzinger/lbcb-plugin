@@ -3,10 +3,10 @@ lbcb = 2;
 if me.isLbcb1
     lbcb = 1;
 end
-if curStep.stepNum.step == 0
-    me.log.info(dbstack,'Skipping prelim ED adjust on first step');
-    return;
-end
+%if curStep.stepNum.step == 0
+%    me.log.info(dbstack,'Skipping prelim ED adjust on first step');
+%    return;
+%end
 target = nextStep.lbcbCps{lbcb}.command.disp;
 prevOMcommand = curStep.lbcbCps{lbcb}.command.disp;
 position = curStep.lbcbCps{lbcb}.response.ed.disp;

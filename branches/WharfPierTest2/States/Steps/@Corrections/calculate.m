@@ -25,7 +25,7 @@ if  doC(1)
                 ccps.externalSensors,icps.externalSensors);
         end
         % initial offset added back in
-        rsp = rsp + icps.command.disp - icors{l};
+        rsp = rsp + icps.command.disp - icors{l}.disp;
         ccps.response.ed.disp = rsp;
     end
 end
