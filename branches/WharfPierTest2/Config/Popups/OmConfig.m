@@ -22,16 +22,16 @@ function varargout = OmConfig(varargin)
 
 % Edit the above text to modify the response to help OmConfig
 
-% Last Modified by GUIDE v2.5 05-Jul-2011 15:12:03
+% Last Modified by GUIDE v2.5 30-Aug-2011 11:12:44
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
 gui_State = struct('gui_Name',       mfilename, ...
-                   'gui_Singleton',  gui_Singleton, ...
-                   'gui_OpeningFcn', @OmConfig_OpeningFcn, ...
-                   'gui_OutputFcn',  @OmConfig_OutputFcn, ...
-                   'gui_LayoutFcn',  [] , ...
-                   'gui_Callback',   []);
+    'gui_Singleton',  gui_Singleton, ...
+    'gui_OpeningFcn', @OmConfig_OpeningFcn, ...
+    'gui_OutputFcn',  @OmConfig_OutputFcn, ...
+    'gui_LayoutFcn',  [] , ...
+    'gui_Callback',   []);
 if nargin && ischar(varargin{1})
     gui_State.gui_Callback = str2func(varargin{1});
 end
@@ -63,8 +63,8 @@ if(nargin > 3)
             case 'cfg'
                 cfg = varargin{index+1};
             otherwise
-            str= sprintf('%s not recognized',label);
-            disp(str);
+                str= sprintf('%s not recognized',label);
+                disp(str);
         end
     end
 end
@@ -108,7 +108,6 @@ handles.actions.selectedRow(eventdata.Indices);
 function upSensor_Callback(hObject, eventdata, handles)
 handles.actions.upSensor();
 
-
 function downSensor_Callback(hObject, eventdata, handles)
 handles.actions.downSensor();
 
@@ -134,3 +133,8 @@ handles.actions.setTransPert(get(hObject,'String'));
 
 function rotPert_Callback(hObject, eventdata, handles)
 handles.actions.setRotPert(get(hObject,'String'));
+
+
+function InitCor_CellEditCallback(hObject, eventdata, handles)
+disp 'Hey I have been called!!'
+handles.actions.setCorrection(eventdata.Indices,eventdata.EditData);

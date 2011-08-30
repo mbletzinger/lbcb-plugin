@@ -25,6 +25,9 @@ classdef OmConfigDao < handle
         optsetTolFun
         optsetTolX
         optsetJacob
+        initialCorrectionL1
+        initialCorrectionL2
+        
     end
     properties
         dt;
@@ -125,6 +128,18 @@ classdef OmConfigDao < handle
         end
         function set.optsetJacob(me,value)
             me.dt.setBool('om.optset.jacob',value);
+        end
+        function result = get.initialCorrectionL1(me)
+            result = me.dt.getTarget('step.om.initialCorrection.lbcb1');
+        end
+        function set.initialCorrectionL1(me,value)
+            me.dt.setTarget('step.om.initialCorrection.lbcb1',value);
+        end
+        function result = get.initialCorrectionL2(me)
+            result = me.dt.getTarget('step.om.initialCorrection.lbcb2');
+        end
+        function set.initialCorrectionL2(me,value)
+            me.dt.setTarget('step.om.initialCorrection.lbcb2',value);
         end
     end
 end
