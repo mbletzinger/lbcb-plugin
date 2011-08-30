@@ -56,9 +56,6 @@ classdef OmConfigActions < handle
         end
         function initialize(me,handles)
             me.handles = handles;
-            set(me.handles.sensorTable,'Data',me.table);
-            format = {'char',me.aps.states,'numeric','numeric','numeric','numeric','numeric'};
-            set(me.handles.sensorTable,'ColumnFormat',format);
             set(me.handles.numLbcbs,'String',{'1','2'});
             
             set(me.handles.numLbcbs,'Value',me.ocfg.numLbcbs);
@@ -70,8 +67,10 @@ classdef OmConfigActions < handle
             set(me.handles.tolX,'String',sprintf('%9.7e',me.ocfg.optsetTolX));
             set(me.handles.jacob,'Value',me.ocfg.optsetJacob);
             set(me.handles.InitCor,'Data',me.corTable);
-            
             me.uDisplay();
+            set(me.handles.sensorTable,'Data',me.table);
+            format = {'char',me.aps.states,'numeric','numeric','numeric','numeric','numeric'};
+            set(me.handles.sensorTable,'ColumnFormat',format);
         end
         
         function setNumLbcbs(me,value)
