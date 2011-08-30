@@ -21,6 +21,8 @@ if  doC(1)
             rsp = me.ed{l}.calculate(pcps.response.disp,...
                 ccps.externalSensors,icps.externalSensors);
         end
+        % initial offset added back in
+        rsp = rsp + icps.command.disp;
         ccps.response.ed.disp = rsp;
     end
 end
