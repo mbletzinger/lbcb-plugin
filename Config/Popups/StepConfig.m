@@ -22,7 +22,7 @@ function varargout = StepConfig(varargin)
 
 % Edit the above text to modify the response to help StepConfig
 
-% Last Modified by GUIDE v2.5 08-Jul-2011 18:42:56
+% Last Modified by GUIDE v2.5 27-Aug-2011 08:48:24
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -138,3 +138,8 @@ handles.actions.setTriggeringDelay(get(hObject,'String'));
 
 function edCorrectionTable_CellEditCallback(hObject, eventdata, handles)
 handles.actions.setCorrectionCell(eventdata.Indices,eventdata.EditData,0);
+
+
+% --- Executes on button press in AcceptStep.
+function AcceptStep_Callback(hObject, eventdata, handles)
+handles.actions.setAcceptStep(get(hObject,'Value'));

@@ -20,6 +20,7 @@ classdef ProcessTarget < Step
         function start(me)
             me.currentAction.setState('CHECK LIMITS');
             me.statusBusy();
+            me.checkAutoAccept();
             me.accepted = me.autoAccept;
             if isempty(me.gui) == false
                 me.gui.updateCommandTable();
@@ -69,6 +70,16 @@ classdef ProcessTarget < Step
         end
         function yes = withinLimits(me)
             yes = me.lc.withinLimits(me.dat.nextStepData,me.dat.curStepData);
+        end
+        function checkAutoAccept(me)
+            if me.dat.nextStepData.stepNum.isStep() == false
+                return;
+            end
+            if me.cdp.forceAcceptStep() == false
+                return;
+            end
+            me.gui.colorAutoAcceptButton(false);
+            me.autoAccept = false;
         end
         
     end

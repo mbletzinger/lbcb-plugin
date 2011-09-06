@@ -2,6 +2,7 @@ classdef OmConfigActions < handle
     properties
         handles = [];
         table;
+        corTable;
         ocfg
         log = Logger('OmConfigActions')
         aps
@@ -14,11 +15,23 @@ classdef OmConfigActions < handle
             me.ocfg = OmConfigDao(cfg);
             me.selected = 1;
             me.oesl = OmExternalSensorList(cfg);
+            me.corTable = cell(6,2);
+
+            icl1 = me.ocfg.initialCorrectionL1;
+            icl2 = me.ocfg.initialCorrectionL2;
+            for i = 1:6
+                if icl1.dispDofs(i)
+                    me.corTable{i,1} = sprintf('%f',icl1.disp(i));
+                end
+                if icl2.dispDofs(i)
+                    me.corTable{i,2} = sprintf('%f',icl2.disp(i));
+                end
+            end
         end
         function setCell(me,indices,data,errString)
             if isempty(data)
                 me.log.error(dbstack,errString);
-                return; 
+                return;
             end
             if indices(1) > me.ocfg.numExtSensors
                 me.addSensor();
@@ -43,12 +56,9 @@ classdef OmConfigActions < handle
         end
         function initialize(me,handles)
             me.handles = handles;
-            set(me.handles.sensorTable,'Data',me.table);
-            format = {'char',me.aps.states,'numeric','numeric','numeric','numeric','numeric'};
-            set(me.handles.sensorTable,'ColumnFormat',format);
             set(me.handles.numLbcbs,'String',{'1','2'});
             
-            set(me.handles.numLbcbs,'Value',me.ocfg.numLbcbs);       
+            set(me.handles.numLbcbs,'Value',me.ocfg.numLbcbs);
             set(me.handles.transPert,'String',sprintf('%9.7e',me.ocfg.transPert));
             set(me.handles.rotPert,'String',sprintf('%9.7e',me.ocfg.rotPert));
             set(me.handles.maxFunEvals,'String',sprintf('%d',me.ocfg.optsetMaxFunEvals));
@@ -56,8 +66,11 @@ classdef OmConfigActions < handle
             set(me.handles.tolFun,'String',sprintf('%9.7e',me.ocfg.optsetTolFun));
             set(me.handles.tolX,'String',sprintf('%9.7e',me.ocfg.optsetTolX));
             set(me.handles.jacob,'Value',me.ocfg.optsetJacob);
-            
+            set(me.handles.InitCor,'Data',me.corTable);
             me.uDisplay();
+            set(me.handles.sensorTable,'Data',me.table);
+            format = {'char',me.aps.states,'numeric','numeric','numeric','numeric','numeric'};
+            set(me.handles.sensorTable,'ColumnFormat',format);
         end
         
         function setNumLbcbs(me,value)
@@ -75,7 +88,7 @@ classdef OmConfigActions < handle
             value = str2double(str);
             if isempty(value)
                 me.log.error(dbstack,sprintf('"%s" is not a number', str));
-                return; 
+                return;
             end
             me.ocfg.rotPert = value;
         end
@@ -83,7 +96,7 @@ classdef OmConfigActions < handle
             value = sscanf(str,'%d');
             if isempty(value)
                 me.log.error(dbstack,sprintf('"%s" is not a number', str));
-                return; 
+                return;
             end
             me.ocfg.optsetMaxFunEvals = value;
         end
@@ -91,7 +104,7 @@ classdef OmConfigActions < handle
             value = sscanf(str,'%d');
             if isempty(value)
                 me.log.error(dbstack,sprintf('"%s" is not a number', str));
-                return; 
+                return;
             end
             me.ocfg.optsetMaxIter = value;
         end
@@ -137,6 +150,30 @@ classdef OmConfigActions < handle
             me.oesl.downSensor(me.selected)
             me.uDisplay();
         end
+        
+        function setCorrection(me,indices,str)
+            if indices(2) == 1
+                icl = me.ocfg.initialCorrectionL1;
+            else
+                icl = me.ocfg.initialCorrectionL2;
+            end
+            if strcmp(str,'') || isempty(str)
+                icl.dispDofs(indices(1)) = 0;
+            else
+                data = sscanf(str,'%f');
+                if isempty(data)
+                    me.log.error(dbstack,sprintf('"%s" is not a valid input',str));
+                    return; %#ok<UNRCH>
+                end
+                icl.setDispDof(indices(1),data);
+            end
+            if indices(2) == 1
+                me.ocfg.initialCorrectionL1 = icl;
+            else
+                me.ocfg.initialCorrectionL2 = icl;
+            end
+        end
+        
         function uDisplay(me)
             me.table = cell(me.ocfg.numExtSensors,9);
             for s = 1:me.ocfg.numExtSensors
@@ -155,7 +192,6 @@ classdef OmConfigActions < handle
                     me.table{s,9} = o.pinLocations(3);
                 end
             end
-            set(me.handles.sensorTable,'Data',me.table);
         end
     end
 end

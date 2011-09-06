@@ -73,7 +73,7 @@ classdef Archiver < handle
             end
             me.corDataA.headers = step.cData.labels;
             me.corDataA.writeHeaders();
-            me.wroteCorDataHeaders = true;
+%            me.wroteCorDataHeaders = true;
         end
         function storeNote(me,nt,step)
             stp = '0    0   0';

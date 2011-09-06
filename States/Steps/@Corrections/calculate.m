@@ -1,8 +1,11 @@
 function  calculate(me,prevStep, curStep,initialPosition,correctionTarget)
 %calculate elastic deformations
 ccfg = StepCorrectionConfigDao(me.cdp.cfg);
+ocfg = OmConfigDao(me.cdp.cfg);
 doC = ccfg.doCalculations;
 funcs = ccfg.calculationFunctions;
+icors = { ocfg.initialCorrectionL1 ocfg.initialCorrectionL2 };
+
 if  doC(1)
     for l = 1: me.cdp.numLbcbs()
         pcps = prevStep.lbcbCps{l};
@@ -17,10 +20,12 @@ if  doC(1)
         if strcmp(funcs(1),'Test')
             rsp = me.ed{l}.calculateTest(ctcps.command.disp,stp);
         else
-            me.ed{1}.loadConfig;
+            me.ed{l}.loadConfig;
             rsp = me.ed{l}.calculate(pcps.response.disp,...
                 ccps.externalSensors,icps.externalSensors);
         end
+        % initial offset added back in
+        rsp = rsp + icps.command.disp - icors{l}.disp;
         ccps.response.ed.disp = rsp;
     end
 end

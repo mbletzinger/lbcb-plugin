@@ -10,18 +10,33 @@ classdef CorrectionVariables < handle
             me.cdp = cdp;
         end
         function val = getCfg(me,lbl)
+            if me.existsCfg(lbl) == false
+                me.log.error(dbstack,sprintf('"%s" Cfg variable does not exist',lbl));
+                val = [];
+                return;
+            end
             val = me.cfgH.get(lbl);
         end
         function putCfg(me,lbl,val)
             me.cfgH.put(lbl,val);
         end
         function val = getDat(me,lbl)
+            if me.existsDat(lbl) == false
+                me.log.error(dbstack,sprintf('"%s" Dat variable does not exist',lbl));
+                val = [];
+                return;
+            end
             val = me.datH.get(lbl);
         end
         function putDat(me,lbl,val)
             me.datH.put(lbl,val);
         end
         function val = getArch(me,lbl)
+            if me.existsArch(lbl) == false
+                me.log.error(dbstack,sprintf('"%s" Arch variable does not exist',lbl));
+                val = [];
+                return;
+            end
             val = me.archH.get(lbl);
         end
         function putArch(me,lbl,val)

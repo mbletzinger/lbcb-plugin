@@ -11,6 +11,7 @@
 % =====================================================================================================================
 classdef StepTimingConfigDao < handle
     properties (Dependent = true)
+        acceptStep
         doStepSplitting
         correctEverySubstep
         substepIncL1
@@ -43,6 +44,12 @@ classdef StepTimingConfigDao < handle
         end
         function set.doStepSplitting(me,value)
             me.dt.setBool('step.stepSplitting',value);
+        end
+        function result = get.acceptStep(me)
+            result = me.dt.getBool('step.forceAccept',0);
+        end
+        function set.acceptStep(me,value)
+            me.dt.setBool('step.forceAccept',value);
         end
         function result = get.correctEverySubstep(me)
              result = me.dt.getInt('step.correctEveryStep',0);
