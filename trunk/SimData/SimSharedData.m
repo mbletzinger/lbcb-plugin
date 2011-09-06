@@ -138,6 +138,10 @@ classdef SimSharedData < handle
             me.curSubstepTgt = me.curStepData;
             me.prevStepData = me.curStepData;
             me.initialPosition = me.curStepData;
+%             for l = 1: me.cdp.numLbcbs()
+%                 lbcbCps = me.initialPosition.lbcbCps{l};
+%                 lbcbCps.response.ed.disp = lbcbCps.command.disp;
+%             end
         end
     end
 end
