@@ -64,7 +64,7 @@ classdef StepDataFactory < handle
                         length(addresses)));
                     return; %#ok<UNRCH>
                 end
-                target = me.m2d.parse(contents,addr);
+                target = me.m2d.parse(contents);
                 for t = 1 : 6
                     if(target{1}.dispDofs(t))
                         clone.modelCps{1}.command.setDispDof(t,target{1}.disp(t));
@@ -85,14 +85,14 @@ classdef StepDataFactory < handle
             for l = 1 : lgth
                 step.lbcbCps{l} = LbcbControlPoint;
                 step.lbcbCps{l}.response.cdp = me.cdp;
-                %                 step.lbcbCps{l}.command.cdp = me.cdp;
+%                 step.lbcbCps{l}.command.cdp = me.cdp;%uncommented  by CMC
             end
             if me.cdp.numModelCps > 0
                 step.modelCps = cell(me.cdp.numModelCps,1);
                 for m = 1:me.cdp.numModelCps
                     step.modelCps{m} = ModelControlPoint;
-                    %                    step.modelCps{m}.response.cdp = me.cdp;
-                    %                    step.modelCps{m}.command.cdp = me.cdp;
+%                     step.modelCps{m}.response.cdp = me.cdp;%uncommented  by CMC
+%                     step.modelCps{m}.command.cdp = me.cdp;%uncommented  by CMC
                 end
             end
         end
