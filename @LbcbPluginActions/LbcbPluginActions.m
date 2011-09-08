@@ -55,9 +55,7 @@ classdef LbcbPluginActions < handle
             if isempty(hfact)
                 cfg = Configuration;
                 cfg.load();
-                ofst = OffsetsConfigDao;
-                ofst.load();
-                me.hfact = HandleFactory(handles,cfg,ofst);
+                me.hfact = HandleFactory(handles,cfg);
             else
                 me.hfact = hfact;
                 me.hfact.setGuiHandle(handles);

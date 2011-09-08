@@ -14,7 +14,7 @@
 % edCalc(me,ccps, pcps, tcps);
 % end
 
-function curResponse = calculate(me, prevResponse, curReadings)
+function curResponse = calculate(me, prevResponse, curReadings, initialPosition)
 
 %------------------
 % obtain all variables
@@ -22,7 +22,7 @@ function curResponse = calculate(me, prevResponse, curReadings)
 xpin = me.pinLocations;
 xfix = me.fixedLocations;
 %==
-disp = curReadings - me.initialReadings;
+disp = curReadings - initialPosition;
 
 %------------------
 % Obtain idof

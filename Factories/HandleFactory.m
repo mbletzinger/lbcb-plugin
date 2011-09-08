@@ -13,10 +13,6 @@ classdef HandleFactory <  handle
         % Configuration Instance
         cdp = [];
         
-        % Offset Settings
-        
-        offstcfg = [];
-        
         % Corrections
         ed = cell(2,1);
         dd = cell(4,1);
@@ -65,7 +61,6 @@ classdef HandleFactory <  handle
         %Simulation Execution
         stpEx;
         tgtEx;
-        offstRfsh;
         
         % UiSimCor States
         ocSimCor
@@ -80,10 +75,9 @@ classdef HandleFactory <  handle
 
     end
     methods
-        function me = HandleFactory(handle,cfg,ofst)
+        function me = HandleFactory(handle,cfg)
             
             me.cdp = ConfigDaoProvider(cfg);
-            me.offstcfg = ofst;
             
             me.mdlLbcb = MdlLbcb(me.cfg);
             me.omStates{1} = OpenCloseOm;
@@ -136,7 +130,6 @@ classdef HandleFactory <  handle
                 me.ed{i}.datH = datH;
                 me.ed{i}.archH = archH;
                 me.ed{i}.st = me.st{i};
-                me.ed{i}.offstcfg = me.offstcfg;
             end
             
             for i = 1:4
@@ -202,11 +195,7 @@ classdef HandleFactory <  handle
             me.tgtEx.inF = me.inF;
             me.tgtEx.ocSimCor = me.ocSimCor;
             me.tgtEx.tgtRsp = me.tgtRsp;
-
-            me.offstRfsh.gcpOm = me.gcpOm;
-            me.offstRfsh.gipOm = me.gipOm;
-            me.offstRfsh.pResp = me.pResp;
-
+                        
             for c =1:length(me.simCorStates)
                 me.simCorStates{c}.cdp = me.cdp;
                 me.simCorStates{c}.mdlUiSimCor = me.mdlUiSimCor;
@@ -282,9 +271,6 @@ classdef HandleFactory <  handle
         end
         function c = get.tgtEx(me)
             c= me.simStates{2};
-        end
-        function c = get.offstRfsh(me)
-            c= me.simStates{3};
         end
         function c = get.acceptStp(me)
             c= me.stpStates{3};

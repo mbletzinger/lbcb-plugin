@@ -24,7 +24,6 @@ classdef ElasticDeformation < CorrectionVariables
         
         transPert
         rotPert
-        offstcfg
         
         %==
         log = Logger('ElasticDeformation');
