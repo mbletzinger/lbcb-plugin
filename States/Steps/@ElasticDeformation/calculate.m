@@ -117,18 +117,13 @@ optm.pert_total = [temp1;temp2];
 % this function still has some additional features which can be called in
 % the future.
 %------------------
-% prevResponse is 1 by 6
-% disp
-% xpin
-% xfix
-% prevResponse
-% idof
+temp = ElasticDeformation.disp2controlpoint(disp,xpin,xfix,[],prevResponse,3,optm,idof);
 %==
-temp = prevResponse + ElasticDeformation.disp2controlpoint(disp,xpin,xfix,[],prevResponse,3,optm,idof);
-%==
-% temp
-% curResponse = temp(idof); 
-curResponse = temp;
+me.log.debug(dbstack,sprintf('\n    /edreal/Dx=%11.7f/Dy=%11.7f/Dz=%11.7f/Rx=%11.7f/Ry=%11.7f/Rz=%11.7f',temp+prevResponse));
+ind = find(me.st.used(1:6)==1);
+curResponse = prevResponse;
+curResponse(ind) = prevResponse(ind) + temp(ind);
+% curResponse = prevResponse + temp;
 
 %------------------
 % end
