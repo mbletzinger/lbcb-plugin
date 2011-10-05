@@ -10,6 +10,7 @@ if isempty(iF)
     end
     done = iF.load(fullfile(path,file),strtStep);
 end
+me.currentSimExecute.setState('DONE');
 if done
     me.hfact.tgtEx.inF = iF;
     me.hfact.tgtEx.targetSource.setState('INPUT FILE');
