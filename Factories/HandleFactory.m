@@ -97,6 +97,7 @@ classdef HandleFactory <  handle
             
             me.simStates{1} = StepStates;
             me.simStates{2} = TargetStates;
+            me.simStates{3} = OffsetsRefresh;
             
             me.mdlUiSimCor = MdlUiSimCor(me.cfg);
             me.simCorStates{1} = OpenCloseUiSimCor;
