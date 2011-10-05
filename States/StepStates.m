@@ -58,13 +58,7 @@ classdef StepStates < SimStates
                 case'NEXT STEP'
                     odone = me.nxtStep.isDone();
                     if odone % Next target is ready
-                        if me.needsTriggering() && me.started 
-                            me.brdcstRsp.start();
-                            me.currentAction.setState('BROADCAST TRIGGER');
-                            me.started = false;
-                        else
-                            me.isNextStep()
-                        end
+                        me.isNextStep()
                     end
                 case 'OM PROPOSE EXECUTE'
                     if me.isFake()
@@ -115,13 +109,18 @@ classdef StepStates < SimStates
                     end
                     
                 case 'BROADCAST TRIGGER'
+                    % SUBSTEP TRIGGERING IS BROKEN HERE
                     bdone = me.brdcstRsp.isDone();
                     if bdone
                         config = CorrectionsSettingsDao(me.cdp.cfg);
                         pause(config.cfgValues(17));
-                        me.isNextStep();
+                        me.currentAction.setState('DONE');
                     end
                 case 'DONE'
+                    if isempty(me.dat.curStepTgt) == false
+                        me.log.info(dbstack,sprintf('Target %d is done',...
+                            me.dat.curStepTgt.stepNum.step));
+                    end
                     me.statusReady();
                     me.gui.updateStepState(me.currentAction.idx)
                     me.gui.updateStepTolerances(me.st);
@@ -150,10 +149,13 @@ classdef StepStates < SimStates
     methods (Access='private')
         function isNextStep(me)
             if me.nxtStep.stepsCompleted  %  No more targets
-                me.log.info(dbstack,sprintf('Target %d is done',...
-                    me.dat.curStepTgt.stepNum.step));
-                me.statusReady();
-                me.currentAction.setState('DONE');
+                if me.needsTriggering()
+                    me.brdcstRsp.start();
+                    me.currentAction.setState('BROADCAST TRIGGER');
+                    me.started = false;
+                else
+                    me.currentAction.setState('DONE');
+                end
             else % Execute next step
                 me.currentAction.setState('OM PROPOSE EXECUTE');
                 if me.isFake() == false
