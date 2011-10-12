@@ -18,7 +18,8 @@ classdef ProcessResponse < Step
             me = me@Step();
         end
         function start(me)
-            me.corrections.calculate(me.dat.prevStepData,me.dat.curStepData,...
+            me.corrections.calculate(me.dat.prevStepData,...
+                me.dat.curStepData,me.dat.initialPosition,...
                 me.dat.correctionTarget);            
         end
         function done = isDone(me)
