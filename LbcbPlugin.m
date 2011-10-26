@@ -22,7 +22,7 @@ function varargout = LbcbPlugin(varargin)
 
 % Edit the above text to modify the response to help LbcbPlugin
 
-% Last Modified by GUIDE v2.5 02-Jun-2011 09:59:16
+% Last Modified by GUIDE v2.5 26-Oct-2011 05:28:00
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -631,3 +631,22 @@ else
     set(hObject,'Checked','on');
 end
 Logger.setRecord(get(hObject,'Checked'));
+
+% --------------------------------------------------------------------
+function OutOfPlaneRotations_Callback(hObject, eventdata, handles)
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('OutOfPlaneRotations')
+    ddisp.closeDisplay('OutOfPlaneRotations');
+else
+    ddisp.openDisplay('OutOfPlaneRotations');
+end
+
+
+% --------------------------------------------------------------------
+function OutOfPlaneTranslations_Callback(hObject, eventdata, handles)
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('OutOfPlaneTranslations')
+    ddisp.closeDisplay('OutOfPlaneTranslations');
+else
+    ddisp.openDisplay('OutOfPlaneTranslations');
+end
