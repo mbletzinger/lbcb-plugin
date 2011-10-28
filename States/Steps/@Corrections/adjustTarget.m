@@ -1,9 +1,15 @@
 function adjustTarget(me, ctarget, curStep,nextStep)
 edCorrected = false;
+ccfg = StepCorrectionConfigDao(me.cdp.cfg);
+funcs = ccfg.adjustTargetFunctions;
 if me.ncorrections(1)
     for lbcb = 1:me.cdp.numLbcbs()
+    ed = me.ed{lbcb};
+    if strcmp(funcs{1},'Dx Only')
+        ed = me.dxed{lbcb};
+    end
         nextStep.lbcbCps{lbcb}.command.disp =...
-            me.ed{lbcb}.adjustTarget(ctarget.lbcbCps{1}.command.disp,...
+            ed.adjustTarget(ctarget.lbcbCps{1}.command.disp,...
             curStep.lbcbCps{lbcb}.response.disp,...
             curStep.lbcbCps{lbcb}.command.disp);
         edCorrected = true;
