@@ -51,11 +51,18 @@ classdef DisplayFactory < handle
             ref = MultiDofStepPlot('OutOfPlaneTranslations',{'Dy','Dz'},'inches',1,0);
             ref.cdp = me.cdp;
             me.addDisplay('OutOfPlaneTranslations',ref,me.mainDisp.OutOfPlaneTranslations);
-            
             ref = MultiDofStepPlot('OutOfPlaneRotations',{'Rx','Ry','Rz'},'rad',1,0);
             ref.cdp = me.cdp;
             me.addDisplay('OutOfPlaneRotations',ref,me.mainDisp.OutOfPlaneRotations);
+
+            ref = MultiDofStepPlot('Forces',{'Fx','Fy','Fz'},'lbs',1,0);
+            ref.cdp = me.cdp;
+            me.addDisplay('Forces',ref,me.mainDisp.Forces);
             
+            ref = MultiDofStepPlot('Moments',{'Mx','My','Mz'},'lbs*inches',1,0);
+            ref.cdp = me.cdp;
+            me.addDisplay('Moments',ref,me.mainDisp.Moments);
+
             ref = VsPlot('RyVsLbcb1Dx',1,1,5);
             ref.cdp = me.cdp;
             me.addDisplay('RyVsLbcb1Dx',ref,me.mainDisp.RyVsLbcb1Dx);

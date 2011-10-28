@@ -14,8 +14,11 @@ if strcmp(func{1},'<NONE>')
     return;
 end
 
-
-for l = 1:me.cdp.numLbcbs()
-    me.ed{l}.prelimAdjust(curStep, nextStep);
+for lbcb = 1:me.cdp.numLbcbs()
+    ed = me.ed{lbcb};
+    if strcmp(func{1},'Dx Only')
+        ed = me.dxed{lbcb};
+    end
+    ed.prelimAdjust(curStep, nextStep);
 end
 end

@@ -19,6 +19,7 @@ classdef HandleFactory <  handle
         
         % Corrections
         ed = cell(2,1);
+        dxed = cell(2,1);
         dd = cell(4,1);
         corrections = [];
         
@@ -132,12 +133,18 @@ classdef HandleFactory <  handle
             archH = org.nees.uiuc.simcor.matlab.HashTable();
             for i = 1:2
                 me.ed{i} = ElasticDeformation(me.cdp,(i == 1));
+                me.dxed{i} = DxOnlyElasticDeformation(me.cdp,(i == 1));
                 me.st{i} = StepTolerances(me.cfg,i == 1);
                 me.ed{i}.cfgH = cfgH;
                 me.ed{i}.datH = datH;
                 me.ed{i}.archH = archH;
                 me.ed{i}.st = me.st{i};
                 me.ed{i}.offstcfg = me.offstcfg;
+                me.dxed{i}.cfgH = cfgH;
+                me.dxed{i}.datH = datH;
+                me.dxed{i}.archH = archH;
+                me.dxed{i}.st = me.st{i};
+                me.dxed{i}.offstcfg = me.offstcfg;
             end
             
             for i = 1:4
@@ -149,6 +156,7 @@ classdef HandleFactory <  handle
                         
             me.corrections = Corrections(me.cdp);
             me.corrections.ed = me.ed;
+            me.corrections.dxed = me.dxed;
             me.corrections.dd = me.dd;
             
             for c =1:length(me.omStates)

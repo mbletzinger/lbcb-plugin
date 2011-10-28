@@ -24,7 +24,7 @@ classdef StepConfigActions < handle
             ssI2 = me.stcfg.substepIncL2;
             flabels = FunctionLists('StepCorrections');
             me.flist = { 'Test' flabels.list{:}};   %#ok<*CCAT>
-            me.edlist = {'Standard','Test'};
+            me.edlist = {'Standard','Test', 'Dx Only'};
             me.pflist = { '<NONE>',me.flist{:} };
             me.pedlist = { '<NONE>',me.edlist{:} };
             

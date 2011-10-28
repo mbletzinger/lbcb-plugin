@@ -22,7 +22,7 @@ function varargout = LbcbPlugin(varargin)
 
 % Edit the above text to modify the response to help LbcbPlugin
 
-% Last Modified by GUIDE v2.5 26-Oct-2011 05:28:00
+% Last Modified by GUIDE v2.5 28-Oct-2011 08:00:40
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -650,3 +650,29 @@ if ddisp.isDisplaying('OutOfPlaneTranslations')
 else
     ddisp.openDisplay('OutOfPlaneTranslations');
 end
+
+
+% --------------------------------------------------------------------
+function Forces_Callback(hObject, eventdata, handles)
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('Forces')
+    ddisp.closeDisplay('Forces');
+else
+    ddisp.openDisplay('Forces');
+end
+
+
+% --------------------------------------------------------------------
+function Moments_Callback(hObject, eventdata, handles)
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('Moments')
+    ddisp.closeDisplay('Moments');
+else
+    ddisp.openDisplay('Moments');
+end
+
+
+% --------------------------------------------------------------------
+function SensorInitialLength_Callback(hObject, eventdata, handles)
+actions = getappdata(getLp(hObject),'actions');
+OffsetConfig('cfg',actions.hfact.cfg);

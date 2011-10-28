@@ -1,6 +1,7 @@
 classdef Corrections < handle
     properties
         ed
+        dxed
         dd
         pa
         correctStepNum

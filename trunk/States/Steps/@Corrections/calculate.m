@@ -19,6 +19,9 @@ if  doC(1)
         stp = curStep.stepNum;
         if strcmp(funcs(1),'Test')
             rsp = me.ed{l}.calculateTest(ctcps.command.disp,stp);
+        elseif strcmp(funcs{1},'Dx Only')
+            rsp = me.dxed{l}.calculate(pcps.response.disp,...
+                ccps.externalSensors,icps.externalSensors);            
         else
             me.ed{l}.loadConfig;
             rsp = me.ed{l}.calculate(pcps.response.disp,...
