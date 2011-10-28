@@ -17,8 +17,7 @@
 classdef DxOnlyElasticDeformation < ElasticDeformation
     methods
         function me = DxOnlyElasticDeformation(cdp,isLbcb1)
-            me = me@ElasticDeformation(cdp);
-            me.isLbcb1 = isLbcb1;
+            me = me@ElasticDeformation(cdp, isLbcb1);
         end
         function curResponse = calculate(me, prevResponse,curReadings)
             disp = curReadings - me.initialReadings;
