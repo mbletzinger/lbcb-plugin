@@ -43,7 +43,7 @@ classdef OffsetsConfigActions < handle
                 me.offsetsT{s,2} = offsets(s);
                 me.offsetsT{s,3} = 0.0;
             end
-
+            
         end
         function refresh(me)
             me.offstRfsh.start();
@@ -61,7 +61,28 @@ classdef OffsetsConfigActions < handle
             offsets = me.offstcfg.offsets;
             offsets(indices(1)) = data;
             me.offstcfg.offsets = offsets;
+            me.refresh();
         end
+        
+        function setLengths(me)
+            me.offsetsT{:,2} = me.offsetsT{:,3};
+            me.refresh();
+        end
+        
+        function import(me)
+            me.offstcfg.import();
+            me.refresh();
+        end
+        
+        function export(me)
+            me.offstcfg.export();
+        end
+        
+        function reload(me)
+            me.offstcfg.load();
+            me.refresh();
+        end
+        
     end
     methods (Static)
         function queryInitialPosition(obj, event,me)
@@ -74,7 +95,7 @@ classdef OffsetsConfigActions < handle
                 end
             end
             for s = 1:length(me.names)
-                me.offsetT{s,3} = me.dat.initialPosition.externalSensorsRaw(s);
+                me.offsetsT{s,3} = me.dat.initialPosition.externalSensorsRaw(s);
             end
         end
     end

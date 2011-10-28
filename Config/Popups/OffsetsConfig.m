@@ -22,7 +22,7 @@ function varargout = OffsetsConfig(varargin)
 
 % Edit the above text to modify the response to help OffsetsConfig
 
-% Last Modified by GUIDE v2.5 06-Sep-2011 15:12:11
+% Last Modified by GUIDE v2.5 28-Oct-2011 08:54:32
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -54,16 +54,40 @@ function OffsetsConfig_OpeningFcn(hObject, eventdata, handles, varargin)
 
 % Choose default command line output for OffsetsConfig
 handles.output = hObject;
+cfg = [];
+ocfg = [];
+fact = [];
+if(nargin > 3)
+    for index = 1:2:(nargin-3),
+        if nargin-3==index, break, end
+        label = lower(varargin{index});
+        switch label
+            case 'cfg'
+                cfg = varargin{index+1};
+            case 'ocfg'
+                ocfg = varargin{index+1};
+            case 'fact'
+                fact = varargin{index+1};
+            otherwise
+            str= sprintf('%s not recognized',label);
+            disp(str);
+        end
+    end
+end
+
+handles.cfg = cfg;
+handles.actions = OffsetsConfigActions(ocfg, cfg, fact);
+handles.actions.initialize(handles);
 
 % Update handles structure
 guidata(hObject, handles);
 
 % UIWAIT makes OffsetsConfig wait for user response (see UIRESUME)
-% uiwait(handles.OffsetsConfig);
+uiwait(handles.OffsetsConfig);
 
 
 % --- Outputs from this function are returned to the command line.
-function varargout = OffsetsConfig_OutputFcn(hObject, eventdata, handles) 
+function varargout = OffsetsConfig_OutputFcn(hObject, eventdata, handles)  %#ok<*INUSL>
 % varargout  cell array for returning output args (see VARARGOUT);
 % hObject    handle to figure
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -73,23 +97,28 @@ function varargout = OffsetsConfig_OutputFcn(hObject, eventdata, handles)
 varargout{1} = handles.output;
 
 
-function ok_Callback(hObject, eventdata, handles)
+function ok_Callback(hObject, eventdata, handles) %#ok<*DEFNU>
+delete(handles.OffsetsConfig);
 
 
 function refresh_Callback(hObject, eventdata, handles)
+handles.actions.refresh();
 
 
 function set_Callback(hObject, eventdata, handles)
+handles.actions.setLengths();
 
 
 function import_Callback(hObject, eventdata, handles)
+handles.actions.import();
 
 
 function reload_Callback(hObject, eventdata, handles)
-
-
-function cancel_Callback(hObject, eventdata, handles)
-
+handles.actions.reload();
 
 function offsetsTable_CellEditCallback(hObject, eventdata, handles)
-%dofTable
+handles.actions.editOffset(eventdata.Indices,eventdata.EditData,0);
+
+
+function Export_Callback(hObject, eventdata, handles)
+handles.actions.export();

@@ -1,6 +1,8 @@
 classdef OffsetsDao < Configuration
-    properties
+    properties (Dependent = true)
         offsets
+    end
+    properties
         dt
     end
     methods
