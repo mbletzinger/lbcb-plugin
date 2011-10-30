@@ -1,8 +1,6 @@
 classdef OffsetsDao < Configuration
-    properties (Dependent = true)
-        offsets
-    end
     properties
+        offsets
         dt
     end
     methods
@@ -11,10 +9,10 @@ classdef OffsetsDao < Configuration
             me.filename = 'offsets.properties';
             me.dt = DataTypes(me);
         end
-        function val = getOffset(name)
+        function val = getOffset(me,name)
             val = me.dt.getDouble(name,0.0);
         end
-        function setOffset(name,val)
+        function setOffset(me,name,val)
             me.dt.setDouble(name,val);
         end
     end

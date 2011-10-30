@@ -94,7 +94,9 @@ function varargout = OffsetsConfig_OutputFcn(hObject, eventdata, handles)  %#ok<
 % handles    structure with handles and user data (see GUIDATA)
 
 % Get default command line output from handles structure
+if isempty(handles) == false
 varargout{1} = handles.output;
+end
 
 
 function ok_Callback(hObject, eventdata, handles) %#ok<*DEFNU>

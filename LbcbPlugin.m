@@ -675,4 +675,4 @@ end
 % --------------------------------------------------------------------
 function SensorInitialLength_Callback(hObject, eventdata, handles)
 actions = getappdata(getLp(hObject),'actions');
-OffsetConfig('cfg',actions.hfact.cfg);
+OffsetsConfig('cfg',actions.hfact.cfg,'ocfg',actions.hfact.offstcfg,'fact',actions.hfact);
