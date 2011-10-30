@@ -23,26 +23,24 @@ classdef OffsetsConfigActions < handle
             me.dofT = zeros(2,6);
             me.offsetsT = cell(length(me.names),3);
         end
-        function initialize(me)
-            offsets = me.offstcfg.offsets;
-            if isempty(offsets)
-                offsets = zeros(length(me.names),1);
-                me.offstcfg.offsets = offsets;
-            end
-            if length(offsets) < length(me.names)
-                ofs = zeros(length(me.names),1);
-                ofs(1:length(offsets)) = offsets(:);
-                me.offstcfg.offsets = offsets;
-            end
-            if length(offsets) > length(me.names)
-                offsets = offsets(1:length(me.names));
-                me.offstcfg.offsets = offsets;
-            end
+        function initialize(me,handles)
+            me.handles = handles;
             for s = 1:length(me.names)
+                of = me.offstcfg.getOffset(me.names{s});
+                if of == 0.0
+                    me.offstcfg.setOffset(me.names{s},0.0); % make sure there is an entry
+                end
                 me.offsetsT{s,1} = me.names{s};
-                me.offsetsT{s,2} = offsets(s);
-                me.offsetsT{s,3} = 0.0;
+                me.offsetsT{s,2} = of;
+                me.offsetsT{s,3} = 0;
             end
+            set(me.handles.offsetsTable,'Data',me.offsetsT);
+            format = {'char','numeric','numeric'};
+            set(me.handles.offsetsTable,'ColumnFormat',format);
+            set(me.handles.dofTable,'Data',me.dofT);
+            format = {'numeric','numeric','numeric','numeric','numeric','numeric'};
+            set(me.handles.dofTable,'ColumnFormat',format);
+            me.refresh();
             
         end
         function refresh(me)
@@ -58,19 +56,29 @@ classdef OffsetsConfigActions < handle
                 me.log.error(dbstack,'You cannot edit this value');
                 return;
             end
-            offsets = me.offstcfg.offsets;
-            offsets(indices(1)) = data;
-            me.offstcfg.offsets = offsets;
+            me.offstcfg.setOffset(me.names{indices(1)},data);
             me.refresh();
         end
         
         function setLengths(me)
             me.offsetsT{:,2} = me.offsetsT{:,3};
+            for s = 1:length(me.names)
+                me.offstcfg.setOffset(me.names{s},me.offsetsT{:,2});
+            end
             me.refresh();
         end
         
         function import(me)
             me.offstcfg.import();
+            for s = 1:length(me.names)
+                of = me.offstcfg.getOffset(me.names{s});
+                if of == 0.0
+                    me.offstcfg.setOffset(me.names{s},0.0); % make sure there is an entry
+                end
+                me.offsetsT{s,1} = me.names{s};
+                me.offsetsT{s,2} = of;
+                me.offsetsT{s,3} = 0;
+            end
             me.refresh();
         end
         
@@ -80,18 +88,27 @@ classdef OffsetsConfigActions < handle
         
         function reload(me)
             me.offstcfg.load();
+            for s = 1:length(me.names)
+                of = me.offstcfg.getOffset(me.names{s});
+                if of == 0.0
+                    me.offstcfg.setOffset(me.names{s},0.0); % make sure there is an entry
+                end
+                me.offsetsT{s,1} = me.names{s};
+                me.offsetsT{s,2} = of;
+                me.offsetsT{s,3} = 0;
+            end
             me.refresh();
         end
         
     end
     methods (Static)
-        function queryInitialPosition(obj, event,me)
+        function queryInitialPosition(obj, event,me) %#ok<*INUSL,*INUSD>
             if me.offstRfsh.isDone() == false
                 return;
             end
-            for l = 1: me.ocfg.numLbcbs
+            for lbcb = 1 : me.ocfg.numLbcbs
                 for d = 1:6
-                    me.dofT(l,d) = me.dat.initialPosition.lbcbCps{l}.disp(d);
+                    me.dofT(lbcb,d) = me.dat.initialPosition.lbcbCps{lbcb}.response.disp(d);
                 end
             end
             for s = 1:length(me.names)

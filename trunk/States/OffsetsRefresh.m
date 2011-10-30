@@ -26,7 +26,6 @@ classdef OffsetsRefresh < SimStates
             me.gipOm.start();
             me.currentAction.setState('OM GET INITIAL POSITION');
             me.statusBusy();
-            me.started = true;
         end
         function done = isDone(me)
             done = 0;
