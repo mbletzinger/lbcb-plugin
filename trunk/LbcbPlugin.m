@@ -22,7 +22,7 @@ function varargout = LbcbPlugin(varargin)
 
 % Edit the above text to modify the response to help LbcbPlugin
 
-% Last Modified by GUIDE v2.5 28-Oct-2011 08:00:40
+% Last Modified by GUIDE v2.5 31-Oct-2011 02:45:26
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -676,3 +676,13 @@ end
 function SensorInitialLength_Callback(hObject, eventdata, handles)
 actions = getappdata(getLp(hObject),'actions');
 OffsetsConfig('cfg',actions.hfact.cfg,'ocfg',actions.hfact.offstcfg,'fact',actions.hfact);
+
+
+% --------------------------------------------------------------------
+function MyCorrections_Callback(hObject, eventdata, handles)
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('MyCorrections')
+    ddisp.closeDisplay('MyCorrections');
+else
+    ddisp.openDisplay('MyCorrections');
+end
