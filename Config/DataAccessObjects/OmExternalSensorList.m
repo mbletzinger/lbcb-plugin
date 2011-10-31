@@ -8,6 +8,9 @@ classdef OmExternalSensorList < handle
             ocfg = OmConfigDao(cfg);
             me.cfg = cfg;
             nm = ocfg.numExtSensors;
+            if nm == 0
+                return;
+            end
             me.list = cell(nm,1);
             for s = 1:nm
                 me.list{s} = OmExternalSensor(cfg,s);
