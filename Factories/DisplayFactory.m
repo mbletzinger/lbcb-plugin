@@ -63,6 +63,10 @@ classdef DisplayFactory < handle
             ref.cdp = me.cdp;
             me.addDisplay('Moments',ref,me.mainDisp.Moments);
 
+            ref = MultiDofStepPlot('MyCorrections',{'ProposedMy','MeasuredMy'},'lbs*inches',1,0);
+            ref.cdp = me.cdp;
+            me.addDisplay('MyCorrections',ref,me.mainDisp.MyCorrections);
+
             ref = VsPlot('RyVsLbcb1Dx',1,1,5);
             ref.cdp = me.cdp;
             me.addDisplay('RyVsLbcb1Dx',ref,me.mainDisp.RyVsLbcb1Dx);
