@@ -22,7 +22,7 @@ classdef DxOnlyElasticDeformation < ElasticDeformation
         function curResponse = calculate(me, prevResponse,curReadings)
             disp = curReadings - me.initialReadings;
             curResponse = prevResponse;
-            curResponse(1) = disp(1);    
+            curResponse(1) = disp;    
         end
     end
 end

@@ -10,7 +10,6 @@ if  doC(1)
     for l = 1: me.cdp.numLbcbs()
         pcps = prevStep.lbcbCps{l};
         ccps = curStep.lbcbCps{l};
-        icps = initialPosition.lbcbCps{l};
         if isempty(correctionTarget)
             ctcps = curStep.lbcbCps{l};
         else
@@ -18,14 +17,16 @@ if  doC(1)
         end
         stp = curStep.stepNum;
         if strcmp(funcs(1),'Test')
+            me.ed{l}.loadConfig;
             rsp = me.ed{l}.calculateTest(ctcps.command.disp,stp);
         elseif strcmp(funcs{1},'Dx Only')
+            me.dxed{l}.loadConfig;
             rsp = me.dxed{l}.calculate(pcps.response.disp,...
-                ccps.externalSensors,icps.externalSensors);            
+                ccps.externalSensors);            
         else
             me.ed{l}.loadConfig;
             rsp = me.ed{l}.calculate(pcps.response.disp,...
-                ccps.externalSensors,icps.externalSensors);
+                ccps.externalSensors);
         end
         % initial offset added back in
 %        rsp = rsp + icps.command.disp - icors{l}.disp;
