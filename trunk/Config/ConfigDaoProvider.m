@@ -16,9 +16,9 @@ classdef ConfigDaoProvider < handle
             num = ocfg.numLbcbs;
         end
         function num = numModelCps(me)
-            ocfg = TargetConfigDao(me.cfg);
-            num = ocfg.numControlPoints;
-            if ocfg.empty
+            tcfg = TargetConfigDao(me.cfg);
+            num = tcfg.numControlPoints;
+            if tcfg.empty
                 num = 0;
             end
         end
@@ -31,6 +31,10 @@ classdef ConfigDaoProvider < handle
             n = ocfg.sensorNames;
             s = ocfg.sensitivities;
             a = ocfg.apply2Lbcb;
+        end
+        function num = getNumExtSensors(me)
+            ocfg = OmConfigDao(me.cfg);
+            num = ocfg.numExtSensors;
         end
         function [n s a] = getFilteredExtSensors(me,isLbcb1)
             il = 1;

@@ -16,7 +16,7 @@ classdef OmConfigActions < handle
             me.selected = 1;
             me.oesl = OmExternalSensorList(cfg);
             me.corTable = cell(6,2);
-
+            
             icl1 = me.ocfg.initialCorrectionL1;
             icl2 = me.ocfg.initialCorrectionL2;
             for i = 1:6
@@ -192,6 +192,8 @@ classdef OmConfigActions < handle
                     me.table{s,9} = o.pinLocations(3);
                 end
             end
+            set(me.handles.sensorTable,'Data',me.table);
+            guidata(me.handles.OmConfig, me.handles);
         end
     end
 end

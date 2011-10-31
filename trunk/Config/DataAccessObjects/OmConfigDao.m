@@ -31,15 +31,10 @@ classdef OmConfigDao < handle
     end
     properties
         dt;
-        empty;
     end
     methods
         function me = OmConfigDao(cfg)
             me.dt = DataTypes(cfg);
-            me.empty = true;
-            if isempty(me.sensorNames) == false
-                me.empty = false;
-            end
         end
         function result = get.numLbcbs(me)
             result = me.dt.getInt('om.numLbcbs',1);
