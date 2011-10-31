@@ -15,7 +15,7 @@ if me.isLbcb1
 end
 
 ns = ocfg.numExtSensors;
-me.pinLocations = zeros(3,ns); 
+me.pinLocations = zeros(3,ns);
 me.fixedLocations = zeros(3,ns);
 
 % filter for one LBCB
@@ -40,6 +40,9 @@ me.optSetting.maxiter = ocfg.optsetMaxIter;
 me.optSetting.tolfun = ocfg.optsetTolFun;
 me.optSetting.tolx = ocfg.optsetTolX;
 me.optSetting.jacob = ocfg.optsetJacob > 0; % question, it would be 'on' or 'off'
-
-me.initialReadings = me.offstcfg.offsets;
+[n s a] = me.cdp.getFilteredExtSensors(me.isLbcb1); %#ok<NASGU,ASGLU>
+me.initialReadings = zeros(ns,1);
+    for s = 1:ns
+        me.initialReadings(s) = me.offstcfg.getOffset(n{s});
+    end
 end

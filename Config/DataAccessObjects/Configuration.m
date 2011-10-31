@@ -6,20 +6,21 @@
 %   filename - default filename.
 %   error - Current error message.
 %
-% $LastChangedDate$ 
+% $LastChangedDate$
 % $Author$
 % =====================================================================================================================
 classdef Configuration < handle
     properties
-        props = org.nees.uiuc.simcor.properties.Props;
-        filename = '';
-        error = '';
+        props;
+        filename;
+        error;
         arch
         dat
     end
     methods
         function me = Configuration()
             root = pwd;
+            me.props = org.nees.uiuc.simcor.properties.Props;
             me.filename = fullfile(root,'lbcb_plugin.properties');
         end
         % load the default configuration
@@ -34,7 +35,7 @@ classdef Configuration < handle
         function import(me)
             done = 0;
             while done == false
-               [fileName,pathName,filterIndex] = uigetfile('*.properties','Import Configuration'); %#ok<NASGU>
+                [fileName,pathName,filterIndex] = uigetfile('*.properties','Import Configuration'); %#ok<NASGU>
                 if fileName == 0
                     return
                 end
@@ -68,10 +69,10 @@ classdef Configuration < handle
             me.error = result;
             done = 0;
             if isempty(me.dat) == false
-            step = me.dat.curStepData;
-            me.arch.storeNote(sprintf('Config file %s was loaded',name),step);
+                step = me.dat.curStepData;
+                me.arch.storeNote(sprintf('Config file %s was loaded',name),step);
             end
-       end
+        end
         function done = saveFile(me,name)
             result = me.props.save(name);
             if isempty(result)

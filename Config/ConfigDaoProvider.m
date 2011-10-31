@@ -39,10 +39,11 @@ classdef ConfigDaoProvider < handle
         function [n s a] = getFilteredExtSensors(me,isLbcb1)
             il = 1;
             [rn rs ra] = me.getExtSensors();
-            an = cell(length(ra),1);
-            as = ones(length(ra),1);
-            aa = cell(length(ra),1);
-            for i = 1:length(ra)
+            ns = me.getNumExtSensors();
+            an = cell(ns,1);
+            as = ones(ns,1);
+            aa = cell(ns,1);
+            for i = 1:ns
                 if strcmp(ra{i},'LBCB1')
                     if isLbcb1
                         an(il) = rn(i);

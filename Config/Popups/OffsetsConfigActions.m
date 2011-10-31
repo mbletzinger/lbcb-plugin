@@ -85,6 +85,9 @@ classdef OffsetsConfigActions < handle
         function export(me)
             me.offstcfg.export();
         end
+        function save(me)
+            me.offstcfg.save();
+        end
         
         function reload(me)
             me.offstcfg.load();
@@ -114,6 +117,10 @@ classdef OffsetsConfigActions < handle
             for s = 1:length(me.names)
                 me.offsetsT{s,3} = me.dat.initialPosition.externalSensorsRaw(s);
             end
+            set(me.handles.offsetsTable,'Data',me.offsetsT);
+            set(me.handles.dofTable,'Data',me.dofT);
+            guidata(me.handles.OffsetsConfig, me.handles);
+            stop(me.simTimer);
         end
     end
 end
