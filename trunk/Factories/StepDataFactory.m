@@ -45,7 +45,7 @@ classdef StepDataFactory < handle
                 end
                 for a = 1 : length(addresses)
                     addr = char(addresses{a}.toString());
-                    target = me.m2d.parse(contents{a},addr);
+                    target = me.m2d.parse(contents{a});
                     for t = 1 : 6
                         if(target{1}.dispDofs(t))
                             clone.modelCps{a}.command.setDispDof(t,target{1}.disp(t));
@@ -64,7 +64,7 @@ classdef StepDataFactory < handle
                         length(addresses)));
                     return; %#ok<UNRCH>
                 end
-                target = me.m2d.parse(contents,addr);
+                target = me.m2d.parse(contents);
                 for t = 1 : 6
                     if(target{1}.dispDofs(t))
                         clone.modelCps{1}.command.setDispDof(t,target{1}.disp(t));
