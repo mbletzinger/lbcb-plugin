@@ -11,11 +11,21 @@ target = nextStep.lbcbCps{lbcb}.command.disp;
 prevOMcommand = curStep.lbcbCps{lbcb}.command.disp;
 position = curStep.lbcbCps{lbcb}.response.ed.disp;
 correction = prevOMcommand - position;
-newOMcommand = target + correction;
-me.log.debug(dbstack,sprintf('Prev Position: %s',curStep.lbcbCps{lbcb}.response.toString()));
-me.log.debug(dbstack,sprintf('Prev Cmd: %s',curStep.lbcbCps{lbcb}.command.toString()));
-me.log.debug(dbstack,sprintf('New Target: %s',nextStep.lbcbCps{lbcb}.command.toString()));
+if me.existsCfg('EdCorrectionFactor')
+    cf = me.getCfg('EdCorrectionFactor');
+else
+    cf = 1;
+end
+
+newOMcommand = target + correction * cf;
+str = sprintf('Prev Position: %s\n',curStep.lbcbCps{lbcb}.response.toString());
+str = sprintf('%sPrev Cmd: %s\n',str,curStep.lbcbCps{lbcb}.command.toString());
+str = sprintf('%sNew Target: %s\n',str,nextStep.lbcbCps{lbcb}.command.toString());
+
 nextStep.lbcbCps{lbcb}.command.disp = newOMcommand;
-me.log.debug(dbstack,sprintf('New Cmd: %s',nextStep.lbcbCps{lbcb}.command.toString()));
+
+str = sprintf('%sCorrectionFactor: %f\n',str,cf);
+str = sprintf('%sNew Cmd: %s',nextStep.lbcbCps{lbcb}.command.toString());
+log.debug(dbstack,str);
 %me.archiveCorrections('prelimEd',correction);
 end
