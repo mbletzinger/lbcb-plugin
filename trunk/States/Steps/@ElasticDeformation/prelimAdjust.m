@@ -25,7 +25,7 @@ str = sprintf('%sNew Target: %s\n',str,nextStep.lbcbCps{lbcb}.command.toString()
 nextStep.lbcbCps{lbcb}.command.disp = newOMcommand;
 
 str = sprintf('%sCorrectionFactor: %f\n',str,cf);
-str = sprintf('%sNew Cmd: %s',nextStep.lbcbCps{lbcb}.command.toString());
-log.debug(dbstack,str);
+str = sprintf('%sNew Cmd: %s',str,nextStep.lbcbCps{lbcb}.command.toString());
+me.log.debug(dbstack,str);
 %me.archiveCorrections('prelimEd',correction);
 end
