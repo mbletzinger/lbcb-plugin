@@ -39,10 +39,10 @@ classdef StepNumber < handle
                 case 1
                     sStp = sStp+ 1;
                     cStp = 0;
-                case 2
+                case { 2 3 }
                     cStp = cStp+ 1;
-                case { 3 4 5 }
-                    cStp = cStp + 100^(stepType - 2);
+                case { 4 5 }
+                    cStp = cStp + 100^(stepType - 3);
                 otherwise
                     me.log.error(dbstack, sprintf('%d not recognized',stepType));
             end

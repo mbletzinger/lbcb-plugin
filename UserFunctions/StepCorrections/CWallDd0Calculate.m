@@ -7,6 +7,8 @@ mmy = step.lbcbCps{1}.response.force(5);
 mm2s = mmy / fx;
 me.putArch('MeasuredMy',mmy);
 me.putArch('MeasuredMoment2Shear',mm2s);
-me.log.debug(dbstack, sprintf('Dd0 proposed my = %f, measured my = %f',pmy,mmy));
-me.log.debug(dbstack, sprintf('Dd0 fx = %f',step.lbcbCps{1}.response.force(1)));
+str = sprintf('Dd0 proposed my = %f, measured my = %f\n',pmy,mmy);
+str = sprintf('%sfx = %f\n',str,step.lbcbCps{1}.response.force(1));
+str = sprintf('%sproposed m2s = %f, measured m2s = %f\n',str,msr,mm2s);
+me.log.debug(dbstack,str);
 end
