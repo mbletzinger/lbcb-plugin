@@ -1,10 +1,8 @@
 function  calculate(me,prevStep, curStep,initialPosition,correctionTarget)
 %calculate elastic deformations
 ccfg = StepCorrectionConfigDao(me.cdp.cfg);
-ocfg = OmConfigDao(me.cdp.cfg);
 doC = ccfg.doCalculations;
 funcs = ccfg.calculationFunctions;
-icors = { ocfg.initialCorrectionL1 ocfg.initialCorrectionL2 };
 
 if  doC(1)
     for l = 1: me.cdp.numLbcbs()
