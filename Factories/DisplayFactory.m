@@ -55,15 +55,15 @@ classdef DisplayFactory < handle
             ref.cdp = me.cdp;
             me.addDisplay('OutOfPlaneRotations',ref,me.mainDisp.OutOfPlaneRotations);
 
-            ref = MultiDofStepPlot('Forces',{'Fx','Fy','Fz'},'lbs',1,0);
+            ref = MultiDofStepPlot('Forces',{'Fx','Fy','Fz'},'kips',1,0);
             ref.cdp = me.cdp;
             me.addDisplay('Forces',ref,me.mainDisp.Forces);
             
-            ref = MultiDofStepPlot('Moments',{'Mx','My','Mz'},'lbs*inches',1,0);
+            ref = MultiDofStepPlot('Moments',{'Mx','My','Mz'},'kip*inches',1,0);
             ref.cdp = me.cdp;
             me.addDisplay('Moments',ref,me.mainDisp.Moments);
 
-            ref = MultiDofStepPlot('MyCorrections',{'ProposedMy','MeasuredMy'},'lbs*inches',1,0);
+            ref = MultiDofStepPlot('MyCorrections',{'ProposedMy','MeasuredMy', 'MyBot'},'kip*inches',1,0);
             ref.cdp = me.cdp;
             me.addDisplay('MyCorrections',ref,me.mainDisp.MyCorrections);
 
