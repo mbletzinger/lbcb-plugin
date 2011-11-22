@@ -1,7 +1,7 @@
 
 function connectSimCor(obj, event,me) %#ok<INUSL>
 a = me.connectSimCorAction.getState();
-if rem(me.csimcorTimerCnt,10) == 0
+if rem(me.csimcorTimerCnt,100) == 0
     me.log.debug(dbstack,'Connect SimCor Timer Executing')
 end
 me.csimcorTimerCnt = me.csimcorTimerCnt + 1;
