@@ -33,7 +33,7 @@ classdef VampCheck < BroadcasterState
                     me.currentAction.setState('STOPPING');
                 end
             else
-                sn = [];
+                sn = StepNumber(9999,0,0);
                 if isempty(me.dat.curStepData) == false
                     sn = me.dat.curStepData.stepNum;
                 end
