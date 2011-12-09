@@ -9,6 +9,13 @@ myBot = mmy + 12 * fx;
 me.putArch('MeasuredMy',mmy);
 me.putArch('MyBot',myBot);
 me.putArch('MeasuredMoment2Shear',mm2s);
+
+mmx = step.lbcbCps{1}.response.force(4);
+me.putArch('MeasuredMx',mmx);
+
+mmz = step.lbcbCps{1}.response.force(6);
+me.putArch('MeasuredMz',mmz);
+
 str = sprintf('Dd0 proposed my = %f, measured my = %f\n',pmy,mmy);
 str = sprintf('%sfx = %f\n',str,step.lbcbCps{1}.response.force(1));
 str = sprintf('%sproposed m2s = %f, measured m2s = %f\n',str,msr,mm2s);
