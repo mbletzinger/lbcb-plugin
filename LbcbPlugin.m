@@ -22,7 +22,7 @@ function varargout = LbcbPlugin(varargin)
 
 % Edit the above text to modify the response to help LbcbPlugin
 
-% Last Modified by GUIDE v2.5 06-Nov-2011 21:23:45
+% Last Modified by GUIDE v2.5 29-Jan-2012 14:27:17
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -689,7 +689,7 @@ end
 
 
 % --------------------------------------------------------------------
-function Moment2Shear_Callback(hObject, eventdata, handles)
+function Eccentricities_Callback(hObject, eventdata, handles)
 ddisp = getappdata(getLp(hObject),'ddisp');
 if ddisp.isDisplaying('Moment2Shear')
     ddisp.closeDisplay('Moment2Shear');
