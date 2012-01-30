@@ -37,6 +37,10 @@ classdef VampCheck < BroadcasterState
                 if isempty(me.dat.curStepData) == false
                     sn = me.dat.curStepData.stepNum;
                 end
+                if sn.step == 0
+                    sn = StepNumber(9999,0,0);
+                end
+                
                 me.mdlBroadcast.startStopVamp(0,sn);
                 me.vampStatus.setState('VAMPING');
                 me.gui.colorButton('VAMPING','ON');

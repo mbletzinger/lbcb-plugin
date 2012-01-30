@@ -59,7 +59,7 @@ classdef DisplayFactory < handle
             ref.cdp = me.cdp;
             me.addDisplay('Forces',ref,me.mainDisp.Forces);
             
-            ref = MultiDofStepPlot('Moments',{'Mx','My','Mz'},'kip*inches',1,0);
+            ref = MultiDofStepPlot('Moments',{'Mx','Mz','MzAtShearCenter'},'kip*inches',1,0);
             ref.cdp = me.cdp;
             me.addDisplay('Moments',ref,me.mainDisp.Moments);
 
@@ -67,9 +67,9 @@ classdef DisplayFactory < handle
             ref.cdp = me.cdp;
             me.addDisplay('MyCorrections',ref,me.mainDisp.MyCorrections);
 
-            ref = MultiDofStepPlot('Moment2Shear',{'MeasuredMoment2Shear'},'inches',1,0);
+            ref = MultiDofStepPlot('Eccentricities',{'MeasuredMoment2Shear', 'ShearCenter', 'XEccentricity'},'inches',1,0);
             ref.cdp = me.cdp;
-            me.addDisplay('Moment2Shear',ref,me.mainDisp.Moment2Shear);
+            me.addDisplay('Eccentricities',ref,me.mainDisp.Eccentricities);
 
             ref = VsPlot('RyVsLbcb1Dx',1,1,5);
             ref.cdp = me.cdp;

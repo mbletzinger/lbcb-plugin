@@ -61,9 +61,9 @@ classdef OffsetsConfigActions < handle
         end
         
         function setLengths(me)
-            me.offsetsT{:,2} = me.offsetsT{:,3};
+            me.offsetsT(:,2) = me.offsetsT(:,3);
             for s = 1:length(me.names)
-                me.offstcfg.setOffset(me.names{s},me.offsetsT{:,2});
+                me.offstcfg.setOffset(me.names{s},me.offsetsT{s,2});
             end
             me.refresh();
         end
