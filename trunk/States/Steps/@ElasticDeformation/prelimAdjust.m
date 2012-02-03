@@ -11,13 +11,18 @@ target = nextStep.lbcbCps{lbcb}.command.disp;
 prevOMcommand = curStep.lbcbCps{lbcb}.command.disp;
 position = curStep.lbcbCps{lbcb}.response.ed.disp;
 correction = prevOMcommand - position;
+newOMcommand = target;
+
 if me.existsCfg('EdCorrectionFactor')
     cf = me.getCfg('EdCorrectionFactor');
 else
     cf = 1;
 end
-
-newOMcommand = target + correction * cf;
+for dof = 1:6
+    if me.adjusted(dof)
+        newOMcommand(dof) = target(dof) + correction(dof) * cf;
+    end
+end
 str = sprintf('Prev Position: %s\n',curStep.lbcbCps{lbcb}.response.toString());
 str = sprintf('%sPrev Cmd: %s\n',str,curStep.lbcbCps{lbcb}.command.toString());
 str = sprintf('%sNew Target: %s\n',str,nextStep.lbcbCps{lbcb}.command.toString());
@@ -28,4 +33,5 @@ str = sprintf('%sCorrectionFactor: %f\n',str,cf);
 str = sprintf('%sNew Cmd: %s',str,nextStep.lbcbCps{lbcb}.command.toString());
 me.log.debug(dbstack,str);
 %me.archiveCorrections('prelimEd',correction);
+me.adjusted = zeros(6,1);
 end

@@ -15,6 +15,17 @@
 
 function curCommandOut = adjustTarget(me,correctionTarget,curResponse,prevCommand)
 correction = correctionTarget - curResponse;
-curCommandOut = prevCommand + correction;
+curCommandOut = prevCommand;
+if me.existsCfg('EdCorrectionFactor')
+    cf = me.getCfg('EdCorrectionFactor');
+else
+    cf = 1;
+end
+for dof = 1:6
+    if me.st.within(dof) == false
+        curCommandOut(dof) = prevCommand(dof) + correction(dof) * cf;
+        me.adjusted(dof) = true;
+    end
+end
 %me.archiveCorrections('ed',correction);
 end
