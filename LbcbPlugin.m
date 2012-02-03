@@ -691,8 +691,8 @@ end
 % --------------------------------------------------------------------
 function Eccentricities_Callback(hObject, eventdata, handles)
 ddisp = getappdata(getLp(hObject),'ddisp');
-if ddisp.isDisplaying('Moment2Shear')
-    ddisp.closeDisplay('Moment2Shear');
+if ddisp.isDisplaying('Eccentricities')
+    ddisp.closeDisplay('Eccentricities');
 else
-    ddisp.openDisplay('Moment2Shear');
+    ddisp.openDisplay('Eccentricities');
 end

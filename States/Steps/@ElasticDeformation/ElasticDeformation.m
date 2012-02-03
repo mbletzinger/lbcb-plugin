@@ -49,17 +49,14 @@ classdef ElasticDeformation < CorrectionVariables
         % optSetting.jacob: switch for jacobian matrix, 'on' or 'off'
         %                   (default = 'on')
 	    optSetting;
-        %==
-        % a bond for needsCorrection
-        % size: 2 x 1, in which first one is for translations and the
-        % second one is for rotations
-        within = [];
+        adjusted;
         st = [];
     end
     methods   
         function me = ElasticDeformation(cdp,isLbcb1)
             me = me@CorrectionVariables(cdp);
             me.isLbcb1 = isLbcb1;
+            me.adjusted = zeros(6,1);
         end
         nextCommand = adjustTarget(me,correctionTarget,curResponse,curCommand)
         prelimAdjust(me,curStep, nextStep)
