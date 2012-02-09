@@ -16,7 +16,7 @@ if me.existsCfg('setPrelimMomentY')
     smy = spfz == 1;
 end
 if smy
-    my = me.getArch('ProposedMy');
+    my = me.getArch('MeasuredMy');
     step.lbcbCps{1}.command.setForceDof(5,my);
 else
     me.log.debug(dbstack,'Not setting Moment in initial command');
