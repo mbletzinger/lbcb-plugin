@@ -6,7 +6,7 @@ mzshear = fx * 25.7 + mz;
 
 mmy = step.lbcbCps{1}.response.force(5);
 mm2s = mmy / fx;
-myBot = mmy + 12 * fx;
+myBot = mmy - 144 * fx;
 
 fz = step.lbcbCps{1}.response.force(3);
 mx = step.lbcbCps{1}.response.force(4);
