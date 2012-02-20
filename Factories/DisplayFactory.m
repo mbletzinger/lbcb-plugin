@@ -55,21 +55,17 @@ classdef DisplayFactory < handle
             ref.cdp = me.cdp;
             me.addDisplay('OutOfPlaneRotations',ref,me.mainDisp.OutOfPlaneRotations);
 
-            ref = MultiDofStepPlot('Forces',{'Fx','Fy','Fz'},'kips',1,0);
+            ref = MultiDofStepPlot('Forces',{'Fx','Fy','Fz'},'lbs',1,0);
             ref.cdp = me.cdp;
             me.addDisplay('Forces',ref,me.mainDisp.Forces);
             
-            ref = MultiDofStepPlot('Moments',{'Mx','Mz','MzAtShearCenter'},'kip*inches',1,0);
+            ref = MultiDofStepPlot('Moments',{'Mx','My','Mz'},'lbs*inches',1,0);
             ref.cdp = me.cdp;
             me.addDisplay('Moments',ref,me.mainDisp.Moments);
 
-            ref = MultiDofStepPlot('MyCorrections',{'ProposedMy','MeasuredMy', 'MyBot'},'kip*inches',1,0);
+            ref = MultiDofStepPlot('MyCorrections',{'ProposedMy','MeasuredMy'},'lbs*inches',1,0);
             ref.cdp = me.cdp;
             me.addDisplay('MyCorrections',ref,me.mainDisp.MyCorrections);
-
-            ref = MultiDofStepPlot('Eccentricities',{'MeasuredMoment2Shear', 'ShearCenter', 'XEccentricity'},'inches',1,0);
-            ref.cdp = me.cdp;
-            me.addDisplay('Eccentricities',ref,me.mainDisp.Eccentricities);
 
             ref = VsPlot('RyVsLbcb1Dx',1,1,5);
             ref.cdp = me.cdp;

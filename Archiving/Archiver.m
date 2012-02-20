@@ -8,7 +8,6 @@ classdef Archiver < handle
         archiveOn
         wroteCorDataHeaders
         notes
-        stepHeaders
     end
     methods
         function me = Archiver(cdp)
@@ -18,21 +17,17 @@ classdef Archiver < handle
             me.edReadA = DataArchive('ElasticDefReadings');
             me.corDataA = DataArchive('CorrectionData');
             me.notes = TextArchive('TestNotes');
-            me.stepHeaders = {'Step','Substep','CorrectionStep'};
             me.archiveOn = false;
-            hdrs = ...
-                {me.stepHeaders{:},'LBCB1 Dx','LBCB1 Dy','LBCB1 Dz','LBCB1 Rx','LBCB1 Ry','LBCB1 Rz',...
-                'LBCB1 Fx','LBCB1 Fy','LBCB1 Fz','LBCB1 Mx','LBCB1 My','LBCB1 Mz'};%#ok<*CCAT>
-            if cdp.numLbcbs() == 2
-                hdrs = {hdrs{:}, 'LBCB2 Dx','LBCB2 Dy','LBCB2 Dz','LBCB2 Rx','LBCB1 Ry','LBCB2 Rz',...
+            me.commandA.headers = ...
+                {'Step','LBCB1 Dx','LBCB1 Dy','LBCB1 Dz','LBCB1 Rx','LBCB1 Ry','LBCB1 Rz',...
+                'LBCB1 Fx','LBCB1 Fy','LBCB1 Fz','LBCB1 Mx','LBCB1 My','LBCB1 Mz'...
+                'LBCB2 Dx','LBCB2 Dy','LBCB2 Dz','LBCB2 Rx','LBCB1 Ry','LBCB2 Rz',...
                 'LBCB2 Fx','LBCB2 Fy','LBCB2 Fz','LBCB2 Mx','LBCB1 My','LBCB2 Mz'};
-            end
-            me.commandA.headers = hdrs;
-            me.lbcbReadA.headers = hdrs;
-            me.edReadA.headers = hdrs;
+            me.lbcbReadA.headers = me.commandA.headers;
+            me.edReadA.headers = me.commandA.headers;
             [n se a] = cdp.getExtSensors(); %#ok<ASGLU,NASGU>
             if isempty(n) == false
-                me.extSensA.headers = {me.stepHeaders{:} n{:} }; %#ok<CCAT>
+                me.extSensA.headers = {'Step' n{:} }; %#ok<CCAT>
             end
             me.wroteCorDataHeaders = false;
         end
@@ -76,7 +71,7 @@ classdef Archiver < handle
             if me.wroteCorDataHeaders
                 return;
             end
-            me.corDataA.headers = { me.stepHeaders{:} step.cData.labels{:}};
+            me.corDataA.headers = step.cData.labels;
             me.corDataA.writeHeaders();
 %            me.wroteCorDataHeaders = true;
         end

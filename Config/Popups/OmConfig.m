@@ -133,3 +133,8 @@ handles.actions.setTransPert(get(hObject,'String'));
 
 function rotPert_Callback(hObject, eventdata, handles)
 handles.actions.setRotPert(get(hObject,'String'));
+
+
+function InitCor_CellEditCallback(hObject, eventdata, handles)
+disp 'Hey I have been called!!'
+handles.actions.setCorrection(eventdata.Indices,eventdata.EditData);

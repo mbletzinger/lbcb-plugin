@@ -22,7 +22,7 @@ function varargout = LbcbPlugin(varargin)
 
 % Edit the above text to modify the response to help LbcbPlugin
 
-% Last Modified by GUIDE v2.5 29-Jan-2012 14:27:17
+% Last Modified by GUIDE v2.5 31-Oct-2011 02:45:26
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -685,14 +685,4 @@ if ddisp.isDisplaying('MyCorrections')
     ddisp.closeDisplay('MyCorrections');
 else
     ddisp.openDisplay('MyCorrections');
-end
-
-
-% --------------------------------------------------------------------
-function Eccentricities_Callback(hObject, eventdata, handles)
-ddisp = getappdata(getLp(hObject),'ddisp');
-if ddisp.isDisplaying('Eccentricities')
-    ddisp.closeDisplay('Eccentricities');
-else
-    ddisp.openDisplay('Eccentricities');
 end

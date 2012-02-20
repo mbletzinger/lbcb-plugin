@@ -22,6 +22,9 @@ function curResponse = calculate(me, prevResponse, curReadings)
 xpin = me.pinLocations;
 xfix = me.fixedLocations;
 %==
+if size(curReadings,2) ~= 1
+    curReadings = curReadings';
+end
 disp = curReadings - me.initialReadings;
 
 %------------------

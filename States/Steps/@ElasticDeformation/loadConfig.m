@@ -41,8 +41,9 @@ me.optSetting.tolfun = ocfg.optsetTolFun;
 me.optSetting.tolx = ocfg.optsetTolX;
 me.optSetting.jacob = ocfg.optsetJacob > 0; % question, it would be 'on' or 'off'
 [n s a] = me.cdp.getFilteredExtSensors(me.isLbcb1); %#ok<NASGU,ASGLU>
-me.initialReadings = zeros(1,ns);
+me.initialReadings = zeros(ns,1);
+sens = ones(1,6);%[0.9979	0.9976	1.002	1.0341	0.9995	1.0009]; 
     for s = 1:ns
-        me.initialReadings(s) = me.offstcfg.getOffset(n{s});
+        me.initialReadings(s) = sens(s)*me.offstcfg.getOffset(n{s});
     end
 end
