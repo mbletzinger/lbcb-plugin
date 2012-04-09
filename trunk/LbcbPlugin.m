@@ -22,7 +22,7 @@ function varargout = LbcbPlugin(varargin)
 
 % Edit the above text to modify the response to help LbcbPlugin
 
-% Last Modified by GUIDE v2.5 09-Apr-2012 11:26:08
+% Last Modified by GUIDE v2.5 09-Apr-2012 12:59:48
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -256,9 +256,9 @@ TargetConfig('cfg',actions.hfact.cfg);
 
 
 % --------------------------------------------------------------------
-function CorrectionSettings_Callback(hObject, eventdata, handles)
+function ConfigVars_Callback(hObject, eventdata, handles)
 actions = getappdata(getLp(hObject),'actions');
-CorrectionSettingsConfig('cfg',actions.hfact.cfg);
+ConfigVarsConfig('cfg',actions.hfact.cfg);
 
 % --------------------------------------------------------------------
 function TotalMyVsLbcb1Dx_Callback(hObject, eventdata, handles)
@@ -696,3 +696,9 @@ end
 function LoadInput_Callback(hObject, eventdata, handles)
 actions = getappdata(getLp(hObject),'actions');
 actions.setInputFile({});
+
+
+% --------------------------------------------------------------------
+function ArchVars_Callback(hObject, eventdata, handles)
+actions = getappdata(getLp(hObject),'actions');
+ArchiveVarsConfig('cfg',actions.hfact.cfg);

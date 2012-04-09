@@ -1,4 +1,4 @@
-function varargout = CorrectionSettingsConfig(varargin)
+function varargout = ConfigVarsConfig(varargin)
 % CORRECTIONSETTINGSCONFIG M-file for CorrectionSettingsConfig.fig
 %      CORRECTIONSETTINGSCONFIG, by itself, creates a new CORRECTIONSETTINGSCONFIG or raises the existing
 %      singleton*.
@@ -28,8 +28,8 @@ function varargout = CorrectionSettingsConfig(varargin)
 gui_Singleton = 1;
 gui_State = struct('gui_Name',       mfilename, ...
                    'gui_Singleton',  gui_Singleton, ...
-                   'gui_OpeningFcn', @CorrectionSettingsConfig_OpeningFcn, ...
-                   'gui_OutputFcn',  @CorrectionSettingsConfig_OutputFcn, ...
+                   'gui_OpeningFcn', @ConfigVarsConfig_OpeningFcn, ...
+                   'gui_OutputFcn',  @ConfigVarsConfig_OutputFcn, ...
                    'gui_LayoutFcn',  [] , ...
                    'gui_Callback',   []);
 if nargin && ischar(varargin{1})
@@ -45,7 +45,7 @@ end
 
 
 % --- Executes just before CorrectionSettingsConfig is made visible.
-function CorrectionSettingsConfig_OpeningFcn(hObject, eventdata, handles, varargin)
+function ConfigVarsConfig_OpeningFcn(hObject, eventdata, handles, varargin)
 % This function has no output args, see OutputFcn.
 % hObject    handle to figure
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -71,21 +71,21 @@ if(nargin > 3)
 end
 
 handles.cfg = cfg;
-handles.actions = CorrectionSettingsConfigActions(cfg);
+handles.actions = ConfigVarsConfigActions(cfg);
 handles.actions.initialize(handles);
 
 % Make the GUI modal
-set(handles.CorrectionSettingsConfig,'WindowStyle','modal')
+set(handles.ConfigVarsConfig,'WindowStyle','modal')
 
 % Update handles structure
 guidata(hObject, handles);
 
 % UIWAIT makes CorrectionSettings wait for user response (see UIRESUME)
-uiwait(handles.CorrectionSettingsConfig);
+uiwait(handles.ConfigVarsConfig);
 
 
 % --- Outputs from this function are returned to the command line.
-function varargout = CorrectionSettingsConfig_OutputFcn(hObject, eventdata, handles) 
+function varargout = ConfigVarsConfig_OutputFcn(hObject, eventdata, handles) 
 % varargout  cell array for returning output args (see VARARGOUT);
 % hObject    handle to figure
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -100,7 +100,7 @@ function Ok_Callback(hObject, eventdata, handles) %#ok<*INUSL,*DEFNU>
 % hObject    handle to Ok (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-delete(handles.CorrectionSettingsConfig);
+delete(handles.ConfigVarsConfig);
 
 
 % --- Executes when entered data in editable cell(s) in CfgSettings.
