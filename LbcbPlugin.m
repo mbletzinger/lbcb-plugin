@@ -22,7 +22,7 @@ function varargout = LbcbPlugin(varargin)
 
 % Edit the above text to modify the response to help LbcbPlugin
 
-% Last Modified by GUIDE v2.5 29-Jan-2012 14:27:17
+% Last Modified by GUIDE v2.5 09-Apr-2012 11:26:08
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -154,34 +154,28 @@ actions = getappdata(getLp(hObject),'actions');
 OmConfig('cfg',actions.hfact.cfg);
 
 % --------------------------------------------------------------------
-function Load_Callback(hObject, eventdata, handles)
+function LoadConfig_Callback(hObject, eventdata, handles)
 actions = getappdata(getLp(hObject),'actions');
 actions.processConfig('LOAD');
 
 % --------------------------------------------------------------------
-function Save_Callback(hObject, eventdata, handles)
+function SaveConfig_Callback(hObject, eventdata, handles)
 actions = getappdata(getLp(hObject),'actions');
 actions.processConfig('SAVE');
 
 % --------------------------------------------------------------------
-function Import_Callback(hObject, eventdata, handles)
+function ImportConfig_Callback(hObject, eventdata, handles)
 actions = getappdata(getLp(hObject),'actions');
 actions.processConfig('IMPORT');
 
 % --------------------------------------------------------------------
-function Export_Callback(hObject, eventdata, handles)
+function ExportConfig_Callback(hObject, eventdata, handles)
 actions = getappdata(getLp(hObject),'actions');
 actions.processConfig('EXPORT');
 
 % --------------------------------------------------------------------
 function Exit_Callback(hObject, eventdata, handles)
 delete(handles.LbcbPlugin);
-
-
-function InputFile_Callback(hObject, eventdata, handles)
-actions = getappdata(getLp(hObject),'actions');
-actions.setInputFile({});
-
 
 % --------------------------------------------------------------------
 function LoggingLevels_Callback(hObject, eventdata, handles)
@@ -604,7 +598,7 @@ else
     ddisp.openDisplay('FxStepL2');
 end
 
-function ToleranceTable_CellEditCallback(hObject, eventdata, handles)
+function L1ToleranceTable_CellEditCallback(hObject, eventdata, handles)
 actions = getappdata(getLp(hObject),'actions');
 actions.tolerances.setCell(eventdata.Indices,eventdata.NewData);
 
@@ -696,3 +690,9 @@ if ddisp.isDisplaying('Eccentricities')
 else
     ddisp.openDisplay('Eccentricities');
 end
+
+
+% --------------------------------------------------------------------
+function LoadInput_Callback(hObject, eventdata, handles)
+actions = getappdata(getLp(hObject),'actions');
+actions.setInputFile({});
