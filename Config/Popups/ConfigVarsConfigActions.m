@@ -1,13 +1,13 @@
-classdef CorrectionSettingsConfigActions < handle
+classdef ConfigVarsConfigActions < handle
     properties
         handles = [];
         table;
         ccfg
-        log = Logger('CorrectionSettingsConfigActions')
+        log = Logger('ConfigVarsConfigActions')
     end
     methods
-        function me = CorrectionSettingsConfigActions(cfg)
-            me.ccfg = CorrectionsSettingsDao(cfg);
+        function me = ConfigVarsConfigActions(cfg)
+            me.ccfg = ConfigVarsDao(cfg);
             me.table = cell(20,2);
             me.fillTable();
         end

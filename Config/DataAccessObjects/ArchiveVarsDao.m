@@ -9,29 +9,22 @@
 % $LastChangedDate: 2009-05-31 07:19:36 -0500 (Sun, 31 May 2009) $ 
 % $Author: mbletzin $
 % =====================================================================================================================
-classdef CorrectionsSettingsDao < handle
+classdef ArchiveVarsDao < handle
     properties (Dependent = true)
         cfgLabels
-        cfgValues
     end
     properties
         dt;
     end
     methods
-        function me = CorrectionsSettingsDao(cfg)
+        function me = ConfigVarsDao(cfg)
             me.dt = DataTypes(cfg);
         end
         function result = get.cfgLabels(me)
-             result = me.dt.getStringVector('correctionSettings.labels.cfg',[]);
+             result = me.dt.getStringVector('archiveVars.labels.cfg',[]);
         end
         function set.cfgLabels(me,value)
-            me.dt.setStringVector('correctionSettings.labels.cfg',value);
-        end
-        function result = get.cfgValues(me)
-             result = me.dt.getDoubleVector('correctionSettings.values.cfg',[]);
-        end
-        function set.cfgValues(me,value)
-            me.dt.setDoubleVector('correctionSettings.values.cfg',value);
+            me.dt.setStringVector('archiveVars.labels.cfg',value);
         end
     end
 end

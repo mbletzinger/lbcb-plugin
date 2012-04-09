@@ -43,7 +43,7 @@ classdef CorrectionVariables < handle
             me.archH.put(lbl,val);
         end
         function loadCfg(me)
-            ccfg = CorrectionsSettingsDao(me.cdp.cfg);
+            ccfg = ConfigVarsDao(me.cdp.cfg);
             cfgL = ccfg.cfgLabels;
             cfgV = ccfg.cfgValues;
             lgt = size(cfgL,1);
