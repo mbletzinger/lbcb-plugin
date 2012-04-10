@@ -18,6 +18,7 @@ classdef ArchiveVarsConfigActions < handle
         function remove(me)
         end
         function select(me,idx)
+            me.index = idx;
         end
         function initialize(me,handles)
             me.handles = handles;

@@ -92,6 +92,7 @@ varargout{1} = 1;
 
 % --- Executes on selection change in varList.
 function varList_Callback(hObject, eventdata, handles)
+handles.actions.select(get(hObject,'Value'));
 
 % --- Executes on button press in addVar.
 function addVar_Callback(hObject, eventdata, handles)
