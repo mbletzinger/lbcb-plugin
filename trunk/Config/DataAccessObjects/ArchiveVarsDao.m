@@ -17,7 +17,7 @@ classdef ArchiveVarsDao < handle
         dt;
     end
     methods
-        function me = ConfigVarsDao(cfg)
+        function me = ArchiveVarsDao(cfg)
             me.dt = DataTypes(cfg);
         end
         function result = get.cfgLabels(me)
