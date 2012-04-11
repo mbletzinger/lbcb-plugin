@@ -82,23 +82,20 @@ guidata(hObject, handles);
 % UIWAIT makes CorrectionSettings wait for user response (see UIRESUME)
 uiwait(handles.ArchiveVarsConfig);
 
-
-% Update handles structure
-guidata(hObject, handles);
-
 % --- Outputs from this function are returned to the command line.
-function varargout = ArchiveVarsConfig_OutputFcn(hObject, eventdata, handles) 
+function varargout = ArchiveVarsConfig_OutputFcn(hObject, eventdata, handles)  %#ok<*INUSD>
 varargout{1} = 1;
 
 % --- Executes on selection change in varList.
-function varList_Callback(hObject, eventdata, handles)
-handles.actions.select(get(hObject,'Value'));
+function varList_Callback(hObject, eventdata, handles) %#ok<*DEFNU,*INUSL>
 
 % --- Executes on button press in addVar.
 function addVar_Callback(hObject, eventdata, handles)
-
+var = inputdlg('Name of Archive Variable');
+handles.actions.add(var);
 % --- Executes on button press in removeVar.
 function removeVar_Callback(hObject, eventdata, handles)
-
+handles.actions.remove();
 % --- Executes on button press in okButton.
 function okButton_Callback(hObject, eventdata, handles)
+delete(handles.ArchiveVarsConfig);
