@@ -54,30 +54,50 @@ function ControlDofConfig_OpeningFcn(hObject, eventdata, handles, varargin)
 
 % Choose default command line output for ControlDofConfig
 handles.output = hObject;
+cfg = [];
+if(nargin > 3)
+    for index = 1:2:(nargin-3),
+        if nargin-3==index, break, end
+        label = lower(varargin{index});
+        switch label
+            case 'cfg'
+                cfg = varargin{index+1};
+            otherwise
+            str= sprintf('%s not recognized',label);
+            disp(str);
+        end
+    end
+end
+
+handles.cfg = cfg;
+handles.actions = ControlDofConfigActions(cfg);
+handles.actions.initialize(handles);
+
+% Make the GUI modal
+set(handles.ControlDofConfig,'WindowStyle','modal')
 
 % Update handles structure
 guidata(hObject, handles);
 
-% UIWAIT makes ControlDofConfig wait for user response (see UIRESUME)
-% uiwait(handles.ControlDofConfig);
-
+% UIWAIT makes CorrectionSettings wait for user response (see UIRESUME)
+uiwait(handles.ControlDofConfig);
 
 % --- Outputs from this function are returned to the command line.
-function varargout = ControlDofConfig_OutputFcn(hObject, eventdata, handles) 
+function varargout = ControlDofConfig_OutputFcn(hObject, eventdata, handles)  %#ok<*INUSD>
 % varargout  cell array for returning output args (see VARARGOUT);
 % hObject    handle to figure
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
 % Get default command line output from handles structure
-varargout{1} = handles.output;
-
+varargout{1} =1;
 
 % --- Executes on button press in okButton.
-function okButton_Callback(hObject, eventdata, handles)
+function okButton_Callback(hObject, eventdata, handles) %#ok<*INUSL,*DEFNU>
 % hObject    handle to okButton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+delete(handles.ControlDofConfig);
 
 
 % --- Executes when entered data in editable cell(s) in controlDofTable.
@@ -90,3 +110,4 @@ function controlDofTable_CellEditCallback(hObject, eventdata, handles)
 %	NewData: EditData or its converted form set on the Data property. Empty if Data was not changed
 %	Error: error string when failed to convert EditData to appropriate value for Data
 % handles    structure with handles and user data (see GUIDATA)
+handles.actions.setControlDof(eventdata.Indices,eventdata.EditData);
