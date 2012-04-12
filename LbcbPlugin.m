@@ -22,7 +22,7 @@ function varargout = LbcbPlugin(varargin)
 
 % Edit the above text to modify the response to help LbcbPlugin
 
-% Last Modified by GUIDE v2.5 09-Apr-2012 12:59:48
+% Last Modified by GUIDE v2.5 12-Apr-2012 15:53:17
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -702,3 +702,9 @@ actions.setInputFile({});
 function ArchVars_Callback(hObject, eventdata, handles)
 actions = getappdata(getLp(hObject),'actions');
 ArchiveVarsConfig('cfg',actions.hfact.cfg);
+
+
+% --------------------------------------------------------------------
+function ControlDofs_Callback(hObject, eventdata, handles)
+actions = getappdata(getLp(hObject),'actions');
+ControlDofConfig('cfg',actions.hfact.cfg);
