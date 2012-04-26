@@ -43,7 +43,7 @@ classdef TolerancesConfigActions < TableDataManagement
         function fill(me)
             me.limitsTable = cell(12,3);
             [limits used diffs within] = me.getCfg();
-            for i = 1:12
+            for i = 1:6
                 if used(i)
                     me.limitsTable{i,1} = sprintf('%f',limits(i));
                     me.limitsTable{i,2} = diffs(i);
