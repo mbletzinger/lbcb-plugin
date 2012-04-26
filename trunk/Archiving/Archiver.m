@@ -9,6 +9,7 @@ classdef Archiver < handle
         wroteCorDataHeaders
         notes
         stepHeaders
+        cfg
     end
     methods
         function me = Archiver(cdp)
@@ -34,7 +35,7 @@ classdef Archiver < handle
             if isempty(n) == false
                 me.extSensA.headers = {me.stepHeaders{:} n{:} }; %#ok<CCAT>
             end
-            me.wroteCorDataHeaders = false;
+                me.setCorDataHeaders(cdp.cfg);
         end
         function setArchiveOn(me,on)
             me.archiveOn = on;
@@ -43,6 +44,7 @@ classdef Archiver < handle
                 me.lbcbReadA.writeHeaders();
                 me.edReadA.writeHeaders();
                 me.extSensA.writeHeaders();
+                me.corDataA.writeHeaders();
             end
         end
         function archive(me,step)
@@ -72,13 +74,9 @@ classdef Archiver < handle
                 me.setCorDataHeaders(step);
             end
         end
-        function setCorDataHeaders(me,step)
-            if me.wroteCorDataHeaders
-                return;
-            end
-            me.corDataA.headers = { me.stepHeaders{:} step.cData.labels{:}};
-            me.corDataA.writeHeaders();
-%            me.wroteCorDataHeaders = true;
+        function setCorDataHeaders(me,cfg)
+            avarcfg = ArchiveVarsDao(cfg);
+            me.corDataA.headers = { me.stepHeaders{:} avarcfg.cfgLabels{:}};
         end
         function storeNote(me,nt,step)
             stp = '0    0   0';

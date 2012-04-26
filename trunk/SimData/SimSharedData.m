@@ -12,6 +12,7 @@ classdef SimSharedData < handle
         initialPosition = [];
         sdf = [];
         log = Logger('SimSharedData');
+        lbls = {'Dx','Dy','Dz','Rx','Ry','Rz','Fx','Fy','Fz','Mx','My','Mz'};
         cdp;
     end
     methods
@@ -65,9 +66,7 @@ classdef SimSharedData < handle
             me.curStepTgt.transformResponse();
         end
         function table = cmdTable(me)
-            lbls = {'Step Target','Substep Target','Correction Target',...
-                'Next Step','Current Step','Previous Step'};
-            steps = { me.curStepTgt, me.curSubstepTgt, me.correctionTarget,  ...
+            steps = { me.prevStepTgt, me.correctionTarget, me.curStepTgt, ...
                 me.nextStepData,  me.curStepData, me.prevStepData};
             [ didx, fidx, labels ] = me.cmdTableHeaders();
             table = cell(6,length(labels));
@@ -89,37 +88,36 @@ classdef SimSharedData < handle
         function [ didx, fidx, labels ] = cmdTableHeaders(me)
             didx = [];
             fidx = [];
-            labels = {};
-            if isempty(me.nextStepData)
-                return;
+            dlabels = {};
+            flabels = {};
+            cdofcfg = ControlDofConfigDao(me.cdp.cfg);
+            cdofl1 = cdofcfg.cDofL1;
+            cdofl2 = cdofcfg.cDofL2;
+            for dof= 1:12
+               if cdofl1(d)
+                   if d < 6
+                       didx = concatL(didx,d);
+                       l = sprintf('L1 %s',me.lbls{d});
+                       dlabels = concatL(dlabels,l);
+                   else
+                       fidx = concatL(fidx,d - 6);
+                       l = sprintf('L1 %s',me.lbls{d});
+                       flabels = concatL(flabels,l);
+                   end
+               end
+               if cdofl2(d)
+                   if d < 6
+                       didx = concatL(didx,d+6);
+                       l = sprintf('L2 %s',me.lbls{d});
+                       dlabels = concatL(dlabels,l);
+                   else
+                       fidx = concatL(fidx,d);
+                       l = sprintf('L2 %s',me.lbls{d});
+                       flabels = concatL(flabels,l);
+                   end
+               end
             end
-            dofO = me.nextStepData.lbcbCps{1}.response.lbcb; % for the label functions
-            [ disp dDofs force fDofs] = me.nextStepData.cmdData();
-            idx = 1;
-            for d = 1 : length(disp)
-                if dDofs(d)
-                    didx(idx) = d; %#ok<AGROW>
-                    sd = d;
-                    if d > 6
-                        sd = d - 6;
-                    end
-                    labels{idx} = dofO.label(sd, d <= 6); %#ok<AGROW>
-                    idx = idx + 1;
-                end
-            end
-            idxF = 1;
-            for d = 1 : length(force)
-                if fDofs(d)
-                    fidx(idxF) = d; %#ok<AGROW>
-                    sd = d;
-                    if d > 6
-                        sd = d - 6;
-                    end
-                    labels{idx} = dofO.label(sd + 6, d <= 6); %#ok<AGROW>
-                    idx = idx + 1;
-                    idxF = idxF + 1;
-                end
-            end
+            labels = concatL(dlabels,flabels);
         end
         function set.nextStepData(me,sd)
             me.nextStepData = sd;
