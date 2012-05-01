@@ -101,6 +101,14 @@ classdef StepConfigActions < handle
             end
             me.stcfg.triggerEverySubstep = value;
         end
+        function setTriggeringPerStep(me,str)
+            value = sscanf(str,'%d');
+            if isempty(value)
+                me.log.error(dbstack,sprintf('"%s" is not a valid input',str));
+                return; %#ok<UNRCH>
+            end
+            me.stcfg.triggerEveryStep = value;
+        end
         function setTriggeringDelay(me,str)
             value = sscanf(str,'%d');
             if isempty(value)

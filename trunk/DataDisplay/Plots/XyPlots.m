@@ -8,7 +8,7 @@ classdef XyPlots < DisplayControl
         name
         plotPars
         log
-        axis
+        axs
     end
     methods
         function me = XyPlots(name,lgnds)
@@ -29,12 +29,13 @@ classdef XyPlots < DisplayControl
         end
         function displayMe(me,xlab,ylab)
             me.fig = figure('DeleteFcn',{'DisplayFactory.dispDeleted', me.name }, 'Name',me.name);            
-            me.axis = axes();
+            me.axs = axes();
+            axis(me.axs, 'tight');
             lgth = length(me.legends);
             hold on;
             for i = 1:lgth
                 pars = me.plotPars{i};
-                xys = plot(me.axis,pars{:});
+                xys = plot(me.axs,pars{:});
                 grp = hggroup;
                 set(xys,'Parent',grp); % set group as groups parent
                 % get annotation property of the group which contains a
@@ -47,8 +48,8 @@ classdef XyPlots < DisplayControl
             legend(me.legends);
             hold off;
             xlabel(xlab); ylabel(ylab);
-            set(me.axis, 'XGrid', 'on');
-            set(me.axis, 'YGrid', 'on');
+            set(me.axs, 'XGrid', 'on');
+            set(me.axs, 'YGrid', 'on');
             me.displayData();
         end
         function update(me,d,idx)

@@ -13,8 +13,8 @@ position = curStep.lbcbCps{lbcb}.response.ed.disp;
 correction = prevOMcommand - position;
 newOMcommand = target;
 
-if me.existsCfg('EdCorrectionFactor')
-    cf = me.getCfg('EdCorrectionFactor');
+if me.existsCfg('PrelimEdCorrectionFactor')
+    cf = me.getCfg('PrelimEdCorrectionFactor');
 else
     cf = 1;
 end
