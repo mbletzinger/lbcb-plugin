@@ -25,7 +25,7 @@ classdef NextStep < Step
         function done = isDone(me)
             done = 1;
             me.statusReady();
-            if me.steps.started == false
+            if me.steps.started == false % first step of the test
                 me.dat.substepTgtShift(me.steps.next());
                 me.corrections.prelimAdjust(me.dat.curStepData,me.dat.nextStepData);
                 return;         

@@ -48,6 +48,7 @@ classdef SimSharedData < handle
                 cmd2 }, me.curStepData.stepNum.step, ...
                 me.curStepData.stepNum.subStep);
             me.nextStepData.stepNum = me.curStepData.stepNum.next(stype);
+            me.nextStepData.isLastSubstep = me.curStepData.isLastSubstep;
         end
         function step = curStepTgt2Step(me)
             cmd1 = me.curStepTgt.lbcbCps{1}.command;

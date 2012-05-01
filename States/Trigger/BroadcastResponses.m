@@ -14,7 +14,7 @@ classdef BroadcastResponses < BroadcasterState
             'BROADCASTING', ...
             });
         end
-        function start(me)
+        function start(me,step)
             if me.mdlBroadcast.state.isState('NOT LISTENING')
                 return;
             end

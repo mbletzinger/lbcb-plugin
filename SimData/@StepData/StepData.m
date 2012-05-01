@@ -14,6 +14,7 @@ classdef StepData < handle
         stepTimes; % BG
         isFirstStep
         isInitialPosition
+        isLastSubstep
     end
     methods
         function me = StepData()
@@ -30,6 +31,7 @@ classdef StepData < handle
             me.stepTimes=[];
             me.isFirstStep = false;
             me.isInitialPosition = false;
+            me.isLastSubstep = false;
         end
         str = toString(me)
         jmsg = generateOmProposeMsg(me)

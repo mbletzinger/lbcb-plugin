@@ -89,7 +89,7 @@ switch a
             end
             if (me.corrections.needsCorrection() == false)...
                     && me.needsTriggering()
-                    me.brdcstRsp.start();
+                    me.brdcstRsp.start(me.dat.curStepData);
                 me.currentAction.setState('BROADCAST TRIGGER');
             else
                 me.nxtStep.start();

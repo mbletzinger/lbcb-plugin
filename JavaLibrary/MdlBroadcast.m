@@ -134,11 +134,14 @@ classdef MdlBroadcast < handle
         end
         
         % Start a broadcast
-        function start(me, stepNum)
+        function start(me, step)
             ncfg = NetworkConfigDao(me.cfg);
             tf = me.simcorTcp.getTf();
             timeout = ncfg.msgTimeout;
-            jmsg = tf.createBroadcastTransaction(stepNum.step, stepNum.subStep, stepNum.correctionStep, timeout);
+            stepNum = step.stepNum;
+            [ cmd content ] = me.createMsg(step);
+            jmsg = tf.createBroadcastTransaction(stepNum.step, stepNum.subStep, ...
+                stepNum.correctionStep, cmd, content, timeout);
             me.log.debug(dbstack,char(jmsg.toString()));
             me.simcorTcp.startTransaction(jmsg);
             me.action.setState('BROADCASTING');
@@ -231,5 +234,17 @@ classdef MdlBroadcast < handle
             end
             me.prevJerror = jerror;
         end
+        function [ cmd content ] = createMsg(me,step)
+            [ disp force ] = step.respData();
+            content = '';
+            for d = 1:length(disp)
+                content = sprintf('%11.7e\t',disp(d));
+            end
+            cmd = 'subtrigger';
+            if step.isLastSubstep
+                cmd = 'trigger';
+            end
+        end
+            
     end
 end
