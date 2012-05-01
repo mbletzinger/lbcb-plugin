@@ -32,7 +32,7 @@ switch a
                 if me.peOm.connectionError;
                     me.ocOm.connectionError();
                 else
-                    me.gui.alerts.setDeclineAlert();
+                    me.log.error('OM has declined the command');
                 end
                 me.statusErrored();
                 done = 1;
