@@ -132,7 +132,7 @@ classdef MdlUiSimCor < handle
         end
         function start(me)
             ncfg = NetworkConfigDao(me.cfg);
-            timeout = ncfg.msgTimeout;
+            timeout = ncfg.uisimcorMsgTimeout;
             me.simcorTcp.startTransaction(timeout);
             me.action.setState('RECEIVING COMMAND');
             me.state.setState('BUSY');

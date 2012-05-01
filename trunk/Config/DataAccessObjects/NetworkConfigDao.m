@@ -18,6 +18,8 @@ classdef NetworkConfigDao < handle
         connectionTimeout
         msgTimeout
         executeMsgTimeout
+        triggerMsgTimeout
+        uisimcorMsgTimeout
         address
         systemDescription
         vampInterval
@@ -70,6 +72,18 @@ classdef NetworkConfigDao < handle
         end
         function set.executeMsgTimeout(me,value)
             me.dt.setInt('network.execute.msgTimeout',value);
+        end
+        function result = get.triggerMsgTimeout(me)
+            result = me.dt.getInt('network.trigger.msgTimeout',3000);
+        end
+        function set.triggerMsgTimeout(me,value)
+            me.dt.setInt('network.trigger.msgTimeout',value);
+        end
+        function result = get.uisimcorMsgTimeout(me)
+            result = me.dt.getInt('network.uisimcor.msgTimeout',3000);
+        end
+        function set.uisimcorMsgTimeout(me,value)
+            me.dt.setInt('network.uisimcor.msgTimeout',value);
         end
         function result = get.address(me)
             result = me.dt.getString('network.address','MDL-00-01');

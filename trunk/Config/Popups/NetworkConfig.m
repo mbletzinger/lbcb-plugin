@@ -29,7 +29,7 @@ function varargout = NetworkConfig(varargin)
 
 % Edit the above text to modify the response to help NetworkConfig
 
-% Last Modified by GUIDE v2.5 02-Apr-2010 08:42:21
+% Last Modified by GUIDE v2.5 01-May-2012 02:01:09
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -84,6 +84,8 @@ set(handles.TriggerPort,'String',sprintf('%d',handles.dao.triggerPort));
 set(handles.connectionTimeout,'String',sprintf('%d',handles.dao.connectionTimeout));
 set(handles.msgTimeout,'String',sprintf('%d',handles.dao.msgTimeout));
 set(handles.executeMsgTimeout,'String',sprintf('%d',handles.dao.executeMsgTimeout));
+set(handles.triggerTimeout,'String',sprintf('%d',handles.dao.triggerMsgTimeout));
+set(handles.uisimcorTimeout,'String',sprintf('%d',handles.dao.uisimcorMsgTimeout));
 set(handles.Address,'String',handles.dao.address);
 set(handles.systemDescription,'String',handles.dao.systemDescription);
 % Make the GUI modal
@@ -150,3 +152,11 @@ handles.dao.systemDescription = get(hObject,'String');
 
 function vampInterval_Callback(hObject, eventdata, handles)
 handles.dao.vampInterval = sscanf(get(hObject,'String'),'%d');
+
+
+
+function triggerTimeout_Callback(hObject, eventdata, handles)
+handles.dao.triggerMsgTimeout = sscanf(get(hObject,'String'),'%d');
+
+function uisimcorTimeout_Callback(hObject, eventdata, handles)
+handles.dao.uisimcorMsgTimeout = sscanf(get(hObject,'String'),'%d');

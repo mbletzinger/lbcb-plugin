@@ -4,11 +4,11 @@ if isempty(me.handles) == false
     me.alerts = AlertsBox();
     me.tolerances = cell(2,1);
     for lbcb = 1:2
-        me.tolerances = TolerancesConfigActions(me.hfact.st{lbcb});
+        me.tolerances{lbcb} = TolerancesConfigActions(me.hfact.st{lbcb});
         if lbcb == 1
-            me.tolerances.initialize(me.handles.L1ToleranceTable);
+            me.tolerances{lbcb}.initialize(me.handles.L1ToleranceTable);
         else
-            me.tolerances.initialize(me.handles.L2ToleranceTable);
+            me.tolerances{lbcb}.initialize(me.handles.L2ToleranceTable);
         end
     end
     me.bsimst.init()

@@ -38,6 +38,9 @@ classdef ArchiveVarsConfigActions < handle
         function fillTable(me)
             labels = me.ccfg.cfgLabels;
             me.list = labels;
+            if isempty(labels)
+                return;
+            end
             val = get(me.handles.varList,'Value');
             if val > size(labels,1)
                 set(me.handles.varList,'Value',size(labels,1));
