@@ -46,7 +46,6 @@ classdef ProcessTarget < Step
             switch a
                 case 'CHECK LIMITS'
                     within = me.withinLimits();
-                    me.gui.updateAlerts();
                     if within
                         if me.accepted
                             me.currentAction.setState('DONE');

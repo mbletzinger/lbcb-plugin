@@ -95,25 +95,25 @@ classdef SimSharedData < handle
             cdofl1 = cdofcfg.cDofL1;
             cdofl2 = cdofcfg.cDofL2;
             for dof= 1:12
-               if cdofl1(d)
-                   if d < 6
-                       didx = concatL(didx,d);
-                       l = sprintf('L1 %s',me.lbls{d});
+               if cdofl1(dof)
+                   if dof <= 6
+                       didx = concatL(didx,dof);
+                       l = sprintf('L1 %s',me.lbls{dof});
                        dlabels = concatL(dlabels,l);
                    else
-                       fidx = concatL(fidx,d - 6);
-                       l = sprintf('L1 %s',me.lbls{d});
+                       fidx = concatL(fidx,dof - 6);
+                       l = sprintf('L1 %s',me.lbls{dof});
                        flabels = concatL(flabels,l);
                    end
                end
-               if cdofl2(d)
-                   if d < 6
-                       didx = concatL(didx,d+6);
-                       l = sprintf('L2 %s',me.lbls{d});
+               if cdofl2(dof)
+                   if d <= 6
+                       didx = concatL(didx,dof+6);
+                       l = sprintf('L2 %s',me.lbls{dof});
                        dlabels = concatL(dlabels,l);
                    else
-                       fidx = concatL(fidx,d);
-                       l = sprintf('L2 %s',me.lbls{d});
+                       fidx = concatL(fidx,dof);
+                       l = sprintf('L2 %s',me.lbls{dof});
                        flabels = concatL(flabels,l);
                    end
                end

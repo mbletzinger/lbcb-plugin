@@ -22,7 +22,7 @@ function varargout = LbcbPlugin(varargin)
 
 % Edit the above text to modify the response to help LbcbPlugin
 
-% Last Modified by GUIDE v2.5 01-May-2012 04:23:30
+% Last Modified by GUIDE v2.5 01-May-2012 06:52:40
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -369,12 +369,12 @@ end
 
 
 % --------------------------------------------------------------------
-function RyStepL1_Callback(hObject, eventdata, handles)
+function RxStepL1_Callback(hObject, eventdata, handles)
 ddisp = getappdata(getLp(hObject),'ddisp');
-if ddisp.isDisplaying('RyStepL1')
-    ddisp.closeDisplay('RyStepL1');
+if ddisp.isDisplaying('RxStepL1')
+    ddisp.closeDisplay('RxStepL1');
 else
-    ddisp.openDisplay('RyStepL1');
+    ddisp.openDisplay('RxStepL1');
 end
 
 % --------------------------------------------------------------------
@@ -714,3 +714,64 @@ ControlDofConfig('cfg',actions.hfact.cfg);
 function L2ToleranceTable_CellEditCallback(hObject, eventdata, handles)
 actions = getappdata(getLp(hObject),'actions');
 actions.tolerances{2}.setCell(eventdata.Indices,eventdata.NewData);
+
+
+% --------------------------------------------------------------------
+function DyStepL1_Callback(hObject, eventdata, handles)
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('DyStepL1')
+    ddisp.closeDisplay('DyStepL1');
+else
+    ddisp.openDisplay('DyStepL1');
+end
+
+
+% --------------------------------------------------------------------
+function RzStepL1_Callback(hObject, eventdata, handles)
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('RzStepL1')
+    ddisp.closeDisplay('RzStepL1');
+else
+    ddisp.openDisplay('RzStepL1');
+end
+
+
+% --------------------------------------------------------------------
+function DyStepL2_Callback(hObject, eventdata, handles)
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('DyStepL2')
+    ddisp.closeDisplay('DyStepL2');
+else
+    ddisp.openDisplay('DyStepL2');
+end
+
+
+
+% --------------------------------------------------------------------
+function RxStepL2_Callback(hObject, eventdata, handles)
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('RxStepL2')
+    ddisp.closeDisplay('RxStepL2');
+else
+    ddisp.openDisplay('RxStepL2');
+end
+
+
+% --------------------------------------------------------------------
+function RzStepL2_Callback(hObject, eventdata, handles)
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('RzStepL2')
+    ddisp.closeDisplay('RzStepL2');
+else
+    ddisp.openDisplay('RzStepL2');
+end
+
+
+% --------------------------------------------------------------------
+function RyStepL1_Callback(hObject, eventdata, handles)
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('RyStepL1')
+    ddisp.closeDisplay('RyStepL1');
+else
+    ddisp.openDisplay('RyStepL1');
+end

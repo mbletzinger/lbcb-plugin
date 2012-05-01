@@ -1,7 +1,6 @@
 function initialize(me)
 
 if isempty(me.handles) == false
-    me.alerts = AlertsBox();
     me.tolerances = cell(2,1);
     for lbcb = 1:2
         me.tolerances{lbcb} = TolerancesConfigActions(me.hfact.st{lbcb});
