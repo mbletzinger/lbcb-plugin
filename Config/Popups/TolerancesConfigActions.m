@@ -7,12 +7,10 @@ classdef TolerancesConfigActions < TableDataManagement
         tl
         correctionTarget
         currentResponse
-        isLbcb1
     end
     methods
-        function me = TolerancesConfigActions(tl, isLbcb1)
+        function me = TolerancesConfigActions(tl)
             me.tl = tl;
-            me.isLbcb1 = isLbcb1;
         end
         function select(me,indices)
             if isempty(indices)
@@ -45,9 +43,7 @@ classdef TolerancesConfigActions < TableDataManagement
             end
             set(me.handles,'Data',me.limitsTable);
         end
-        function setCell(me,indices,data)
-            r = indices(1);
-            li = 0;
+        function setCell(me,r,data)
             [li u ] = me.getData(data);
             [limits used] = me.getCfg();
             limits(r) = li;

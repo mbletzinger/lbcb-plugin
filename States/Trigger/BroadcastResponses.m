@@ -18,7 +18,7 @@ classdef BroadcastResponses < BroadcasterState
             if me.mdlBroadcast.state.isState('NOT LISTENING')
                 return;
             end
-            me.mdlBroadcast.start(me.dat.curStepData.stepNum);
+            me.mdlBroadcast.start(step);
             me.statusBusy();
             me.currentAction.setState('BROADCASTING');
         end

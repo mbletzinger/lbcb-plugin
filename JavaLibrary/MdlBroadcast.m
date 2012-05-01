@@ -137,7 +137,7 @@ classdef MdlBroadcast < handle
         function start(me, step)
             ncfg = NetworkConfigDao(me.cfg);
             tf = me.simcorTcp.getTf();
-            timeout = ncfg.msgTimeout;
+            timeout = ncfg.triggerMsgTimeout;
             stepNum = step.stepNum;
             [ cmd content ] = me.createMsg(step);
             jmsg = tf.createBroadcastTransaction(stepNum.step, stepNum.subStep, ...

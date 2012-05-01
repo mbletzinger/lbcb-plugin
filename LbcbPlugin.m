@@ -22,7 +22,7 @@ function varargout = LbcbPlugin(varargin)
 
 % Edit the above text to modify the response to help LbcbPlugin
 
-% Last Modified by GUIDE v2.5 12-Apr-2012 15:53:17
+% Last Modified by GUIDE v2.5 01-May-2012 04:23:30
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -600,7 +600,7 @@ end
 
 function L1ToleranceTable_CellEditCallback(hObject, eventdata, handles)
 actions = getappdata(getLp(hObject),'actions');
-actions.tolerances.setCell(eventdata.Indices,eventdata.NewData);
+actions.tolerances{1}.setCell(eventdata.Indices,eventdata.NewData);
 
 function LbcbChoice_Callback(hObject, eventdata, handles)
 actions = getappdata(getLp(hObject),'actions');
@@ -708,3 +708,9 @@ ArchiveVarsConfig('cfg',actions.hfact.cfg);
 function ControlDofs_Callback(hObject, eventdata, handles)
 actions = getappdata(getLp(hObject),'actions');
 ControlDofConfig('cfg',actions.hfact.cfg);
+
+
+% --- Executes when entered data in editable cell(s) in L2ToleranceTable.
+function L2ToleranceTable_CellEditCallback(hObject, eventdata, handles)
+actions = getappdata(getLp(hObject),'actions');
+actions.tolerances{2}.setCell(eventdata.Indices,eventdata.NewData);

@@ -1,28 +1,28 @@
 function varargout = ConfigVarsConfig(varargin)
-% CORRECTIONSETTINGSCONFIG M-file for CorrectionSettingsConfig.fig
-%      CORRECTIONSETTINGSCONFIG, by itself, creates a new CORRECTIONSETTINGSCONFIG or raises the existing
+% CONFIGVARSCONFIG M-file for ConfigVarsConfig.fig
+%      CONFIGVARSCONFIG, by itself, creates a new CONFIGVARSCONFIG or raises the existing
 %      singleton*.
 %
-%      H = CORRECTIONSETTINGSCONFIG returns the handle to a new CORRECTIONSETTINGSCONFIG or the handle to
+%      H = CONFIGVARSCONFIG returns the handle to a new CONFIGVARSCONFIG or the handle to
 %      the existing singleton*.
 %
-%      CORRECTIONSETTINGSCONFIG('CALLBACK',hObject,eventData,handles,...) calls the local
-%      function named CALLBACK in CORRECTIONSETTINGSCONFIG.M with the given input arguments.
+%      CONFIGVARSCONFIG('CALLBACK',hObject,eventData,handles,...) calls the local
+%      function named CALLBACK in CONFIGVARSCONFIG.M with the given input arguments.
 %
-%      CORRECTIONSETTINGSCONFIG('Property','Value',...) creates a new CORRECTIONSETTINGSCONFIG or raises the
+%      CONFIGVARSCONFIG('Property','Value',...) creates a new CONFIGVARSCONFIG or raises the
 %      existing singleton*.  Starting from the left, property value pairs are
-%      applied to the GUI before CorrectionSettingsConfig_OpeningFcn gets called.  An
+%      applied to the GUI before ConfigVarsConfig_OpeningFcn gets called.  An
 %      unrecognized property name or invalid value makes property application
-%      stop.  All inputs are passed to CorrectionSettingsConfig_OpeningFcn via varargin.
+%      stop.  All inputs are passed to ConfigVarsConfig_OpeningFcn via varargin.
 %
 %      *See GUI Options on GUIDE's Tools menu.  Choose "GUI allows only one
 %      instance to run (singleton)".
 %
 % See also: GUIDE, GUIDATA, GUIHANDLES
 
-% Edit the above text to modify the response to help CorrectionSettingsConfig
+% Edit the above text to modify the response to help ConfigVarsConfig
 
-% Last Modified by GUIDE v2.5 12-Jul-2010 13:20:16
+% Last Modified by GUIDE v2.5 01-May-2012 02:10:07
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -44,15 +44,15 @@ end
 % End initialization code - DO NOT EDIT
 
 
-% --- Executes just before CorrectionSettingsConfig is made visible.
+% --- Executes just before ConfigVarsConfig is made visible.
 function ConfigVarsConfig_OpeningFcn(hObject, eventdata, handles, varargin)
 % This function has no output args, see OutputFcn.
 % hObject    handle to figure
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-% varargin   command line arguments to CorrectionSettingsConfig (see VARARGIN)
+% varargin   command line arguments to ConfigVarsConfig (see VARARGIN)
 
-% Choose default command line output for CorrectionSettingsConfig
+% Choose default command line output for ConfigVarsConfig
 handles.output = hObject;
 
 cfg = [];
