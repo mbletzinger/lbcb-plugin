@@ -7,7 +7,6 @@ classdef LbcbPluginResults < handle
         msgHandle = [];
         cmdTableHandle = [];
         shuttingDown;
-        alerts;
         tolerances;
         
         log = Logger('LbcbPluginResults');
@@ -38,7 +37,6 @@ classdef LbcbPluginResults < handle
             me.stepTimes = zeros(1,3);
         end
         initialize(me)
-        updateAlerts(me)
         updateStepTolerances(me,st)
         updateStepsDisplay(me,simStep)
         updateTimer(me); %BG

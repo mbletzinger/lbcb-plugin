@@ -68,7 +68,6 @@ classdef OpenCloseOm < OmState
             if isempty(me.gui) == false
                 me.gui.colorRunButton('BROKEN'); % Pause the simulation
                 me.gui.colorButton('CONNECT OM','BROKEN');
-                me.gui.alerts.setConnectionAlert('OM');
             end
             me.currentAction.setState('DONE');
             me.statusErrored();
