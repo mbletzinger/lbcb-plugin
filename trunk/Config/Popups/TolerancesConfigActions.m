@@ -7,10 +7,12 @@ classdef TolerancesConfigActions < TableDataManagement
         tl
         correctionTarget
         currentStep
+        isLbcb1
     end
     methods
-        function me = TolerancesConfigActions(tl)
+        function me = TolerancesConfigActions(tl, isLbcb1)
             me.tl = tl;
+            me.isLbcb1 = isLbcb1;
         end
         function select(me,indices)
             if isempty(indices)
@@ -18,19 +20,10 @@ classdef TolerancesConfigActions < TableDataManagement
             end
             me.selectedRow = indices(1);
         end
-        function yes = isLbcb1(me)
-            yes = false;
-            val = get(me.handles.LbcbChoice, 'Value');
-            if val == 1
-                yes = true;
-            end
-        end
         function initialize(me,handles)
             me.handles = handles;
             format = {'char','numeric','logical'};
-            set(me.handles.ToleranceTable,'ColumnFormat',format);
-            set(me.handles.LbcbChoice,'String',{'LBCB 1','LBCB 2'});
-            set(me.handles.LbcbChoice,'Value',1);
+            set(me.handles,'ColumnFormat',format);
             me.fill();
         end
         
@@ -41,7 +34,7 @@ classdef TolerancesConfigActions < TableDataManagement
             me.correctionTarget = target;
         end
         function fill(me)
-            me.limitsTable = cell(12,3);
+            me.limitsTable = cell(6,3);
             [limits used diffs within] = me.getCfg();
             for i = 1:6
                 if used(i)
@@ -50,7 +43,7 @@ classdef TolerancesConfigActions < TableDataManagement
                 end
                 me.limitsTable{i,3} = (within(i) == false);
             end
-            set(me.handles.ToleranceTable,'Data',me.limitsTable);
+            set(me.handles,'Data',me.limitsTable);
         end
         function recalculate(me)
             if isempty(me.correctionTarget) || isempty(me.currentStep)

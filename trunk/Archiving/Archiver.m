@@ -76,6 +76,9 @@ classdef Archiver < handle
         end
         function setCorDataHeaders(me,cfg)
             avarcfg = ArchiveVarsDao(cfg);
+            if isempty(avarcfg.cfgLabels)
+                return;
+            end
             me.corDataA.headers = { me.stepHeaders{:} avarcfg.cfgLabels{:}};
         end
         function storeNote(me,nt,step)

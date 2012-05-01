@@ -21,7 +21,7 @@ classdef ArchiveVarsDao < handle
             me.dt = DataTypes(cfg);
         end
         function result = get.cfgLabels(me)
-             result = me.dt.getStringVector('archiveVars.labels.cfg',[]);
+             result = me.dt.getStringVector('archiveVars.labels.cfg',{});
         end
         function set.cfgLabels(me,value)
             me.dt.setStringVector('archiveVars.labels.cfg',value);
