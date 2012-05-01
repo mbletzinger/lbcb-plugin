@@ -16,6 +16,7 @@ classdef StepTimingConfigDao < handle
         correctEverySubstep
         substepIncL1
         substepIncL2
+        triggerEveryStep
         triggerEverySubstep
         triggerDelay
     end
@@ -57,11 +58,17 @@ classdef StepTimingConfigDao < handle
         function set.correctEverySubstep(me,value)
             me.dt.setInt('step.correctEveryStep',value);
         end
-        function result = get.triggerEverySubstep(me)
+        function result = get.triggerEveryStep(me)
              result = me.dt.getInt('step.triggerEveryStep',0);
         end
-        function set.triggerEverySubstep(me,value)
+        function set.triggerEveryStep(me,value)
             me.dt.setInt('step.triggerEveryStep',value);
+        end
+        function result = get.triggerEverySubstep(me)
+             result = me.dt.getInt('step.triggerEverySubstep',0);
+        end
+        function set.triggerEverySubstep(me,value)
+            me.dt.setInt('step.triggerEverySubstep',value);
         end
         function result = get.triggerDelay(me)
              result = me.dt.getInt('step.triggerDelay',0);
