@@ -36,15 +36,15 @@ classdef MdlBroadcast < handle
             'NONE'...
             });
         prevAction;
-        cfg
+        cdp
         %        dbgWin
         simcorVamp
         vampErrorFound
         prevJerror
     end
     methods
-        function me = MdlBroadcast(cfg)
-            me.cfg = cfg;
+        function me = MdlBroadcast(cdp)
+            me.cdp = cdp;
             me.state.setState('NOT LISTENING');
             me.prevState = StateEnum(me.state.states);
             me.prevAction = StateEnum(me.action.states);
@@ -108,7 +108,7 @@ classdef MdlBroadcast < handle
         
         % Start the broadcaster
         function startup(me)
-            ncfg = NetworkConfigDao(me.cfg);
+            ncfg = NetworkConfigDao(me.cdp.cfg);
             me.params.setLocalPort(ncfg.triggerPort);
             me.params.setTcpTimeout(ncfg.connectionTimeout);
             me.simcorTcp = org.nees.uiuc.simcor.UiSimCorTriggerBroadcast(...
@@ -135,7 +135,7 @@ classdef MdlBroadcast < handle
         
         % Start a broadcast
         function start(me, step)
-            ncfg = NetworkConfigDao(me.cfg);
+            ncfg = NetworkConfigDao(me.cdp.cfg);
             tf = me.simcorTcp.getTf();
             timeout = ncfg.triggerMsgTimeout;
             stepNum = step.stepNum;
@@ -148,7 +148,7 @@ classdef MdlBroadcast < handle
             me.state.setState('BUSY');
         end
         function startStopVamp(me,stopIt,stepNumber)
-            ncfg = NetworkConfigDao(me.cfg);
+            ncfg = NetworkConfigDao(me.cdp.cfg);
             tid = [];
             if isempty(stepNumber) == false
                 tf = me.simcorTcp.getTf();
@@ -240,10 +240,7 @@ classdef MdlBroadcast < handle
             for d = 1:length(disp)
                 content = sprintf('%11.7e\t',disp(d));
             end
-            cmd = 'subtrigger';
-            if step.isLastSubstep
-                cmd = 'trigger';
-            end
+            cmd = me.cdp.getTriggerCommand(step);
         end
             
     end

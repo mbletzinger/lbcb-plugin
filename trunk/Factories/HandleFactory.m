@@ -104,7 +104,7 @@ classdef HandleFactory <  handle
             me.simCorStates{1} = OpenCloseUiSimCor;
             me.simCorStates{2} = TargetResponse;
             
-            me.mdlBroadcast = MdlBroadcast(me.cfg);
+            me.mdlBroadcast = MdlBroadcast(me.cdp);
             me.brdcstStates{1} = StartStopBroadcaster;
             me.brdcstStates{2} = BroadcastResponses;
             me.brdcstStates{3} = VampCheck;

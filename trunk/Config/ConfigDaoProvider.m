@@ -107,6 +107,16 @@ classdef ConfigDaoProvider < handle
             else
                 inc = scfg.substepIncL2;
             end
-        end        
+        end
+        function cmd = getTriggerCommand(me,step)
+            scfg = StepTimingConfigDao(me.cfg);
+            ces =  scfg.triggerEveryStep;
+            cmd = 'subtrigger';
+            if step.isLastSubstep
+                if rem(step,ces) == 0
+                    cmd = 'trigger';
+                end
+            end
+        end
     end
 end
