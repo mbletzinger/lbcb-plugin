@@ -4,7 +4,9 @@ if isempty(stp)
     return;
 end
 me.log.debug(dbstack,sprintf('Updating tolerances for step %s',stp.stepNum.toStringD(' ')));
-me.tolerances.setStep(stp);
-me.tolerances.setTarget(me.hfact.dat.correctionTarget);
-me.tolerances.fill();
+for lbcb = 1:me.hfact.cdp.numLbcbs()
+me.tolerances{lbcb}.setResponse(stp.lbcbCps{lbcb}.response.disp);
+me.tolerances{lbcb}.setTarget(me.hfact.dat.correctionTarget.lbcbCps{lbcb}.command.disp);
+me.tolerances{lbcb}.fill();
+end
 end

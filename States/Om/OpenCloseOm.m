@@ -87,7 +87,7 @@ classdef OpenCloseOm < OmState
             me.currentAction.setState('DONE');
             if isempty(me.gui) == false
                 me.gui.colorButton('CONNECT OM','ON');
-                me.log.error('Cannot connect to the OM');
+                me.log.error(dbstack,'Cannot connect to the OM');
             end
         end
         function disconnect(me)
