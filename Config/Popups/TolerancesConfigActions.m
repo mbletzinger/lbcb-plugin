@@ -6,7 +6,7 @@ classdef TolerancesConfigActions < TableDataManagement
         selectedRow
         tl
         correctionTarget
-        currentStep
+        currentResponse
         isLbcb1
     end
     methods
@@ -27,8 +27,8 @@ classdef TolerancesConfigActions < TableDataManagement
             me.fill();
         end
         
-        function setStep(me,step)
-            me.currentStep = step;
+        function setResponse(me,resp)
+            me.currentResponse = resp;
         end
         function setTarget(me,target)
             me.correctionTarget = target;
@@ -45,21 +45,6 @@ classdef TolerancesConfigActions < TableDataManagement
             end
             set(me.handles,'Data',me.limitsTable);
         end
-        function recalculate(me)
-            if isempty(me.correctionTarget) || isempty(me.currentStep)
-                return;
-            end
-            if me.isLbcb1()
-                stpT = me.tl{1};
-                target = me.correctionTarget.lbcbCps{1}.command;
-                response = me.currentStep.lbcbCps{1}.response;
-            else
-                stpT = me.tl{2};
-                target = me.correctionTarget.lbcbCps{2}.command;
-                response = me.currentStep.lbcbCps{2}.response;
-            end
-            me.fill();
-        end
         function setCell(me,indices,data)
             r = indices(1);
             li = 0;
@@ -67,24 +52,20 @@ classdef TolerancesConfigActions < TableDataManagement
             [limits used] = me.getCfg();
             limits(r) = li;
             used(r) = u;
-            if me.isLbcb1()
-                me.tl{1}.setWindow(limits,used);
-            else
-                me.tl{2}.setWindow(limits,used);
+            me.tl.setWindow(limits,used);
+            if isempty(me.correctionTarget) || isempty(me.currentResponse)
+                return;
             end
-            me.recalculate();
+            me.tl.withinTolerances(me.correctionTarget, me.currentResponse);
+            me.fill();
         end
         
         function [limits used diffs within] = getCfg(me)
-            stpT = me.tl{2};
-            if me.isLbcb1()
-                stpT = me.tl{1};
-            end
-            stpT.getWindow();
-            limits = stpT.window;
-            used = stpT.used;
-            diffs = stpT.diffs;
-            within = stpT.within;
+            me.tl.getWindow();
+            limits = me.tl.window;
+            used = me.tl.used;
+            diffs = me.tl.diffs;
+            within = me.tl.within;
         end
     end
 end
