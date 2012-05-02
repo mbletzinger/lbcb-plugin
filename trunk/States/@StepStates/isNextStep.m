@@ -5,11 +5,11 @@ if me.nxtStep.stepsCompleted  %  No more targets
     me.statusReady();
     me.currentAction.setState('DONE');
 else % Execute next step
-    me.acceptStp.start();
     if isempty(me.gui) == false
      me.gui.updateCommandTable();
         me.gui.updateStepsDisplay(me.dat.nextStepData.stepNum);
         me.currentAction.setState('ACCEPT STEP');
     end
+    me.acceptStp.start();
 end
 end

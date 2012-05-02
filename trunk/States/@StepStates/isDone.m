@@ -101,8 +101,6 @@ switch a
     case 'BROADCAST TRIGGER'
         bdone = me.brdcstRsp.isDone();
         if bdone
-            config = CorrectionsSettingsDao(me.cdp.cfg);
-            %            pause(config.cfgValues(17));
             me.nxtStep.start();
             me.currentAction.setState('NEXT STEP');
         end

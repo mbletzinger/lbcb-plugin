@@ -21,8 +21,15 @@ if me.existsCfg('EdCorrectionFactor')
 else
     cf = 1;
 end
+
+[cdofs1 cdofs2] = me.cdp.getControlDofs();
+cdofs = cdofs2;
+if me.isLbcb1
+    cdofs = cdofs1;
+end
+
 for dof = 1:6
-    if me.st.within(dof) == false
+    if cdofs(dof)
         curCommandOut(dof) = prevCommand(dof) + correction(dof) * cf;
         me.adjusted(dof) = true;
     end

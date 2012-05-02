@@ -67,7 +67,7 @@ classdef SimSharedData < handle
             me.curStepTgt.transformResponse();
         end
         function table = cmdTable(me)
-            steps = { me.prevStepTgt, me.correctionTarget, me.curStepTgt, ...
+            steps = {  me.curStepTgt, me.prevStepTgt, me.correctionTarget, ...
                 me.nextStepData,  me.curStepData, me.prevStepData};
             [ didx, fidx, labels ] = me.cmdTableHeaders();
             table = cell(6,length(labels));
