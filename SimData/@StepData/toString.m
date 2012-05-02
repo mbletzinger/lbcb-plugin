@@ -15,4 +15,7 @@ if isempty(me.externalSensorsRaw) == 0
     end
 end
 str = sprintf('%s\narchivedData=%s',str,me.cData.toString());
+if me.isLastSubstep
+    str = sprintf('%s[IsLastSubstep]',str);
+end
 end

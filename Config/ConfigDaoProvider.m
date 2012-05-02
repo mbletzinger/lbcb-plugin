@@ -113,10 +113,15 @@ classdef ConfigDaoProvider < handle
             ces =  scfg.triggerEveryStep;
             cmd = 'subtrigger';
             if step.isLastSubstep
-                if rem(step,ces) == 0
+                if rem(step.stepNum.step,ces) == 0
                     cmd = 'trigger';
                 end
             end
+        end
+        function [ cdofl1 cdofl2 ] = getControlDofs(me)
+            cdofs = ControlDofConfigDao(me.cfg);
+            cdofl1 = cdofs.cDofL1;
+            cdofl2 = cdofs.cDofL2;
         end
     end
 end

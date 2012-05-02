@@ -238,7 +238,7 @@ classdef MdlBroadcast < handle
             [ disp force ] = step.respData();
             content = '';
             for d = 1:length(disp)
-                content = sprintf('%11.7e\t',disp(d));
+                content = sprintf('%s%11.7e\t',content,disp(d));
             end
             cmd = me.cdp.getTriggerCommand(step);
         end

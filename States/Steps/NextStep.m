@@ -46,6 +46,7 @@ classdef NextStep < Step
                     return;
                 else
                     me.dat.substepTgtShift(stp);
+                    me.dat.nextStepData.isLastSubstep = stp.isLastSubstep;  % uhm...yuck
                     me.corrections.prelimAdjust(me.dat.curStepData,me.dat.nextStepData);
                 end
             end

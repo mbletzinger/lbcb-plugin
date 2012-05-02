@@ -75,8 +75,7 @@ classdef StepConfigActions < handle
             set(me.handles.ddPrelimAdjust,'Value',val);
             
             set(me.handles.substepTriggering,'String',sprintf('%d',me.stcfg.triggerEverySubstep));
-            set(me.handles.substepTriggering,'String',sprintf('%d',me.stcfg.triggerEveryStep));
-            set(me.handles.stepTriggering,'String',sprintf('%d',me.stcfg.triggerEverySubstep));
+            set(me.handles.stepTriggering,'String',sprintf('%d',me.stcfg.triggerEveryStep));
             set(me.handles.triggerDelay,'String',sprintf('%d',me.stcfg.triggerDelay));
 
             
