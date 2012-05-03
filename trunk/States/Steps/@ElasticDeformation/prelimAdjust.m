@@ -19,9 +19,9 @@ else
     cf = 1;
 end
 for dof = 1:6
-    if me.adjusted(dof)
+%    if me.adjusted(dof)  No filtering for CABER
         newOMcommand(dof) = target(dof) + correction(dof) * cf;
-    end
+%    end
 end
 str = sprintf('Prev Position: %s\n',curStep.lbcbCps{lbcb}.response.toString());
 str = sprintf('%sPrev Cmd: %s\n',str,curStep.lbcbCps{lbcb}.command.toString());
