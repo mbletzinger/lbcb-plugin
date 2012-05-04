@@ -33,15 +33,18 @@ classdef VampCheck < BroadcasterState
                     me.currentAction.setState('STOPPING');
                 end
             else
-                sn = StepNumber(9999,0,0);
-                if isempty(me.dat.curStepData) == false
-                    sn = me.dat.curStepData.stepNum;
-                end
-                if sn.step == 0
-                    sn = StepNumber(9999,0,0);
+                stp = me.dat.curStepData;
+                if isempty(stp)
+                    if me.cdp.numLbcbs() == 2
+                        tgts = { Target Target };
+                    else
+                        tgts = { Target };
+                    end
+                    stp = me.sdf.target2StepData(tgts,0,0);
+                    stp.stepNum= StepNumber(9999,0,0);
                 end
                 
-                me.mdlBroadcast.startStopVamp(0,sn);
+                me.mdlBroadcast.startStopVamp(0,stp);
                 me.vampStatus.setState('VAMPING');
                 me.gui.colorButton('VAMPING','ON');
             end
