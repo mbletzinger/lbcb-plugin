@@ -38,7 +38,7 @@ while ($running) {
     sendResponse("OK 0\t[$sysname] Open Session Succeeded");
     next;
   }
-  if ($keyword eq 'trigger') {
+  if ($keyword eq 'trigger' || $keyword eq 'subtrigger') {
     sendResponse("OK\t0\t$trans\t[$sysname] done");
     next;
   }
