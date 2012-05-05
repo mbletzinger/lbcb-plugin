@@ -150,16 +150,17 @@ classdef MdlBroadcast < handle
         function startStopVamp(me,stopIt,step)
             ncfg = NetworkConfigDao(me.cdp.cfg);
             timeout = ncfg.triggerMsgTimeout;
-            stepNum = step.stepNum;
-            [ cmd content ] = me.createMsg(step);
-            tf = me.simcorTcp.getTf();
-            jmsg = tf.createBroadcastTransaction(stepNum.step, stepNum.subStep, ...
-                stepNum.correctionStep, cmd, content, timeout);
             me.state.setState('BUSY');
             if(stopIt)
                 me.simcorVamp.stopVamp();
                 me.action.setState('STOP VAMP');
             else
+                stepNum = step.stepNum;
+                [ cmd content ] = me.createMsg(step);
+                cmd = 'trigger';
+                tf = me.simcorTcp.getTf();
+                jmsg = tf.createBroadcastTransaction(stepNum.step, stepNum.subStep, ...
+                    stepNum.correctionStep, cmd, content, timeout);
                 me.simcorVamp = org.nees.uiuc.simcor.TriggerBroadcastVamp(...
                     me.simcorTcp);
                 me.simcorVamp.startVamp(ncfg.vampInterval,timeout,jmsg);
@@ -243,6 +244,6 @@ classdef MdlBroadcast < handle
             end
             cmd = me.cdp.getTriggerCommand(step);
         end
-            
+        
     end
 end
