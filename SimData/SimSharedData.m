@@ -107,7 +107,7 @@ classdef SimSharedData < handle
                    end
                end
                if cdofl2(dof)
-                   if d <= 6
+                   if dof <= 6
                        didx = concatL(didx,dof+6);
                        l = sprintf('L2 %s',me.lbls{dof});
                        dlabels = concatL(dlabels,l);
