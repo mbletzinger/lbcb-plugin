@@ -152,6 +152,7 @@ classdef MdlBroadcast < handle
             timeout = ncfg.triggerMsgTimeout;
             stepNum = step.stepNum;
             [ cmd content ] = me.createMsg(step);
+            tf = me.simcorTcp.getTf();
             jmsg = tf.createBroadcastTransaction(stepNum.step, stepNum.subStep, ...
                 stepNum.correctionStep, cmd, content, timeout);
             me.state.setState('BUSY');
