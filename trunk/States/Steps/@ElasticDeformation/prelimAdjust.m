@@ -1,4 +1,5 @@
 function prelimAdjust(me,curStep, nextStep)
+me.loadCfg()
 lbcb = 2;
 if me.isLbcb1
     lbcb = 1;
