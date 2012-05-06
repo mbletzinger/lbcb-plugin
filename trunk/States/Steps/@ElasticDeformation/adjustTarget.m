@@ -22,6 +22,12 @@ else
     cf = 1;
 end
 
+if me.existsCfg('ToleranceFilter')
+    useSt = me.getCfg('ToleranceFilter');
+else
+    useSt = false;
+end
+
 [cdofs1 cdofs2] = me.cdp.getControlDofs();
 cdofs = cdofs2;
 if me.isLbcb1
@@ -29,9 +35,16 @@ if me.isLbcb1
 end
 
 for dof = 1:6
-    if cdofs(dof)
-        curCommandOut(dof) = prevCommand(dof) + correction(dof) * cf;
-        me.adjusted(dof) = true;
+    if useSt
+        if (me.st.within(dof) == false)
+            curCommandOut(dof) = prevCommand(dof) + correction(dof) * cf;
+            me.adjusted(dof) = true;
+        end
+    else
+        if cdofs(dof)
+            curCommandOut(dof) = prevCommand(dof) + correction(dof) * cf;
+            me.adjusted(dof) = true;
+        end
     end
 end
 %me.archiveCorrections('ed',correction);
