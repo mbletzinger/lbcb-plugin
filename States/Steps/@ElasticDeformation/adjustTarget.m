@@ -14,7 +14,10 @@
 % edAdjust(me,lbcbCps);
 
 function curCommandOut = adjustTarget(me,correctionTarget,curResponse,prevCommand)
+me.loadCfg();
+
 correction = correctionTarget - curResponse;
+
 curCommandOut = prevCommand;
 if me.existsCfg('EdCorrectionFactor')
     cf = me.getCfg('EdCorrectionFactor');
