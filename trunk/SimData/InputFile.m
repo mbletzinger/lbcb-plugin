@@ -27,7 +27,7 @@ classdef  InputFile < Substeps
         end
         function readSpecfile(me,path)
             me.commandDofs = zeros(1,24);
-            [pathstr, name, ext, versn] = fileparts(path); %#ok<NASGU>
+            [pathstr, name, ext] = fileparts(path); %#ok<NASGU>
             specname = sprintf('%s_spec%s',name,ext);
             specpath = fullfile(pathstr,specname);
             if exist(specname,'file') == 2
