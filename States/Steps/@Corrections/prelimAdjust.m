@@ -11,6 +11,7 @@ if strcmp(func{2},'<NONE>') == false
 end
 
 if strcmp(func{1},'<NONE>')
+    me.ed{1}.saveData(nextStep);
     return;
 end
 
@@ -21,4 +22,6 @@ for lbcb = 1:me.cdp.numLbcbs()
     end
     ed.prelimAdjust(curStep, nextStep);
 end
+me.ed{1}.saveData(nextStep);
 end
+

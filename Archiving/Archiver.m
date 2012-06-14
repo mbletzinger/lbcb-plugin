@@ -13,6 +13,7 @@ classdef Archiver < handle
     end
     methods
         function me = Archiver(cdp)
+            me.cfg = cdp.cfg;
             me.commandA = DataArchive('LbcbCommands');
             me.extSensA = DataArchive('ExternalSensors');
             me.lbcbReadA = DataArchive('LbcbReadings');
@@ -35,7 +36,7 @@ classdef Archiver < handle
             if isempty(n) == false
                 me.extSensA.headers = {me.stepHeaders{:} n{:} }; %#ok<CCAT>
             end
-                me.setCorDataHeaders(cdp.cfg);
+                me.setCorDataHeaders();
         end
         function setArchiveOn(me,on)
             me.archiveOn = on;
@@ -71,11 +72,11 @@ classdef Archiver < handle
             me.extSensA.write(step.stepNum.toString(),step.externalSensorsRaw);
             if isempty(step.cData.values) == false
                 me.corDataA.write(step.stepNum.toString(),step.cData.values);
-                me.setCorDataHeaders(step);
+                me.setCorDataHeaders();
             end
         end
-        function setCorDataHeaders(me,cfg)
-            avarcfg = ArchiveVarsDao(cfg);
+        function setCorDataHeaders(me)
+            avarcfg = ArchiveVarsDao(me.cfg);
             if isempty(avarcfg.cfgLabels)
                 return;
             end

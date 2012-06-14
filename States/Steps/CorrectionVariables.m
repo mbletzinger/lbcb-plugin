@@ -91,7 +91,13 @@ classdef CorrectionVariables < handle
             values = zeros(lt,1);
             for v = 1:lt
                 labels{v} = char(keys(v));
-                values(v) = me.archH.get(labels{v});
+            end
+            sort(labels);
+            for v = 1:lt
+                labels{v} = char(keys(v));
+                if me.existsArch(labels{v})
+                    values(v) = me.getArch(labels{v});
+                end
             end
             step.cData.labels = labels;
             step.cData.values = values;
