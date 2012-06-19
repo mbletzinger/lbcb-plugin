@@ -8,7 +8,7 @@ classdef CorrectionData < handle
             me.labels = lbls;
         end
         function clone = clone(me)
-            clone = DerivedData;
+            clone = CorrectionData;
             clone.labels = me.labels;
             clone.values = me.values;
         end

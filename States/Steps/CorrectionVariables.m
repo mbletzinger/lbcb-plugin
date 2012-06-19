@@ -92,15 +92,15 @@ classdef CorrectionVariables < handle
             for v = 1:lt
                 labels{v} = char(keys(v));
             end
-            sort(labels);
+            labels = sort(labels);
             for v = 1:lt
-                labels{v} = char(keys(v));
                 if me.existsArch(labels{v})
                     values(v) = me.getArch(labels{v});
                 end
             end
             step.cData.labels = labels;
             step.cData.values = values;
+            me.log.debug(dbstack,sprintf('Saved Arch as %s',step.cData.toString()));
         end
     end
 end
