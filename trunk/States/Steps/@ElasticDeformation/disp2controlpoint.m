@@ -77,7 +77,7 @@ end
 %------------------
 opt = optimset('MaxFunEvals',optm.maxfunevals,'MaxIter',optm.maxiter,...
                'TolFun',optm.tolfun,'TolX',optm.tolx,...
-               'Jacobian',optm.jacob,'Display','off','LevenbergMarquardt','on');
+               'Jacobian',optm.jacob,'Display','off');
 %==
 UB = [30*ones(1,3) pi/5*ones(1,3)]';% should be modified, could be in me.optSetting
 LB = -UB;% should be modified, could be in me.optSetting

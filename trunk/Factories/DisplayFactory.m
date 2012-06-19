@@ -42,9 +42,9 @@ classdef DisplayFactory < handle
             %             ref = MultiDofStepPlot('TopBottomMoment',{'MyBottom','MCrack','MomentY'},'Y Moments',1,0);
             %             ref.cdp = me.cdp;
             %             me.addDisplay('TopBottomMoment',ref,me.mainDisp.TopBottomMoment);
-            %             ref = ArchPlot('DxVsMyBottom',1,1,'MyBottom');
-            %             ref.cdp = me.cdp;
-            %             me.addDisplay('DxVsMyBottom',ref,me.mainDisp.DxVsMyBottom);
+%                         ref = ArchPlot('DxVsMyBottom',1,1,'MyBottom');
+%                         ref.cdp = me.cdp;
+%                         me.addDisplay('DxVsMyBottom',ref,me.mainDisp.DxVsMyBottom);
             %             ref = ArchPlot('MyTopVsMyBottom',1,11,'MyBottom');
             %             ref.cdp = me.cdp;
             %             me.addDisplay('MyTopVsMyBottom',ref,me.mainDisp.MyTopVsMyBottom);
@@ -55,21 +55,34 @@ classdef DisplayFactory < handle
 %             ref.cdp = me.cdp;
 %             me.addDisplay('OutOfPlaneRotations',ref,me.mainDisp.OutOfPlaneRotations);
 % 
-            ref = MultiDofStepPlot('Forces',{'Fx','Fy','Fz'},'kips',1,0);
-            ref.cdp = me.cdp;
-            me.addDisplay('Forces',ref,me.mainDisp.Forces);
+%             ref = MultiDofStepPlot('Forces',{'Fx','Fy','Fz'},'kips',1,0);
+%             ref.cdp = me.cdp;
+%             me.addDisplay('Forces',ref,me.mainDisp.Forces);
+%             
+%             ref = MultiDofStepPlot('Moments',{'Mx','Mz'},'kip*inches',1,0);
+%             ref.cdp = me.cdp;
+%             me.addDisplay('Moments',ref,me.mainDisp.Moments);
             
-            ref = MultiDofStepPlot('Moments',{'Mx','Mz'},'kip*inches',1,0);
+            ref = MultiDofStepPlot('MxCorrections',{'CalculatedMx','ProposedMx','MeasuredMx', 'MxBot'},'kip*inches',1,0);
             ref.cdp = me.cdp;
-            me.addDisplay('Moments',ref,me.mainDisp.Moments);
-
-%             ref = MultiDofStepPlot('MyCorrections',{'ProposedMy','MeasuredMy', 'MyBot'},'kip*inches',1,0);
-%             ref.cdp = me.cdp;
-%             me.addDisplay('MyCorrections',ref,me.mainDisp.MyCorrections);
+            me.addDisplay('MxCorrections',ref,me.mainDisp.MxCorrections);
+            
+            ref = MultiDofStepPlot('MyCorrections',{'CalculatedMy','ProposedMy','MeasuredMy', 'MyBot'},'kip*inches',1,0);
+            ref.cdp = me.cdp;
+            me.addDisplay('MyCorrections',ref,me.mainDisp.MyCorrections);
 % 
-%             ref = MultiDofStepPlot('Eccentricities',{'MeasuredMoment2Shear', 'ShearCenter', 'XEccentricity'},'inches',1,0);
-%             ref.cdp = me.cdp;
-%             me.addDisplay('Eccentricities',ref,me.mainDisp.Eccentricities);
+            ref = MultiDofStepPlot('Eccentricities',{'MeasuredMoment2ShearX', 'MeasuredMoment2ShearY'},'inches',1,0);
+            ref.cdp = me.cdp;
+            me.addDisplay('Eccentricities',ref,me.mainDisp.Eccentricities);
+% 
+            ref = MultiDofStepPlot('CoupledWallAxialLoad',{'MeasuredFz', 'ProposedFz', 'C_AxialLoad'},'kip',1,0);
+            ref.cdp = me.cdp;
+            me.addDisplay('CoupledWallAxialLoad',ref,me.mainDisp.CoupledWallAxialLoad);
+% % 
+            ref = MultiDofStepPlot('CoupledWallMoments',{'System_BaseMoment', 'System_ThirdStoryMoment', 'C_ThirdStoryMoment'},'kip*inches',1,0);
+            ref.cdp = me.cdp;
+            me.addDisplay('CoupledWallMoments',ref,me.mainDisp.CoupledWallMoments);            
+
 % 
             ref = VsPlot('RyVsLbcb1Dx',1,1,5);
             ref.cdp = me.cdp;
@@ -89,6 +102,17 @@ classdef DisplayFactory < handle
             ref = VsPlot('MyVsLbcb2Dx',0,1,11);
             ref.cdp = me.cdp;
             me.addDisplay('MyVsLbcb2Dx',ref,me.mainDisp.MyVsLbcb2Dx);
+            
+            ref = VsPlot('FyVsLbcb1Dy',1,2,8);
+            ref.cdp = me.cdp;
+            me.addDisplay('FyVsLbcb1Dy',ref,me.mainDisp.FyVsLbcb1Dy);
+            ref = VsPlot('MxVsLbcb1Dy',1,2,10);
+            ref.cdp = me.cdp;
+            me.addDisplay('MxVsLbcb1Dy',ref,me.mainDisp.MxVsLbcb1Dy);
+            ref = VsPlot('RxVsLbcb1Dy',1,2,4);
+            ref.cdp = me.cdp;
+            me.addDisplay('RxVsLbcb1Dy',ref,me.mainDisp.RxVsLbcb1Dy);            
+            
             ref = OneDofStepPlot('DxStepL1',1,me.dat,1);
             ref.cdp = me.cdp;
             me.addDisplay('DxStepL1',ref,me.mainDisp.DxStepL1);
@@ -125,24 +149,50 @@ classdef DisplayFactory < handle
             ref = OneDofStepPlot('RzStepL2',0,me.dat,6);
             ref.cdp = me.cdp;
             me.addDisplay('RzStepL2',ref,me.mainDisp.RzStepL2);
-            ref = OneDofStepPlot('FzStepL1',1,me.dat,9);
-            ref.cdp = me.cdp;
-            me.addDisplay('FzStepL1',ref,me.mainDisp.FzStepL1);
-            ref = OneDofStepPlot('FzStepL2',0,me.dat,9);
-            ref.cdp = me.cdp;
-            me.addDisplay('FzStepL2',ref,me.mainDisp.FzStepL2);
-            ref = OneDofStepPlot('MyStepL1',1,me.dat,11);
-            ref.cdp = me.cdp;
-            me.addDisplay('MyStepL1',ref,me.mainDisp.MyStepL1);
-            ref = OneDofStepPlot('MyStepL2',0,me.dat,11);
-            ref.cdp = me.cdp;
-            me.addDisplay('MyStepL2',ref,me.mainDisp.MyStepL2);
+            
             ref = OneDofStepPlot('FxStepL1',1,me.dat,7);
             ref.cdp = me.cdp;
             me.addDisplay('FxStepL1',ref,me.mainDisp.FxStepL1);
             ref = OneDofStepPlot('FxStepL2',0,me.dat,7);
             ref.cdp = me.cdp;
             me.addDisplay('FxStepL2',ref,me.mainDisp.FxStepL2);
+            
+            ref = OneDofStepPlot('FyStepL1',1,me.dat,8);
+            ref.cdp = me.cdp;
+            me.addDisplay('FyStepL1',ref,me.mainDisp.FxStepL1);
+            ref = OneDofStepPlot('FyStepL2',0,me.dat,8);
+            ref.cdp = me.cdp;
+            me.addDisplay('FyStepL2',ref,me.mainDisp.FxStepL2);
+            
+            ref = OneDofStepPlot('FzStepL1',1,me.dat,9);
+            ref.cdp = me.cdp;
+            me.addDisplay('FzStepL1',ref,me.mainDisp.FzStepL1);
+            ref = OneDofStepPlot('FzStepL2',0,me.dat,9);
+            ref.cdp = me.cdp;
+            me.addDisplay('FzStepL2',ref,me.mainDisp.FzStepL2);
+ 
+            ref = OneDofStepPlot('MxStepL1',1,me.dat,10);
+            ref.cdp = me.cdp;
+            me.addDisplay('MxStepL1',ref,me.mainDisp.MxStepL1);
+            ref = OneDofStepPlot('MxStepL2',0,me.dat,10);
+            ref.cdp = me.cdp;
+            me.addDisplay('MxStepL2',ref,me.mainDisp.MxStepL2);           
+            
+            ref = OneDofStepPlot('MyStepL1',1,me.dat,11);
+            ref.cdp = me.cdp;
+            me.addDisplay('MyStepL1',ref,me.mainDisp.MyStepL1);
+            ref = OneDofStepPlot('MyStepL2',0,me.dat,11);
+            ref.cdp = me.cdp;
+            me.addDisplay('MyStepL2',ref,me.mainDisp.MyStepL2);
+ 
+            ref = OneDofStepPlot('MzStepL1',1,me.dat,12);
+            ref.cdp = me.cdp;
+            me.addDisplay('MzStepL1',ref,me.mainDisp.MzStepL1);
+            ref = OneDofStepPlot('MzStepL2',0,me.dat,12);
+            ref.cdp = me.cdp;
+            me.addDisplay('MzStepL2',ref,me.mainDisp.MzStepL2);               
+
+            
             ref = ResponseTable('L1ResponseTable',1);
             ref.cdp = me.cdp;
             me.addDisplay('L1ResponseTable',ref,me.mainDisp.L1ResponseTable);

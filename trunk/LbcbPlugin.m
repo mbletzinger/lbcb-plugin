@@ -309,7 +309,32 @@ else
     ddisp.openDisplay('RyVsLbcb1Dx');
 end
 
+% --------------------------------------------------------------------
+function FyVsLbcb1Dy_Callback(hObject, eventdata, handles)
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('FyVsLbcb1Dy')
+    ddisp.closeDisplay('FyVsLbcb1Dy');
+else
+    ddisp.openDisplay('FyVsLbcb1Dy');
+end
 
+% --------------------------------------------------------------------
+function MxVsLbcb1Dy_Callback(hObject, eventdata, handles)
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('MxVsLbcb1Dy')
+    ddisp.closeDisplay('MxVsLbcb1Dy');
+else
+    ddisp.openDisplay('MxVsLbcb1Dy');
+end
+
+% --------------------------------------------------------------------
+function RxVsLbcb1Dy_Callback(hObject, eventdata, handles)
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('RxVsLbcb1Dy')
+    ddisp.closeDisplay('RxVsLbcb1Dy');
+else
+    ddisp.openDisplay('RxVsLbcb1Dy');
+end
 
 % --------------------------------------------------------------------
 function RyVsLbcb2Dx_Callback(hObject, eventdata, handles)
@@ -527,6 +552,23 @@ while strcmp(tag,'LbcbPlugin') == false
 end
 
 
+function MxStepL1_Callback(hObject, eventdata, handles)
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('MxStepL1')
+    ddisp.closeDisplay('MxStepL1');
+else
+    ddisp.openDisplay('MxStepL1');
+end
+
+
+function MxStepL2_Callback(hObject, eventdata, handles)
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('MxStepL2')
+    ddisp.closeDisplay('MxStepL2');
+else
+    ddisp.openDisplay('MxStepL2');
+end
+
 function MyStepL1_Callback(hObject, eventdata, handles)
 ddisp = getappdata(getLp(hObject),'ddisp');
 if ddisp.isDisplaying('MyStepL1')
@@ -544,6 +586,22 @@ else
     ddisp.openDisplay('MyStepL2');
 end
 
+function MzStepL1_Callback(hObject, eventdata, handles)
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('MzStepL1')
+    ddisp.closeDisplay('MzStepL1');
+else
+    ddisp.openDisplay('MzStepL1');
+end
+
+
+function MzStepL2_Callback(hObject, eventdata, handles)
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('MzStepL2')
+    ddisp.closeDisplay('MzStepL2');
+else
+    ddisp.openDisplay('MzStepL2');
+end
 
 function DxVsMyBottom_Callback(hObject, eventdata, handles)
 ddisp = getappdata(getLp(hObject),'ddisp');
@@ -596,6 +654,23 @@ if ddisp.isDisplaying('FxStepL2')
     ddisp.closeDisplay('FxStepL2');
 else
     ddisp.openDisplay('FxStepL2');
+end
+
+function FyStepL1_Callback(hObject, eventdata, handles)
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('FyStepL1')
+    ddisp.closeDisplay('FyStepL1');
+else
+    ddisp.openDisplay('FyStepL1');
+end
+
+
+function FyStepL2_Callback(hObject, eventdata, handles)
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('FyStepL2')
+    ddisp.closeDisplay('FyStepL2');
+else
+    ddisp.openDisplay('FyStepL2');
 end
 
 function L1ToleranceTable_CellEditCallback(hObject, eventdata, handles)
@@ -681,6 +756,14 @@ else
     ddisp.openDisplay('MyCorrections');
 end
 
+% --------------------------------------------------------------------
+function MxCorrections_Callback(hObject, eventdata, handles)
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('MxCorrections')
+    ddisp.closeDisplay('MxCorrections');
+else
+    ddisp.openDisplay('MxCorrections');
+end
 
 % --------------------------------------------------------------------
 function Eccentricities_Callback(hObject, eventdata, handles)
@@ -691,6 +774,22 @@ else
     ddisp.openDisplay('Eccentricities');
 end
 
+% --------------------------------------------------------------------
+function CoupledWallAxialLoad_Callback(hObject, eventdata, handles)
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('CoupledWallAxialLoad')
+    ddisp.closeDisplay('CoupledWallAxialLoad');
+else
+    ddisp.openDisplay('CoupledWallAxialLoad');
+end
+% --------------------------------------------------------------------
+function CoupledWallMoments_Callback(hObject, eventdata, handles)
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('CoupledWallMoments')
+    ddisp.closeDisplay('CoupledWallMoments');
+else
+    ddisp.openDisplay('CoupledWallMoments');
+end
 
 % --------------------------------------------------------------------
 function LoadInput_Callback(hObject, eventdata, handles)
