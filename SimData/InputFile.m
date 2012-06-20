@@ -30,7 +30,7 @@ classdef  InputFile < Substeps
             [pathstr, name, ext] = fileparts(path); %#ok<NASGU>
             specname = sprintf('%s_spec%s',name,ext);
             specpath = fullfile(pathstr,specname);
-            if exist(specname,'file') == 2
+            if exist(specpath,'file') == 2
                 cmdDofs = load(specpath);
             else
                 cmdDofs = [1 1 1 1 1 1];
