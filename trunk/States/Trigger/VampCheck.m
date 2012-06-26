@@ -40,7 +40,9 @@ classdef VampCheck < BroadcasterState
                     else
                         tgts = { Target };
                     end
-                    stp = me.sdf.target2StepData(tgts,0,0);
+                    stp = me.sdf.target2StepData(tgts,9999,0);
+                end
+                if isempty(stp.stepNum)
                     stp.stepNum= StepNumber(9999,0,0);
                 end
                 

@@ -88,6 +88,7 @@ set(handles.triggerTimeout,'String',sprintf('%d',handles.dao.triggerMsgTimeout))
 set(handles.uisimcorTimeout,'String',sprintf('%d',handles.dao.uisimcorMsgTimeout));
 set(handles.Address,'String',handles.dao.address);
 set(handles.systemDescription,'String',handles.dao.systemDescription);
+set(handles.vampInterval,'String',handles.dao.vampInterval);
 % Make the GUI modal
 set(handles.NetworkConfig,'WindowStyle','modal')
 
