@@ -87,13 +87,14 @@ classdef OpenCloseOm < OmState
             me.currentAction.setState('DONE');
             if isempty(me.gui) == false
                 me.gui.colorButton('CONNECT OM','ON');
-                me.log.error(dbstack,'Cannot connect to the OM');
+                me.log.info(dbstack,'OM is connected');
             end
         end
         function disconnect(me)
             me.connectionStatus.setState('DISCONNECTED');
             if isempty(me.gui) == false
                 me.gui.colorButton('CONNECT OM','OFF');
+                me.log.info(dbstack,'OM is no longer connected');
             end
             me.currentAction.setState('DONE');
         end
