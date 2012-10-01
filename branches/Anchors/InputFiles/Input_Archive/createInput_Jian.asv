@@ -1,0 +1,91 @@
+%% Ry stiffness, force control
+
+mag = 1000;
+a = load('unitsawtooth.dat');
+
+My = a.*mag;
+
+Fx = a.*0;
+
+fid1=fopen('Eval_stiff_ry_force.txt','w');
+
+for ii=1:length(My);
+    fprintf(fid1,'%5.4f %5.4f \n',[Fx(ii) My(ii)]);
+end
+
+fid2=fopen('Eval_stiff_ry_force_spec.txt','w');
+fprintf(fid2,'%d %d %d %d %d %d %d %d %d %d %d %d \n',[0 0 0 0 0 0 1 0 0 0 1 0]);
+
+figure; 
+
+plot(My)
+
+%% Dx stiffness, displacement control
+
+mag = 0.06;
+num_steps = 10;
+num_cycles = 5;
+
+One_cycle = zeros(num_steps);
+
+for i = 1 : num_cycles
+   Dx(1:numsteps, 1) = linspace(0, mag, numsteps)';
+   
+end
+
+Dx = a.*mag;
+
+fid1=fopen('Eval_stiff_dx_disp.txt','w');
+
+for ii=1:length(Dx);
+    fprintf(fid1,'%5.4f \n',Dx(ii));
+end
+
+fid2=fopen('Eval_stiff_dx_disp_spec.txt','w');
+fprintf(fid2,'%d %d %d %d %d %d %d %d %d %d %d %d \n',[1 0 0 0 0 0 0 0 0 0 0 0]);
+
+figure; 
+
+plot(Dx)
+
+%% Ry stiffness, displacement control
+
+mag = 0.005;
+a = load('unitsawtooth.dat');
+
+Ry = a.*mag;
+
+fid1=fopen('Eval_stiff_ry_disp.txt','w');
+
+for ii=1:length(Ry);
+    fprintf(fid1,'%5.4f \n',Ry(ii));
+end
+
+fid2=fopen('Eval_stiff_ry_disp_spec.txt','w');
+fprintf(fid2,'%d %d %d %d %d %d %d %d %d %d %d %d \n',[0 0 0 0 1 0 0 0 0 0 0 0]);
+
+figure; 
+
+plot(Ry)
+
+%% Dz stiffness, displacement control
+
+mag = 0.06;
+a = load('unitsawtooth.dat');
+
+a = abs(a);
+
+Dz = a.*mag;
+
+fid1=fopen('Eval_stiff_Dz_disp.txt','w');
+
+for ii=1:length(Dz);
+    fprintf(fid1,'%5.4f \n',Dz(ii));
+end
+
+fid2=fopen('Eval_stiff_Dz_disp_spec.txt','w');
+fprintf(fid2,'%d %d %d %d %d %d %d %d %d %d %d %d \n',[0 0 1 0 0 0 0 0 0 0 0 0]);
+
+figure; 
+
+plot(Dz)

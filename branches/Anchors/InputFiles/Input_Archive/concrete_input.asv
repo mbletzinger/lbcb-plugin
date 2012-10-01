@@ -1,0 +1,13 @@
+clear; clc; close all
+
+load=textread('concreteload.txt');
+
+dx=load(6:end,1);
+
+dx_short=dx(1:4:end);
+figure; plot(dx_short);
+
+
+for ii=1:length(dx);
+    fprintf(fid1,'%5.4f %5.4f %5.4f \n',[dx(ii) ]);
+end
