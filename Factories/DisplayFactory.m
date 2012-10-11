@@ -63,11 +63,11 @@ classdef DisplayFactory < handle
 %             ref.cdp = me.cdp;
 %             me.addDisplay('Moments',ref,me.mainDisp.Moments);
             
-            ref = MultiDofStepPlot('MxCorrections',{'CalculatedMx','ProposedMx','MeasuredMx', 'MxBot'},'kip*inches',1,0);
+            ref = MultiDofStepPlot('MxCorrections',{'ProposedMx','MeasuredMx'},'kip*inches',1,0);
             ref.cdp = me.cdp;
             me.addDisplay('MxCorrections',ref,me.mainDisp.MxCorrections);
             
-            ref = MultiDofStepPlot('MyCorrections',{'CalculatedMy','ProposedMy','MeasuredMy', 'MyBot'},'kip*inches',1,0);
+            ref = MultiDofStepPlot('MyCorrections',{'ProposedMy','MeasuredMy'},'kip*inches',1,0);
             ref.cdp = me.cdp;
             me.addDisplay('MyCorrections',ref,me.mainDisp.MyCorrections);
 % 
@@ -75,13 +75,13 @@ classdef DisplayFactory < handle
             ref.cdp = me.cdp;
             me.addDisplay('Eccentricities',ref,me.mainDisp.Eccentricities);
 % 
-            ref = MultiDofStepPlot('CoupledWallAxialLoad',{'MeasuredFz', 'ProposedFz', 'C_AxialLoad'},'kip',1,0);
-            ref.cdp = me.cdp;
-            me.addDisplay('CoupledWallAxialLoad',ref,me.mainDisp.CoupledWallAxialLoad);
-% % 
-            ref = MultiDofStepPlot('CoupledWallMoments',{'System_BaseMoment', 'System_ThirdStoryMoment', 'C_ThirdStoryMoment'},'kip*inches',1,0);
-            ref.cdp = me.cdp;
-            me.addDisplay('CoupledWallMoments',ref,me.mainDisp.CoupledWallMoments);            
+%             ref = MultiDofStepPlot('CoupledWallAxialLoad',{'MeasuredFz', 'ProposedFz', 'C_AxialLoad'},'kip',1,0);
+%             ref.cdp = me.cdp;
+%             me.addDisplay('CoupledWallAxialLoad',ref,me.mainDisp.CoupledWallAxialLoad);
+% % % 
+%             ref = MultiDofStepPlot('CoupledWallMoments',{'System_BaseMoment', 'System_ThirdStoryMoment', 'C_ThirdStoryMoment'},'kip*inches',1,0);
+%             ref.cdp = me.cdp;
+%             me.addDisplay('CoupledWallMoments',ref,me.mainDisp.CoupledWallMoments);            
 
 % 
             ref = VsPlot('RyVsLbcb1Dx',1,1,5);
