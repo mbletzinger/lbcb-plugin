@@ -1,0 +1,24 @@
+clear; clc; close all
+
+amps=[0.1 0.2 0.3 0.4 0.5];
+
+dx=[linspace(0,0.1,5) linspace(0.1,-0.1,10) linspace(-0.1,0.2,15) ...
+    linspace(0.2,-0.2,20) linspace(-0.2,0.3,25) linspace(0.3,-0.3,30) ...
+    linspace(-0.3,0.4,35) linspace(0.4,-0.4,40) linspace(-0.4,0.5,45) ...
+    linspace(0.5,-0.5,50) linspace(-0.5,0,25)]';
+ptime=[1:length(dx)]';
+Fz=[linspace(0,300,10)'; 300*ones(length(ptime),1)];
+totaltime=length(Fz);
+
+figure; plot(ptime,dx);
+
+load=[[zeros(10,1); dx] Fz zeros(totaltime,1)];
+load2=[[zeros(10,1); dx] Fz];
+
+fid=fopen('rubberload.txt','w');
+fid=fopen('rubberload.txt','w');
+
+for ii=1:totaltime;
+    fprintf(fid,'%5.4f %5.4f %5.4f \n',load(ii,:));
+end
+fclose('all');
