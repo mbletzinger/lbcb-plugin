@@ -19,6 +19,19 @@ classdef StepDataFactory < handle
             clone.stepNum = stepNum;
             me.addProtocol(clone);
         end
+        function clone = stepData2StepData(me, step, cstype)
+            clone = StepData;
+            me.addProtocol(clone);
+            clone.stepNum = step.StepNum.next(cstype);
+            lgth = me.cdp.numLbcbs();
+            if lgth > 1
+                clone.lbcbCps{1}.command = step.lbcbCps{1}.command.clone();
+                clone.lbcbCps{2}.command = step.lbcbCps{2}.command.clone();
+            else
+                clone.lbcbCps{1}.command = step.lbcbCps{1}.command.clone();
+            end
+            
+        end
         function clone = target2StepData(me,targets,step,sub)
             clone = StepData;
             me.addProtocol(clone);

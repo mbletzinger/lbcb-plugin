@@ -28,37 +28,16 @@ classdef SimSharedData < handle
             me.prev1SubstepTgt = me.prevSubstepTgt;
             me.prevSubstepTgt = me.curSubstepTgt;
             me.curSubstepTgt = target;
-            cmd1 = target.lbcbCps{1}.command;
-            cmd2 = [];
-            if me.cdp.numLbcbs() > 1 
-                cmd2 = target.lbcbCps{2}.command;
-            end
-            me.nextStepData = me.sdf.target2StepData({ cmd1, ...
-                cmd2 }, target.stepNum.step,target.stepNum.subStep);
+            me.nextStepData = me.sdf.stepData2StepData(target, );
             me.setCorrectionTarget(target);
         end
                     
         function nextCorrectionStep(me,stype)
-            cmd1 = me.curStepData.lbcbCps{1}.command;
-            cmd2 = [];
-            if me.cdp.numLbcbs() > 1
-                cmd2 = me.curStepData.lbcbCps{2}.command;
-            end
-            me.nextStepData = me.sdf.target2StepData({ cmd1, ...
-                cmd2 }, me.curStepData.stepNum.step, ...
-                me.curStepData.stepNum.subStep);
-            me.nextStepData.stepNum = me.curStepData.stepNum.next(stype);
-            me.nextStepData.isLastSubstep = me.curStepData.isLastSubstep;
+            me.nextStepData = me.sdf.stepData2StepData(me.curStepData, stype);
         end
         function step = curStepTgt2Step(me)
-            cmd1 = me.curStepTgt.lbcbCps{1}.command;
-            cmd2 = [];
-            if me.cdp.numLbcbs() > 1
-                cmd2 = me.curStepTgt.lbcbCps{2}.command;
-            end
-            step = me.sdf.target2StepData({ cmd1, ...
-                cmd2 }, me.curStepTgt.stepNum.step,0);
-        end
+            step = me.sdf.stepData2StepData(me.curStepTgt, stype);
+       end
         function collectTargetResponse(me)
             me.curStepTgt.lbcbCps{1}.response = me.curStepData.lbcbCps{1}.response.clone();
             if me.cdp.numLbcbs() > 1

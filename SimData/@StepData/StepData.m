@@ -12,9 +12,6 @@ classdef StepData < handle
         cdp;
         containsModelCps;
         stepTimes; % BG
-        isFirstStep
-        isInitialPosition
-        isLastSubstep
     end
     methods
         function me = StepData()
@@ -29,9 +26,6 @@ classdef StepData < handle
             me.cdp = [];
             me.containsModelCps = 0;
             me.stepTimes=[];
-            me.isFirstStep = false;
-            me.isInitialPosition = false;
-            me.isLastSubstep = false;
         end
         str = toString(me)
         jmsg = generateOmProposeMsg(me)
