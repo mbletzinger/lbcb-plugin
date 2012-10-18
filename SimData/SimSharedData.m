@@ -28,7 +28,7 @@ classdef SimSharedData < handle
             me.prev1SubstepTgt = me.prevSubstepTgt;
             me.prevSubstepTgt = me.curSubstepTgt;
             me.curSubstepTgt = target;
-            me.nextStepData = me.sdf.stepData2StepData(target, );
+            me.nextStepData = me.sdf.stepData2StepData(target, -1); % need a clone here
             me.setCorrectionTarget(target);
         end
                     

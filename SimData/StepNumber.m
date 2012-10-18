@@ -62,6 +62,12 @@ classdef StepNumber < handle
                     me.log.error(dbstack, sprintf('%d not recognized',stepType));
             end
         end
+        function simstate = clone(me)
+            simstate = StepNumber(me.step,me.subStep,me.correctionStep);
+            simstate.isLastSubstep = me.isLastSubstep;
+            simstate.isInitialPosition = me.isInitialPosition;
+            simstate.isFirstStep = me.isFirstStep;
+        end
         function str = toString(me)
             str = sprintf('%d\t%d\t%d',me.step, me.subStep, me.correctionStep);
             if me.isFirstStep
