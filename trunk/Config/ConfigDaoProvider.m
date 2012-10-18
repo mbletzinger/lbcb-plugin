@@ -112,7 +112,7 @@ classdef ConfigDaoProvider < handle
             scfg = StepTimingConfigDao(me.cfg);
             ces =  scfg.triggerEveryStep;
             cmd = 'subtrigger';
-            if step.isLastSubstep
+            if step.stepNum.isLastSubstep
                 if rem(step.stepNum.step,ces) == 0
                     cmd = 'trigger';
                 end

@@ -62,7 +62,7 @@ classdef TargetResponse < UiSimCorState
                     end
                     me.target = me.sdf.uisimcorMsg2Step(command);
                     if(me.gotFirstStep == false) 
-                        me.target.isFirstStep = true;
+                        me.target.stepNum.isFirstStep = true;
                         me.gotFirstStep = true;
                     end
                     me.currentAction.setState('DONE');

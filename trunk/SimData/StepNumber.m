@@ -17,6 +17,9 @@ classdef StepNumber < handle
         correctionStep = 0;
         id = 0;
         log = Logger('StepNumber');
+        isFirstStep
+        isInitialPosition
+        isLastSubstep
     end
     methods
         function me = StepNumber(step, subStep, cStep)
@@ -25,6 +28,9 @@ classdef StepNumber < handle
             me.correctionStep = cStep;
             me.id = StepNumber.newId();
             %            me.log.debug(dbstack,sprintf('created step %s',me.toString()));
+            me.isFirstStep = false;
+            me.isInitialPosition = false;
+            me.isLastSubstep = false;
         end
         % increment the step or substep and return in a new instance
         function simstate = next(me,stepType)
@@ -47,9 +53,26 @@ classdef StepNumber < handle
                     me.log.error(dbstack, sprintf('%d not recognized',stepType));
             end
             simstate = StepNumber(stp,sStp,cStp);
+            switch stepType
+                case {0 1}
+                    x = 1; % dummy statement
+                case { 2 3 4 5}
+                    simstate.isLastSubstep = me.isLastSubstep;
+                otherwise
+                    me.log.error(dbstack, sprintf('%d not recognized',stepType));
+            end
         end
         function str = toString(me)
             str = sprintf('%d\t%d\t%d',me.step, me.subStep, me.correctionStep);
+            if me.isFirstStep
+                str = sprintf('%s[isFirstStep]',str);
+            end
+            if me.isInitialPosition
+                str = sprintf('%s[isInitialPosition]',str);
+            end
+            if me.isLastSubstep
+                str = sprintf('%s[IsLastSubstep]',str);
+            end
         end
         function str = toStringD(me,d)
             str = sprintf('%d%s%d%s%d',me.step, d, me.subStep,d,me.correctionStep);

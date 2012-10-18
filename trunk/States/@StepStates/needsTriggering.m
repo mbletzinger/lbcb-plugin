@@ -7,7 +7,7 @@ step = me.dat.curStepData;
 scfg = StepTimingConfigDao(me.cdp.cfg);
 substep = step.stepNum.subStep;
 cess =  scfg.triggerEverySubstep;
-if  step.isLastSubstep
+if  step.stepNum.isLastSubstep
     needsTriggering = true;
     return;
 end
@@ -17,7 +17,7 @@ if  cess == 0
     return;
 end
 
-if rem(substep,cess) == 0
+if rem(substep,cess) == 0 && substep > 0
     needsTriggering = true;
     return;
 end

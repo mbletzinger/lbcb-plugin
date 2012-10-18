@@ -28,9 +28,6 @@ classdef NextStep < Step
             if me.steps.started == false % first step of the test
                 next = me.steps.next();
                 me.dat.substepTgtShift(next);
-                me.dat.nextStepData.isLastSubstep = next.isLastSubstep;  % uhm...yuck
-                % isLastSubstep needs to be moved into stepNum and
-                % me.dat.substepTgtShift is ugly
                 me.corrections.prelimAdjust(me.dat.curStepData,me.dat.nextStepData);
                 return;         
             end
@@ -46,7 +43,6 @@ classdef NextStep < Step
                     return;
                 else
                     me.dat.substepTgtShift(stp);
-                    me.dat.nextStepData.isLastSubstep = stp.isLastSubstep;  % uhm...yuck
                     me.corrections.prelimAdjust(me.dat.curStepData,me.dat.nextStepData);
                 end
             end

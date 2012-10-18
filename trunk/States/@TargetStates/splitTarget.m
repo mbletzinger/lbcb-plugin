@@ -4,7 +4,7 @@ stp = me.dat.curStepTgt2Step();
 steps.steps = { stp };
 sn = me.dat.curStepTgt.stepNum.step;
 if me.cdp.doStepSplitting == false
-    stp.isLastSubstep = true; % Used to determine triggering
+    stp.stepNum.isLastSubstep = true; % Used to determine triggering
     return;
 end
 if me.cdp.numLbcbs() > 1
@@ -59,7 +59,7 @@ for i = 1 : maxNumSteps
     end
     ss{i} = me.sdf.target2StepData(tgts,sn,i-1);
 end
-ss{maxNumSteps}.isLastSubstep = true; % Used to determine triggering
+ss{maxNumSteps}.stepNum.isLastSubstep = true; % Used to determine triggering
 steps.steps = ss;
 me.log.info(dbstack,sprintf('Created %d substeps',length(ss)));
 end
