@@ -46,8 +46,8 @@ classdef TolerancesConfigActions < TableDataManagement
         function setCell(me,r,data)
             [li u ] = me.getData(data);
             [limits used] = me.getCfg();
-            limits(r) = li;
-            used(r) = u;
+            limits(r(1)) = li;
+            used(r(1)) = u;
             me.tl.setWindow(limits,used);
             if isempty(me.correctionTarget) || isempty(me.currentResponse)
                 return;

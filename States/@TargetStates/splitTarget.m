@@ -28,6 +28,7 @@ end
 numSteps = abs(finalDisp - initialDisp) ./ stpSize;
 maxNumSteps = max(ceil(numSteps));
 if maxNumSteps < 2
+    stp.stepNum.isLastSubstep = true; % Used to determine triggering
     me.log.debug(dbstack,'Number of substeps is < 2');
     return;
 end
