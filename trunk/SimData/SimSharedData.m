@@ -36,7 +36,7 @@ classdef SimSharedData < handle
             me.nextStepData = me.sdf.stepData2StepData(me.curStepData, stype);
         end
         function step = curStepTgt2Step(me)
-            step = me.sdf.stepData2StepData(me.curStepTgt, stype);
+            step = me.sdf.stepData2StepData(me.curStepTgt, -1);
        end
         function collectTargetResponse(me)
             me.curStepTgt.lbcbCps{1}.response = me.curStepData.lbcbCps{1}.response.clone();

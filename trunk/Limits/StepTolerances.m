@@ -24,10 +24,10 @@ classdef StepTolerances < handle
             me.within = true(12,1);
             me.diffs(1:6) = abs(target.disp - response.disp);
             me.diffs(7:12) = abs(target.force - response.force);
-            for l = 1:12
-                if(me.used(l))
-                    if me.diffs(l) > me.window(l)
-                        me.within(l) = false;
+            for lm = 1:12
+                if(me.used(lm))
+                    if me.diffs(lm) > me.window(lm)
+                        me.within(lm) = false;
                     end
                 end
             end
@@ -52,6 +52,7 @@ classdef StepTolerances < handle
                 wlcfg.window2 = window;
                 wlcfg.used2 = used;
             end
+            me.getWindow();
         end
     end
 end

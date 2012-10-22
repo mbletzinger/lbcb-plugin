@@ -7,8 +7,12 @@ if corStep > 0
     cbc = true;
     return;
 end
-if  substep == 0
+if step.stepNum.isLastSubstep
     cbc = true;
+    return;
+end
+if  substep == 0
+    cbc = false;
     return;
 end
 

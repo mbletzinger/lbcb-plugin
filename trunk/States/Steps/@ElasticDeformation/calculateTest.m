@@ -13,7 +13,7 @@ if corStep == 3
     return;
 end
 
-interval = 0.0001 * (3 - corStep);
+interval = 0.000001 * (3 - corStep);
 
 for d = 1:6
     if me.st.used == false
