@@ -63,17 +63,17 @@ classdef DisplayFactory < handle
 %             ref.cdp = me.cdp;
 %             me.addDisplay('Moments',ref,me.mainDisp.Moments);
             
-            ref = MultiDofStepPlot('MxCorrections',{'ProposedMx','MeasuredMx'},'kip*inches',1,0);
-            ref.cdp = me.cdp;
-            me.addDisplay('MxCorrections',ref,me.mainDisp.MxCorrections);
+            % ref = MultiDofStepPlot('MxCorrections',{'ProposedMx','MeasuredMx'},'kip*inches',1,0);
+            % ref.cdp = me.cdp;
+            % me.addDisplay('MxCorrections',ref,me.mainDisp.MxCorrections);
             
-            ref = MultiDofStepPlot('MyCorrections',{'ProposedMy','MeasuredMy'},'kip*inches',1,0);
-            ref.cdp = me.cdp;
-            me.addDisplay('MyCorrections',ref,me.mainDisp.MyCorrections);
-% 
-            ref = MultiDofStepPlot('Eccentricities',{'MeasuredMoment2ShearX', 'MeasuredMoment2ShearY'},'inches',1,0);
-            ref.cdp = me.cdp;
-            me.addDisplay('Eccentricities',ref,me.mainDisp.Eccentricities);
+            % ref = MultiDofStepPlot('MyCorrections',{'ProposedMy','MeasuredMy'},'kip*inches',1,0);
+            % ref.cdp = me.cdp;
+            % me.addDisplay('MyCorrections',ref,me.mainDisp.MyCorrections);
+% % 
+            % ref = MultiDofStepPlot('Eccentricities',{'MeasuredMoment2ShearX', 'MeasuredMoment2ShearY'},'inches',1,0);
+            % ref.cdp = me.cdp;
+            % me.addDisplay('Eccentricities',ref,me.mainDisp.Eccentricities);
 % 
 %             ref = MultiDofStepPlot('CoupledWallAxialLoad',{'MeasuredFz', 'ProposedFz', 'C_AxialLoad'},'kip',1,0);
 %             ref.cdp = me.cdp;
