@@ -6,7 +6,7 @@ function Needs_Correction = SPSW_NeedsCorrection( me )
 
 %...Get errors
     My1_error = me.getArch('My1_error');
-    My2_error = me.getArch('My1_error');
+    My2_error = me.getArch('My2_error');
     Fz1_error = me.getArch('Fz1_error');
     Fz2_error = me.getArch('Fz2_error');
     
