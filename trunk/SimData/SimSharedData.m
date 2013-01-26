@@ -1,43 +1,72 @@
 classdef SimSharedData < handle
     properties
-        prevStepTgt = [];
-        curStepTgt = [];
-        prevSubstepTgt = [];
-        prev1SubstepTgt = [];
-        curSubstepTgt = [];
-        correctionTarget = [];
-        prevStepData = [];
-        curStepData = [];
-        nextStepData = [];
-        initialPosition = [];
-        sdf = [];
+        correctionTarget
+        initialPosition
+        sdf
         log = Logger('SimSharedData');
         lbls = {'Dx','Dy','Dz','Rx','Ry','Rz','Fx','Fy','Fz','Mx','My','Mz'};
-        cdp;
+        cdp
+        targetHist
+        substepHist
+        executeHist
+        nextStepData
+    end
+    properties (Dependent = true)
+        prevStepTgt
+        curStepTgt
+        prevSubstepTgt
+        prev1SubstepTgt
+        curSubstepTgt
+        prevStepData
+        curStepData
+        
     end
     methods
+        function me = SimSharedData()
+            size = 20;
+            me.targetHist = CellFifo(size);
+            me.substepHist = CellFifo(size);
+            me.executeHist = CellFifo(size);
+        end
+        function step = get.prevStepTgt(me)
+            step = me.targetHist.get(2);
+        end
+        function step = get.curStepTgt(me)
+            step = me.targetHist.get(1);
+        end
+        function step = get.prevSubstepTgt(me)
+            step = me.substepHist.get(2);
+        end
+        function step = get.prev1SubstepTgt(me)
+            step = me.substepHist.get(3);
+        end
+        function step = get.curSubstepTgt(me)
+            step = me.substepHist.get(1);
+        end
+        function step = get.prevStepData(me)
+            step = me.executeHist.get(2);
+        end
+        function step = get.curStepData(me)
+            step = me.executeHist.get(1);
+        end
         function stepShift(me)
-            me.prevStepData = me.curStepData;
-            me.curStepData = me.nextStepData;
+            me.executeHist.push(me.nextStepData);
         end
         function stepTgtShift(me,target)
-            me.prevStepTgt = me.curStepTgt;
-            me.curStepTgt = target;
+            me.targetHist.push(target);
         end
         function substepTgtShift(me,target)
-            me.prev1SubstepTgt = me.prevSubstepTgt;
-            me.prevSubstepTgt = me.curSubstepTgt;
-            me.curSubstepTgt = target;
+            me.substepHist.push(target);
             me.nextStepData = me.sdf.stepData2StepData(target, -1); % need a clone here
             me.setCorrectionTarget(target);
         end
-                    
+        
         function nextCorrectionStep(me,stype)
             me.nextStepData = me.sdf.stepData2StepData(me.curStepData, stype);
         end
         function step = curStepTgt2Step(me)
             step = me.sdf.stepData2StepData(me.curStepTgt, -1);
-       end
+        end
         function collectTargetResponse(me)
             me.curStepTgt.lbcbCps{1}.response = me.curStepData.lbcbCps{1}.response.clone();
             if me.cdp.numLbcbs() > 1
@@ -74,28 +103,28 @@ classdef SimSharedData < handle
             cdofl1 = cdofcfg.cDofL1;
             cdofl2 = cdofcfg.cDofL2;
             for dof= 1:12
-               if cdofl1(dof)
-                   if dof <= 6
-                       didx = concatL(didx,dof);
-                       l = sprintf('L1 %s',me.lbls{dof});
-                       dlabels = concatL(dlabels,l);
-                   else
-                       fidx = concatL(fidx,dof - 6);
-                       l = sprintf('L1 %s',me.lbls{dof});
-                       flabels = concatL(flabels,l);
-                   end
-               end
-               if cdofl2(dof)
-                   if dof <= 6
-                       didx = concatL(didx,dof+6);
-                       l = sprintf('L2 %s',me.lbls{dof});
-                       dlabels = concatL(dlabels,l);
-                   else
-                       fidx = concatL(fidx,dof);
-                       l = sprintf('L2 %s',me.lbls{dof});
-                       flabels = concatL(flabels,l);
-                   end
-               end
+                if cdofl1(dof)
+                    if dof <= 6
+                        didx = concatL(didx,dof);
+                        l = sprintf('L1 %s',me.lbls{dof});
+                        dlabels = concatL(dlabels,l);
+                    else
+                        fidx = concatL(fidx,dof - 6);
+                        l = sprintf('L1 %s',me.lbls{dof});
+                        flabels = concatL(flabels,l);
+                    end
+                end
+                if cdofl2(dof)
+                    if dof <= 6
+                        didx = concatL(didx,dof+6);
+                        l = sprintf('L2 %s',me.lbls{dof});
+                        dlabels = concatL(dlabels,l);
+                    else
+                        fidx = concatL(fidx,dof);
+                        l = sprintf('L2 %s',me.lbls{dof});
+                        flabels = concatL(flabels,l);
+                    end
+                end
             end
             labels = concatL(dlabels,flabels);
         end
@@ -105,21 +134,16 @@ classdef SimSharedData < handle
         function setCorrectionTarget(me,targetStep)
             cmd1 = targetStep.lbcbCps{1}.command;
             cmd2 = [];
-            if me.cdp.numLbcbs() > 1 
+            if me.cdp.numLbcbs() > 1
                 cmd2 = targetStep.lbcbCps{2}.command;
             end
             me.correctionTarget = me.sdf.target2StepData({ cmd1, ...
                 cmd2 }, targetStep.stepNum.step,targetStep.stepNum.subStep);
         end
         function initialPosition2Target(me)
-            me.curStepTgt = me.curStepData;
-            me.curSubstepTgt = me.curStepData;
-            me.prevStepData = me.curStepData;
+            me.targetHist.push(me.curStepData);
+            me.substepHist.push(me.curStepData);
             me.initialPosition = me.curStepData;
-%             for l = 1: me.cdp.numLbcbs()
-%                 lbcbCps = me.initialPosition.lbcbCps{l};
-%                 lbcbCps.response.ed.disp = lbcbCps.command.disp;
-%             end
         end
     end
 end

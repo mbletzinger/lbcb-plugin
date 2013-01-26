@@ -10,6 +10,9 @@ classdef DerivedDof < CorrectionVariables
     properties
         level
         log
+        targetHist
+        substepHist
+        executeHist
     end
     methods
         function me = DerivedDof(cdp,level)

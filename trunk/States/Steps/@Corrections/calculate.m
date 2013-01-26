@@ -6,7 +6,9 @@ funcs = ccfg.calculationFunctions;
 
 if  doC(1)
     for l = 1: me.cdp.numLbcbs()
-        pcps = prevStep.lbcbCps{l};
+        if isempty(prevStep) == false
+            pcps = prevStep.lbcbCps{l};
+        end
         ccps = curStep.lbcbCps{l};
         if isempty(correctionTarget)
             ctcps = curStep.lbcbCps{l};
@@ -19,15 +21,18 @@ if  doC(1)
             rsp = me.ed{l}.calculateTest(ctcps.command.disp,stp);
         elseif strcmp(funcs{1},'Dx Only')
             me.dxed{l}.loadConfig;
-            rsp = me.dxed{l}.calculate(pcps.response.disp,...
-                ccps.externalSensors);            
+            if isempty(pcps) == false
+                prdisp = pcps.response.disp;
+            end
+            rsp = me.dxed{l}.calculate(prdisp,...
+                ccps.externalSensors);
         else
             me.ed{l}.loadConfig;
-            rsp = me.ed{l}.calculate(pcps.response.disp,...
+            rsp = me.ed{l}.calculate(prdisp,...
                 ccps.externalSensors);
         end
         % initial offset added back in
-%        rsp = rsp + icps.command.disp - icors{l}.disp;
+        %        rsp = rsp + icps.command.disp - icors{l}.disp;
         ccps.response.ed.disp = rsp;
     end
 end

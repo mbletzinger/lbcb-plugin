@@ -1,6 +1,6 @@
 function testDd0PrelimAdjust(me)
-dat = me.dat
-step = dat.nextStepData
+dat = me.dat;
+step = dat.nextStepData;
 % dat is the SimSharedData class where the data is as follows at this point
 % in time:
 % dat.nextStepData is the next substep derived from the input file or UISimCor
@@ -12,6 +12,6 @@ step = dat.nextStepData
 % dat.prevSubstepTgt is the previous sub step with no adjustments
 % dat.correctionTarget is the current target that ED was adjusted to
 
-dx = step.lbcbCps{1}.command.disp(1)
+dx = step.lbcbCps{1}.command.disp(1);
 step.lbcbCps{1}.command.setDispDof(1,dx + 0.000222)
 end
