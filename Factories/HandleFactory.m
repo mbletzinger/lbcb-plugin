@@ -41,7 +41,7 @@ classdef HandleFactory <  handle
         
         % Input File Loader
         inF = [];
-                
+        
         %Archiver
         
         arch = [];
@@ -76,9 +76,9 @@ classdef HandleFactory <  handle
         ssBrdcst
         brdcstRsp
         vmpChk
-
+        
         cfg
-
+        
     end
     methods
         function me = HandleFactory(handle,cfg,ofst)
@@ -86,7 +86,16 @@ classdef HandleFactory <  handle
             me.cdp = ConfigDaoProvider(cfg);
             me.offstcfg = ofst;
             
+            me.sdf = StepDataFactory;
+            me.sdf.cdp = me.cdp;
+
+            me.dat = SimSharedData;
+            me.dat.sdf = me.sdf;
+            me.dat.cdp = me.cdp;
+            
             me.mdlLbcb = MdlLbcb(me.cfg);
+            me.sdf.mdlLbcb = me.mdlLbcb;
+
             me.omStates{1} = OpenCloseOm;
             me.omStates{2} = ProposeExecuteOm;
             me.omStates{3} = GetControlPointsOm;
@@ -101,6 +110,8 @@ classdef HandleFactory <  handle
             me.simStates{3} = OffsetsRefresh;
             
             me.mdlUiSimCor = MdlUiSimCor(me.cfg);
+            me.sdf.mdlUiSimCor = me.mdlUiSimCor;
+
             me.simCorStates{1} = OpenCloseUiSimCor;
             me.simCorStates{2} = TargetResponse;
             
@@ -114,20 +125,13 @@ classdef HandleFactory <  handle
             me.cl = CommandLimits(me.cfg);
             lc.cl = me.cl;
             lc.il = me.il;
-
-            me.sdf = StepDataFactory;
-            me.sdf.cdp = me.cdp;
-            me.sdf.mdlLbcb = me.mdlLbcb;
-            me.sdf.mdlUiSimCor = me.mdlUiSimCor;
+            
             me.inF = InputFile(me.sdf);
-
-            me.dat = SimSharedData;
-            me.dat.sdf = me.sdf;
-            me.dat.cdp = me.cdp;
+            
             me.arch = Archiver(me.cdp);
             me.cfg.dat = me.dat;
             me.cfg.arch = me.arch;
-
+            
             cfgH = org.nees.uiuc.simcor.matlab.HashTable();
             datH = org.nees.uiuc.simcor.matlab.HashTable();
             archH = org.nees.uiuc.simcor.matlab.HashTable();
@@ -152,8 +156,11 @@ classdef HandleFactory <  handle
                 me.dd{i}.cfgH = cfgH;
                 me.dd{i}.datH = datH;
                 me.dd{i}.archH = archH;
+                me.dd{i}.targetHist = me.dat.targetHist;
+                me.dd{i}.substepHist = me.dat.substepHist;
+                me.dd{i}.executeHist = me.dat.executeHist;
             end
-                        
+            
             me.corrections = Corrections(me.cdp);
             me.corrections.ed = me.ed;
             me.corrections.dxed = me.dxed;
@@ -182,12 +189,12 @@ classdef HandleFactory <  handle
             
             me.ddisp = DisplayFactory(handle);
             me.ddisp.cdp = me.cdp;
-%            dbgWin = DebugWindow;
+            %            dbgWin = DebugWindow;
             me.ddisp.dat = me.dat;
-%            me.ddisp.dbgWin = dbgWin;
+            %            me.ddisp.dbgWin = dbgWin;
             me.gui.ddisp = me.ddisp;
-%            me.mdlLbcb.dbgWin = dbgWin;
-%            me.mdlBroadcast.dbgWin = dbgWin;
+            %            me.mdlLbcb.dbgWin = dbgWin;
+            %            me.mdlBroadcast.dbgWin = dbgWin;
             
             for c =1:length(me.simStates)
                 me.simStates{c}.cdp = me.cdp;
@@ -211,11 +218,11 @@ classdef HandleFactory <  handle
             me.tgtEx.inF = me.inF;
             me.tgtEx.ocSimCor = me.ocSimCor;
             me.tgtEx.tgtRsp = me.tgtRsp;
-
+            
             me.offstRfsh.gcpOm = me.gcpOm;
             me.offstRfsh.gipOm = me.gipOm;
             me.offstRfsh.pResp = me.pResp;
-
+            
             for c =1:length(me.simCorStates)
                 me.simCorStates{c}.cdp = me.cdp;
                 me.simCorStates{c}.mdlUiSimCor = me.mdlUiSimCor;
@@ -243,7 +250,7 @@ classdef HandleFactory <  handle
             else
                 me.setGuiHandle(handle);
             end
-                                    
+            
         end
         function setGuiHandle(me, handle)
             me.gui = LbcbPluginResults(handle,me);

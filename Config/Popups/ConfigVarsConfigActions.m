@@ -4,11 +4,12 @@ classdef ConfigVarsConfigActions < handle
         table;
         ccfg
         log = Logger('ConfigVarsConfigActions')
+        listSize = 40;
     end
     methods
         function me = ConfigVarsConfigActions(cfg)
             me.ccfg = ConfigVarsDao(cfg);
-            me.table = cell(20,2);
+            me.table = cell(me.listSize,2);
             me.fillTable();
         end
         function setCell(me,indices,data,errString)
@@ -18,8 +19,8 @@ classdef ConfigVarsConfigActions < handle
             end
             old = size(me.ccfg.cfgLabels,1);
             if old < 1
-                me.ccfg.cfgLabels = repmat({''},20,1);
-                me.ccfg.cfgValues = zeros(20,1);
+                me.ccfg.cfgLabels = repmat({''},me.listSize,1);
+                me.ccfg.cfgValues = zeros(me.listSize,1);
             end
             switch indices(2)
                 case 1
