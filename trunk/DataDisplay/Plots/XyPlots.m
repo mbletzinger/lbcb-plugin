@@ -50,6 +50,8 @@ classdef XyPlots < DisplayControl
             xlabel(xlab); ylabel(ylab);
             set(me.axs, 'XGrid', 'on');
             set(me.axs, 'YGrid', 'on');
+            set(me.axs, 'XLimMode','auto');
+            set(me.axs, 'YLimMode','auto');
             me.displayData();
         end
         function update(me,d,idx)
