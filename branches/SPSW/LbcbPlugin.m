@@ -945,8 +945,12 @@ function MyVsDx_Callback(hObject, eventdata, handles)
 % hObject    handle to MyVsDx (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-c
-
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('MyVsDx')
+    ddisp.closeDisplay('MyVsDx');
+else
+    ddisp.openDisplay('MyVsDx');
+end
 % --------------------------------------------------------------------
 function FxtVsDx_Callback(hObject, eventdata, handles)
 % hObject    handle to FxtVsDx (see GCBO)
