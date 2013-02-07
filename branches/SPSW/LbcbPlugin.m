@@ -22,7 +22,7 @@ function varargout = LbcbPlugin(varargin)
 
 % Edit the above text to modify the response to help LbcbPlugin
 
-% Last Modified by GUIDE v2.5 01-May-2012 06:52:40
+% Last Modified by GUIDE v2.5 06-Feb-2013 16:41:38
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -873,4 +873,93 @@ if ddisp.isDisplaying('RyStepL1')
     ddisp.closeDisplay('RyStepL1');
 else
     ddisp.openDisplay('RyStepL1');
+end
+
+
+% --------------------------------------------------------------------
+function SPSW_Callback(hObject, eventdata, handles)
+% hObject    handle to SPSW (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --------------------------------------------------------------------
+function FxVsDx_Callback(hObject, eventdata, handles)
+% hObject    handle to FxVsDx (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('FxVsDx')
+    ddisp.closeDisplay('FxVsDx');
+else
+    ddisp.openDisplay('FxVsDx');
+end
+
+
+% --------------------------------------------------------------------
+function FzVsDx_Callback(hObject, eventdata, handles)
+% hObject    handle to FzVsDx (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('FzVsDx')
+    ddisp.closeDisplay('FzVsDx');
+else
+    ddisp.openDisplay('FzVsDx');
+end
+
+
+% --------------------------------------------------------------------
+function Stiffness_Callback(hObject, eventdata, handles)
+% hObject    handle to Stiffness (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --------------------------------------------------------------------
+function MyVsRy_Callback(hObject, eventdata, handles)
+% hObject    handle to MyVsRy (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('MyVsRy')
+    ddisp.closeDisplay('MyVsRy');
+else
+    ddisp.openDisplay('MyVsRy');
+end
+
+% --------------------------------------------------------------------
+function FzVsDz_Callback(hObject, eventdata, handles)
+% hObject    handle to FzVsDz (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('FzVsDz')
+    ddisp.closeDisplay('FzVsDz');
+else
+    ddisp.openDisplay('FzVsDz');
+end
+
+% --------------------------------------------------------------------
+function MyVsDx_Callback(hObject, eventdata, handles)
+% hObject    handle to MyVsDx (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('MyVsDx')
+    ddisp.closeDisplay('MyVsDx');
+else
+    ddisp.openDisplay('MyVsDx');
+end
+
+% --------------------------------------------------------------------
+function FxtVsDx_Callback(hObject, eventdata, handles)
+% hObject    handle to FxtVsDx (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('FxtVsDx')
+    ddisp.closeDisplay('FxtVsDx');
+else
+    ddisp.openDisplay('FxtVsDx');
 end
