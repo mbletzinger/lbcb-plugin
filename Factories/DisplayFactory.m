@@ -193,6 +193,31 @@ classdef DisplayFactory < handle
             me.addDisplay('MzStepL2',ref,me.mainDisp.MzStepL2);               
 
             
+            %SPSW Plots
+            ref = VsPlot2('FxVsDx',-1,1,7);
+            ref.cdp = me.cdp;
+            me.addDisplay('FxVsDx',ref,me.mainDisp.FxVsDx);
+            
+            ref = VsPlot2('FzVsDx',-1,1,9);
+            ref.cdp = me.cdp;
+            me.addDisplay('FzVsDx',ref,me.mainDisp.FzVsDx);
+            
+            ref = VsPlot2('MyVsDx',-1,1,11);
+            ref.cdp = me.cdp;
+            me.addDisplay('MyVsDx',ref,me.mainDisp.MyVsDx);
+            
+            ref = VsPlot2('MyVsRy',-1,5,11);
+            ref.cdp = me.cdp;
+            me.addDisplay('MyVsRy',ref,me.mainDisp.MyVsRy);
+            
+            ref = VsPlot2('FzVsDz',-1,3,9);
+            ref.cdp = me.cdp;
+            me.addDisplay('FzVsDz',ref,me.mainDisp.FzVsDz);
+            
+            ref = ArchPlot('FxtVsDx',1,1,'Fx_total');
+            ref.cdp = me.cdp;
+            me.addDisplay('FxtVsDx',ref,me.mainDisp.FxtVsDx);
+            %%
             ref = ResponseTable('L1ResponseTable',1);
             ref.cdp = me.cdp;
             me.addDisplay('L1ResponseTable',ref,me.mainDisp.L1ResponseTable);
