@@ -217,6 +217,14 @@ classdef DisplayFactory < handle
             ref = ArchPlot('FxtVsDx',1,1,'Fx_total');
             ref.cdp = me.cdp;
             me.addDisplay('FxtVsDx',ref,me.mainDisp.FxtVsDx);
+            
+            ref = ArchStepPlot('My_error',{'My1_error','My2_error'},me.dat);
+            ref.cdp = me.cdp;
+            me.addDisplay('My_error',ref,me.mainDisp.My_error);
+            
+            ref = ArchStepPlot('Fz_error',{'Fz1_error','Fz2_error'},me.dat);
+            ref.cdp = me.cdp;
+            me.addDisplay('Fz_error',ref,me.mainDisp.Fz_error);
             %%
             ref = ResponseTable('L1ResponseTable',1);
             ref.cdp = me.cdp;

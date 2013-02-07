@@ -22,7 +22,7 @@ function varargout = LbcbPlugin(varargin)
 
 % Edit the above text to modify the response to help LbcbPlugin
 
-% Last Modified by GUIDE v2.5 06-Feb-2013 16:41:38
+% Last Modified by GUIDE v2.5 07-Feb-2013 11:22:34
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -945,12 +945,7 @@ function MyVsDx_Callback(hObject, eventdata, handles)
 % hObject    handle to MyVsDx (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-ddisp = getappdata(getLp(hObject),'ddisp');
-if ddisp.isDisplaying('MyVsDx')
-    ddisp.closeDisplay('MyVsDx');
-else
-    ddisp.openDisplay('MyVsDx');
-end
+c
 
 % --------------------------------------------------------------------
 function FxtVsDx_Callback(hObject, eventdata, handles)
@@ -962,4 +957,30 @@ if ddisp.isDisplaying('FxtVsDx')
     ddisp.closeDisplay('FxtVsDx');
 else
     ddisp.openDisplay('FxtVsDx');
+end
+
+
+% --------------------------------------------------------------------
+function My_error_Callback(hObject, eventdata, handles)
+% hObject    handle to My_error (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('My_error')
+    ddisp.closeDisplay('My_error');
+else
+    ddisp.openDisplay('My_error');
+end
+
+
+% --------------------------------------------------------------------
+function Fz_error_Callback(hObject, eventdata, handles)
+% hObject    handle to Fz_error (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('Fz_error')
+    ddisp.closeDisplay('Fz_error');
+else
+    ddisp.openDisplay('Fz_error');
 end
