@@ -21,8 +21,9 @@ classdef OffsetsRefresh < SimStates
             else
                 tgts = { Target };
             end
-            me.dat.curStepData = me.sdf.target2StepData(tgts,0,0);
-            me.dat.curStepData.stepNum.isInitialPosition = true;
+            curStep = me.sdf.target2StepData(tgts,0,0);
+            curStep.stepNum.isInitialPosition = true;
+            me.dat.executeHist.push(curStep);
             me.gipOm.start();
             me.currentAction.setState('OM GET INITIAL POSITION');
             me.statusBusy();
