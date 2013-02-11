@@ -86,31 +86,14 @@ uiwait(handles.ConfigVarsConfig);
 
 % --- Outputs from this function are returned to the command line.
 function varargout = ConfigVarsConfig_OutputFcn(hObject, eventdata, handles) 
-% varargout  cell array for returning output args (see VARARGOUT);
-% hObject    handle to figure
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Get default command line output from handles structure
 varargout{1} = 1;
 
 
 % --- Executes on button press in Ok.
 function Ok_Callback(hObject, eventdata, handles) %#ok<*INUSL,*DEFNU>
-% hObject    handle to Ok (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
 delete(handles.ConfigVarsConfig);
 
 
 % --- Executes when entered data in editable cell(s) in CfgSettings.
 function CfgSettings_CellEditCallback(hObject, eventdata, handles)
-% hObject    handle to CfgSettings (see GCBO)
-% eventdata  structure with the following fields (see UITABLE)
-%	Indices: row and column indices of the cell(s) edited
-%	PreviousData: previous data for the cell(s) edited
-%	EditData: string(s) entered by the user
-%	NewData: EditData or its converted form set on the Data property. Empty if Data was not changed
-%	Error: error string when failed to convert EditData to appropriate value for Data
-% handles    structure with handles and user data (see GUIDATA)
 handles.actions.setCell(eventdata.Indices,eventdata.NewData,eventdata.Error);
