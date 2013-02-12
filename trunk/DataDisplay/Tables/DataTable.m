@@ -31,7 +31,7 @@ classdef DataTable < handle
             row = me.genRow(step);
             if me.idx == 0
                 me.data(1,:) = row;
-                me.rnames{1} =  regexprep(step.stepNum.toString(),'\t',',');
+                me.rnames{1} =  regexprep(step.stepNum.toString('noflags',1),'\t',',');
                 me.idx = me.idx + 1;
                 return;
             end
@@ -49,7 +49,7 @@ classdef DataTable < handle
                 me.data = dt;
             end
             me.data(1,:) = row;
-            me.rnames{1} = regexprep(step.stepNum.toString(),'\t',',');
+            me.rnames{1} = regexprep(step.stepNum.toString('noflags',1),'\t',',');
             me.plot.update(me.data,me.rnames);
         end
         function setCnames(me,cnames)

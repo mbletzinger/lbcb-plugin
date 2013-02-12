@@ -4,6 +4,7 @@ classdef DisplayTable < DisplayControl
         table = [];
         cnames
         data
+        rnames
         cdp
         log = Logger('DisplayTable');
         width = 1200
@@ -13,7 +14,6 @@ classdef DisplayTable < DisplayControl
         function me = DisplayTable(name, cnames)
             me.name = name;
             me.cnames = cnames;
-            
         end
         function displayMe(me)
             lt = length(me.cnames);
@@ -27,6 +27,7 @@ classdef DisplayTable < DisplayControl
                 'Position',[5 5 me.width me.height],'ColumnFormat',repmat({'char'},1,lt));
             me.isDisplayed = true;
             set(me.table,'Data',me.data);
+            set(me.table,'RowName',me.rnames);                
             set( me.table,'ColumnWidth',widths);
             tpos = get(me.table, 'Position');
             text = get(me.table, 'Extent');
@@ -36,6 +37,7 @@ classdef DisplayTable < DisplayControl
         end
         function update(me,data,rnames)
             me.data = data;
+            me.rnames = rnames;
             if me.isDisplayed
                 set(me.table,'RowName',rnames);                
                 set(me.table,'Data',me.data);
