@@ -42,7 +42,7 @@ classdef ConfigVarsConfigActions < handle
             set(me.handles.CfgSettings,'ColumnFormat',format);
         end
         function fillTable(me)
-            for i = 1:20
+            for i = 1:me.listSize
                 me.table{i,1} = '';
                 me.table{i,2} = 0.0;
             end
