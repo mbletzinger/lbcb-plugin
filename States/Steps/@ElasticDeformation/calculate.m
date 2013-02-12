@@ -124,6 +124,9 @@ optm.pert_total = [temp1;temp2];
 % prevResponse
 % idof
 %==
+if isempty(prevResponse)
+    prevResponse = zeros(6,1);
+end
 temp = prevResponse + ElasticDeformation.disp2controlpoint(disp,xpin,xfix,[],prevResponse,3,optm,idof);
 %==
 % temp
