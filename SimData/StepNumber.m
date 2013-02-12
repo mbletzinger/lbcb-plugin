@@ -68,8 +68,24 @@ classdef StepNumber < handle
             simstate.isInitialPosition = me.isInitialPosition;
             simstate.isFirstStep = me.isFirstStep;
         end
-        function str = toString(me)
+        function str = toString(me,varargin)
+            noflags = false;
+            for index = 1:2:(nargin),
+                if nargin==index, break, end
+                label = lower(varargin{index});
+                switch label
+                    case 'noflags'
+                        noflags = varargin{index+1} ~= 0;
+                    otherwise
+                        str= sprintf('%s not recognized',label);
+                        disp(str);
+                end
+            end
+            
             str = sprintf('%d\t%d\t%d',me.step, me.subStep, me.correctionStep);
+            if noflags
+                return;
+            end
             if me.isFirstStep
                 str = sprintf('%s[isFirstStep]',str);
             end
