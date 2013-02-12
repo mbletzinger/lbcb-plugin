@@ -5,6 +5,7 @@ doC = ccfg.doCalculations;
 funcs = ccfg.calculationFunctions;
 
 if  doC(1)
+    prdisp =[];
     for l = 1: me.cdp.numLbcbs()
         if isempty(prevStep) == false
             pcps = prevStep.lbcbCps{l};
