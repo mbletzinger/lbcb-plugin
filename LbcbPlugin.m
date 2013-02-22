@@ -22,7 +22,7 @@ function varargout = LbcbPlugin(varargin)
 
 % Edit the above text to modify the response to help LbcbPlugin
 
-% Last Modified by GUIDE v2.5 01-May-2012 06:52:40
+% Last Modified by GUIDE v2.5 22-Feb-2013 09:50:59
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -874,3 +874,24 @@ if ddisp.isDisplaying('RyStepL1')
 else
     ddisp.openDisplay('RyStepL1');
 end
+
+
+% --------------------------------------------------------------------
+function Control_Callback(hObject, eventdata, handles)
+% hObject    handle to Control (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --------------------------------------------------------------------
+function Triggering_Callback(hObject, eventdata, handles)
+% hObject    handle to Triggering (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --------------------------------------------------------------------
+function Vamping_Callback(hObject, eventdata, handles)
+% hObject    handle to Vamping (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
