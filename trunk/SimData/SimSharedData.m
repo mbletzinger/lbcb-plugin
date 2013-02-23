@@ -24,9 +24,9 @@ classdef SimSharedData < handle
     methods
         function me = SimSharedData()
             size = 20;
-            me.targetHist = CellFifo(size);
-            me.substepHist = CellFifo(size);
-            me.executeHist = CellFifo(size);
+            me.targetHist = StepFifo(size);
+            me.substepHist = StepFifo(size);
+            me.executeHist = StepFifo(size);
         end
         function step = get.prevStepTgt(me)
             step = me.targetHist.get(2);
