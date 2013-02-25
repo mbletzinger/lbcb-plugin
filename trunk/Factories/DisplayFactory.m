@@ -7,6 +7,7 @@ classdef DisplayFactory < handle
         checkHndls
         dat
         cdp
+        stats
     end
     methods
         function me = DisplayFactory(handle)
@@ -192,6 +193,14 @@ classdef DisplayFactory < handle
             ref.cdp = me.cdp;
             me.addDisplay('MzStepL2',ref,me.mainDisp.MzStepL2);               
 
+            ref = LoadProtocolPlot(0,me.dat,1);
+            me.addDisplay('LBCB 1 Dx Load Protocol',ref,me.mainDisp.DxLoadPL1);               
+            ref = LoadProtocolPlot(0,me.dat,2);
+            me.addDisplay('LBCB 1 Dy Load Protocol',ref,me.mainDisp.DyLoadPL1);               
+            ref = LoadProtocolPlot(1,me.dat,1);
+            me.addDisplay('LBCB 2 Dx Load Protocol',ref,me.mainDisp.DxLoadPL2);               
+            ref = LoadProtocolPlot(1,me.dat,2);
+            me.addDisplay('LBCB 2 Dy Load Protocol',ref,me.mainDisp.DyLoadPL2);               
             
             ref = ResponseTable('L1ResponseTable',1);
             ref.cdp = me.cdp;
@@ -220,6 +229,8 @@ classdef DisplayFactory < handle
             ref = ArchTable('DerivedTable');
             ref.cdp = me.cdp;
             me.addDisplay('DerivedTable',ref,me.mainDisp.DerivedTable);
+            ref = StatsTable(me.stats);
+            me.addDisplay('Test Statistics',ref,me.mainDisp.TestStatistics);
         end
         function yes = isDisplaying(me,name)
             ref = me.disps{me.dispIdxs.get(name)};

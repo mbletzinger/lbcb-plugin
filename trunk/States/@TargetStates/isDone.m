@@ -15,8 +15,11 @@ switch a
     case 'GET TARGET'
         me.getTarget();
     case 'EXECUTE SUBSTEPS'
+        stp = me.dat.curStepTgt.stepNum.step;
+        me.stats.stepStart(stp);
         me.executeSubsteps();
     case 'SEND TARGET RESPONSE'
+        me.stats.stepEnd();
         me.sendTargetResponses();
     case 'ABORT SIMULATION'
         done = 1;

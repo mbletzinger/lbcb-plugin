@@ -15,6 +15,9 @@ classdef TimeCalculator < handle
             me.pinterval = 0;
         end
         function time2Pause(me,p)
+            if me.paused == p
+                return;
+            end
             me.paused = p;
             if(p)
                 me.ptime = cputime;

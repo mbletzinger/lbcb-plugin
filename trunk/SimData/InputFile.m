@@ -6,6 +6,7 @@ classdef  InputFile < Substeps
         log = Logger('InputFile');
         sdf = [];
         cdp
+        stats
     end
     methods
         function me = InputFile(sdf)
@@ -44,6 +45,7 @@ classdef  InputFile < Substeps
             tic;
             [lgth dummy] = size(tgts); %#ok<NASGU>
             intermVar = cell(lgth,1);
+            me.stats.totalSteps = lgth;
             for t = 1:lgth
                 tgt1 = Target;
                 tgt2 = Target;
