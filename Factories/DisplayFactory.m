@@ -8,6 +8,7 @@ classdef DisplayFactory < handle
         dat
         cdp
         stats
+        loadP
     end
     methods
         function me = DisplayFactory(handle)
@@ -193,13 +194,22 @@ classdef DisplayFactory < handle
             ref.cdp = me.cdp;
             me.addDisplay('MzStepL2',ref,me.mainDisp.MzStepL2);               
 
+            me.loadP = cell(4,1);
+            p = 1;
             ref = LoadProtocolPlot(0,me.dat,1);
+            me.loadP{p} = ref;
+            p = p+1;
             me.addDisplay('LBCB 1 Dx Load Protocol',ref,me.mainDisp.DxLoadPL1);               
             ref = LoadProtocolPlot(0,me.dat,2);
+            me.loadP{p} = ref;
+            p = p+1;
             me.addDisplay('LBCB 1 Dy Load Protocol',ref,me.mainDisp.DyLoadPL1);               
             ref = LoadProtocolPlot(1,me.dat,1);
+            me.loadP{p} = ref;
+            p = p+1;
             me.addDisplay('LBCB 2 Dx Load Protocol',ref,me.mainDisp.DxLoadPL2);               
             ref = LoadProtocolPlot(1,me.dat,2);
+            me.loadP{p} = ref;
             me.addDisplay('LBCB 2 Dy Load Protocol',ref,me.mainDisp.DyLoadPL2);               
             
             ref = ResponseTable('L1ResponseTable',1);
@@ -235,6 +245,11 @@ classdef DisplayFactory < handle
         function yes = isDisplaying(me,name)
             ref = me.disps{me.dispIdxs.get(name)};
             yes = ref.plot.isDisplayed;
+        end
+        function setInput(me,steps,start)
+            for p = 1:length(me.loadP)
+                me.loadP{p}.setLoadP(steps,start);
+            end
         end
         function closeDisplay(me,name)
             i = me.dispIdxs.get(name);
