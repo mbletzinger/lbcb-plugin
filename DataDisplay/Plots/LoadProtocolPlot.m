@@ -40,12 +40,14 @@ classdef LoadProtocolPlot < DisplayControl
             end
             me.currentStep = start;
             me.start = start;
+            if me.isDisplayed
+                me.displayData();
+            end
         end
         function displayMe(me)
             me.fig = figure('DeleteFcn',{'DisplayFactory.dispDeleted', me.name },...
                 'Name',me.name,...
-                'Position', [0 0 1000 200],...
-                'Menubar','none'....
+                'Position', [0 0 1000 200]...
                 );
             ax = axes();
             hold on;
@@ -56,9 +58,12 @@ classdef LoadProtocolPlot < DisplayControl
             xlabel('Step'); ylabel(me.ylab);
             set(ax, 'XGrid', 'on');
             set(ax, 'YGrid', 'on');
+            set(ax,'YLimMode','auto');
+            set(ax,'YLimMode','auto');
+            set(ax,'XLimMode','auto');
             ls = get(me.grp,'Children');
             set(ls(1),'MarkerFaceColor','auto');
-            set(ls(1),'MarkerSize',12);
+            set(ls(1),'MarkerSize',10);
             me.isDisplayed = true;
             me.displayData();
         end

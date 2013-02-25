@@ -4,8 +4,8 @@ classdef StatsTable < DisplayControl
         table = [];
         stats
         log = Logger('StatsTable');
-        width = 500
-        height = 150
+        width = 400
+        height = 100
         data
         plot
     end
@@ -29,11 +29,14 @@ classdef StatsTable < DisplayControl
         end
         function displayMe(me)
             
-            me.fig = figure('Position',[100 100 (me.width + 4) (me.height + 4)], 'Name', me.name,'DeleteFcn',{'DisplayFactory.dispDeleted', me.name });
+            me.fig = figure('Position',[100 100 (me.width + 4) (me.height + 4)],...
+                'Name', me.name,...
+                'Menubar','none',....
+                'DeleteFcn',{'DisplayFactory.dispDeleted', me.name });
             me.table = uitable('Parent',me.fig,...
                 'Position',[0 0 me.width me.height ],...
                 'ColumnFormat',{'char', 'char'}, ...
-                'FontSize',18,...
+                'FontSize',14,...
                 'ColumnName',[],...
                 'RowName',[],...
                 'ColumnWidth',{ me.width * 0.6 me.width * 0.4});
@@ -47,7 +50,11 @@ classdef StatsTable < DisplayControl
         function update(me,~)
             rs = me.stats.remainingSteps();
             me.data{1,2} = sprintf('%d', me.stats.currentStepNum);
-            me.data{2,2} = sprintf('%d of %d',me.stats.currentStep - 1,me.stats.totalSteps);
+            stp = me.stats.currentStep -1;
+            if stp < 0
+                stp = 0;
+            end
+            me.data{2,2} = sprintf('%d of %d',stp,me.stats.totalSteps);
             ast = me.stats.averageStepTime();
             me.data{3,2} = ast.toString();
             millis = ast.millis * rs;

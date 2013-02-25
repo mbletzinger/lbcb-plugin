@@ -196,22 +196,22 @@ classdef DisplayFactory < handle
 
             me.loadP = cell(4,1);
             p = 1;
-            ref = LoadProtocolPlot(0,me.dat,1);
+            ref = LoadProtocolPlot(true,me.dat,1);
             me.loadP{p} = ref;
             p = p+1;
             ref.cdp = me.cdp;
             me.addDisplay('LBCB 1 Dx Load Protocol',ref,me.mainDisp.DxLoadPL1);               
-            ref = LoadProtocolPlot(0,me.dat,2);
+            ref = LoadProtocolPlot(true,me.dat,2);
             me.loadP{p} = ref;
             p = p+1;
             ref.cdp = me.cdp;
             me.addDisplay('LBCB 1 Dy Load Protocol',ref,me.mainDisp.DyLoadPL1);               
-            ref = LoadProtocolPlot(1,me.dat,1);
+            ref = LoadProtocolPlot(false,me.dat,1);
             me.loadP{p} = ref;
             p = p+1;
             ref.cdp = me.cdp;
             me.addDisplay('LBCB 2 Dx Load Protocol',ref,me.mainDisp.DxLoadPL2);               
-            ref = LoadProtocolPlot(1,me.dat,2);
+            ref = LoadProtocolPlot(false,me.dat,2);
             me.loadP{p} = ref;
             ref.cdp = me.cdp;
             me.addDisplay('LBCB 2 Dy Load Protocol',ref,me.mainDisp.DyLoadPL2);               
