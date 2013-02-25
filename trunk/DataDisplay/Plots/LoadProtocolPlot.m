@@ -12,6 +12,7 @@ classdef LoadProtocolPlot < DisplayControl
         dof
         lbcb
         plot
+        cdp
     end
     methods
         function me = LoadProtocolPlot(isLbcb1, dat, dof)
@@ -23,11 +24,14 @@ classdef LoadProtocolPlot < DisplayControl
             colorLabels = { 'r','b','g','k','c','m','y' };
             me.par = { 0, 0,sprintf('-%s',colorLabels{dof}), 0, 0,sprintf('d%s',colorLabels{dof}) };
             me.ylab = me.lbl{dof};
-            me.name = sprintf('LBCB %d %s Load Protocol',lbcb, me.ylab);
+            me.name = sprintf('LBCB %d %s Load Protocol',me.lbcb, me.ylab);
             me.plot = me;
         end
         
         function setLoadP(me, steps,start)
+            if me.lbcb > me.cdp.numLbcbs()
+                return;
+            end
             me.loadP = zeros(length(steps),1);
             me.steps = zeros(length(steps),1);
             for s = 1: length(steps)
