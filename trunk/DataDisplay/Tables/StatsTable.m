@@ -45,6 +45,7 @@ classdef StatsTable < DisplayControl
             set(me.table,'Position',tpos);
         end
         function update(me,~)
+            rs = me.stats.remainingSteps();
             me.data{1,2} = sprintf('%d', me.stats.currentStepNum);
             me.data{2,2} = sprintf('%d of %d',me.stats.currentStep - 1,me.stats.totalSteps);
             ast = me.stats.averageStepTime();

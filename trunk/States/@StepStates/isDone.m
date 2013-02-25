@@ -75,7 +75,6 @@ switch a
         me.arch.archive(me.dat.curStepData);
         me.gui.ddisp.updateAll(me.dat.curStepData);
         me.gui.updateStepState(me.currentAction.idx)
-        me.gui.updateTimer(); %BG
         me.log.debug(dbstack,sprintf('Current Response: %s', ...
             me.dat.curStepData.toString()));
         if me.gettingInitialPosition
