@@ -74,7 +74,7 @@ classdef StartStopBroadcaster < BroadcasterState
             me.connectionStatus.setState('ERRORED');
             me.statusErrored();
             me.gui.colorRunButton('BROKEN'); % Pause the simulation
-            me.gui.colorButton('TRIGGER','BROKEN');
+            me.gui.menuCheck('TRIGGER',false);
             me.currentAction.setState('DONE');
             me.log.error(dbstack,...
                 sprintf('Trigger Broadcaster has been shut down due to errors'));
@@ -82,13 +82,13 @@ classdef StartStopBroadcaster < BroadcasterState
     end
     methods (Access=private)
         function startBroadcaster(me)
-            me.gui.colorButton('TRIGGER','ON');
+            me.gui.menuCheck('TRIGGER',true);
             me.connectionStatus.setState('CONNECTED');
             me.currentAction.setState('DONE');
         end
         function stopBroadcaster(me)
             me.connectionStatus.setState('DISCONNECTED');
-            me.gui.colorButton('TRIGGER','OFF');
+            me.gui.menuCheck('TRIGGER',false);
             me.currentAction.setState('DONE');
         end
     end

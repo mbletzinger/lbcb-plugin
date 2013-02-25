@@ -3,18 +3,19 @@ classdef StatsTable < DisplayControl
         name = '';
         table = [];
         stats
-        cdp
         log = Logger('StatsTable');
         width = 500
         height = 150
         data
+        plot
     end
     methods
-        function me = StatsTable()
+        function me = StatsTable(stats)
             me.name = 'Test Statistics';
+            me.stats = stats;
             rnames = {'Current Step';...
                 'Finished';...
-                'Average Step Time';... 
+                'Average Step Time';...
                 'Estimated Time Remaining'...
                 };
             me.data = cell(length(rnames),2);
@@ -23,9 +24,11 @@ classdef StatsTable < DisplayControl
             for i = 1:length(rnames)
                 me.data{i,2} = spacer;
             end
+            me.plot = me;
+            
         end
         function displayMe(me)
-
+            
             me.fig = figure('Position',[100 100 (me.width + 4) (me.height + 4)], 'Name', me.name,'DeleteFcn',{'DisplayFactory.dispDeleted', me.name });
             me.table = uitable('Parent',me.fig,...
                 'Position',[0 0 me.width me.height ],...
@@ -41,7 +44,7 @@ classdef StatsTable < DisplayControl
             tpos(3) = text(3);
             set(me.table,'Position',tpos);
         end
-        function update(me)
+        function update(me,~)
             me.data{1,2} = sprintf('%d', me.stats.currentStepNum);
             me.data{2,2} = sprintf('%d of %d',me.stats.currentStep - 1,me.stats.totalSteps);
             ast = me.stats.averageStepTime();

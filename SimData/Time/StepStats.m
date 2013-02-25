@@ -7,10 +7,9 @@ classdef StepStats < handle
         currentStepNum
     end
     methods
-        function me = StepStats(totalSteps)
+        function me = StepStats()
             me.stepCalc = TimeCalculator();
             me.stepTimes = TimeFifo(10);
-            me.totalSteps = totalSteps;
             me.currentStep = 0;
             me.currentStepNum = 0;
         end
