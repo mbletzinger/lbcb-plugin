@@ -23,7 +23,7 @@ classdef LoadProtocolPlot < DisplayControl
             colorLabels = { 'r','b','g','k','c','m','y' };
             me.par = { 0, 0,sprintf('-%s',colorLabels{dof}), 0, 0,sprintf('d%s',colorLabels{dof}) };
             me.ylab = me.lbl{dof};
-            me.name = sprintf('LBCB %d %s Load Protocol',me.ylab);
+            me.name = sprintf('LBCB %d %s Load Protocol',lbcb, me.ylab);
             me.plot = me;
         end
         
@@ -71,9 +71,11 @@ classdef LoadProtocolPlot < DisplayControl
     end
     methods (Access = private)
         function displayData(me)
-            ls = get(me.grp,'Children');
-            set(ls(2),'XData',me.steps,'YData',me.loadP);
-            set(ls(1),'XData',me.currentStep,'YData',me.loadP(me.currentStep - (me.start - 1)));
+            if length(me.loadP) > 1
+                ls = get(me.grp,'Children');
+                set(ls(2),'XData',me.steps,'YData',me.loadP);
+                set(ls(1),'XData',me.currentStep,'YData',me.loadP(me.currentStep - (me.start - 1)));
+            end
         end
     end
 end
