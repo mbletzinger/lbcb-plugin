@@ -12,5 +12,6 @@ if me.targetSource.isState('UI SIMCOR')
         return;
     end
 end
+me.stats.stepEnd();
 me.currentAction.setState('WAIT FOR TARGET');
 end

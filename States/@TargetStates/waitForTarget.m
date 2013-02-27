@@ -10,6 +10,8 @@ if me.targetSource.isState('INPUT FILE')
     steps = me.splitTarget();
     me.currentAction.setState('EXECUTE SUBSTEPS');
     me.stpEx.start(steps);
+        stp = me.dat.curStepTgt.stepNum.step;
+        me.stats.stepStart(stp);
     return;
 else
     if me.tgtRsp.isDone()
@@ -28,6 +30,8 @@ else
         steps = me.splitTarget();
         me.currentAction.setState('EXECUTE SUBSTEPS');
         me.stpEx.start(steps);
+        stp = me.dat.curStepTgt.stepNum.step;
+        me.stats.stepStart(stp);
     end
 end
 end

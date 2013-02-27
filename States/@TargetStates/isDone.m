@@ -10,10 +10,6 @@ switch a
         me.initialPosition();
     case 'WAIT FOR TARGET'
         me.waitForTarget();
-    case 'PROCESS TARGET'
-        me.processTarget();
-    case 'GET TARGET'
-        me.getTarget();
     case 'EXECUTE SUBSTEPS'
         me.executeSubsteps();
     case 'SEND TARGET RESPONSE'

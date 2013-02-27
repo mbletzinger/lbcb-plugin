@@ -48,14 +48,14 @@ classdef VampCheck < BroadcasterState
                 
                 me.mdlBroadcast.startStopVamp(0,stp);
                 me.vampStatus.setState('VAMPING');
-                me.gui.colorButton('VAMPING','ON');
+                me.gui.menuCheck('VAMP',true);
             end
         end
         function done = isDone(me)
             done = me.mdlBroadcast.isDone();
             if done
                 me.vampStatus.setState('STOPPED');
-                me.gui.colorButton('VAMPING','OFF');
+                me.gui.menuCheck('VAMP',false);
             end
         end
     end

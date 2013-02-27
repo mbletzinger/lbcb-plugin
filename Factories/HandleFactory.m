@@ -49,6 +49,9 @@ classdef HandleFactory <  handle
         % Display Windows
         ddisp = []
         
+        % Test Statistics
+        stats
+        
         
     end
     properties (Dependent = true)
@@ -125,9 +128,10 @@ classdef HandleFactory <  handle
             me.cl = CommandLimits(me.cfg);
             lc.cl = me.cl;
             lc.il = me.il;
-            
+            me.stats = StepStats();
+
             me.inF = InputFile(me.sdf);
-            
+            me.inF.stats = me.stats;
             me.arch = Archiver(me.cdp);
             me.cfg.dat = me.dat;
             me.cfg.arch = me.arch;
@@ -186,8 +190,9 @@ classdef HandleFactory <  handle
                     me.ed{c}.cdp = me.cdp;
                 end
             end
-            
+                        
             me.ddisp = DisplayFactory(handle);
+            me.ddisp.stats = me.stats;
             me.ddisp.cdp = me.cdp;
             %            dbgWin = DebugWindow;
             me.ddisp.dat = me.dat;
@@ -216,6 +221,7 @@ classdef HandleFactory <  handle
             
             me.tgtEx.stpEx = me.stpEx;
             me.tgtEx.inF = me.inF;
+            me.tgtEx.stats = me.stats;
             me.tgtEx.ocSimCor = me.ocSimCor;
             me.tgtEx.tgtRsp = me.tgtRsp;
             
@@ -256,6 +262,8 @@ classdef HandleFactory <  handle
             me.gui = LbcbPluginResults(handle,me);
             me.fillButtons(handle)
             me.gui.ddisp = me.ddisp;
+            me.gui.stats = me.stats;
+
             me.ddisp.initialize(handle);
             
             for c =1:length(me.omStates)
@@ -349,7 +357,6 @@ classdef HandleFactory <  handle
             bsrc.childHandles = {...
                 handle.ifButton,...
                 handle.scorButton,...
-                handle.srcnButton,...
                 };
             me.gui.bsrc = bsrc;
             bcor = CorrectionButtonGroupManagement(handle.correctionPanel);

@@ -22,6 +22,7 @@ if isempty(me.handles) == false
     me.stepHandles{3} = me.handles.CorrectionStep;
     me.msgHandle = me.handles.Messages;
     me.cmdTableHandle = me.handles.CommandTable;
+    me.triggerHandles = [me.handles.Triggering; me.handles.Vamping; me.handles.ArchiveOnOff];
     titleIm = imread('ImagesAndSounds/LbcbPluginBanner.png');
     axes(me.handles.titleImage);
     image(titleIm);

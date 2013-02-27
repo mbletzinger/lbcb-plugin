@@ -3,7 +3,7 @@ function  calculate(me,prevStep, curStep,initialPosition,correctionTarget)
 ccfg = StepCorrectionConfigDao(me.cdp.cfg);
 doC = ccfg.doCalculations;
 funcs = ccfg.calculationFunctions;
-
+prdisp = [];
 if  doC(1)
     prdisp =[];
     for l = 1: me.cdp.numLbcbs()

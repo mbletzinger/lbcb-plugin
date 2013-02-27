@@ -22,7 +22,7 @@ function varargout = LbcbPlugin(varargin)
 
 % Edit the above text to modify the response to help LbcbPlugin
 
-% Last Modified by GUIDE v2.5 07-Feb-2013 11:22:34
+% Last Modified by GUIDE v2.5 27-Feb-2013 08:51:58
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -346,23 +346,9 @@ else
 end
 
 
-% --- Executes on button press in vamping.
-function vamping_Callback(hObject, eventdata, handles)
-val = get(hObject,'Value');
-actions = getappdata(getLp(hObject),'actions');
-actions.processVamping(val);
-
-
 % --------------------------------------------------------------------
 function ArchiveOnOff_Callback(hObject, eventdata, handles)
 actions = getappdata(getLp(hObject),'actions');
-if strcmp(get(hObject, 'Checked'),'on')
-    %     actions.processArchiveOnOff(0);
-    set(hObject,'Checked','off');
-else
-    %     actions.processArchiveOnOff(1);
-    set(hObject,'Checked','on');
-end
 actions.processArchiveOnOff(get(hObject,'Checked'));
 
 % --------------------------------------------------------------------
@@ -684,7 +670,7 @@ actions.tolerances.fill();
 function CommandLimits_Callback(hObject, eventdata, handles)
 actions = getappdata(getLp(hObject),'actions');
 CommandLimitsConfig('step',actions.hfact.dat.nextStepData,...
-    'limits',actions.hfact.cl); 
+    'limits',actions.hfact.cl);
 
 
 function IncrementLimits_Callback(hObject, eventdata, handles)
@@ -695,7 +681,7 @@ IncrementLimitsConfig('cstep',actions.hfact.dat.nextStepData,...
 
 function MessageArchive_Callback(hObject, eventdata, handles)
 if strcmp(get(hObject, 'Checked'),'on')
-    set(hObject,'Checked','off'); 
+    set(hObject,'Checked','off');
 else
     set(hObject,'Checked','on');
 end
@@ -875,6 +861,84 @@ else
     ddisp.openDisplay('RyStepL1');
 end
 
+% --------------------------------------------------------------------
+function Triggering_Callback(hObject, eventdata, handles)
+val = get(hObject,'Checked');
+actions = getappdata(getLp(hObject),'actions');
+boolV = false;
+switch val
+    case 'off'
+        boolV = true;
+    case 'on'
+        boolV = false;
+end
+actions.processTriggering(boolV);
+
+
+% --------------------------------------------------------------------
+function Vamping_Callback(hObject, eventdata, handles)
+val = get(hObject,'Checked');
+actions = getappdata(getLp(hObject),'actions');
+boolV = false;
+switch val
+    case 'off'
+        boolV = true;
+    case 'on'
+        boolV = false;
+end
+actions.processVamping(boolV);
+
+
+% --------------------------------------------------------------------
+function TestStatistics_Callback(hObject, eventdata, handles)
+ddisp = getappdata(getLp(hObject),'ddisp');
+pltName = 'Test Statistics';
+if ddisp.isDisplaying(pltName)
+    ddisp.closeDisplay(pltName);
+else
+    ddisp.openDisplay(pltName);
+end
+
+% --------------------------------------------------------------------
+function DxLoadPL1_Callback(hObject, eventdata, handles)
+ddisp = getappdata(getLp(hObject),'ddisp');
+pltName = 'LBCB 1 Dx Load Protocol';
+if ddisp.isDisplaying(pltName)
+    ddisp.closeDisplay(pltName);
+else
+    ddisp.openDisplay(pltName);
+end
+
+% --------------------------------------------------------------------
+function DyLoadPL1_Callback(hObject, eventdata, handles)
+ddisp = getappdata(getLp(hObject),'ddisp');
+pltName = 'LBCB 1 Dy Load Protocol';
+if ddisp.isDisplaying(pltName)
+    ddisp.closeDisplay(pltName);
+else
+    ddisp.openDisplay(pltName);
+end
+
+% --------------------------------------------------------------------
+function DxLoadPL2_Callback(hObject, eventdata, handles)
+ddisp = getappdata(getLp(hObject),'ddisp');
+pltName = 'LBCB 2 Dx Load Protocol';
+if ddisp.isDisplaying(pltName)
+    ddisp.closeDisplay(pltName);
+else
+    ddisp.openDisplay(pltName);
+end
+
+% --------------------------------------------------------------------
+function DyLoadPL2_Callback(hObject, eventdata, handles)
+ddisp = getappdata(getLp(hObject),'ddisp');
+pltName = 'LBCB 2 Dy Load Protocol';
+if ddisp.isDisplaying(pltName)
+    ddisp.closeDisplay(pltName);
+else
+    ddisp.openDisplay(pltName);
+end
+
 
 % --------------------------------------------------------------------
 function SPSW_Callback(hObject, eventdata, handles)
@@ -988,3 +1052,4 @@ if ddisp.isDisplaying('Fz_error')
 else
     ddisp.openDisplay('Fz_error');
 end
+
