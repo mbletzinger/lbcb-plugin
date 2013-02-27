@@ -28,6 +28,9 @@ classdef StepStats < handle
             tm = me.stepCalc.time2Stop();
             me.stepTimes.push(tm);
         end
+        function tm = latestStepTime(me)
+            tm = me.stepCalc.get();
+        end
         function av = averageStepTime(me)
             av = me.stepTimes.average();
         end

@@ -55,8 +55,9 @@ classdef StatsTable < DisplayControl
                 stp = 0;
             end
             me.data{2,2} = sprintf('%d of %d',stp,me.stats.totalSteps);
+            tm = me.stats.latestStepTime();
+            me.data{3,2} = tm.toString();
             ast = me.stats.averageStepTime();
-            me.data{3,2} = ast.toString();
             millis = ast.millis * rs;
             tm = TimeRep(millis);
             me.data{4,2} = tm.toString();
