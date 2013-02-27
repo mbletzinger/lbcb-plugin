@@ -23,7 +23,11 @@ classdef TimeFifo < CellFifo
                 if isempty(me.fifo{i})
                     break;
                 end
-                millis = millis + me.fifo{i}.millis;
+                millisi = me.fifo{i}.milli;
+                if millisi > 20
+                    break;
+                end
+                millis = millis + millisi;
                 noT = noT + 1;
             end
             tm = TimeRep(millis/noT);
