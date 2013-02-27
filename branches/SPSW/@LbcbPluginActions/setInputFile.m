@@ -17,6 +17,7 @@ if done
     me.hfact.tgtEx.inF = iF;
     me.hfact.tgtEx.targetSource.setState('INPUT FILE');
     me.hfact.gui.updateSource(1);
+    me.hfact.ddisp.setInput(iF.steps,strtStep);
     me.alreadyStarted = false;
     me.currentSimExecute.setState('DONE');
 else

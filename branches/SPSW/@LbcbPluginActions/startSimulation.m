@@ -10,5 +10,4 @@ if isempty(me.hfact.mdlLbcb.simcorTcp)
 end
     me.hfact.tgtEx.start();
     me.alreadyStarted = true;
-    me.hfact.gui.startTimer();
 end

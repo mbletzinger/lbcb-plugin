@@ -2,10 +2,10 @@ classdef LbcbPluginResults < handle
     properties
         handles = [];
         hfact = [];
-        stepHandles = cell(2,1);
-        stepTimes = []; % BG
+        stepHandles = cell(3,1);
         msgHandle = [];
         cmdTableHandle = [];
+        triggerHandles = zeros(2,1)
         shuttingDown;
         tolerances;
         
@@ -17,8 +17,7 @@ classdef LbcbPluginResults < handle
             });
         buttonName = StateEnum({...
             'CONNECT OM',...
-            'CONNECT SIMCOR',...
-            'TRIGGER'...
+            'CONNECT SIMCOR'...
             });
         lLabel = {'LBCB1' 'LBCB2'};
         dofLabel = {'Dx' 'Dy' 'Dz' 'Rx' 'Ry' 'Rz' 'Fx' 'Fy' 'Fz' 'Mx' 'My' 'Mz' };
@@ -28,19 +27,17 @@ classdef LbcbPluginResults < handle
         bstpst
         bsrc
         bcor
+        stats
     end
     methods
         function me  = LbcbPluginResults(handles,hfact)
             me.handles = handles;
             me.hfact = hfact;
             me.shuttingDown = false;
-            me.stepTimes = zeros(1,3);
         end
         initialize(me)
         updateStepTolerances(me,st)
         updateStepsDisplay(me,simStep)
-        updateTimer(me); %BG
-        startTimer(me); %BG
         updateCommandTable(me)
         colorButton(me,buttonName,bs)
         addMessage(me,msg)
@@ -48,6 +45,8 @@ classdef LbcbPluginResults < handle
         updateCommands(me,ssd)
         blinkAcceptButton(me,on)
         colorAutoAcceptButton(me,on)
+        colorRunButton(me,bs)
+        menuCheck(me,menuName,isOn)
         updateStepState(me,idx)
         updateSimState(me,idx)
         updateSource(me,idx)        
