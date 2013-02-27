@@ -23,7 +23,7 @@ classdef TimeFifo < CellFifo
                 if isempty(me.fifo{i})
                     break;
                 end
-                millisi = me.fifo{i}.milli;
+                millisi = me.fifo{i}.millis;
                 if millisi > 20
                     break;
                 end
