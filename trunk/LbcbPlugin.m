@@ -22,7 +22,7 @@ function varargout = LbcbPlugin(varargin)
 
 % Edit the above text to modify the response to help LbcbPlugin
 
-% Last Modified by GUIDE v2.5 24-Feb-2013 18:52:17
+% Last Modified by GUIDE v2.5 26-Feb-2013 13:07:13
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -937,4 +937,44 @@ if ddisp.isDisplaying(pltName)
     ddisp.closeDisplay(pltName);
 else
     ddisp.openDisplay(pltName);
+end
+
+
+% --------------------------------------------------------------------
+function MeasuredStiffness_Callback(hObject, eventdata, handles)
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('MeasuredStiffness')
+    ddisp.closeDisplay('MeasuredStiffness');
+else
+    ddisp.openDisplay('MeasuredStiffness');
+end
+
+
+% --------------------------------------------------------------------
+function PredictedFx_Callback(hObject, eventdata, handles)
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('PredictedFx')
+    ddisp.closeDisplay('PredictedFx');
+else
+    ddisp.openDisplay('PredictedFx');
+end
+
+
+% --------------------------------------------------------------------
+function CoupledWallShears_Callback(hObject, eventdata, handles)
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('CoupledWallShears')
+    ddisp.closeDisplay('CoupledWallShears');
+else
+    ddisp.openDisplay('CoupledWallShears');
+end
+
+
+% --------------------------------------------------------------------
+function PredictedFy_Callback(hObject, eventdata, handles)
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('PredictedFy')
+    ddisp.closeDisplay('PredictedFy');
+else
+    ddisp.openDisplay('PredictedFy');
 end

@@ -57,34 +57,49 @@ classdef DisplayFactory < handle
 %             ref.cdp = me.cdp;
 %             me.addDisplay('OutOfPlaneRotations',ref,me.mainDisp.OutOfPlaneRotations);
 % 
-%             ref = MultiDofStepPlot('Forces',{'Fx','Fy','Fz'},'kips',1,0);
-%             ref.cdp = me.cdp;
-%             me.addDisplay('Forces',ref,me.mainDisp.Forces);
-%             
-%             ref = MultiDofStepPlot('Moments',{'Mx','Mz'},'kip*inches',1,0);
-%             ref.cdp = me.cdp;
-%             me.addDisplay('Moments',ref,me.mainDisp.Moments);
+            ref = MultiDofStepPlot('Forces',{'Fx','Fy','Fz'},'kips',1,0);
+            ref.cdp = me.cdp;
+            me.addDisplay('Forces',ref,me.mainDisp.Forces);
             
-            % ref = MultiDofStepPlot('MxCorrections',{'ProposedMx','MeasuredMx'},'kip*inches',1,0);
-            % ref.cdp = me.cdp;
-            % me.addDisplay('MxCorrections',ref,me.mainDisp.MxCorrections);
+            ref = MultiDofStepPlot('Moments',{'Mx','My','Mz'},'kip*inches',1,0);
+            ref.cdp = me.cdp;
+            me.addDisplay('Moments',ref,me.mainDisp.Moments);
             
-            % ref = MultiDofStepPlot('MyCorrections',{'ProposedMy','MeasuredMy'},'kip*inches',1,0);
-            % ref.cdp = me.cdp;
-            % me.addDisplay('MyCorrections',ref,me.mainDisp.MyCorrections);
-% % 
-            % ref = MultiDofStepPlot('Eccentricities',{'MeasuredMoment2ShearX', 'MeasuredMoment2ShearY'},'inches',1,0);
-            % ref.cdp = me.cdp;
-            % me.addDisplay('Eccentricities',ref,me.mainDisp.Eccentricities);
+            ref = MultiDofStepPlot('MxCorrections',{'ProposedMx','MeasuredMx'},'kip*inches',1,0);
+            ref.cdp = me.cdp;
+            me.addDisplay('MxCorrections',ref,me.mainDisp.MxCorrections);
+            
+            ref = MultiDofStepPlot('MyCorrections',{'ProposedMy','MeasuredMy'},'kip*inches',1,0);
+            ref.cdp = me.cdp;
+            me.addDisplay('MyCorrections',ref,me.mainDisp.MyCorrections);
 % 
-%             ref = MultiDofStepPlot('CoupledWallAxialLoad',{'MeasuredFz', 'ProposedFz', 'C_AxialLoad'},'kip',1,0);
-%             ref.cdp = me.cdp;
-%             me.addDisplay('CoupledWallAxialLoad',ref,me.mainDisp.CoupledWallAxialLoad);
-% % % 
-%             ref = MultiDofStepPlot('CoupledWallMoments',{'System_BaseMoment', 'System_ThirdStoryMoment', 'C_ThirdStoryMoment'},'kip*inches',1,0);
-%             ref.cdp = me.cdp;
-%             me.addDisplay('CoupledWallMoments',ref,me.mainDisp.CoupledWallMoments);            
+            ref = MultiDofStepPlot('Eccentricities',{'MeasuredMoment2ShearX', 'MeasuredMoment2ShearY'},'inches',1,0);
+            ref.cdp = me.cdp;
+            me.addDisplay('Eccentricities',ref,me.mainDisp.Eccentricities);
 
+            ref = MultiDofStepPlot('CoupledWallAxialLoad',{'MeasuredFz', 'ProposedFz', 'C_AxialLoad'},'kip',1,0);
+            ref.cdp = me.cdp;
+            me.addDisplay('CoupledWallAxialLoad',ref,me.mainDisp.CoupledWallAxialLoad);
+% % 
+            ref = MultiDofStepPlot('CoupledWallMoments',{'System_BaseMoment', 'System_ThirdStoryMoment', 'C_ThirdStoryMoment'},'kip*inches',1,0);
+            ref.cdp = me.cdp;
+            me.addDisplay('CoupledWallMoments',ref,me.mainDisp.CoupledWallMoments);            
+% % 
+            ref = MultiDofStepPlot('CoupledWallShears',{'System_BaseShear', 'C_BaseShear'},'kip*inches',1,0);
+            ref.cdp = me.cdp;
+            me.addDisplay('CoupledWallShears',ref,me.mainDisp.CoupledWallShears); 
+% % 
+            ref = MultiDofStepPlot('PredictedFx',{'PredictedFx','MeasuredFx'},'kip*inches',1,0);
+            ref.cdp = me.cdp;
+            me.addDisplay('PredictedFx',ref,me.mainDisp.PredictedFx);        
+% % 
+            ref = MultiDofStepPlot('PredictedFy',{'PredictedFy','MeasuredFy'},'kip*inches',1,0);
+            ref.cdp = me.cdp;
+            me.addDisplay('PredictedFy',ref,me.mainDisp.PredictedFy);       
+% % 
+            ref = MultiDofStepPlot('MeasuredStiffness',{'K11','Kmax11','K22','Kmax22'},'kip*inches',1,0);
+            ref.cdp = me.cdp;
+            me.addDisplay('MeasuredStiffness',ref,me.mainDisp.MeasuredStiffness);      
 % 
             ref = VsPlot('RyVsLbcb1Dx',1,1,5);
             ref.cdp = me.cdp;
