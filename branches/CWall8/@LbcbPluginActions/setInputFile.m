@@ -1,0 +1,27 @@
+function         setInputFile(me,iF)
+done = 1;
+if isempty(iF)
+    [file path] = uigetfile('*.txt','Input File');
+    iF = me.hfact.inF;
+    strtStep = [];
+    if file == 0
+        return;
+    end
+    while isempty(strtStep)
+        a = inputdlg('Starting Step Number?','Starting Step Number',1,{'1'});
+        strtStep = sscanf(a{1},'%d');
+    end
+    done = iF.load(fullfile(path,file),strtStep);
+end
+if done
+    me.hfact.tgtEx.inF = iF;
+    me.hfact.tgtEx.targetSource.setState('INPUT FILE');
+    me.hfact.gui.updateSource(1);
+    me.hfact.ddisp.setInput(iF.steps,strtStep);
+    me.alreadyStarted = false;
+    me.currentSimExecute.setState('DONE');
+else
+    me.hfact.tgtEx.targetSource.setState('NONE');
+    
+end
+end
