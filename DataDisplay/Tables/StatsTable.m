@@ -15,6 +15,7 @@ classdef StatsTable < DisplayControl
             me.stats = stats;
             rnames = {'Current Step';...
                 'Finished';...
+                'Current Step Time';...
                 'Average Step Time';...
                 'Estimated Time Remaining'...
                 };
@@ -47,10 +48,18 @@ classdef StatsTable < DisplayControl
             tpos(3) = text(3);
             set(me.table,'Position',tpos);
         end
-        function update(me,~)
+        function update(me,target)
+            if me.stats.ended == false
+                return;
+            end
+                
             rs = me.stats.remainingSteps();
-            me.data{1,2} = sprintf('%d', me.stats.currentStepNum);
-            stp = me.stats.currentStep -1;
+            stepn =  me.stats.currentStepNum;
+            if stepn > 0
+                stepn = stepn + 1;
+            end
+            me.data{1,2} = sprintf('%d',stepn);
+            stp = me.stats.currentStep;
             if stp < 0
                 stp = 0;
             end
@@ -58,9 +67,10 @@ classdef StatsTable < DisplayControl
             tm = me.stats.latestStepTime();
             me.data{3,2} = tm.toString();
             ast = me.stats.averageStepTime();
+            me.data{4,2} = ast.toString();
             millis = ast.millis * rs;
             tm = TimeRep(millis);
-            me.data{4,2} = tm.toString();
+            me.data{5,2} = tm.toString();
             if me.isDisplayed
                 set(me.table,'Data',me.data);
             end
