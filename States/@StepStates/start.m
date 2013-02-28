@@ -6,4 +6,6 @@ me.currentAction.setState('NEXT STEP');
 me.statusBusy();
 me.started = true;
 me.nxtStep.start();
+stp = me.dat.curStepTgt.stepNum.step;
+me.stats.stepStart(stp);
 end

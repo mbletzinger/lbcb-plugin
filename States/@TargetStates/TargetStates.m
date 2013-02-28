@@ -11,7 +11,6 @@ classdef TargetStates < SimStates
         inF = [];
         startStep
         log = Logger('TargetStates');
-        stats
     end
     methods
         function me = TargetStates()

@@ -10,8 +10,6 @@ if me.targetSource.isState('INPUT FILE')
     steps = me.splitTarget();
     me.currentAction.setState('EXECUTE SUBSTEPS');
     me.stpEx.start(steps);
-        stp = me.dat.curStepTgt.stepNum.step;
-        me.stats.stepStart(stp);
     return;
 else
     if me.tgtRsp.isDone()
@@ -25,7 +23,7 @@ else
             me.currentAction.setState('ABORT SIMULATION');
             return;
         end
-        me.tgtRsp.target.transformCommand();        
+        me.tgtRsp.target.transformCommand();
         me.dat.stepTgtShift(me.tgtRsp.target);
         steps = me.splitTarget();
         me.currentAction.setState('EXECUTE SUBSTEPS');

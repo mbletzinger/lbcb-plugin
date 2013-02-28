@@ -24,7 +24,7 @@ classdef TimeFifo < CellFifo
                     break;
                 end
                 millisi = me.fifo{i}.millis;
-                if millisi > 20
+                if millisi > 1200
                     break;
                 end
                 millis = millis + millisi;
