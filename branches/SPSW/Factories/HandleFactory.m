@@ -218,10 +218,10 @@ classdef HandleFactory <  handle
             me.stpEx.brdcstRsp = me.brdcstRsp;
             me.stpEx.acceptStp = me.acceptStp;
             me.stpEx.corrections = me.corrections;
-            
+            me.stpEx.stats = me.stats;
+
             me.tgtEx.stpEx = me.stpEx;
             me.tgtEx.inF = me.inF;
-            me.tgtEx.stats = me.stats;
             me.tgtEx.ocSimCor = me.ocSimCor;
             me.tgtEx.tgtRsp = me.tgtRsp;
             

@@ -83,16 +83,16 @@ switch a
         else
             me.corrections.determineCorrections(me.dat.correctionTarget, ...
                 me.dat.curStepData);
-             if isempty(me.gui) == false
+            if isempty(me.gui) == false
                 me.gui.updateCorrections();
             end
             if (me.corrections.needsCorrection() == false)...
                     && me.needsTriggering()
-                    me.brdcstRsp.start(me.dat.curStepData);
+                me.brdcstRsp.start(me.dat.curStepData);
                 me.currentAction.setState('BROADCAST TRIGGER');
             else
                 me.nxtStep.start();
-             me.currentAction.setState('NEXT STEP');
+                me.currentAction.setState('NEXT STEP');
             end
             me.gui.updateStepTolerances();
         end
