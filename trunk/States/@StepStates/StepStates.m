@@ -12,6 +12,8 @@ classdef StepStates < SimStates
         st
         started
         corrections
+        stats
+        
     end
     methods
         function me = StepStates()

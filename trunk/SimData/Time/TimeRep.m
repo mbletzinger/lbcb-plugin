@@ -9,16 +9,16 @@ classdef TimeRep < handle
         function str = toString(me)
             hours=floor(me.millis/3600);
             mins=floor((me.millis-hours*3600)/60);
-            secs=me.millis-hours*3600-mins*60;
+            secs=round(me.millis-hours*3600-mins*60);
             
             str = '';
             if(hours >= 1)
                 str = sprintf('%d:',hours);
             end
             if(mins >= 1)
-                str = sprintf('%s%d:',str,mins);
+                str = sprintf('%s%02d:',str,mins);
             end
-            str = sprintf('%s%5.3f',str,secs);
+            str = sprintf('%s%02d',str,secs);
         end
     end
 end
