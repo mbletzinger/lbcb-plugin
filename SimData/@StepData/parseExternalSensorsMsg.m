@@ -8,16 +8,16 @@ values = zeros(numChannels,1);
 recv = regexp(msg,'\t','split');
 MDLVals = cell(numChannels,3);
 sz = length(recv);
-if sz ~= numChannels*3
-    me.log.error(dbstack,'External Sensors are misconfigured');
-    nameStr = '';
-    for n = 1:length(names)
-        nameStr = sprintf('%s"%s",',nameStr,names{n});
-    end
-    me.log.debug(dbstack, sprintf('Specified Channels [%s]',nameStr));
-    me.log.debug(dbstack, sprintf('OM Msg [%s]',msg));
-    return;
-end
+% if sz ~= numChannels*3
+%     me.log.error(dbstack,'External Sensors are misconfigured');
+%     nameStr = '';
+%     for n = 1:length(names)
+%         nameStr = sprintf('%s"%s",',nameStr,names{n});
+%     end
+%     me.log.debug(dbstack, sprintf('Specified Channels [%s]',nameStr));
+%     me.log.debug(dbstack, sprintf('OM Msg [%s]',msg));
+%     return;
+% end
 for k=1:numChannels
     MDLVals{k,1}=recv{(k-1)*3 + 1};
     MDLVals{k,2}=recv{(k-1)*3+2};
