@@ -780,6 +780,11 @@ end
 % --------------------------------------------------------------------
 function LoadInput_Callback(hObject, eventdata, handles)
 actions = getappdata(getLp(hObject),'actions');
+log = getappdata(getLp(hObject),'log');
+if get(handles.RunHold, 'Value')
+    log.error(dbstack,'Need to stop the Simulation before reloading input file');
+    return;
+end
 actions.setInputFile({});
 
 
