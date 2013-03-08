@@ -17,7 +17,7 @@ if  cess == 0
     return;
 end
 
-if rem(substep,cess) == 0 && substep > 0
+if rem(substep,cess) == 0
     needsTriggering = true;
     return;
 end

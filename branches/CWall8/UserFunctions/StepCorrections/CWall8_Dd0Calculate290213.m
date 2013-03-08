@@ -2,9 +2,26 @@
 %       C Wall 8 Dd0 Calculate Function
 %       Andrew Mock
 %       Created May 2012
-%       Last edit - June 12, 2012 by amock
+%       Last edit - Jan 2013 by awmock
 %------------------------------------------------------------------------%
-function CWall8_Dd0Calculate(me,step)
+%
+%Change log:
+%  1/16/13 - added distinction for postive and negative Dy cracking
+%
+%Config variables called in this file:
+%  MxCorrectionFactor
+%  MyCorrectionFactor
+%  FzCorrectionFactor
+%  DyCrackingPos
+%  DyCrackingNeg
+%  SpecimenHeight
+%  AlphaEff
+%
+%Arch variables called in this file:
+%  PrevDx
+%  (PrevDy) assumed to exist...
+
+function CWall8_Dd0Calculate230213(me,step)
 me.log.debug(dbstack,'Running calculate fcn');
 %------------------------------------------------------------------------%
 %   Get configuration variables and force readings to perform calculations
@@ -16,7 +33,9 @@ fy = step.lbcbCps{1}.response.force(2);
 fz = step.lbcbCps{1}.response.force(3);
 mmx = step.lbcbCps{1}.response.force(4);
 mmy = step.lbcbCps{1}.response.force(5);
+mmz = step.lbcbCps{1}.response.force(6);
 
+%check existence of needed configuration variables
 if me.existsCfg('MxCorrectionFactor')
     cfmx = me.getCfg('MxCorrectionFactor');
 else
@@ -35,23 +54,19 @@ else
     cffz = 1;
 end
 
-if me.existsCfg('DyCracking')
-    y_crack = me.getCfg('DyCracking');
+%check for first step of protocol
+if me.existsArch('PrevDx')  
 else
-    y_crack = 0;
-end
-
-if me.existsArch('PrevDx')
-else
-    prevdx = 100
     me.putArch('PrevDx',100)
     me.putArch('PrevDy',100)
+    me.putArch('PrevDz',100)
+    me.putArch('PrevRx',100)
+    me.putArch('PrevRy',100)
+    me.putArch('PrevRz',100)
     me.putArch('DirectionX',1)
     me.putArch('DirectionY',1)
-        prevdy = 100
 end
 
-                    
 %------------------------------------------------------------------------%
 %Output total applied moments at base of wall
 %------------------------------------------------------------------------%
@@ -69,59 +84,111 @@ me.putArch('MyBot',myBot)
 %------------------------------------------------------------------------%
 % 2. Calculate base shear of system, V_base
 %------------------------------------------------------------------------%
+
+if me.existsCfg('DyCrackingPos')
+    y_crack_pos = me.getCfg('DyCrackingPos');
+else
+    y_crack_pos = 0.04;
+end
+
+if me.existsCfg('DyCrackingNeg')
+    y_crack_neg = me.getCfg('DyCrackingNeg');
+else
+    y_crack_neg = 0.04;
+end
+
+if me.existsCfg('VbaseCompRatio')
+    vbase_comp_ratio = me.getCfg('VbaseCompRatio');
+else
+    vbase_comp_ratio = 0.35;
+end
+
+if me.existsCfg('VbaseTensRatio')
+    vbase_tens_ratio = me.getCfg('VbaseTensRatio');
+else
+    vbase_tens_ratio = 0.65;
+end
+
+if me.existsCfg('MbaseCompRatio')
+    Mbase_comp_ratio = me.getCfg('MbaseCompRatio');
+else
+    Mbase_comp_ratio = 0.10;
+end
+
+if me.existsCfg('MbaseTensRatio')
+    Mbase_tens_ratio = me.getCfg('MbaseTensRatio');
+else
+    Mbase_tens_ratio = 0.10;
+end
+
+if me.existsCfg('MbaseCoupleRatio')
+    Mbase_couple_ratio = me.getCfg('MbaseCoupleRatio');
+else
+    Mbase_couple_ratio = 0.80;
+end
 V_base_C = fy;
 disp = step.lbcbCps{1}.response.ed.disp;    %Specimen (control sensor) dy response
 dy = disp(2);
 
-if abs(dy) < y_crack
-    V_base = V_base_C/0.5;      %Wall has not cracked in y.  Both Cs in the 
-                                %coupled core-wall system carry the same shear.
+if dy < y_crack_pos				
+	if dy > y_crack_neg 
+		V_base = V_base_C/0.5; 	%Wall has not cracked in y.  Both Cs in the 
+								%coupled core-wall system carry the same shear.
+	else
+		V_base = V_base_C/vbase_tens_ratio;  %The wall is in tension
+	end								
 else
-    if dy < y_crack
-        V_base = V_base_C/0.4;  %The wall is in tension and carries 40% of 
-                                %the base shear while the compression C 
-                                %carries 60% of the base shear.
-    end
-    if dy > -y_crack
-        V_base = V_base_C/0.6;  %The wall is in compression and carries 60% 
-                                %of the base shear while the tension C 
-                                %carries 40% of the base shear. 
-    end
+        V_base = V_base_C/vbase_comp_ratio;  %The wall is in compression 
 end
 
 %------------------------------------------------------------------------%
 % 3. Calculate third story moment, M_third
 %------------------------------------------------------------------------%
-if me.existsCfg('AlphaEff')
-    alpha = me.getCfg('AlphaEff');
+if me.existsCfg('AlphaTen')
+    alphaten = me.getCfg('AlphaTen');
 else
-    alpha = 0.71;
+    alphaten = 0.71;
+end
+if me.existsCfg('HeightTen')
+    hten = me.getCfg('HeightTen');
+else
+    hten = 480;
 end
 
-M_base = alpha*hgt*V_base;      %Base moment of coupled core-wall system
-M_third = alpha*M_base;
+M_base = alphaten*hten*V_base;      %Base moment of coupled core-wall system
+
+if me.existsCfg('Alpha3rd')
+    alphathird = me.getCfg('Alpha3rd');
+else
+    alphathird = 0.577;
+end
+M_third = alphathird*M_base;
 
 %------------------------------------------------------------------------%
 % 4. Apply moment to top of the specimen
 %------------------------------------------------------------------------%
 if dy < 0
-    M_top_C = 0.05*M_third;  	%The wall is in tension and carries 5% of 
-                                %the moment at the third story through flexure
+    M_top_C = Mbase_tens_ratio*M_third;  	%The wall is in tension
 else
-    M_top_C = 0.15*M_third;     %The wall is in compression and carries 15% 
-                                %of the moment at the third story through flexure
+    M_top_C = Mbase_comp_ratio*M_third;     %The wall is in compression
 end
 
 %------------------------------------------------------------------------%
 % 5. Determine axial load
 %------------------------------------------------------------------------%
-Lcouple = me.getCfg('CoupleLength');
+if me.existsCfg('CoupleLength')
+    Lcouple = me.getCfg('CoupleLength');
+else
+    Lcouple = 94.2;
+end
+
 fc = me.getCfg('CompressiveStrengthfc');
 Ag = me.getCfg('GrossArea');
+BeamWeight = me.getCfg('BeamWeight');
 if dy < 0
-    P_C = 0.8*M_third/Lcouple + 0.05*fc*Ag;	%Wall is in tension
+    P_C = Mbase_couple_ratio*M_third/Lcouple + 0.05*fc*Ag - BeamWeight;	%Wall is in tension
 else
-    P_C = 0.8*M_third/Lcouple + 0.05*fc*Ag;     %Wall is in compression
+    P_C = Mbase_couple_ratio*M_third/Lcouple + 0.05*fc*Ag - BeamWeight;     %Wall is in compression
 end
 
 %------------------------------------------------------------------------%
@@ -154,6 +221,9 @@ me.putArch('ProposedMy',pmy);
 me.putArch('MeasuredMy',mmy);
 me.putArch('ProposedFz',pfz);
 me.putArch('MeasuredFz',fz);
+me.putArch('MeasuredFx',fx);
+me.putArch('MeasuredFy',fy);
+me.putArch('MeasuredMz',mmz);
 me.putArch('System_BaseShear',V_base);
 me.putArch('System_BaseMoment',M_base);
 me.putArch('System_ThirdStoryMoment',M_third);
