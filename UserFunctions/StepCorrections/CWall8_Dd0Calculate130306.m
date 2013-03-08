@@ -121,14 +121,21 @@ else
     Mbase_tens_ratio = 0.10;
 end
 
+if me.existsCfg('MbaseCoupleRatio')
+    Mbase_couple_ratio = me.getCfg('MbaseCoupleRatio');
+else
+    Mbase_couple_ratio = 0.80;
+end
 V_base_C = fy;
 disp = step.lbcbCps{1}.response.ed.disp;    %Specimen (control sensor) dy response
 dy = disp(2);
+me.putArch('ED_Dy',dy);
 
 if dy < y_crack_pos				
 	if dy > y_crack_neg 
-		V_base = V_base_C/0.5; 	%Wall has not cracked in y.  Both Cs in the 
-								%coupled core-wall system carry the same shear.
+        %linear transition period between comp and tens shear ratios
+        transratio = (vbase_comp_ratio - vbase_tens_ratio)/(y_crack_pos - y_crack_neg)*dy + (vbase_comp_ratio - vbase_tens_ratio)/(y_crack_pos - y_crack_neg)*(-y_crack_neg) + vbase_tens_ratio;
+        V_base = V_base_C/transratio;
 	else
 		V_base = V_base_C/vbase_tens_ratio;  %The wall is in tension
 	end								
@@ -139,36 +146,52 @@ end
 %------------------------------------------------------------------------%
 % 3. Calculate third story moment, M_third
 %------------------------------------------------------------------------%
-if me.existsCfg('AlphaEff')
-    alpha = me.getCfg('AlphaEff');
+if me.existsCfg('AlphaTen')
+    alphaten = me.getCfg('AlphaTen');
 else
-    alpha = 0.71;
+    alphaten = 0.71;
+end
+if me.existsCfg('HeightTen')
+    hten = me.getCfg('HeightTen');
+else
+    hten = 480;
 end
 
-M_base = alpha*hgt*V_base;      %Base moment of coupled core-wall system
-M_third = alpha*M_base;
+M_base = alphaten*hten*V_base;      %Base moment of coupled core-wall system
+
 
 %------------------------------------------------------------------------%
-% 4. Apply moment to top of the specimen
+% 4. Distribute base moment to piers and couple
 %------------------------------------------------------------------------%
 if dy < 0
-    M_top_C = Mbase_tens_ratio*M_third;  	%The wall is in tension
+    M_base_C = Mbase_tens_ratio*M_base;  	%The wall is in tension
 else
-    M_top_C = Mbase_comp_ratio*M_third;     %The wall is in compression
-end
+    M_base_C = Mbase_comp_ratio*M_base;     %The wall is in compression
+end 
+
+M_base_couple = Mbase_couple_ratio*M_base;
 
 %------------------------------------------------------------------------%
-% 5. Determine axial load
+% 5. Find third story moment
 %------------------------------------------------------------------------%
-Lcouple = me.getCfg('CoupleLength');
+M_top_C = M_base_C - hgt*V_base_C;
+
+%------------------------------------------------------------------------%
+% 6. Find axial load of pier
+%------------------------------------------------------------------------%
+if me.existsCfg('CoupleLength')
+    Lcouple = me.getCfg('CoupleLength');
+else
+    Lcouple = 94.2;
+end
+P_couple = M_base_couple/Lcouple;
+
 fc = me.getCfg('CompressiveStrengthfc');
 Ag = me.getCfg('GrossArea');
 BeamWeight = me.getCfg('BeamWeight');
-if dy < 0
-    P_C = 0.8*M_third/Lcouple + 0.05*fc*Ag - BeamWeight;	%Wall is in tension
-else
-    P_C = 0.8*M_third/Lcouple + 0.05*fc*Ag - BeamWeight;     %Wall is in compression
-end
+P_gravity = 0.05*fc*Ag - BeamWeight;
+
+P_C = P_couple + P_gravity;
 
 %------------------------------------------------------------------------%
 %Calculate moment for current shear force and moment to shear ratio
@@ -192,6 +215,15 @@ pfz = fz + correction_fz * cffz;
 %------------------------------------------------------------------------%
 %Output proposed and measured moment values
 %------------------------------------------------------------------------%
+
+me.putArch('VbaseCRatio',vbase_tens_ratio);
+me.putArch('VbaseTRatio',vbase_comp_ratio);
+me.putArch('MbaseCRatio',Mbase_comp_ratio);
+me.putArch('MbaseTRatio',Mbase_tens_ratio);
+me.putArch('MbaseCoupleRatio',Mbase_couple_ratio);
+me.putArch('Pcouple',P_couple);
+me.putArch('Pgravity',P_gravity);
+
 me.putArch('CalculatedMx',cmx);
 me.putArch('ProposedMx',pmx);
 me.putArch('MeasuredMx',mmx);
@@ -205,7 +237,7 @@ me.putArch('MeasuredFy',fy);
 me.putArch('MeasuredMz',mmz);
 me.putArch('System_BaseShear',V_base);
 me.putArch('System_BaseMoment',M_base);
-me.putArch('System_ThirdStoryMoment',M_third);
+
 me.putArch('C_BaseShear',V_base_C);
 me.putArch('C_ThirdStoryMoment',M_top_C);
 me.putArch('C_AxialLoad',P_C);
@@ -235,7 +267,7 @@ str = sprintf('%s   Weak axis proposed Moment to Shear = %f, actual Moment to Sh
 str = sprintf('%s   \n',str);
 str = sprintf('%s   Coupled Wall Simulation Output:\n',str);
 str = sprintf('%s   Specimen axial load = %f, Specimen third story moment = %f\n',str,P_C,M_top_C);
-str = sprintf('%s   System base shear = %f, System base moment = %f, System third story moment = %f\n',str,V_base,M_base,M_third);
+str = sprintf('%s   System base shear = %f, System base moment = %f\n',str,V_base,M_base);
 me.log.debug(dbstack,str);
 
 end

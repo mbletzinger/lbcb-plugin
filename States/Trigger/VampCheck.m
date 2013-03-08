@@ -34,13 +34,19 @@ classdef VampCheck < BroadcasterState
                 end
             else
                 stp = me.dat.curStepData;
-                if isempty(stp)
+                if isempty(stp)                    
                     if me.cdp.numLbcbs() == 2
                         tgts = { Target Target };
                     else
                         tgts = { Target };
                     end
                     stp = me.sdf.target2StepData(tgts,9999,0);
+                    stp.lbcbCps{1}.response.lbcb.disp = (1.0:6.0);
+                    stp.lbcbCps{1}.response.ed.disp = (1.0:6.0);
+                    if me.cdp.numLbcbs() == 2
+                    stp.lbcbCps{1}.response.ed.disp = (1.0:6.0);
+                    stp.lbcbCps{1}.response.ed.disp = (1.0:6.0);
+                    end
                 end
                 if isempty(stp.stepNum)
                     stp.stepNum= StepNumber(9999,0,0);

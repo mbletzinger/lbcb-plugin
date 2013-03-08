@@ -11,7 +11,7 @@ if step.stepNum.isLastSubstep
     cbc = true;
     return;
 end
-if  substep == 0
+if  substep == 0 && cess ~= 1
     cbc = false;
     return;
 end
