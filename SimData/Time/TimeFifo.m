@@ -30,7 +30,11 @@ classdef TimeFifo < CellFifo
                 millis = millis + millisi;
                 noT = noT + 1;
             end
-            tm = TimeRep(millis/noT);
+            if noT > 0
+                tm = TimeRep(millis/noT);
+                return;
+            end
+            tm = 0;
         end
     end
 end

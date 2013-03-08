@@ -22,7 +22,7 @@ function varargout = LbcbPlugin(varargin)
 
 % Edit the above text to modify the response to help LbcbPlugin
 
-% Last Modified by GUIDE v2.5 27-Feb-2013 08:51:58
+% Last Modified by GUIDE v2.5 07-Mar-2013 15:32:37
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -1057,4 +1057,3 @@ if ddisp.isDisplaying('Fz_error')
 else
     ddisp.openDisplay('Fz_error');
 end
-
