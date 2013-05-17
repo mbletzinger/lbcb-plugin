@@ -34,7 +34,7 @@ classdef TimeFifo < CellFifo
                 tm = TimeRep(millis/noT);
                 return;
             end
-            tm = 0;
+            tm = TimeRep(0);
         end
     end
 end
