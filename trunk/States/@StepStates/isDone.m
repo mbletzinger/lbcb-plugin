@@ -3,7 +3,8 @@ done = 0;
 a = me.currentAction.getState();
 if me.stateChanged()
     if isempty(me.gui) == false
-        me.gui.updateStepState(me.currentAction.idx)
+        me.gui.updateStepState(me.currentAction.idx - 1) % get initial 
+        % position is not displayed
     end
 end
 switch a
