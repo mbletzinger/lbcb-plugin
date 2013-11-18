@@ -35,7 +35,7 @@ classdef XyPlots < DisplayControl
             hold on;
             for i = 1:lgth
                 pars = me.plotPars{i};
-                xys = plot(me.axs,pars{:});
+                xys = plot(me.axs,pars{:}); hold all;
                 grp = hggroup;
                 set(xys,'Parent',grp); % set group as groups parent
                 % get annotation property of the group which contains a
@@ -45,9 +45,9 @@ classdef XyPlots < DisplayControl
                 set(get(get(grp,'Annotation'),'LegendInformation'),'IconDisplayStyle','on');
                 me.groups(i) = grp;
             end
-            legend(me.legends);
+            legend(me.legends,'Interpreter','none');
             hold off;
-            xlabel(xlab); ylabel(ylab);
+            xlabel(xlab,'Interpreter','none'); ylabel(ylab,'Interpreter','none');
             set(me.axs, 'XGrid', 'on');
             set(me.axs, 'YGrid', 'on');
             set(me.axs, 'XLimMode','auto');
