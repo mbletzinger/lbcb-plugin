@@ -1,4 +1,4 @@
-classdef StepData < handle
+classdef StepData < CorrectionVariables
     properties
         lbcbCps;
         modelCps;

@@ -1,0 +1,15 @@
+The LbcbPlugin allows the commands and responses between UI-SimCor and the LBCB to be transformed through the use of MATLAB plugin functions.  The use of the plugins a described here:  http://nees.uiuc.edu/software/docs/LbcbPlugin%20Data%20Organization.docx
+
+The function RcFramesTransformCommand transforms the command from UI-SimCor from model coordinates to LBCB coordinates.
+
+The function RcFramesTransformResponse transforms the displacement and force readings from the LBCB into model coordinates.  It creates the fake response if configured.
+
+The functions scale_command and scale_command_response are used to scale the commands and responses based on configurable scale factors.
+
+The LbcbPlugin software allows the use of configuration variables that can modify the behavior of the plugins during the test.  The following configuration variables are used in the RC Frames transformation functions:
+
+FakeResponse - 1 if the response is calculated based on stiffness and the displacement commands. 0 if the response should come from the LBCB force readings.
+
+Stiffness.Dx, Stiffness.Dy, Stiffness.Dz, Stiffness.Rx, Stiffness.Ry, Stiffness.Rz - The stiffness of the 6 degrees of freedom in model coordinates.
+
+Displacement.Scale, Rotation.Scale, Force.Scale, Moment.Scale - Scaling factors for the four different DOF types.

@@ -3,7 +3,7 @@ classdef OffsetsConfigActions < handle
         handles
         dofT
         offsetsT
-        offstcfg
+        dset
         ocfg
         names
         simTimer
@@ -12,9 +12,10 @@ classdef OffsetsConfigActions < handle
     end
     methods
         function me = OffsetsConfigActions(offstcfg,cfg,fact)
-            me.offstcfg = offstcfg;
+            me.dset = OffsetDataSet(offstcfg,cfg,fact);
+            me.dset.load();
             me.ocfg = OmConfigDao(cfg);
-            me.names = me.ocfg.sensorNames;
+            me.names = me.dset.getNames();
             me.offstRfsh = fact.offstRfsh;
             me.dat = fact.dat;
             me.simTimer = timer('Period',0.05, 'TasksToExecute',1000000,...
@@ -25,15 +26,6 @@ classdef OffsetsConfigActions < handle
         end
         function initialize(me,handles)
             me.handles = handles;
-            for s = 1:length(me.names)
-                of = me.offstcfg.getOffset(me.names{s});
-                if of == 0.0
-                    me.offstcfg.setOffset(me.names{s},0.0); % make sure there is an entry
-                end
-                me.offsetsT{s,1} = me.names{s};
-                me.offsetsT{s,2} = of;
-                me.offsetsT{s,3} = 0;
-            end
             set(me.handles.offsetsTable,'Data',me.offsetsT);
             format = {'char','numeric','numeric'};
             set(me.handles.offsetsTable,'ColumnFormat',format);
@@ -44,6 +36,14 @@ classdef OffsetsConfigActions < handle
             
         end
         function refresh(me)
+            me.names = me.dset.getNames();
+            values = me.dset.getNames();
+            me.offsetsT = cell(length(me.names),3);
+            for s = 1:length(me.names)
+                me.offsetsT{s,1} = me.names{s};
+                me.offsetsT{s,2} = values(s);
+                me.offsetsT{s,3} = 0;
+            end
             me.offstRfsh.start();
             start(me.simTimer);
         end
@@ -56,50 +56,33 @@ classdef OffsetsConfigActions < handle
                 me.log.error(dbstack,'You cannot edit this value');
                 return;
             end
-            me.offstcfg.setOffset(me.names{indices(1)},data);
+            me.dset.set(me.names{indices(1)},data);
             me.refresh();
         end
         
         function setLengths(me)
             me.offsetsT(:,2) = me.offsetsT(:,3);
             for s = 1:length(me.names)
-                me.offstcfg.setOffset(me.names{s},me.offsetsT{s,2});
+                me.dset.set(s,me.offsetsT{s,2});
             end
+            me.dset.saveCfg();
             me.refresh();
         end
         
         function import(me)
-            me.offstcfg.import();
-            for s = 1:length(me.names)
-                of = me.offstcfg.getOffset(me.names{s});
-                if of == 0.0
-                    me.offstcfg.setOffset(me.names{s},0.0); % make sure there is an entry
-                end
-                me.offsetsT{s,1} = me.names{s};
-                me.offsetsT{s,2} = of;
-                me.offsetsT{s,3} = 0;
-            end
+            me.dset.import();
             me.refresh();
         end
         
         function export(me)
-            me.offstcfg.export();
+            me.dset.export();
         end
         function save(me)
-            me.offstcfg.save();
+            me.dset.save();
         end
         
         function reload(me)
-            me.offstcfg.load();
-            for s = 1:length(me.names)
-                of = me.offstcfg.getOffset(me.names{s});
-                if of == 0.0
-                    me.offstcfg.setOffset(me.names{s},0.0); % make sure there is an entry
-                end
-                me.offsetsT{s,1} = me.names{s};
-                me.offsetsT{s,2} = of;
-                me.offsetsT{s,3} = 0;
-            end
+            me.dset.load();
             me.refresh();
         end
         
@@ -114,8 +97,13 @@ classdef OffsetsConfigActions < handle
                     me.dofT(lbcb,d) = me.dat.initialPosition.lbcbCps{lbcb}.response.disp(d);
                 end
             end
+            values = me.dat.initialPosition.externalSensorsRaw;
+            for lbcb = 1 : me.numLbcbs
+                    values = cat(1, values, me.dat.initialPosition.lbcbCps{lbcb}.response.lbcb.disp);
+            end
+            
             for s = 1:length(me.names)
-                me.offsetsT{s,3} = me.dat.initialPosition.externalSensorsRaw(s);
+                me.offsetsT{s,3} = values(s);
             end
             set(me.handles.offsetsTable,'Data',me.offsetsT);
             set(me.handles.dofTable,'Data',me.dofT);
