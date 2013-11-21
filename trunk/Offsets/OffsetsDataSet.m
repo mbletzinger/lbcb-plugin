@@ -12,8 +12,7 @@ classdef OffsetsDataSet < handle
             me.offstcfg = offstcfg;
             ocfg = OmConfigDao(cfg);
             me.sensorNames = ocfg.sensorNames;
-            me.lbcbNames = {'LBCB1.Dx','LBCB1.Dy','LBCB1.Dz','LBCB1.Rx','LBCB1.Ry','LBCB1.Rz', ...
-                'LBCB2.Dx','LBCB2.Dy','LBCB2.Dz','LBCB2.Rx','LBCB2.Ry','LBCB2.Rz'};
+            me.lbcbNames = offstcfg.lbcbNames;
             me.sensorValues = zeros(length(me.sensorNames),1);
             me.lbcbValues = zeros(length(me.lbcbNames),1);
             me.numLbcbs = fact.cdp.numLbcbs();

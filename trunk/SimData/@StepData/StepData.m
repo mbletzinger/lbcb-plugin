@@ -12,6 +12,7 @@ classdef StepData < CorrectionVariables
         cdp;
         containsModelCps;
         stepTimes; % BG
+        offstcfg
     end
     methods
         function me = StepData()
@@ -39,5 +40,6 @@ classdef StepData < CorrectionVariables
         transformResponse(me)
         [ disp dDofs force fDofs] = cmdData(me)
         [ disp force ] = respData(me)
+        offsets = loadOffsets(suffix)
     end
 end
