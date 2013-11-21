@@ -91,6 +91,7 @@ classdef HandleFactory <  handle
             
             me.sdf = StepDataFactory;
             me.sdf.cdp = me.cdp;
+            me.sdf.offstcfg = ofst;
 
             me.dat = SimSharedData;
             me.dat.sdf = me.sdf;

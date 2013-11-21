@@ -6,6 +6,7 @@ classdef StepDataFactory < handle
         m2d = Msg2DofData();
         tgtNumber;
         log= Logger('StepDataFactory')
+        offstcfg
     end
     methods
         function clone = createEmptyStepData(me,step,sub,cor)
@@ -97,6 +98,7 @@ classdef StepDataFactory < handle
             step.mdlLbcb = me.mdlLbcb;
             step.mdlUiSimCor = me.mdlUiSimCor;
             step.cdp = me.cdp;
+            step.offstcfg = me.offstcfg;
             lgth = me.cdp.numLbcbs();
             step.lbcbCps = cell(lgth,1);
             for l = 1 : lgth

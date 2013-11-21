@@ -8,11 +8,13 @@ end
 switch char(address.getSuffix())
     case 'LBCB1'
         lbcbR = me.lbcbCps{1}.response.clone();
-        lbcbR.parse(contents);
+        offsets = loadOffsets('LBCB1');
+        lbcbR.parse(contents, offsets);
         me.lbcbCps{1}.response = lbcbR;
     case 'LBCB2'
         lbcbR = me.lbcbCps{1}.response.clone();
-        lbcbR.parse(contents);
+        offsets = loadOffsets('LBCB2');
+        lbcbR.parse(contents, offsets);
         me.lbcbCps{2}.response = lbcbR;
     case 'ExternalSensors'
         [n se a ] = me.cdp.getExtSensors();

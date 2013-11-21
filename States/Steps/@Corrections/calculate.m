@@ -1,4 +1,4 @@
-function  calculate(me,prevStep, curStep,initialPosition,correctionTarget)
+function  calculate(me,prevStep, curStep,correctionTarget)
 %calculate elastic deformations
 ccfg = StepCorrectionConfigDao(me.cdp.cfg);
 doC = ccfg.doCalculations;
