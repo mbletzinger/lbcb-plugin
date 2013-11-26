@@ -8,12 +8,12 @@ end
 switch char(address.getSuffix())
     case 'LBCB1'
         lbcbR = me.lbcbCps{1}.response.clone();
-        offsets = loadOffsets('LBCB1');
+        offsets = me.loadOffsets('LBCB1');
         lbcbR.parse(contents, offsets);
         me.lbcbCps{1}.response = lbcbR;
     case 'LBCB2'
         lbcbR = me.lbcbCps{1}.response.clone();
-        offsets = loadOffsets('LBCB2');
+        offsets = me.loadOffsets('LBCB2');
         lbcbR.parse(contents, offsets);
         me.lbcbCps{2}.response = lbcbR;
     case 'ExternalSensors'

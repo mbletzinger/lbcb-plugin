@@ -22,7 +22,7 @@ function varargout = LbcbPlugin(varargin)
 
 % Edit the above text to modify the response to help LbcbPlugin
 
-% Last Modified by GUIDE v2.5 26-Feb-2013 13:07:13
+% Last Modified by GUIDE v2.5 25-Nov-2013 14:01:03
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -982,4 +982,92 @@ if ddisp.isDisplaying('PredictedFy')
     ddisp.closeDisplay('PredictedFy');
 else
     ddisp.openDisplay('PredictedFy');
+end
+
+
+% --------------------------------------------------------------------
+function L1VsDx_Callback(hObject, eventdata, handles)
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('L1VsDx')
+    ddisp.closeDisplay('L1VsDx');
+else
+    ddisp.openDisplay('L1VsDx');
+end
+
+% --------------------------------------------------------------------
+function FxVsDx_Callback(hObject, eventdata, handles)
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('FxVsDx')
+    ddisp.closeDisplay('FxVsDx');
+else
+    ddisp.openDisplay('FxVsDx');
+end
+
+% --------------------------------------------------------------------
+function FyVsDx_Callback(hObject, eventdata, handles)
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('FyVsDx')
+    ddisp.closeDisplay('FyVsDx');
+else
+    ddisp.openDisplay('FyVsDx');
+end
+
+
+% --------------------------------------------------------------------
+function FzVsDx_Callback(hObject, eventdata, handles)
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('FzVsDx')
+    ddisp.closeDisplay('FzVsDx');
+else
+    ddisp.openDisplay('FzVsDx');
+end
+
+
+% --------------------------------------------------------------------
+function MxVsDx_Callback(hObject, eventdata, handles)
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('MxVsDx')
+    ddisp.closeDisplay('MxVsDx');
+else
+    ddisp.openDisplay('MxVsDx');
+end
+
+
+% --------------------------------------------------------------------
+function MyVsDx_Callback(hObject, eventdata, handles)
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('MyVsDx')
+    ddisp.closeDisplay('MyVsDx');
+else
+    ddisp.openDisplay('MyVsDx');
+end
+
+
+% --------------------------------------------------------------------
+function MzVsDx_Callback(hObject, eventdata, handles)
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('MzVsDx')
+    ddisp.closeDisplay('MzVsDx');
+else
+    ddisp.openDisplay('MzVsDx');
+end
+
+
+% --------------------------------------------------------------------
+function MyVsRy_Callback(hObject, eventdata, handles)
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('MyVsRy')
+    ddisp.closeDisplay('MyVsRy');
+else
+    ddisp.openDisplay('MyVsRy');
+end
+
+
+% --------------------------------------------------------------------
+function FzVsDz_Callback(hObject, eventdata, handles)
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('FzVsDz')
+    ddisp.closeDisplay('FzVsDz');
+else
+    ddisp.openDisplay('FzVsDz');
 end

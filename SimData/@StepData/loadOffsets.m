@@ -1,15 +1,16 @@
-function offsets = loadOffsets(suffix)
+function offsets = loadOffsets(me,suffix)
 names = {};
 switch suffix
     case 'LBCB1'
-        names = offstcfg.lbcbNames(1:6);
+        names = me.offstcfg.lbcbNames(1:6);
     case 'LBCB2'
-        names = offstcfg.lbcbNames(1:6);
+        names = me.offstcfg.lbcbNames(1:6);
     case 'ExternalSensors'
-        return [];
+        offsets = [];
+        return;
 end
-offsets = zeros(length(names));
+offsets = zeros(length(names),1);
 for d = 1:length(names)
-    offsets(d) = offstcfg.getOffset(name);
+    offsets(d) = me.offstcfg.getOffset(names(d));
 end
 end
