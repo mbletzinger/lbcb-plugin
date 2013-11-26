@@ -34,11 +34,11 @@ classdef OffsetsDataSet < handle
         function load(me)
             me.sensorValues = zeros(length(me.sensorNames),1);
             for n = 1:length(me.sensorNames)
-                me.sensorValues(n) = me.offstcfg.setOffset(me.sensorNames{n});
+                me.sensorValues(n) = me.offstcfg.getOffset(me.sensorNames{n});
             end
             me.lbcbValues = zeros(length(me.lbcbNames),1);
             for n = 1:length(me.lbcbNames)
-                me.lbcbValues(n)= me.offstcfg.setOffset(me.lbcbNames{n});
+                me.lbcbValues(n)= me.offstcfg.getOffset(me.lbcbNames{n});
             end
         end
         function import(me)

@@ -7,21 +7,22 @@ classdef StepDataFactory < handle
         tgtNumber;
         log= Logger('StepDataFactory')
         offstcfg
+        cv
     end
     methods
         function clone = createEmptyStepData(me,step,sub,cor)
-            clone = StepData;
+            clone = StepData(me.cdp);
             stepNum = StepNumber(step,sub,cor);
             clone.stepNum = stepNum;
             me.addProtocol(clone);
         end
         function clone = stepNumber2StepData(me,stepNum)
-            clone = StepData;
+            clone = StepData(me.cdp);
             clone.stepNum = stepNum.clone();
             me.addProtocol(clone);
         end
         function clone = stepData2StepData(me, step, cstype)
-            clone = StepData;
+            clone = StepData(me.cdp);
             me.addProtocol(clone);
             if cstype < 0
                 clone.stepNum = step.stepNum.clone();
@@ -38,7 +39,7 @@ classdef StepDataFactory < handle
             
         end
         function clone = target2StepData(me,targets,step,sub)
-            clone = StepData;
+            clone = StepData(me.cdp);
             me.addProtocol(clone);
             clone.stepNum = StepNumber(step,sub,0);
             lgth = me.cdp.numLbcbs();
@@ -50,7 +51,7 @@ classdef StepDataFactory < handle
             end
         end
         function clone = uisimcorMsg2Step(me,cmd)
-            clone = StepData;
+            clone = StepData(me.cdp);
             me.addProtocol(clone);
             clone.stepNum = StepNumber(me.nextTgtNumber(),0,0);
             [addresses, contents] = cmd.getContents();
@@ -97,9 +98,14 @@ classdef StepDataFactory < handle
         function addProtocol(me,step)
             step.mdlLbcb = me.mdlLbcb;
             step.mdlUiSimCor = me.mdlUiSimCor;
-            step.cdp = me.cdp;
             step.offstcfg = me.offstcfg;
             lgth = me.cdp.numLbcbs();
+            
+            % Needs a better fix here
+             step.cfgH = me.cv.cfgH;
+             step.datH = me.cv.datH;
+             step.archH = me.cv.archH;
+            %
             step.lbcbCps = cell(lgth,1);
             for l = 1 : lgth
                 step.lbcbCps{l} = LbcbControlPoint;

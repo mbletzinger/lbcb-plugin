@@ -9,13 +9,13 @@ classdef StepData < CorrectionVariables
         jid;
         mdlLbcb;
         mdlUiSimCor;
-        cdp;
         containsModelCps;
         stepTimes; % BG
         offstcfg
     end
     methods
-        function me = StepData()
+        function me = StepData(cdp)
+            me = me@CorrectionVariables(cdp);
             me.lbcbCps = {}; % Instances of LbcbControlPoint
             me.modelCps = {}; % Instances of model control points
             me.stepNum = {}; % StepNumber instance
@@ -24,7 +24,6 @@ classdef StepData < CorrectionVariables
             me.jid = {};
             me.mdlLbcb = [];
             me.mdlUiSimCor = [];
-            me.cdp = [];
             me.containsModelCps = 0;
             me.stepTimes=[];
         end
@@ -40,6 +39,6 @@ classdef StepData < CorrectionVariables
         transformResponse(me)
         [ disp dDofs force fDofs] = cmdData(me)
         [ disp force ] = respData(me)
-        offsets = loadOffsets(suffix)
+        offsets = loadOffsets(me,suffix)
     end
 end

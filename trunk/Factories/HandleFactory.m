@@ -140,6 +140,12 @@ classdef HandleFactory <  handle
             cfgH = org.nees.uiuc.simcor.matlab.HashTable();
             datH = org.nees.uiuc.simcor.matlab.HashTable();
             archH = org.nees.uiuc.simcor.matlab.HashTable();
+            
+            me.sdf.cv = CorrectionVariables(me.cdp);
+            me.sdf.cv.cfgH = cfgH;
+            me.sdf.cv.datH = datH;
+            me.sdf.cv.archH = archH;
+
             for i = 1:2
                 me.ed{i} = ElasticDeformation(me.cdp,(i == 1));
                 me.dxed{i} = DxOnlyElasticDeformation(me.cdp,(i == 1));

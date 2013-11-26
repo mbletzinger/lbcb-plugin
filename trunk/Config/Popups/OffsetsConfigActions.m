@@ -12,7 +12,7 @@ classdef OffsetsConfigActions < handle
     end
     methods
         function me = OffsetsConfigActions(offstcfg,cfg,fact)
-            me.dset = OffsetDataSet(offstcfg,cfg,fact);
+            me.dset = OffsetsDataSet(offstcfg,cfg,fact);
             me.dset.load();
             me.ocfg = OmConfigDao(cfg);
             me.names = me.dset.getNames();
@@ -37,7 +37,7 @@ classdef OffsetsConfigActions < handle
         end
         function refresh(me)
             me.names = me.dset.getNames();
-            values = me.dset.getNames();
+            values = me.dset.getValues();
             me.offsetsT = cell(length(me.names),3);
             for s = 1:length(me.names)
                 me.offsetsT{s,1} = me.names{s};
@@ -63,7 +63,7 @@ classdef OffsetsConfigActions < handle
         function setLengths(me)
             me.offsetsT(:,2) = me.offsetsT(:,3);
             for s = 1:length(me.names)
-                me.dset.set(s,me.offsetsT{s,2});
+                me.dset.set(me.names{s},me.offsetsT{s,2});
             end
             me.dset.saveCfg();
             me.refresh();
@@ -98,7 +98,7 @@ classdef OffsetsConfigActions < handle
                 end
             end
             values = me.dat.initialPosition.externalSensorsRaw;
-            for lbcb = 1 : me.numLbcbs
+            for lbcb = 1 : me.ocfg.numLbcbs
                     values = cat(1, values, me.dat.initialPosition.lbcbCps{lbcb}.response.lbcb.disp);
             end
             
