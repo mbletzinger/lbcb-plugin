@@ -75,7 +75,9 @@ if me.existsCfg('Displacement.Scale')
     scale_factor(2) = me.getCfg('Rotation.Scale');
     scale_factor(3) = me.getCfg('Force.Scale');
     scale_factor(4) = me.getCfg('Moment.Scale');
-    [mdlTgts{1}.disp,mdlTgts{2}.disp,mdlTgts{1}.force,mdlTgts{2}.force] = scale_command_response(scale_factor,mdlTgts);
+	for lbcb = 1:numLbcbs
+		[mdlTgts{lbcb}.disp,mdlTgts{lbcb}.force] = scale_response(scale_factor,mdlTgts{lbcb});
+	end
 end
 
 

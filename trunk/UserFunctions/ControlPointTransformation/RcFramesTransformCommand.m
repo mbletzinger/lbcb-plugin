@@ -39,6 +39,7 @@ scale_factor(2) = me.getCfg('Rotation.Scale');
 scale_factor(3) = me.getCfg('Force.Scale');
 scale_factor(4) = me.getCfg('Moment.Scale');
 
- [lbcbTgts{1}.disp,lbcbTgts{2}.disp] = scale_command(scale_factor,lbcbTgts);
-
+for lbcb = 1:numLbcbs
+ 	[lbcbTgts{lbcb}.disp] = scale_command(scale_factor,lbcbTgts{lbcb});
+end
 end
