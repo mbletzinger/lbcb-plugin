@@ -72,6 +72,7 @@ classdef SimSharedData < handle
             if me.cdp.numLbcbs() > 1
                 me.curStepTgt.lbcbCps{2}.response = me.curStepData.lbcbCps{2}.response.clone();
             end
+            me.curStepTgt.loadCfg();
             me.curStepTgt.transformResponse();
         end
         function table = cmdTable(me)
