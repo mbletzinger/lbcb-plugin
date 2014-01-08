@@ -30,7 +30,7 @@ else
         me.currentAction.setState('EXECUTE SUBSTEPS');
         me.stpEx.start(steps);
         stp = me.dat.curStepTgt.stepNum.step;
-        me.stats.stepStart(stp);
+#        me.stats.stepStart(stp);
     end
 end
 end
