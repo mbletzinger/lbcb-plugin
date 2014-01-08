@@ -1,24 +1,18 @@
-function [scaled_disp_1,scaled_disp_2] = scale_command(scale_factor,lbcbTgts)
+function [scaled_disp] = scale_command(scale_factor,lbcbTgt)
 
 % Set scaling factor for command, scale from model size to LBCB scale
 
 %Initialize
-disp_LBCB_1 = zeros(6,1);
-disp_LBCB_2 = zeros(6,1);
-scaled_disp_1 = zeros(6,1);
-scaled_disp_2 = zeros(6,1);
+disp_LBCB = zeros(6,1);
+scaled_disp = zeros(6,1);
 
 for i=1:6
-    disp_LBCB_1(i) = lbcbTgts{1}.disp(i);
-    disp_LBCB_2(i) = lbcbTgts{2}.disp(i);
+    disp_LBCB(i) = lbcbTgt.disp(i);
 end
 
 %displacement
-scaled_disp_1(1:3) = disp_LBCB_1(1:3)*scale_factor(1);
-scaled_disp_2(1:3) = disp_LBCB_2(1:3)*scale_factor(1);
+scaled_disp(1:3) = disp_LBCB(1:3)*scale_factor(1);
 
 %rotation
-scaled_disp_1(4:6) = disp_LBCB_1(4:6)*scale_factor(2);
-scaled_disp_2(4:6) = disp_LBCB_2(4:6)*scale_factor(2);
-
+scaled_disp(4:6) = disp_LBCB(4:6)*scale_factor(2);
 end    
