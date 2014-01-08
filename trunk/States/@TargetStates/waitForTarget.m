@@ -23,6 +23,7 @@ else
             me.currentAction.setState('ABORT SIMULATION');
             return;
         end
+        me.tgtRsp.target.loadCfg();
         me.tgtRsp.target.transformCommand();
         me.dat.stepTgtShift(me.tgtRsp.target);
         steps = me.splitTarget();

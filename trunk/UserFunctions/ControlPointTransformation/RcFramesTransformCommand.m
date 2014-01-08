@@ -12,12 +12,12 @@ end
 % Model Dz = LBCB -Dz
 
 for lbcb = 1:numLbcbs
-    me.setDat(sprintf('L%d.Cmd.Dx',lbcb), mdlTgts{lbcb}.disp(1));
-    me.setDat(sprintf('L%d.Cmd.Dy',lbcb), mdlTgts{lbcb}.disp(2));
-    me.setDat(sprintf('L%d.Cmd.Dz',lbcb), mdlTgts{lbcb}.disp(3));
-    me.setDat(sprintf('L%d.Cmd.Rx',lbcb), mdlTgts{lbcb}.disp(4));
-    me.setDat(sprintf('L%d.Cmd.Ry',lbcb), mdlTgts{lbcb}.disp(5));
-    me.setDat(sprintf('L%d.Cmd.Rz',lbcb), mdlTgts{lbcb}.disp(6));
+    me.putDat(sprintf('L%d.Cmd.Dx',lbcb), mdlTgts{lbcb}.disp(1));
+    me.putDat(sprintf('L%d.Cmd.Dy',lbcb), mdlTgts{lbcb}.disp(2));
+    me.putDat(sprintf('L%d.Cmd.Dz',lbcb), mdlTgts{lbcb}.disp(3));
+    me.putDat(sprintf('L%d.Cmd.Rx',lbcb), mdlTgts{lbcb}.disp(4));
+    me.putDat(sprintf('L%d.Cmd.Ry',lbcb), mdlTgts{lbcb}.disp(5));
+    me.putDat(sprintf('L%d.Cmd.Rz',lbcb), mdlTgts{lbcb}.disp(6));
     % Set Dx
     lbcbTgts{lbcb}.setDispDof(1,mdlTgts{lbcb}.disp(2));
     % Set Dy
