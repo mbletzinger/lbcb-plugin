@@ -91,7 +91,7 @@ classdef MultiDofStepPlot < handle
             end
             if yidx < 0
                 datum = 0; %#ok<NASGU>
-                me.log.error(dbstack,sprintf('"%s" not found in arch data',me.ylabel));
+                me.log.error(dbstack,sprintf('"%s" not found in arch data',lbl));
                 return; %#ok<UNRCH>
             end
             datum = cdata.values(yidx);

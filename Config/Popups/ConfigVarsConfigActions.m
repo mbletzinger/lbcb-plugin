@@ -52,11 +52,23 @@ classdef ConfigVarsConfigActions < handle
             cfgLabels = me.ccfg.cfgLabels;
             cfgValues = me.ccfg.cfgValues;
             sz = size(cfgLabels,1);
+            % fix for extra labels
+            if sz > length(cfgValues)
+                osz = length(cfgValues);
+                newCfg = zeros(sz,1);
+                newCfg(1:osz) = cfgValues;
+                cfgValues = newCfg;
+                me.ccfg.cfgValues = cfgValues;
+            end
             for i = 1:sz
                 if isempty(cfgLabels{i}) == false
                     me.table{i,1} = cfgLabels{i};
                 end
-                me.table{i,2} = cfgValues(i);
+                if i > length(cfgValues)
+                    me.table{i,2} = 0.0;
+                else
+                    me.table{i,2} = cfgValues(i);
+                end
             end
         end
     end
