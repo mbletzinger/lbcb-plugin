@@ -42,13 +42,14 @@ for lbcb = 1:numLbcbs
     mdlTgts{lbcb}.setDispDof(6,-lbcbTgts{lbcb}.disp(6));
     
     if fake
+        cmd = zeros(6,1);
         cmd(1) = me.getDat(sprintf('L%d.Cmd.Dx',lbcb));
         cmd(2) = me.getDat(sprintf('L%d.Cmd.Dy',lbcb));
         cmd(3) = me.getDat(sprintf('L%d.Cmd.Dz',lbcb));
         cmd(4) = me.getDat(sprintf('L%d.Cmd.Rx',lbcb));
         cmd(5) = me.getDat(sprintf('L%d.Cmd.Ry',lbcb));
         cmd(6) = me.getDat(sprintf('L%d.Cmd.Rz',lbcb));
-        forces = cmd * stiffnesses;
+        forces = cmd .* stiffnesses;
     else
         forces = lbcbTgts{lbcb}.force;
     end
