@@ -26,8 +26,7 @@ if fake
     stiffnesses(6) = me.getCfg('Stiffness.Rz');
 end
 
-for lbcb = 1:numLbcbs
-    
+for lbcb = 1:numLbcbs    
     % Set Dx
     mdlTgts{lbcb}.setDispDof(1,lbcbTgts{lbcb}.disp(2));
     % Set Dy
@@ -40,20 +39,7 @@ for lbcb = 1:numLbcbs
     mdlTgts{lbcb}.setDispDof(5,lbcbTgts{lbcb}.disp(4));
     % Set Rz
     mdlTgts{lbcb}.setDispDof(6,-lbcbTgts{lbcb}.disp(6));
-    
-    if fake
-        cmd = zeros(6,1);
-        cmd(1) = me.getDat(sprintf('L%d.Cmd.Dx',lbcb));
-        cmd(2) = me.getDat(sprintf('L%d.Cmd.Dy',lbcb));
-        cmd(3) = me.getDat(sprintf('L%d.Cmd.Dz',lbcb));
-        cmd(4) = me.getDat(sprintf('L%d.Cmd.Rx',lbcb));
-        cmd(5) = me.getDat(sprintf('L%d.Cmd.Ry',lbcb));
-        cmd(6) = me.getDat(sprintf('L%d.Cmd.Rz',lbcb));
-        forces = cmd .* stiffnesses;
-    else
-        forces = lbcbTgts{lbcb}.force;
-    end
-    
+    forces = lbcbTgts{lbcb}.force;    
     % Set Dx from LBCB 2
     mdlTgts{lbcb}.setForceDof(1,forces(1));
     % Set Dy from LBCB 2
@@ -79,6 +65,23 @@ if me.existsCfg('Displacement.Scale')
 	for lbcb = 1:numLbcbs
 		[mdlTgts{lbcb}.disp,mdlTgts{lbcb}.force] = scale_response(scale_factor,mdlTgts{lbcb});
 	end
+end
+if fake
+	for lbcb = 1:numLbcbs
+	cmd = zeros(6,1);
+	cmd(1) = me.getDat(sprintf('L%d.Cmd.Dx',lbcb));
+	cmd(2) = me.getDat(sprintf('L%d.Cmd.Dy',lbcb));
+	cmd(3) = me.getDat(sprintf('L%d.Cmd.Dz',lbcb));
+	cmd(4) = me.getDat(sprintf('L%d.Cmd.Rx',lbcb));
+	cmd(5) = me.getDat(sprintf('L%d.Cmd.Ry',lbcb));
+	cmd(6) = me.getDat(sprintf('L%d.Cmd.Rz',lbcb));
+	forces = cmd .* stiffnesses;    
+    mdlTgts{lbcb}.setForceDof(1,forces(1));
+    mdlTgts{lbcb}.setForceDof(2,-forces(3));
+    mdlTgts{lbcb}.setForceDof(3,forces(2));
+    mdlTgts{lbcb}.setForceDof(4,forces(4));
+    mdlTgts{lbcb}.setForceDof(5,-forces(6));
+    mdlTgts{lbcb}.setForceDof(6,forces(5));
 end
 
 
