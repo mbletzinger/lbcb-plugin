@@ -40,7 +40,8 @@ Fmodel = Flbcb * 4.449 / 1000
 Moments are also scaled depending on the stiffness of the small scale specimen and a unit conversion form lb*in to kN-m
 Mmodel = Mlbcb / (8.847 * 1000)
 
-Stiffness values for the fake response test come from the NICA configuration of the analytical model of the test column found in the config_1.txt file
+Stiffness values for the fake response test come from the NICA configuration of the analytical model of the test column found in the config_1.txt file. 
+The matrix is used after the response displacements are transformed and scaled back to UI-SimCor space
 
    1.5044404e+06   4.0389678e-25   7.9437704e-36   0.0000000e+00   0.0000000e+00   0.0000000e+00
    0.0000000e+00   1.0640571e+04   8.8735755e-28   0.0000000e+00   0.0000000e+00  -1.8918934e+04
