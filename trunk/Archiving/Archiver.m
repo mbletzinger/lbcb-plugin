@@ -5,6 +5,8 @@ classdef Archiver < handle
         lbcbReadA;
         edReadA;
         corDataA
+        simCmdA
+        simRespDataA
         archiveOn
         wroteCorDataHeaders
         notes
@@ -19,30 +21,42 @@ classdef Archiver < handle
             me.lbcbReadA = DataArchive('LbcbReadings');
             me.edReadA = DataArchive('ElasticDefReadings');
             me.corDataA = DataArchive('CorrectionData');
+            me.simCmdA = DataArchive('ModelCommands');
+            me.simRespDataA = DataArchive('ModelResponseData');
             me.notes = TextArchive('TestNotes');
             me.stepHeaders = {'Step','Substep','CorrectionStep'};
             me.archiveOn = false;
             hdrs = ...
                 {me.stepHeaders{:},'LBCB1 Dx','LBCB1 Dy','LBCB1 Dz','LBCB1 Rx','LBCB1 Ry','LBCB1 Rz',...
                 'LBCB1 Fx','LBCB1 Fy','LBCB1 Fz','LBCB1 Mx','LBCB1 My','LBCB1 Mz'};%#ok<*CCAT>
+            mrhdrs = {'MDL1 Dx','MDL1 Dy','MDL1 Dz','MDL1 Rx','MDL1 Ry','MDL1 Rz',...
+                'MDL1 Fx','MDL1 Fy','MDL1 Fz','MDL1 Mx','MDL1 My','MDL1 Mz'};
+            mchdrs = {'MDL1 Dx','MDL1 Dy','MDL1 Dz','MDL1 Rx','MDL1 Ry','MDL1 Rz'};
             if cdp.numLbcbs() == 2
                 hdrs = {hdrs{:}, 'LBCB2 Dx','LBCB2 Dy','LBCB2 Dz','LBCB2 Rx','LBCB1 Ry','LBCB2 Rz',...
-                'LBCB2 Fx','LBCB2 Fy','LBCB2 Fz','LBCB2 Mx','LBCB1 My','LBCB2 Mz'};
+                    'LBCB2 Fx','LBCB2 Fy','LBCB2 Fz','LBCB2 Mx','LBCB1 My','LBCB2 Mz'};
+                mrhdrs = {mrhdrs{:}, 'MDL2 Dx','MDL2 Dy','MDL2 Dz','MDL2 Rx','MDL2 Ry','MDL2 Rz',...
+                    'MDL2 Fx','MDL2 Fy','MDL2 Fz','MDL2 Mx','MDL2 My','MDL2 Mz'};
+                mchdrs = {mchdrs{:}, 'MDL2 Dx','MDL2 Dy','MDL2 Dz','MDL2 Rx','MDL2 Ry','MDL2 Rz'};
             end
             me.commandA.headers = hdrs;
             me.lbcbReadA.headers = hdrs;
             me.edReadA.headers = hdrs;
+            me.simCmdA.headers = mchdrs;
+            me.simRespDataA.headers = mrhdrs;
             [n se a] = cdp.getExtSensors(); %#ok<ASGLU,NASGU>
             if isempty(n) == false
                 me.extSensA.headers = {me.stepHeaders{:} n{:} }; %#ok<CCAT>
             end
-                me.setCorDataHeaders();
+            me.setCorDataHeaders();
         end
         function setArchiveOn(me,on)
             me.archiveOn = on;
             if on
                 me.commandA.writeHeaders();
                 me.lbcbReadA.writeHeaders();
+                me.simCmdA.writeHeaders();
+                me.simRespDataA.writeHeaders();
                 me.edReadA.writeHeaders();
                 me.extSensA.writeHeaders();
                 me.corDataA.writeHeaders();
@@ -75,6 +89,22 @@ classdef Archiver < handle
                 me.setCorDataHeaders();
             end
         end
+        function marchive(me, step)
+            if me.archiveOn == false
+                return;
+            end
+            values = step.modelCps{1}.command.disp';
+            if length(step.lbcbCps) > 1
+                values = [ values step.modelCps{2}.command.disp'];
+            end
+            me.simCmdA.write(step.stepNum.toString('noflags',1),values);
+            
+            values = [ step.modelCps{1}.response.disp step.modelCps{1}.response.force ];
+            if length(step.lbcbCps) > 1
+                values = [ values step.modelCps{2}.response.disp step.modelCps{2}.response.force ];
+            end
+            me.simRespDataA.write(step.stepNum.toString('noflags',1),values);
+        end            
         function setCorDataHeaders(me)
             avarcfg = ArchiveVarsDao(me.cfg);
             if isempty(avarcfg.cfgLabels)

@@ -82,6 +82,7 @@ if fake
     mdlTgts{lbcb}.setForceDof(4,forces(4));
     mdlTgts{lbcb}.setForceDof(5,-forces(6));
     mdlTgts{lbcb}.setForceDof(6,forces(5));
+    mdlTgts{lbcb}.setDispDof(1:6,cmd);
 end
 
 
