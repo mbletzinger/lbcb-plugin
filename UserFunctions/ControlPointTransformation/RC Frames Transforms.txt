@@ -28,8 +28,8 @@ OpenSees -> UI-SimCor
 [1 0 0]
 UI-SimCor -> LbcbPlugin
 [0 0 -1]
-[0 -1 0]
 [-1 0 0]
+[0 -1 0]
 
 For the 1/5 scale the translations (Dx, Dy, Dz) need to be converted from meters to inches:
 Tlbcb = Tmodel * 39.37 * 0.2 = Tmodel * 7.8740
