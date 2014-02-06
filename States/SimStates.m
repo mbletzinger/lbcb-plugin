@@ -7,6 +7,7 @@ classdef SimStates < States
         nxtStep = [];
         sdf = [];
         ddisp = [];
+        arch = [];
         
     end
     methods

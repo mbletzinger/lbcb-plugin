@@ -11,5 +11,6 @@ me.dat.collectTargetResponse();
 me.currentAction.setState('SEND TARGET RESPONSE');
 if me.targetSource.isState('UI SIMCOR')
     me.tgtRsp.respond();
+    me.arch.marchive(me.dat.curStepTgt);
 end
 end

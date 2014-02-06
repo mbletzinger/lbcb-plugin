@@ -215,6 +215,7 @@ classdef HandleFactory <  handle
                 me.simStates{c}.nxtStep = me.nxtStep;
                 me.simStates{c}.sdf = me.sdf;
                 me.simStates{c}.ddisp = me.ddisp;
+				me.simStates{c}.arch = me.arch;
             end
             me.stpEx.peOm = me.peOm;
             me.stpEx.gcpOm = me.gcpOm;

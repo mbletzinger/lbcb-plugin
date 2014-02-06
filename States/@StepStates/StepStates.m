@@ -4,7 +4,6 @@ classdef StepStates < SimStates
         pResp = [];
         gcpOm = [];
         gipOm = [];
-        arch = [];
         brdcstRsp = [];
         acceptStp = [];
         gettingInitialPosition;
