@@ -74,7 +74,8 @@ if me.existsCfg('Displacement.Scale')
     scale_factor(3) = me.getCfg('Force.Scale');
     scale_factor(4) = me.getCfg('Moment.Scale');
     for lbcb = 1:numLbcbs
-        [mdlTgts{lbcb}.disp,mdlTgts{lbcb}.force] = scale_response(scale_factor,mdlTgts{lbcb});
+	  	[mdlTgts{lbcb}.disp] = scaleValues(scale_factor(1:2),mdlTgts{lbcb}.disp,true);
+	  	[mdlTgts{lbcb}.force] = scaleValues(scale_factor(3:4),mdlTgts{lbcb}.force,false);
     end
 end
 if fake
