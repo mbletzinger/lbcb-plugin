@@ -43,6 +43,6 @@ scale_factor = zeros(4,1);
 scale_factor(1) = me.getCfg('Displacement.Scale');
 scale_factor(2) = me.getCfg('Rotation.Scale');
 for lbcb = 1:numLbcbs
- 	[lbcbTgts{lbcb}.disp] = scaleValues(scale_factor,lbcbTgts{lbcb},false);
+ 	[lbcbTgts{lbcb}.disp] = scaleValues(scale_factor,lbcbTgts{lbcb}.disp,false);
 end
 end
