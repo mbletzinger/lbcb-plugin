@@ -7,9 +7,9 @@ end
 
 %Coordinate Transformation from LBCB to Model
 % Simcor is running as an element of OpenSees and so is hardcoded as a beam element.
-% SimCor Dx = LBCB -Dz
-% SimCor Dy = LBCB -Dx
-% SimCor Dz = LBCB -Dy
+% SimCor Dx = LBCB -Dy
+% SimCor Dy = LBCB -Dz
+% SimCor Dz = LBCB -Dx
 numLbcbs = me.cdp.numLbcbs();
 if me.existsCfg('FakeResponse')
     fake = me.getCfg('FakeResponse');
@@ -39,30 +39,30 @@ for lbcb = 1:numLbcbs
         disp = lbcbTgts{lbcb}.disp;
     end
     % Set Dx
-    mdlTgts{lbcb}.setDispDof(1,-disp(3));
+    mdlTgts{lbcb}.setDispDof(1,-disp(2));
     % Set Dy
-    mdlTgts{lbcb}.setDispDof(2,-disp(1));
+    mdlTgts{lbcb}.setDispDof(2,-disp(3));
     % Set Dz
-    mdlTgts{lbcb}.setDispDof(3,-disp(2));
+    mdlTgts{lbcb}.setDispDof(3,-disp(1));
     % Set Rx
-    mdlTgts{lbcb}.setDispDof(4,-disp(6));
+    mdlTgts{lbcb}.setDispDof(4,-disp(5));
     % Set Ry
-    mdlTgts{lbcb}.setDispDof(5,-disp(4));
+    mdlTgts{lbcb}.setDispDof(5,-disp(6));
     % Set Rz
-    mdlTgts{lbcb}.setDispDof(6,-disp(5));
+    mdlTgts{lbcb}.setDispDof(6,-disp(4));
     forces = lbcbTgts{lbcb}.force;
     % Set Fx
-    mdlTgts{lbcb}.setForceDof(1,-forces(3));
+    mdlTgts{lbcb}.setForceDof(1,-forces(2));
     % Set Fy
-    mdlTgts{lbcb}.setForceDof(2,-forces(1));
+    mdlTgts{lbcb}.setForceDof(2,-forces(3));
     % Set Fz
-    mdlTgts{lbcb}.setForceDof(3,-forces(2));
+    mdlTgts{lbcb}.setForceDof(3,-forces(1));
     % Set Mx
-    mdlTgts{lbcb}.setForceDof(4,-forces(6));
+    mdlTgts{lbcb}.setForceDof(4,-forces(5));
     % Set My
-    mdlTgts{lbcb}.setForceDof(5,-forces(4));
+    mdlTgts{lbcb}.setForceDof(5,-forces(6));
     % Set Mz
-    mdlTgts{lbcb}.setForceDof(6,-forces(5));
+    mdlTgts{lbcb}.setForceDof(6,-forces(4));
 end
 
 

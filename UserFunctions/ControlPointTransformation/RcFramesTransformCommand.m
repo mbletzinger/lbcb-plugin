@@ -7,9 +7,9 @@ end
 
 %Coordinate Transformation from LBCB to Model
 % Simcor is running as an element of OpenSees and so is hardcoded as a beam element.
-% SimCor Dx = LBCB -Dz
-% SimCor Dy = LBCB -Dx
-% SimCor Dz = LBCB -Dy
+% LBCB Dx = SimCor -Dz
+% LBCB Dy = SimCor -Dx
+% LBCB Dz = SimCor -Dy
 
 for lbcb = 1:numLbcbs
     me.putDat(sprintf('L%d.Cmd.Dx',lbcb), mdlTgts{lbcb}.disp(1));
