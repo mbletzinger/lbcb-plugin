@@ -26,20 +26,31 @@ if fake
     stiffnesses(6) = me.getCfg('Stiffness.Rz');
 end
 
-for lbcb = 1:numLbcbs    
+for lbcb = 1:numLbcbs
+    disp = zeros(6,1);
+    if fake
+        disp(1) = me.getDat(sprintf('L%d.LCmd.Dx',lbcb));
+        disp(2) = me.getDat(sprintf('L%d.LCmd.Dy',lbcb));
+        disp(3) = me.getDat(sprintf('L%d.LCmd.Dz',lbcb));
+        disp(4) = me.getDat(sprintf('L%d.LCmd.Rx',lbcb));
+        disp(5) = me.getDat(sprintf('L%d.LCmd.Ry',lbcb));
+        disp(6) = me.getDat(sprintf('L%d.LCmd.Rz',lbcb));
+    else
+        disp = lbcbTgts{lbcb}.disp;
+    end
     % Set Dx
-    mdlTgts{lbcb}.setDispDof(1,-lbcbTgts{lbcb}.disp(3));
+    mdlTgts{lbcb}.setDispDof(1,-disp(3));
     % Set Dy
-    mdlTgts{lbcb}.setDispDof(2,-lbcbTgts{lbcb}.disp(1));
+    mdlTgts{lbcb}.setDispDof(2,-disp(1));
     % Set Dz
-    mdlTgts{lbcb}.setDispDof(3,-lbcbTgts{lbcb}.disp(2));
+    mdlTgts{lbcb}.setDispDof(3,-disp(2));
     % Set Rx
-    mdlTgts{lbcb}.setDispDof(4,-lbcbTgts{lbcb}.disp(6));
+    mdlTgts{lbcb}.setDispDof(4,-disp(6));
     % Set Ry
-    mdlTgts{lbcb}.setDispDof(5,-lbcbTgts{lbcb}.disp(4));
+    mdlTgts{lbcb}.setDispDof(5,-disp(4));
     % Set Rz
-    mdlTgts{lbcb}.setDispDof(6,-lbcbTgts{lbcb}.disp(5));
-    forces = lbcbTgts{lbcb}.force;    
+    mdlTgts{lbcb}.setDispDof(6,-disp(5));
+    forces = lbcbTgts{lbcb}.force;
     % Set Fx
     mdlTgts{lbcb}.setForceDof(1,-forces(3));
     % Set Fy
@@ -62,27 +73,29 @@ if me.existsCfg('Displacement.Scale')
     scale_factor(2) = me.getCfg('Rotation.Scale');
     scale_factor(3) = me.getCfg('Force.Scale');
     scale_factor(4) = me.getCfg('Moment.Scale');
-	for lbcb = 1:numLbcbs
-		[mdlTgts{lbcb}.disp,mdlTgts{lbcb}.force] = scale_response(scale_factor,mdlTgts{lbcb});
-	end
+    for lbcb = 1:numLbcbs
+        [mdlTgts{lbcb}.disp,mdlTgts{lbcb}.force] = scale_response(scale_factor,mdlTgts{lbcb});
+    end
 end
 if fake
-	for lbcb = 1:numLbcbs
-	cmd = zeros(6,1);
-	cmd(1) = me.getDat(sprintf('L%d.Cmd.Dx',lbcb));
-	cmd(2) = me.getDat(sprintf('L%d.Cmd.Dy',lbcb));
-	cmd(3) = me.getDat(sprintf('L%d.Cmd.Dz',lbcb));
-	cmd(4) = me.getDat(sprintf('L%d.Cmd.Rx',lbcb));
-	cmd(5) = me.getDat(sprintf('L%d.Cmd.Ry',lbcb));
-	cmd(6) = me.getDat(sprintf('L%d.Cmd.Rz',lbcb));
-	forces = cmd .* stiffnesses;    
-    mdlTgts{lbcb}.setForceDof(1,forces(1));
-    mdlTgts{lbcb}.setForceDof(2,-forces(3));
-    mdlTgts{lbcb}.setForceDof(3,forces(2));
-    mdlTgts{lbcb}.setForceDof(4,forces(4));
-    mdlTgts{lbcb}.setForceDof(5,-forces(6));
-    mdlTgts{lbcb}.setForceDof(6,forces(5));
-    mdlTgts{lbcb}.setDispDof(1:6,cmd);
+    for lbcb = 1:numLbcbs
+        cmd = zeros(6,1);
+        cmd(1) = me.getDat(sprintf('L%d.Cmd.Dx',lbcb));
+        cmd(2) = me.getDat(sprintf('L%d.Cmd.Dy',lbcb));
+        cmd(3) = me.getDat(sprintf('L%d.Cmd.Dz',lbcb));
+        cmd(4) = me.getDat(sprintf('L%d.Cmd.Rx',lbcb));
+        cmd(5) = me.getDat(sprintf('L%d.Cmd.Ry',lbcb));
+        cmd(6) = me.getDat(sprintf('L%d.Cmd.Rz',lbcb));
+        forces = cmd .* stiffnesses;
+        mdlTgts{lbcb}.setForceDof(1,forces(1));
+        mdlTgts{lbcb}.setForceDof(2,-forces(3));
+        mdlTgts{lbcb}.setForceDof(3,forces(2));
+        mdlTgts{lbcb}.setForceDof(4,forces(4));
+        mdlTgts{lbcb}.setForceDof(5,-forces(6));
+        mdlTgts{lbcb}.setForceDof(6,forces(5));
+        %    mdlTgts{lbcb}.setDispDof(1:6,cmd);
+    end
+    
 end
 
 
