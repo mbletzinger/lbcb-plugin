@@ -27,17 +27,17 @@ if fake
 end
 
 for lbcb = 1:numLbcbs
-    disp = zeros(6,1);
-    if fake
-        disp(1) = me.getDat(sprintf('L%d.LCmd.Dx',lbcb));
-        disp(2) = me.getDat(sprintf('L%d.LCmd.Dy',lbcb));
-        disp(3) = me.getDat(sprintf('L%d.LCmd.Dz',lbcb));
-        disp(4) = me.getDat(sprintf('L%d.LCmd.Rx',lbcb));
-        disp(5) = me.getDat(sprintf('L%d.LCmd.Ry',lbcb));
-        disp(6) = me.getDat(sprintf('L%d.LCmd.Rz',lbcb));
-    else
+%    disp = zeros(6,1);
+%     if fake
+%         disp(1) = me.getDat(sprintf('L%d.LCmd.Dx',lbcb));
+%         disp(2) = me.getDat(sprintf('L%d.LCmd.Dy',lbcb));
+%         disp(3) = me.getDat(sprintf('L%d.LCmd.Dz',lbcb));
+%         disp(4) = me.getDat(sprintf('L%d.LCmd.Rx',lbcb));
+%         disp(5) = me.getDat(sprintf('L%d.LCmd.Ry',lbcb));
+%         disp(6) = me.getDat(sprintf('L%d.LCmd.Rz',lbcb));
+%     else
         disp = lbcbTgts{lbcb}.disp;
-    end
+%     end
     % Set Dx
     mdlTgts{lbcb}.setDispDof(1,-disp(2));
     % Set Dy
@@ -63,6 +63,7 @@ for lbcb = 1:numLbcbs
     mdlTgts{lbcb}.setForceDof(5,-forces(6));
     % Set Mz
     mdlTgts{lbcb}.setForceDof(6,-forces(4));
+     me.log.debug(dbstack, sprintf('M2 and L1 %s and %s', mdlTgts{lbcb}.toString(),lbcbTgts{lbcb}.toString()));
 end
 
 

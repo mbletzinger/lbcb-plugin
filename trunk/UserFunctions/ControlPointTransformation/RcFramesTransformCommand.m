@@ -1,4 +1,4 @@
-function lbcbTgts = RcFramesTransformCommand(me,mdlTgts)  
+function lbcbTgts = RcFramesTransformCommand(me,mdlTgts)
 numLbcbs = me.cdp.numLbcbs();
 lbcbTgts = { Target };
 if numLbcbs > 1
@@ -30,19 +30,20 @@ for lbcb = 1:numLbcbs
     lbcbTgts{lbcb}.setDispDof(5,-mdlTgts{lbcb}.disp(4));
     % Set Rz
     lbcbTgts{lbcb}.setDispDof(6,-mdlTgts{lbcb}.disp(5));
-    % me.log.debug(dbstack, sprintf('M2 and L1 %s and %s', mdlTgts{2}.toString(),lbcbTgts{lbcb}.toString()));
-    me.putDat(sprintf('L%d.LCmd.Dx',lbcb), lbcbTgts{lbcb}.disp(1));
-    me.putDat(sprintf('L%d.LCmd.Dy',lbcb), lbcbTgts{lbcb}.disp(2));
-    me.putDat(sprintf('L%d.LCmd.Dz',lbcb), lbcbTgts{lbcb}.disp(3));
-    me.putDat(sprintf('L%d.LCmd.Rx',lbcb), lbcbTgts{lbcb}.disp(4));
-    me.putDat(sprintf('L%d.LCmd.Ry',lbcb), lbcbTgts{lbcb}.disp(5));
-    me.putDat(sprintf('L%d.LCmd.Rz',lbcb), lbcbTgts{lbcb}.disp(6));
 end
 % scale factor=[disp,rot,force,moment]
 scale_factor = zeros(4,1);
 scale_factor(1) = me.getCfg('Displacement.Scale');
 scale_factor(2) = me.getCfg('Rotation.Scale');
 for lbcb = 1:numLbcbs
- 	[lbcbTgts{lbcb}.disp] = scaleValues(scale_factor,lbcbTgts{lbcb}.disp,false);
+    [lbcbTgts{lbcb}.disp] = scaleValues(scale_factor,lbcbTgts{lbcb}.disp,false);
+    
+    me.putDat(sprintf('L%d.LCmd.Dx',lbcb), lbcbTgts{lbcb}.disp(1));
+    me.putDat(sprintf('L%d.LCmd.Dy',lbcb), lbcbTgts{lbcb}.disp(2));
+    me.putDat(sprintf('L%d.LCmd.Dz',lbcb), lbcbTgts{lbcb}.disp(3));
+    me.putDat(sprintf('L%d.LCmd.Rx',lbcb), lbcbTgts{lbcb}.disp(4));
+    me.putDat(sprintf('L%d.LCmd.Ry',lbcb), lbcbTgts{lbcb}.disp(5));
+    me.putDat(sprintf('L%d.LCmd.Rz',lbcb), lbcbTgts{lbcb}.disp(6));
+    me.log.debug(dbstack, sprintf('M2 and L1 %s and %s', mdlTgts{lbcb}.toString(),lbcbTgts{lbcb}.toString()));
 end
 end
