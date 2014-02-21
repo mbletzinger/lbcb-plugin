@@ -25,7 +25,7 @@ classdef Archiver < handle
             me.simRespDataA = DataArchive('ModelResponseData');
             me.notes = TextArchive('TestNotes');
             me.stepHeaders = {'Step','Substep','CorrectionStep'};
-            me.archiveOn = false;
+            me.archiveOn = true;
             hdrs = ...
                 {me.stepHeaders{:},'LBCB1 Dx','LBCB1 Dy','LBCB1 Dz','LBCB1 Rx','LBCB1 Ry','LBCB1 Rz',...
                 'LBCB1 Fx','LBCB1 Fy','LBCB1 Fz','LBCB1 Mx','LBCB1 My','LBCB1 Mz'};%#ok<*CCAT>

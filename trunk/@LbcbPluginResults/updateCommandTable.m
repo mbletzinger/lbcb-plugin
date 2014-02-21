@@ -10,7 +10,7 @@ if(isempty(me.handles) == false)
     [ didx, fidx, labels ] = me.hfact.dat.cmdTableHeaders(); %#ok<ASGLU>
     if(isempty(me.handles) == false)
         set(hndl,'ColumnName',labels);
-        set(hndl,'RowName', {'Step Target','Substep Target','Correction Target',...
+        set(hndl,'RowName', {'Step Target','Previous Target','Correction Target',...
             'Next Substep','Current Substep','Previous Substep'});
     end
     set(hndl,'Data',me.cmdTable);

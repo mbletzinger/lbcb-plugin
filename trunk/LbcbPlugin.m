@@ -74,7 +74,7 @@ if(nargin > 3)
 end
 
 actions = LbcbPluginActions(handles,hfact);
-actions.processArchiveOnOff('on');
+actions.processArchiveOnOff('off');
 ddisp = actions.hfact.ddisp;
 log = Logger('LbcbPlugin');
 setappdata(hObject,'actions',actions);
