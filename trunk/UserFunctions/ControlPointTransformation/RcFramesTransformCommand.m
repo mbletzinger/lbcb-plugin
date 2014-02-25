@@ -33,10 +33,12 @@ for lbcb = 1:numLbcbs
 end
 % scale factor=[disp,rot,force,moment]
 scale_factor = zeros(4,1);
-scale_factor(1) = me.getCfg('Displacement.Scale');
-scale_factor(2) = me.getCfg('Rotation.Scale');
+scale_factor(1) = me.getCfg('DisplacementX.Scale');
+scale_factor(2) = me.getCfg('DisplacementY.Scale');
+scale_factor(3) = me.getCfg('DisplacementZ.Scale');
+scale_factor(4) = me.getCfg('Rotation.Scale');
 for lbcb = 1:numLbcbs
-    [lbcbTgts{lbcb}.disp] = scaleValues(scale_factor,lbcbTgts{lbcb}.disp,false);
+    [lbcbTgts{lbcb}.disp] = scaleValues(scale_factor,lbcbTgts{lbcb}.disp,true);
     
     me.putDat(sprintf('L%d.LCmd.Dx',lbcb), lbcbTgts{lbcb}.disp(1));
     me.putDat(sprintf('L%d.LCmd.Dy',lbcb), lbcbTgts{lbcb}.disp(2));

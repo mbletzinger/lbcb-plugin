@@ -25,19 +25,29 @@ if fake
     stiffnesses(5) = me.getCfg('Stiffness.Ry');
     stiffnesses(6) = me.getCfg('Stiffness.Rz');
 end
+scaling = false;
+scale_factor = zeros(8,1);
+
+if me.existsCfg('Displacement.Scale')
+    % scale factor=[dispx, dispy, dispz, rot, forcex, forcey, forcez, moment]
+    scale_factor(1) = me.getCfg('DisplacementX.Scale');
+    scale_factor(2) = me.getCfg('DisplacementY.Scale');
+    scale_factor(3) = me.getCfg('DisplacementZ.Scale');
+    scale_factor(4) = me.getCfg('Rotation.Scale');
+    scale_factor(5) = me.getCfg('ForceX.Scale');
+    scale_factor(6) = me.getCfg('ForceY.Scale');
+    scale_factor(7) = me.getCfg('ForceZ.Scale');
+    scale_factor(8) = me.getCfg('Moment.Scale');
+    scaling = true;
+end
 
 for lbcb = 1:numLbcbs
-%    disp = zeros(6,1);
-%     if fake
-%         disp(1) = me.getDat(sprintf('L%d.LCmd.Dx',lbcb));
-%         disp(2) = me.getDat(sprintf('L%d.LCmd.Dy',lbcb));
-%         disp(3) = me.getDat(sprintf('L%d.LCmd.Dz',lbcb));
-%         disp(4) = me.getDat(sprintf('L%d.LCmd.Rx',lbcb));
-%         disp(5) = me.getDat(sprintf('L%d.LCmd.Ry',lbcb));
-%         disp(6) = me.getDat(sprintf('L%d.LCmd.Rz',lbcb));
-%     else
-        disp = lbcbTgts{lbcb}.disp;
-%     end
+
+    if scaling
+	  	disp = scaleValues(scale_factor(1:4),lbcbTgts{lbcb}.disp,false);
+	  	force= scaleValues(scale_factor(5:8),lbcbTgts{lbcb}.force,false);
+    end
+
     % Set Dx
     mdlTgts{lbcb}.setDispDof(1,-disp(3));
     % Set Dy
@@ -67,18 +77,6 @@ for lbcb = 1:numLbcbs
 end
 
 
-if me.existsCfg('Displacement.Scale')
-    % scale factor=[disp,rot,force,moment]
-    scale_factor = zeros(4,1);
-    scale_factor(1) = me.getCfg('Displacement.Scale');
-    scale_factor(2) = me.getCfg('Rotation.Scale');
-    scale_factor(3) = me.getCfg('Force.Scale');
-    scale_factor(4) = me.getCfg('Moment.Scale');
-    for lbcb = 1:numLbcbs
-	  	[mdlTgts{lbcb}.disp] = scaleValues(scale_factor(1:2),mdlTgts{lbcb}.disp,true);
-	  	[mdlTgts{lbcb}.force] = scaleValues(scale_factor(3:4),mdlTgts{lbcb}.force,false);
-    end
-end
 if fake
     for lbcb = 1:numLbcbs
         cmd = zeros(6,1);
