@@ -28,7 +28,7 @@ end
 scaling = false;
 scale_factor = zeros(8,1);
 
-if me.existsCfg('Displacement.Scale')
+if me.existsCfg('DisplacementX.Scale')
     % scale factor=[dispx, dispy, dispz, rot, forcex, forcey, forcez, moment]
     scale_factor(1) = me.getCfg('DisplacementX.Scale');
     scale_factor(2) = me.getCfg('DisplacementY.Scale');
@@ -45,7 +45,10 @@ for lbcb = 1:numLbcbs
 
     if scaling
 	  	disp = scaleValues(scale_factor(1:4),lbcbTgts{lbcb}.disp,false);
-	  	force= scaleValues(scale_factor(5:8),lbcbTgts{lbcb}.force,false);
+	  	forces= scaleValues(scale_factor(5:8),lbcbTgts{lbcb}.force,false);
+    else
+ 	  	disp = lbcbTgts{lbcb}.disp;
+	  	forces= lbcbTgts{lbcb}.force;       
     end
 
     % Set Dx
@@ -60,7 +63,6 @@ for lbcb = 1:numLbcbs
     mdlTgts{lbcb}.setDispDof(5,-disp(5));
     % Set Rz
     mdlTgts{lbcb}.setDispDof(6,-disp(4));
-    forces = lbcbTgts{lbcb}.force;
     % Set Fx
     mdlTgts{lbcb}.setForceDof(1,-forces(3));
     % Set Fy
