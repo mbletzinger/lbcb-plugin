@@ -10,8 +10,8 @@ if isInverted
 	end
 end
 %displacement
-scaled_values(1:3) = values(1:3)*scale(1);
+scaled_values(1:3) = values(1:3)*scale(1:3);
 
 %rotation
-scaled_values(4:6) = values(4:6)*scale(2);
+scaled_values(4:6) = values(4:6)*scale(4);
 end    
