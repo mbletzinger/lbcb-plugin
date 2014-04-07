@@ -7,10 +7,10 @@ classdef Sounds < handle
     end
     methods
         function me = Sounds()
-            [me.duhDuhDuuhhBits, me.duhDuhDuuhhFreq, ~, readinfo] = ...
-                wavread('ImagesAndSounds/Duh Duh Duuuuhhhh! (better).wav');
-            [me.sadTromboneBits, me.sadTromboneFreq, ~, readinfo] = ...
-                wavread('ImagesAndSounds/Sad Trombone.wav');
+            [me.duhDuhDuuhhBits, me.duhDuhDuuhhFreq] = ...
+                audioread('ImagesAndSounds/Duh Duh Duuuuhhhh! (better).wav');
+            [me.sadTromboneBits, me.sadTromboneFreq] = ...
+                audioread('ImagesAndSounds/Sad Trombone.wav');
         end 
         function trombone(me)
             me.play(me.sadTromboneBits, me.sadTromboneFreq);
