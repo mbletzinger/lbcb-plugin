@@ -22,7 +22,7 @@ function varargout = LbcbPlugin(varargin)
 
 % Edit the above text to modify the response to help LbcbPlugin
 
-% Last Modified by GUIDE v2.5 25-Nov-2013 14:01:03
+% Last Modified by GUIDE v2.5 09-Apr-2014 15:47:04
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -708,22 +708,22 @@ end
 
 
 % --------------------------------------------------------------------
-function Forces_Callback(hObject, eventdata, handles)
+function L1Forces_Callback(hObject, eventdata, handles)
 ddisp = getappdata(getLp(hObject),'ddisp');
-if ddisp.isDisplaying('Forces')
-    ddisp.closeDisplay('Forces');
+if ddisp.isDisplaying('L1Forces')
+    ddisp.closeDisplay('L1Forces');
 else
-    ddisp.openDisplay('Forces');
+    ddisp.openDisplay('L1Forces');
 end
 
 
 % --------------------------------------------------------------------
-function Moments_Callback(hObject, eventdata, handles)
+function L1Moments_Callback(hObject, eventdata, handles)
 ddisp = getappdata(getLp(hObject),'ddisp');
-if ddisp.isDisplaying('Moments')
-    ddisp.closeDisplay('Moments');
+if ddisp.isDisplaying('L1Moments')
+    ddisp.closeDisplay('L1Moments');
 else
-    ddisp.openDisplay('Moments');
+    ddisp.openDisplay('L1Moments');
 end
 
 
@@ -1064,10 +1064,77 @@ end
 
 
 % --------------------------------------------------------------------
-function FzVsDz_Callback(hObject, eventdata, handles)
+function FzVsLbcb1Dz_Callback(hObject, eventdata, handles)
 ddisp = getappdata(getLp(hObject),'ddisp');
-if ddisp.isDisplaying('FzVsDz')
-    ddisp.closeDisplay('FzVsDz');
+if ddisp.isDisplaying('FzVsLbcb1Dz')
+    ddisp.closeDisplay('FzVsLbcb1Dz');
 else
-    ddisp.openDisplay('FzVsDz');
+    ddisp.openDisplay('FzVsLbcb1Dz');
+end
+
+
+% --------------------------------------------------------------------
+function L1Displacements_Callback(hObject, eventdata, handles)
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('L1Displacements')
+    ddisp.closeDisplay('L1Displacements');
+else
+    ddisp.openDisplay('L1Displacements');
+end
+
+
+% --------------------------------------------------------------------
+function L1Rotations_Callback(hObject, eventdata, handles)
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('L1Rotations')
+    ddisp.closeDisplay('L1Rotations');
+else
+    ddisp.openDisplay('L1Rotations');
+end
+
+% --------------------------------------------------------------------
+function L2Displacements_Callback(hObject, eventdata, handles)
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('L2Displacements')
+    ddisp.closeDisplay('L2Displacements');
+else
+    ddisp.openDisplay('L2Displacements');
+end
+
+% --------------------------------------------------------------------
+function L2Rotations_Callback(hObject, eventdata, handles)
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('L2Rotations')
+    ddisp.closeDisplay('L2Rotations');
+else
+    ddisp.openDisplay('L2Rotations');
+end
+
+% --------------------------------------------------------------------
+function L2Moments_Callback(hObject, eventdata, handles)
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('L2Moments')
+    ddisp.closeDisplay('L2Moments');
+else
+    ddisp.openDisplay('L2Moments');
+end
+
+
+% --------------------------------------------------------------------
+function L2Forces_Callback(hObject, eventdata, handles)
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('L2Forces')
+    ddisp.closeDisplay('L2Forces');
+else
+    ddisp.openDisplay('L2Forces');
+end
+
+
+% --------------------------------------------------------------------
+function FzVsLbcb2Dz_Callback(hObject, eventdata, handles)
+ddisp = getappdata(getLp(hObject),'ddisp');
+if ddisp.isDisplaying('FzVsLbcb2Dz')
+    ddisp.closeDisplay('FzVsLbcb2Dz');
+else
+    ddisp.openDisplay('FzVsLbcb2Dz');
 end

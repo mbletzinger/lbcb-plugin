@@ -57,13 +57,37 @@ classdef DisplayFactory < handle
 %             ref.cdp = me.cdp;
 %             me.addDisplay('OutOfPlaneRotations',ref,me.mainDisp.OutOfPlaneRotations);
 % 
-            ref = MultiDofStepPlot('Forces',{'Fx','Fy','Fz'},'kips',1,0);
+            ref = MultiDofStepPlot('L1 Forces',{'Fx','Fy','Fz'},'kips',1,0);
             ref.cdp = me.cdp;
-            me.addDisplay('Forces',ref,me.mainDisp.Forces);
+            me.addDisplay('L1Forces',ref,me.mainDisp.L1Forces);
             
-            ref = MultiDofStepPlot('Moments',{'Mx','My','Mz'},'kip*inches',1,0);
+            ref = MultiDofStepPlot('L1 Moments',{'Mx','My','Mz'},'kip*inches',1,0);
             ref.cdp = me.cdp;
-            me.addDisplay('Moments',ref,me.mainDisp.Moments);
+            me.addDisplay('L1Moments',ref,me.mainDisp.L1Moments);
+
+            ref = MultiDofStepPlot('L1 Displacements',{'Dx','Dy','Dz'},'inches',1,0);
+            ref.cdp = me.cdp;
+            me.addDisplay('L1Displacements',ref,me.mainDisp.L1Displacements);
+            
+            ref = MultiDofStepPlot('L1 Rotations',{'Rx','Ry','Rz'},'radians',1,0);
+            ref.cdp = me.cdp;
+            me.addDisplay('L1Rotations',ref,me.mainDisp.L1Rotations);
+            
+            ref = MultiDofStepPlot('L2 Forces',{'Fx','Fy','Fz'},'kips',1,0);
+            ref.cdp = me.cdp;
+            me.addDisplay('L2Forces',ref,me.mainDisp.L2Forces);
+            
+            ref = MultiDofStepPlot('L2 Moments',{'Mx','My','Mz'},'kip*inches',1,0);
+            ref.cdp = me.cdp;
+            me.addDisplay('L2Moments',ref,me.mainDisp.L2Moments);
+
+            ref = MultiDofStepPlot('L2 Displacements',{'Dx','Dy','Dz'},'inches',1,0);
+            ref.cdp = me.cdp;
+            me.addDisplay('L2Displacements',ref,me.mainDisp.L2Displacements);
+            
+            ref = MultiDofStepPlot('L2 Rotations',{'Rx','Ry','Rz'},'radians',1,0);
+            ref.cdp = me.cdp;
+            me.addDisplay('L2Rotations',ref,me.mainDisp.L2Rotations);
             
 %             ref = MultiDofStepPlot('MxCorrections',{'ProposedMx','MeasuredMx'},'kip*inches',1,0);
 %             ref.cdp = me.cdp;
@@ -124,6 +148,15 @@ classdef DisplayFactory < handle
             ref.cdp = me.cdp;
             me.addDisplay('FyVsLbcb1Dy',ref,me.mainDisp.FyVsLbcb1Dy);
             ref = VsPlot('MxVsLbcb1Dy',1,2,10);
+
+            ref = VsPlot('FzVsLbcb1Dz',1,3,9);
+            ref.cdp = me.cdp;
+            me.addDisplay('FzVsLbcb1Dz',ref,me.mainDisp.FzVsLbcb2Dz);
+            ref = VsPlot('FzVsLbcb2Dz',0,3,9);
+            ref.cdp = me.cdp;
+            me.addDisplay('FzVsLbcb2Dz',ref,me.mainDisp.FzVsLbcb2Dz);
+
+            
             ref.cdp = me.cdp;
             me.addDisplay('MxVsLbcb1Dy',ref,me.mainDisp.MxVsLbcb1Dy);
             ref = VsPlot('RxVsLbcb1Dy',1,2,4);
