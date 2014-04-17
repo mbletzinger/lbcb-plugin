@@ -60,7 +60,7 @@ Hinputable2 = uitable('pos',[20 50 125 200],'ColumnName',colname,'ColumnFormat',
 %------------------
 % Table III
 %------------------
-colname = {'xnew-pin','ynew-pin','znew-pin'};
+colname = {'xnew-pin','ynew-pin','znew-pin', 'priority'};
 alldata.numcol3 = length(colname);
 coledit = false(1,length(colname));
 colformat = cell(1,length(colname));
@@ -72,7 +72,7 @@ for i = 1:alldata.num
     rowname(i) = {num2str(i)};
 end
 backcolor = 1/255*[220 220 220;245 222 179];
-Hinputable3 = uitable('pos',[300 50 260 200],'ColumnName',colname,'ColumnFormat',colformat,...
+Hinputable3 = uitable('pos',[300 50 345 200],'ColumnName',colname,'ColumnFormat',colformat,...
                       'ColumnEditable',coledit,'RowName',rowname,'RowStriping','on',...
                       'BackgroundColor',backcolor,...
                       'SelectionHighlight','off','Visible','off');
@@ -287,7 +287,13 @@ set([f,Hnumsensor_title,Hnumsensor,Hinputable1,Hinputable2,Hinputable3,Hredo,Hup
            %==
            xtemp = lsqnonlin(@(x) pinfreeini1(x,xfix',xpin',dtotal),x0,LB,UB,opt);
            %==
-           xpin_current = reshape(xtemp,3,ns)' + xpin;
+           updates = reshape(xtemp,3,ns)';
+           xpin_current = zeros(ns,4);
+           xpin_current(:,1:3) = updates + xpin;
+           [~, I] = sort(abs(updates),'descend');
+           difforder = sum(I,2);
+           [~, I2] = sort(difforder);
+           xpin_current(:,4) = I2;
            %==
            set(Hinputable3,'Data',num2cell(xpin_current));
            set(Hinputable3,'Visible','on');
