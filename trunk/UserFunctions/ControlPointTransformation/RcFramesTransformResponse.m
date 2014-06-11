@@ -54,27 +54,27 @@ for lbcb = 1:numLbcbs
     % Set Dx
     mdlTgts{lbcb}.setDispDof(1,-disp(3));
     % Set Dy
-    mdlTgts{lbcb}.setDispDof(2,-disp(2));
+    mdlTgts{lbcb}.setDispDof(2,disp(2));
     % Set Dz
-    mdlTgts{lbcb}.setDispDof(3,-disp(1));
+    mdlTgts{lbcb}.setDispDof(3,disp(1));
     % Set Rx
     mdlTgts{lbcb}.setDispDof(4,-disp(6));
     % Set Ry
-    mdlTgts{lbcb}.setDispDof(5,-disp(5));
+    mdlTgts{lbcb}.setDispDof(5,disp(5));
     % Set Rz
-    mdlTgts{lbcb}.setDispDof(6,-disp(4));
+    mdlTgts{lbcb}.setDispDof(6,disp(4));
     % Set Fx
     mdlTgts{lbcb}.setForceDof(1,-forces(3));
     % Set Fy
-    mdlTgts{lbcb}.setForceDof(2,-forces(2));
+    mdlTgts{lbcb}.setForceDof(2,forces(2));
     % Set Fz
-    mdlTgts{lbcb}.setForceDof(3,-forces(1));
+    mdlTgts{lbcb}.setForceDof(3,forces(1));
     % Set Mx
     mdlTgts{lbcb}.setForceDof(4,-forces(6));
     % Set My
-    mdlTgts{lbcb}.setForceDof(5,-forces(5));
+    mdlTgts{lbcb}.setForceDof(5,forces(5));
     % Set Mz
-    mdlTgts{lbcb}.setForceDof(6,-forces(4));
+    mdlTgts{lbcb}.setForceDof(6,forces(4));
      me.log.debug(dbstack, sprintf('M2 and L1 %s and %s', mdlTgts{lbcb}.toString(),lbcbTgts{lbcb}.toString()));
 end
 

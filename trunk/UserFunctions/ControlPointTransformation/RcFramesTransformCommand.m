@@ -19,15 +19,15 @@ for lbcb = 1:numLbcbs
     me.putDat(sprintf('L%d.Cmd.Ry',lbcb), mdlTgts{lbcb}.disp(5));
     me.putDat(sprintf('L%d.Cmd.Rz',lbcb), mdlTgts{lbcb}.disp(6));
     % Set Dx
-    lbcbTgts{lbcb}.setDispDof(1,-mdlTgts{lbcb}.disp(3));
+    lbcbTgts{lbcb}.setDispDof(1,mdlTgts{lbcb}.disp(3));
     % Set Dy
-    lbcbTgts{lbcb}.setDispDof(2,-mdlTgts{lbcb}.disp(2));
+    lbcbTgts{lbcb}.setDispDof(2,mdlTgts{lbcb}.disp(2));
     % Set Dz
     lbcbTgts{lbcb}.setDispDof(3,-mdlTgts{lbcb}.disp(1));
     % Set Rx
-    lbcbTgts{lbcb}.setDispDof(4,-mdlTgts{lbcb}.disp(6));
+    lbcbTgts{lbcb}.setDispDof(4,mdlTgts{lbcb}.disp(6));
     % Set Ry
-    lbcbTgts{lbcb}.setDispDof(5,-mdlTgts{lbcb}.disp(5));
+    lbcbTgts{lbcb}.setDispDof(5,mdlTgts{lbcb}.disp(5));
     % Set Rz
     lbcbTgts{lbcb}.setDispDof(6,-mdlTgts{lbcb}.disp(4));
 end
