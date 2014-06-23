@@ -5,7 +5,10 @@ if on
     action = 'OPEN SIMCOR CONNECTION';
     nope = me.hfact.ocSimCor.start(0);
 else
-    nope = me.hfact.ocSimCor.start(1);
+    button = questdlg('Do you want to end the simulation?','Stopping Simulation','Proceed','Cancel','Cancel');
+    if strcmp(button,'Proceed')
+        nope = me.hfact.ocSimCor.start(1);
+    end
 end
 if nope
     return;
