@@ -73,19 +73,19 @@ classdef DisplayFactory < handle
             ref.cdp = me.cdp;
             me.addDisplay('L1Rotations',ref,me.mainDisp.L1Rotations);
             
-            ref = MultiDofStepPlot('L2 Forces',{'Fx','Fy','Fz'},'kips',1,0);
+            ref = MultiDofStepPlot('L2 Forces',{'Fx','Fy','Fz'},'kips',0,0);
             ref.cdp = me.cdp;
             me.addDisplay('L2Forces',ref,me.mainDisp.L2Forces);
             
-            ref = MultiDofStepPlot('L2 Moments',{'Mx','My','Mz'},'kip*inches',1,0);
+            ref = MultiDofStepPlot('L2 Moments',{'Mx','My','Mz'},'kip*inches',0,0);
             ref.cdp = me.cdp;
             me.addDisplay('L2Moments',ref,me.mainDisp.L2Moments);
 
-            ref = MultiDofStepPlot('L2 Displacements',{'Dx','Dy','Dz'},'inches',1,0);
+            ref = MultiDofStepPlot('L2 Displacements',{'Dx','Dy','Dz'},'inches',0,0);
             ref.cdp = me.cdp;
             me.addDisplay('L2Displacements',ref,me.mainDisp.L2Displacements);
             
-            ref = MultiDofStepPlot('L2 Rotations',{'Rx','Ry','Rz'},'radians',1,0);
+            ref = MultiDofStepPlot('L2 Rotations',{'Rx','Ry','Rz'},'radians',0,0);
             ref.cdp = me.cdp;
             me.addDisplay('L2Rotations',ref,me.mainDisp.L2Rotations);
             
