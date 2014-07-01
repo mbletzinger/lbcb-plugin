@@ -11,6 +11,7 @@ else
         nope = me.hfact.ocSimCor.start(1);
     else
         cancel = 1;
+        return;
     end
 end
 if nope
