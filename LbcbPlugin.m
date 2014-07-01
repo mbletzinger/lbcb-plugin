@@ -187,7 +187,10 @@ actions.setLoggerLevels();
 % --- Executes on button press in StartSimCor.
 function StartSimCor_Callback(hObject, eventdata, handles)
 actions = getappdata(getLp(hObject),'actions');
-actions.processConnectSimCor(get(hObject,'Value'));
+cancel = actions.processConnectSimCor(get(hObject,'Value'));
+if cancel
+    set(hObject,'Value',1);
+end
 
 
 % --- Executes during object deletion, before destroying properties.

@@ -94,7 +94,7 @@ classdef LbcbPluginActions < handle
         end
         processRunHold(me,on)
         processConnectOm(me,on)
-        processConnectSimCor(me,on)
+        cancel = processConnectSimCor(me,on)
         processTriggering(me,on)
         processVamping(me,on)
         selectInputFile(me,on)
