@@ -30,7 +30,8 @@ classdef MultiDofStepPlot < handle
         function undisplayMe(me)
             me.plot.undisplayMe();
         end
-        function update(me,step) 
+        function update(me,step)
+            data = [];
             if me.isLbcb1
                 data = step.lbcbCps{1};
             elseif me.cdp.numLbcbs() == 2
