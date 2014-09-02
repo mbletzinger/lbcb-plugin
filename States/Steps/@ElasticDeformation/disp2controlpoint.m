@@ -75,7 +75,10 @@ end
 %------------------
 % optimization setting
 %------------------
-opt = optimset('MaxFunEvals',optm.maxfunevals,'MaxIter',optm.maxiter,...
+% opt = optimset('MaxFunEvals',optm.maxfunevals,'MaxIter',optm.maxiter,...
+%                'TolFun',optm.tolfun,'TolX',optm.tolx,...
+%                'Jacobian',optm.jacob,'Display','off');
+opt = optimoptions(@lsqnonlin,'MaxFunEvals',optm.maxfunevals,'MaxIter',optm.maxiter,...
                'TolFun',optm.tolfun,'TolX',optm.tolx,...
                'Jacobian',optm.jacob,'Display','off');
 %==
@@ -185,6 +188,6 @@ switch imode
 %         ind_dof
 %         d
         cmdtemp = lsqnonlin(@(cmd) ElasticDeformation.x2cmd_eval2_mf(cmd,xpin,xfix,d,cmdlast,idof_update,cmdpert),zeros(length(ind_dof),1),LB(ind_dof),UB(ind_dof),opt);
-        cmd = zeros(6,1);
+        cmd = zeros(6,1)
         cmd(ind_dof) = cmdtemp;
 end
