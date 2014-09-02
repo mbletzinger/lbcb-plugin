@@ -23,4 +23,4 @@ for p = 2:length(newpath)
     pathline = sprintf('%s;%s',pathline,newpath{p});
 end
 path(pathline);
-savepath;
+%savepath;
