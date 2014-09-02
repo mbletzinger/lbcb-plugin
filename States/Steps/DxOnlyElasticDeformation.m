@@ -20,9 +20,20 @@ classdef DxOnlyElasticDeformation < ElasticDeformation
             me = me@ElasticDeformation(cdp, isLbcb1);
         end
         function curResponse = calculate(me, prevResponse,curReadings)
-            disp = curReadings - me.initialReadings;
+            if me.isLbcb1
+                disp = curReadings - me.initialReadings;
+                avgdisp = mean(disp);
+                me.putArch('EdDz', avgdisp);
+            else
+                avgdisp = me.getArch('EdDz');
+            end
+            
+            dof = 1;
+            if me.existsCfg('EdSingleDof')
+                dof = me.getCfg('EdSingleDof');
+            end
             curResponse = prevResponse;
-            curResponse(1) = disp;    
+            curResponse(dof) = avgdisp;
         end
     end
 end

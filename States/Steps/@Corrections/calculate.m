@@ -3,13 +3,10 @@ function  calculate(me,prevStep, curStep,correctionTarget)
 ccfg = StepCorrectionConfigDao(me.cdp.cfg);
 doC = ccfg.doCalculations;
 funcs = ccfg.calculationFunctions;
-prdisp = [];
+crdisp = [];
 if  doC(1)
-    prdisp =[];
+    crdisp =[];
     for l = 1: me.cdp.numLbcbs()
-        if isempty(prevStep) == false
-            pcps = prevStep.lbcbCps{l};
-        end
         ccps = curStep.lbcbCps{l};
         if isempty(correctionTarget)
             ctcps = curStep.lbcbCps{l};
@@ -22,14 +19,15 @@ if  doC(1)
             rsp = me.ed{l}.calculateTest(ctcps.command.disp,stp);
         elseif strcmp(funcs{1},'Dx Only')
             me.dxed{l}.loadConfig;
-            if isempty(pcps) == false
-                prdisp = pcps.response.disp;
+            if isempty(ccps) == false
+                % duplicate all of the other DOFs
+                crdisp = ccps.response.lbcb.disp;
             end
-            rsp = me.dxed{l}.calculate(prdisp,...
+            rsp = me.dxed{l}.calculate(crdisp,...
                 ccps.externalSensors);
         else
             me.ed{l}.loadConfig;
-            rsp = me.ed{l}.calculate(prdisp,...
+            rsp = me.ed{l}.calculate(crdisp,...
                 ccps.externalSensors);
         end
         % initial offset added back in
