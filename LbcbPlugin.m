@@ -22,7 +22,7 @@ function varargout = LbcbPlugin(varargin)
 
 % Edit the above text to modify the response to help LbcbPlugin
 
-% Last Modified by GUIDE v2.5 03-Sep-2014 11:17:55
+% Last Modified by GUIDE v2.5 03-Sep-2014 11:28:19
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -1146,15 +1146,15 @@ end
 % --------------------------------------------------------------------
 function TotalFz_Callback(hObject, eventdata, handles)
 ddisp = getappdata(getLp(hObject),'ddisp');
-if ddisp.isDisplaying('TotalF')
-    ddisp.closeDisplay('TotalF');
+if ddisp.isDisplaying('TotalFz')
+    ddisp.closeDisplay('TotalFz');
 else
-    ddisp.openDisplay('TotalF');
+    ddisp.openDisplay('TotalFz');
 end
 
 
 % --------------------------------------------------------------------
-function EdFz_Callback(hObject, eventdata, handles)
+function EdDz_Callback(hObject, eventdata, handles)
 ddisp = getappdata(getLp(hObject),'ddisp');
 if ddisp.isDisplaying('EdDz')
     ddisp.closeDisplay('EdDz');
