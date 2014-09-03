@@ -26,9 +26,12 @@ classdef DisplayFactory < handle
         end
         function initialize(me,handle)
             me.mainDisp = handle;
-            %             ref = ArchPlot('TotalFxVsLbcb1Dx',1,1,'Fx total');
-            %             ref.cdp = me.cdp;
-            %             me.addDisplay('TotalFxVsLbcb1Dx',ref,me.mainDisp.TotalFxVsLbcb1Dx);
+                        ref = ArchStepPlot('TotalFz','FzTotal',me.dat);
+                        ref.cdp = me.cdp;
+                        me.addDisplay('TotalFz',ref,me.mainDisp.TotalFz);
+                        ref = ArchStepPlot('EdDz','EdDz',me.dat);
+                        ref.cdp = me.cdp;
+                        me.addDisplay('EdDz',ref,me.mainDisp.EdDz);
             %             ref = ArchPlot('TotalFxVsLbcb2Dx',0,1,'Fx total');
             %             ref.cdp = me.cdp;
             %             me.addDisplay('TotalFxVsLbcb2Dx',ref,me.mainDisp.TotalFxVsLbcb2Dx);
