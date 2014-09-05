@@ -3,7 +3,7 @@ me.log.debug(dbstack,'Running displacement adjustment fcn');
 % Three corrections Dz, Rx, and Ry
 tol = zeros(1,3);
 ed = zeros(1,3);
-dofs = [3,4,5];
+dofs = [3,4,3];
 target = zeros(1,3);
 
 tol(1) = me.getOrDefault('TolDz',1,1);
@@ -21,8 +21,8 @@ prev(1,1) = me.getArch('L1PrevCmdDz');
 prev(2,1) = me.getArch('L2PrevCmdDz');
 cf = me.getOrDefault('EdCorrectionFactor',1,1);
 
-str = sprintf('Cmd: %s\n',curStep.lbcbCps{1}.command.toString());
-str = sprintf('%sCmd: %s\n',str,curStep.lbcbCps{1}.command.toString());
+str = sprintf('Cmd: %s\n',step.lbcbCps{1}.command.toString());
+str = sprintf('%sCmd: %s\n',str,step.lbcbCps{1}.command.toString());
 str = sprintf('%sCorrectionFactor: %f\n',str,cf);
 
 dz = prev(1:2,1);
@@ -42,16 +42,16 @@ for d = 1:3
             commands(1) = prev(1,d) + correct * cf;
             commands(2) = prev(2,d) + correct * cf;
         case 3
-            commands(1) = dz(1) - (commandArm/2) * correct * cf;
-            commands(2) = dz(2) + (commandArm/2) * correct * cf;
+            commands(1) = dz(1) + (commandArm/2) * correct * cf;
+            commands(2) = dz(2) - (commandArm/2) * correct * cf;
     end
     step.lbcbCps{1}.command.setDispDof(dofs(d),commands(1));
     step.lbcbCps{2}.command.setDispDof(dofs(d),commands(2));
 end
-end
 
-str = sprintf('%sAdjusted Cmd: %s\n',curStep.lbcbCps{1}.command.toString());
-str = sprintf('%sAdjustedCmd: %s\n',str,curStep.lbcbCps{1}.command.toString());
+
+str = sprintf('%sAdjusted Cmd: %s\n',step.lbcbCps{1}.command.toString());
+str = sprintf('%sAdjustedCmd: %s\n',str,step.lbcbCps{1}.command.toString());
 me.log.debug(dbstack,str);
 
 end

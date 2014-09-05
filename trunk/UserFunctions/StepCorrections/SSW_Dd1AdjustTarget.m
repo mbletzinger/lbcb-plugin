@@ -37,8 +37,8 @@ for d = 1:4
     step.lbcbCps{lbcb}.command.setForceDof(dofs(d),0);
 end
 
-str = sprintf('%sAdjusted Cmd: %s\n',curStep.lbcbCps{1}.command.toString());
-str = sprintf('%sAdjustedCmd: %s\n',str,curStep.lbcbCps{1}.command.toString());
+str = sprintf('%sAdjusted Cmd: %s\n',step.lbcbCps{1}.command.toString());
+str = sprintf('%sAdjustedCmd: %s\n',str,step.lbcbCps{1}.command.toString());
 me.log.debug(dbstack,str);
 
 end

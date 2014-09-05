@@ -57,7 +57,7 @@ classdef DisplayFactory < handle
             %             ref.cdp = me.cdp;
             %             me.addDisplay('OutOfPlaneRotations',ref,me.mainDisp.OutOfPlaneRotations);
             %
-            ref = MultiDofStepPlot('SSW_Dz',{'EdDz','MeasEast','MeasNorth', 'MeasWest'},'inches',1,0);
+            ref = MultiDofStepPlot('SSW_Dz',{'EdDz','MeasEast','MeasNorth', 'MeasWest', 'CorrectDz'},'inches',1,0);
             ref.cdp = me.cdp;
             me.addDisplay('SSW_Dz',ref,me.mainDisp.SSW_Dz);
             
