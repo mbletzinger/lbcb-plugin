@@ -5,13 +5,17 @@ me.log.debug(dbstack,'Running calculate displacements fcn');
 %------------------------------------------------------------------------%
 westArm = me.getCfg('WestArm');
 northArm = me.getCfg('NorthArm');
-
-initialReadings = zeros(1,ns1);
-for s = 1:ns1
+[n, ~, ~] = me.cdp.getFilteredExtSensors(1); 
+initialReadings = zeros(1,3);
+for s = 1:3
     initialReadings(s) = me.offstcfg.getOffset(n{s});
 end
 
 curReadings = step.lbcbCps{1}.externalSensors;
+prevL1 = step.lbcbCps{1}.command.disp(3);
+prevL2 = step.lbcbCps{2}.command.disp(3);
+me.putArch('L1PrevCmdDz', prevL1);
+me.putArch('L2PrevCmdDz', prevL2);
 
 disp = curReadings - initialReadings;
 east = disp(1);
@@ -20,7 +24,8 @@ west= disp(3);
 avgdisp = mean(disp);
 me.putArch('EdDz', avgdisp);
 thetay = (west - east)/ westArm;
-thetax = ( mean(east,west)-north) / northArm;
+% thetax = ( (east+west)/2 -north) / northArm;
+thetax = ( (east+east)/2 -north) / northArm;
 
 me.putArch('EdRy', thetay);
 me.putArch('EdRx', thetax);

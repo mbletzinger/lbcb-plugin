@@ -11,7 +11,6 @@ classdef StepData < CorrectionVariables
         mdlUiSimCor;
         containsModelCps;
         stepTimes; % BG
-        offstcfg
     end
     methods
         function me = StepData(cdp)

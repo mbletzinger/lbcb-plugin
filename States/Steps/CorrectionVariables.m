@@ -85,7 +85,7 @@ classdef CorrectionVariables < handle
         function yes = existsCfg(me,key)
             yes = me.cfgH.exists(key);
         end
-        function val = getOrDefault(name, default, type)
+        function val = getOrDefault(me, name, default, type)
             val = default;
             switch type
                 case 1

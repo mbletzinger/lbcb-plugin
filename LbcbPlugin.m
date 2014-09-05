@@ -1176,8 +1176,8 @@ end
 % --------------------------------------------------------------------
 function SSW_Rotations_Callback(hObject, eventdata, handles)
 ddisp = getappdata(getLp(hObject),'ddisp');
-if ddisp.isDisplaying('SW_Rotations')
-    ddisp.closeDisplay('SW_Rotations');
+if ddisp.isDisplaying('SSW_Rotations')
+    ddisp.closeDisplay('SSW_Rotations');
 else
-    ddisp.openDisplay('SW_Rotations');
+    ddisp.openDisplay('SSW_Rotations');
 end
