@@ -170,6 +170,7 @@ classdef HandleFactory <  handle
                 me.dd{i}.targetHist = me.dat.targetHist;
                 me.dd{i}.substepHist = me.dat.substepHist;
                 me.dd{i}.executeHist = me.dat.executeHist;
+                me.dd{i}.offstcfg = me.offstcfg;
             end
             
             me.corrections = Corrections(me.cdp);

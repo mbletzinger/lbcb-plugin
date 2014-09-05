@@ -4,6 +4,7 @@ classdef CorrectionVariables < handle
         cfgH
         datH
         archH
+        offstcfg
     end
     methods
         function me = CorrectionVariables(cdp)
@@ -83,6 +84,23 @@ classdef CorrectionVariables < handle
         end
         function yes = existsCfg(me,key)
             yes = me.cfgH.exists(key);
+        end
+        function val = getOrDefault(name, default, type)
+            val = default;
+            switch type
+                case 1
+                    if me.existsCfg(name)
+                        val = me.getCfg(name);
+                    end
+                case 2
+                    if me.existsDat(name)
+                        val = me.getDat(name);
+                    end
+                case 3
+                    if me.existsArch(name)
+                        val = me.getArch(name);
+                    end
+            end
         end
         function saveData(me,step)
             keys = me.archH.keys();
