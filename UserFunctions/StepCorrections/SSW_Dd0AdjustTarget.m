@@ -51,7 +51,7 @@ for d = 1:3
     end
     step.lbcbCps{1}.command.setDispDof(dofs(d),commands(1));
     step.lbcbCps{2}.command.setDispDof(dofs(d),commands(2));
-    log.info(sprintf('Correcting %s',dlabels{d}));
+    me.log.info(dbstack,sprintf('Correcting %s',dlabels{d}));
 end
 
 

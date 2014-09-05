@@ -37,7 +37,7 @@ for d = 1:4
         continue;
     end
     step.lbcbCps{lbcb}.command.setForceDof(dofs(d),0);
-    log.info(sprintf('Correcting LBCB %d %s',lbcb, dlabels{d}));
+    me.log.info(dbstack,sprintf('Correcting LBCB %d %s',lbcb, dlabels{d}));
 end
 
 str = sprintf('%sAdjusted Cmd: %s\n',step.lbcbCps{1}.command.toString());
