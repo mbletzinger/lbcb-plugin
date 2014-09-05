@@ -19,11 +19,14 @@ north = disp(2);
 west= disp(3);
 avgdisp = mean(disp);
 me.putArch('EdDz', avgdisp);
-thetay = (east - west)/ westArm;
-thetax = -(north - west) / northArm;
+thetay = (west - east)/ westArm;
+thetax = ( mean(east,west)-north) / northArm;
 
 me.putArch('EdRy', thetay);
 me.putArch('EdRx', thetax);
+me.putArch('MeasEast', east);
+me.putArch('MeasNorth', north);
+me.putArch('MeasWest', west);
 str = sprintf('ED Dz = %f, ED Ry = %f, ED Rx = %f\n',avgdisp, thetay, thetax);
 me.log.debug(dbstack,str);
 
