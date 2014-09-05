@@ -8,6 +8,8 @@ function SSW_Dd1AdjustTarget(me,step)
 me.log.debug(dbstack,'Running force adjustment fcn');
 measured = zeros(2,4);
 dofs = [1,2,4,5];
+dlabels = {'Fx', 'Fy', 'Mx', 'My'};
+
 measured(1,1) = me.getArch('MeasL1Fx');
 measured(2,1) = me.getArch('MeasL2Fx');
 measured(1,2) = me.getArch('MeasL1Fy');
@@ -35,6 +37,7 @@ for d = 1:4
         continue;
     end
     step.lbcbCps{lbcb}.command.setForceDof(dofs(d),0);
+    log.info(sprintf('Correcting LBCB %d %s',lbcb, dlabels{d}));
 end
 
 str = sprintf('%sAdjusted Cmd: %s\n',step.lbcbCps{1}.command.toString());
