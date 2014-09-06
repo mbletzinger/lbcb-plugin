@@ -7,6 +7,7 @@
 function SSW_Dd1AdjustTarget(me,step)
 me.log.debug(dbstack,'Running force adjustment fcn');
 measured = zeros(2,4);
+target = zeros(2,4);
 dofs = [1,2,4,5];
 dlabels = {'Fx', 'Fy', 'Mx', 'My'};
 
@@ -18,6 +19,15 @@ measured(1,3) = me.getArch('MeasL1Mx');
 measured(2,3) = me.getArch('MeasL2Mx');
 measured(1,4) = me.getArch('MeasL1My');
 measured(2,4) = me.getArch('MeasL2My');
+
+target(1,1) = me.getOrDefault('TgtL1Fx',0,1);
+target(2,1) = me.getOrDefault('TgtL2Fx',0,1);
+target(1,2) = me.getOrDefault('TgtL1Fy',0,1);
+target(2,2) = me.getOrDefault('TgtL2Fy',0,1);
+target(1,3) = me.getOrDefault('TgtL1Mx',0,1);
+target(2,3) = me.getOrDefault('TgtL2Mx',0,1);
+target(1,4) = me.getOrDefault('TgtL1My',0,1);
+target(2,4) = me.getOrDefault('TgtL2My',0,1);
 tol = zeros(2,4);
 tol(1,1) = me.getOrDefault('TolL1Fx',0,1);
 tol(2,1) = me.getOrDefault('TolL2Fx',0,1);
@@ -36,7 +46,7 @@ for d = 1:4
     if abs(measured(lbcb,d)) < tol(lbcb,d)
         continue;
     end
-    step.lbcbCps{lbcb}.command.setForceDof(dofs(d),0);
+    step.lbcbCps{lbcb}.command.setForceDof(dofs(d),target(lbcb,d));
     me.log.info(dbstack,sprintf('Correcting LBCB %d %s',lbcb, dlabels{d}));
 end
 
