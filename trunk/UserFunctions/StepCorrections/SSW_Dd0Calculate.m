@@ -24,8 +24,8 @@ west= disp(3);
 avgdisp = mean(disp);
 me.putArch('EdDz', avgdisp);
 thetay = (west - east)/ westArm;
-% thetax = ( (east+west)/2 -north) / northArm;
-thetax = ( (east+east)/2 -north) / northArm;
+thetax = ( (east+west)/2 -north) / northArm;
+% thetax = ( (east+east)/2 -north) / northArm;
 
 me.putArch('EdRy', thetay);
 me.putArch('EdRx', thetax);
