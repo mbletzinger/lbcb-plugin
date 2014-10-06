@@ -57,23 +57,21 @@ classdef DisplayFactory < handle
             %             ref.cdp = me.cdp;
             %             me.addDisplay('OutOfPlaneRotations',ref,me.mainDisp.OutOfPlaneRotations);
             %
-            ref = MultiDofStepPlot('SSW_Dz',{'EdDz','MeasEast','MeasNorth', 'MeasWest', 'CorrectDz'},'inches',1,0);
-            ref.cdp = me.cdp;
-            me.addDisplay('SSW_Dz',ref,me.mainDisp.SSW_Dz);
+%            ref = MultiDofStepPlot('SSW_Dz',{'EdDz','MeasEast','MeasNorth', 'MeasWest', 'CorrectDz'},'inches',1,0);
+%            ref.cdp = me.cdp;
+%            me.addDisplay('SSW_Dz',ref,me.mainDisp.SSW_Dz);
             
-            ref = MultiDofStepPlot('SSW_Rotations',{'EdRy','EdRx'},'radians',1,0);
-            ref.cdp = me.cdp;
-            me.addDisplay('SSW_Rotations',ref,me.mainDisp.SSW_Rotations);
+%            ref = MultiDofStepPlot('SSW_Rotations',{'EdRy','EdRx'},'radians',1,0);
+%            ref.cdp = me.cdp;
+%            me.addDisplay('SSW_Rotations',ref,me.mainDisp.SSW_Rotations);
 
 %             ref = ArchPlot('SSW Deformation',0,3,'TotalFz');
 %             ref.cdp = me.cdp;
 %             me.addDisplay('TotalFxVsLbcb2Dx',ref,me.mainDisp.TotalFxVsLbcb2Dx);
             
-            ref = MultiDofStepPlot('L1 Forces',{'Fx','Fy','Fz', 'TotalFz'},'kips',1,0);
+            ref = MultiDofStepPlot('L1 Forces',{'Fx','Fy','Fz'},'kips',1,0);
             ref.cdp = me.cdp;
             me.addDisplay('L1Forces',ref,me.mainDisp.L1Forces);
-            
-            
             
             ref = MultiDofStepPlot('L1 Moments',{'Mx','My','Mz'},'kip*inches',1,0);
             ref.cdp = me.cdp;
@@ -87,7 +85,7 @@ classdef DisplayFactory < handle
             ref.cdp = me.cdp;
             me.addDisplay('L1Rotations',ref,me.mainDisp.L1Rotations);
             
-            ref = MultiDofStepPlot('L2 Forces',{'Fx','Fy','Fz', 'TotalFz'},'kips',0,0);
+            ref = MultiDofStepPlot('L2 Forces',{'Fx','Fy','Fz'},'kips',0,0);
             ref.cdp = me.cdp;
             me.addDisplay('L2Forces',ref,me.mainDisp.L2Forces);
             
