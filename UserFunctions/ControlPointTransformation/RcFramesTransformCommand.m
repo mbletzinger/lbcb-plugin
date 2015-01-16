@@ -40,7 +40,8 @@ if me.existsCfg('DisplacementX.Scale')
     scale_factor(4) = me.getCfg('Rotation.Scale');
 end
 for lbcb = 1:numLbcbs
-    [lbcbTgts{lbcb}.disp] = scaleValues(scale_factor,lbcbTgts{lbcb}.disp,true);
+%     Commenting scaling factor so that no scaling occurs
+%     [lbcbTgts{lbcb}.disp] = scaleValues(scale_factor,lbcbTgts{lbcb}.disp,true);
     
     me.putDat(sprintf('L%d.LCmd.Dx',lbcb), lbcbTgts{lbcb}.disp(1));
     me.putDat(sprintf('L%d.LCmd.Dy',lbcb), lbcbTgts{lbcb}.disp(2));

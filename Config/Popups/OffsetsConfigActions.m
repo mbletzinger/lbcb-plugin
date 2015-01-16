@@ -9,6 +9,9 @@ classdef OffsetsConfigActions < handle
         simTimer
         offstRfsh
         dat
+        sampleCount
+        accum
+        currentCount
     end
     methods
         function me = OffsetsConfigActions(offstcfg,cfg,fact)
@@ -23,6 +26,12 @@ classdef OffsetsConfigActions < handle
             me.simTimer.TimerFcn = { 'OffsetsConfigActions.queryInitialPosition', me };
             me.dofT = zeros(2,6);
             me.offsetsT = cell(length(me.names),3);
+            me.sampleCount = 10;
+            me.resetSampling;
+        end
+        function resetSampling(me)
+            me.accum = zeros(length(me.names),1);
+            me.currentCount = 0;
         end
         function initialize(me,handles)
             me.handles = handles;
@@ -32,6 +41,7 @@ classdef OffsetsConfigActions < handle
             set(me.handles.dofTable,'Data',me.dofT);
             format = {'numeric','numeric','numeric','numeric','numeric','numeric'};
             set(me.handles.dofTable,'ColumnFormat',format);
+            set(me.handles.samplesCount,'String',sprintf('%d',me.sampleCount));
             me.refresh();
             
         end
@@ -44,6 +54,8 @@ classdef OffsetsConfigActions < handle
                 me.offsetsT{s,2} = values(s);
                 me.offsetsT{s,3} = 0;
             end
+            me.resetSampling();
+            set(me.handles.progressWindow,'String','Working...1');
             me.offstRfsh.start();
             start(me.simTimer);
         end
@@ -85,13 +97,19 @@ classdef OffsetsConfigActions < handle
             me.dset.load();
             me.refresh();
         end
-        
+        function setSampleCount(me, count)
+            me.sampleCount = count;
+        end
+        function count = getSampleCount(me)
+            count = me.sampleCount;
+        end
     end
     methods (Static)
         function queryInitialPosition(obj, event,me) %#ok<*INUSL,*INUSD>
             if me.offstRfsh.isDone() == false
                 return;
             end
+            me.currentCount = me.currentCount+1;
             for lbcb = 1 : me.ocfg.numLbcbs
                 for d = 1:6
                     me.dofT(lbcb,d) = me.dat.initialPosition.lbcbCps{lbcb}.response.disp(d);
@@ -99,16 +117,23 @@ classdef OffsetsConfigActions < handle
             end
             values = me.dat.initialPosition.externalSensorsRaw;
             for lbcb = 1 : me.ocfg.numLbcbs
-                    values = cat(1, values, me.dat.initialPosition.lbcbCps{lbcb}.response.lbcb.disp);
+                values = cat(1, values, me.dat.initialPosition.lbcbCps{lbcb}.response.lbcb.disp);
             end
             
             for s = 1:length(me.names)
-                me.offsetsT{s,3} = values(s);
+                me.accum(s) = values(s) + me.accum(s);
+                me.offsetsT{s,3} = me.accum(s) / me.currentCount;
             end
             set(me.handles.offsetsTable,'Data',me.offsetsT);
             set(me.handles.dofTable,'Data',me.dofT);
             guidata(me.handles.OffsetsConfig, me.handles);
+            if(me.currentCount < me.sampleCount)
+             set(me.handles.progressWindow,'String',sprintf('Working...%d',me.currentCount + 1));
+               me.offstRfsh.start();
+                return;
+            end
             stop(me.simTimer);
+            set(me.handles.progressWindow,'String','');
         end
     end
 end

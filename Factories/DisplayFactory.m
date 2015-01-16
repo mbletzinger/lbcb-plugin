@@ -57,13 +57,13 @@ classdef DisplayFactory < handle
             %             ref.cdp = me.cdp;
             %             me.addDisplay('OutOfPlaneRotations',ref,me.mainDisp.OutOfPlaneRotations);
             %
-%            ref = MultiDofStepPlot('SSW_Dz',{'EdDz','MeasEast','MeasNorth', 'MeasWest', 'CorrectDz'},'inches',1,0);
-%            ref.cdp = me.cdp;
-%            me.addDisplay('SSW_Dz',ref,me.mainDisp.SSW_Dz);
-            
-%            ref = MultiDofStepPlot('SSW_Rotations',{'EdRy','EdRx'},'radians',1,0);
-%            ref.cdp = me.cdp;
-%            me.addDisplay('SSW_Rotations',ref,me.mainDisp.SSW_Rotations);
+%             ref = MultiDofStepPlot('SSW_Dz',{'EdDz','MeasEast','MeasNorth', 'MeasWest', 'CorrectDz'},'inches',1,0);
+%             ref.cdp = me.cdp;
+%             me.addDisplay('SSW_Dz',ref,me.mainDisp.SSW_Dz);
+%             
+%             ref = MultiDofStepPlot('SSW_Rotations',{'EdRy','EdRx'},'radians',1,0);
+%             ref.cdp = me.cdp;
+%             me.addDisplay('SSW_Rotations',ref,me.mainDisp.SSW_Rotations);
 
 %             ref = ArchPlot('SSW Deformation',0,3,'TotalFz');
 %             ref.cdp = me.cdp;

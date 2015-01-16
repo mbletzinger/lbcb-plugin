@@ -22,7 +22,7 @@ function varargout = OffsetsConfig(varargin)
 
 % Edit the above text to modify the response to help OffsetsConfig
 
-% Last Modified by GUIDE v2.5 30-Oct-2011 21:23:52
+% Last Modified by GUIDE v2.5 15-Jan-2015 11:17:12
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -129,3 +129,9 @@ handles.actions.export();
 % --- Executes on button press in Save.
 function Save_Callback(hObject, eventdata, handles)
 handles.actions.save();
+
+
+
+function samplesCount_Callback(hObject, eventdata, handles)
+count = get(hObject,'Value');
+handles.actions.setSampleCount(count);
